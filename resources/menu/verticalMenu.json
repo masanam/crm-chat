@@ -1,0 +1,92 @@
+{
+  "menu": [
+    {
+      "name": "Dashboards",
+      "slug": "dashboard-crm",
+      "iconUrl": "assets/svg/icons/dashboard-icon.svg",
+      "url": "/"
+    },
+    {
+      "url": "app/chat",
+      "iconUrl": "assets/svg/icons/lead-icon.svg",
+      "name": "Lead",
+      "slug": "lead-list"
+    },
+    {
+      "url": "call",
+      "iconUrl": "assets/svg/icons/call-icon.svg",
+      "name": "Call",
+      "slug": "call-list"
+    },
+    {
+      "url": "groups",
+      "iconUrl": "assets/svg/icons/groups-icon.svg",
+      "name": "Group",
+      "slug": "group-list"
+    },
+    {
+      "url": "tasks",
+      "iconUrl": "assets/svg/icons/task-icon.svg",
+      "name": "Tasks",
+      "slug": "tasks.index"
+    },
+    {
+      "name": "Master",
+      "slug": "master",
+      "icon": "menu-icon tf-icons ti ti-layout-grid",
+      "submenu": [
+        {
+          "url": "dealers",
+          "icon": "menu-icon tf-icons ti ti-map",
+          "name": "Dealers",
+          "slug": "dealer-list"
+        },
+        {
+          "url": "clients",
+          "icon": "menu-icon tf-icons ti ti-map",
+          "name": "Clients",
+          "slug": "dealer-list"
+        },
+        {
+          "url": "teams",
+          "icon": "menu-icon tf-icons ti ti-map",
+          "name": "Teams",
+          "slug": "dealer-list"
+        },
+        {
+          "url": "products",
+          "icon": "menu-icon tf-icons ti ti-map",
+          "name": "Products",
+          "slug": "product-list"
+        },
+        {
+          "url": "profiles",
+          "icon": "menu-icon tf-icons ti ti-map",
+          "name": "Profiles",
+          "slug": "profile-list"
+        }
+      ]
+    },
+    {
+      "name": "Security",
+      "slug": "security",
+      "icon": "menu-icon tf-icons ti ti-lock",
+      "submenu": [
+        {
+          "url": "roles",
+          "icon": "menu-icon tf-icons ti ti-map",
+          "name": "Role",
+          "slug": "role-list"
+        },
+        {
+          "url": "permissions",
+          "icon": "menu-icon tf-icons ti ti-map",
+          "name": "Permission",
+          "slug": "permission-list"
+        }
+      ]
+    }
+
+
+  ]
+}

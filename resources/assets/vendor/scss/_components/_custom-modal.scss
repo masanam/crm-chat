@@ -1,0 +1,48 @@
+.modal-left {
+  .btn-close {
+    box-shadow: none;
+    @include ltr-style {
+      transform: translate(0, 0) !important;
+    }
+
+    @include rtl-style {
+      transform: translate(0, 0) !important;
+    }
+    &:hover {
+      @include ltr-style {
+        transform: translate(0, 0) !important;
+      }
+
+      @include rtl-style {
+        transform: translate(0, 0) !important;
+      }
+    }
+  }
+  
+  .modal-dialog {
+    margin-left: 0;
+    bottom: 28px;
+    height: 100%;
+  }
+  
+  .modal-content {
+    @include border-top-radius(0);
+  }
+}
+
+// Slide from Left
+.modal-left.fade .modal-dialog,
+.modal-left .modal.fade .modal-dialog {
+  transform: translateX(-100%);
+}
+
+.modal-left.show .modal-dialog,
+.modal-left .modal.show .modal-dialog {
+  transform: translateX(0);
+}
+
+@media (min-width: 576px) {
+  .modal {
+    margin: 0px !important;
+  }
+}

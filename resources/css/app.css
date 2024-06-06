@@ -1,0 +1,29 @@
+.layout-page, .content-wrapper, .content-wrapper > *, .layout-menu {
+    min-height: 1px;
+    margin: 5px;
+}
+
+.row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: calc(-0.5 * var(--bs-gutter-x));
+    margin-left: calc(-0.5 * var(--bs-gutter-x));
+    padding: 10px;
+}
+
+.card {
+    background-clip: padding-box;
+    /* box-shadow: 0 0.25rem 1.125rem rgba(75, 70, 92, 0.1); */
+    box-shadow: 0 0.1rem 0.1rem rgba(75, 70, 92, 0.1);
+}
+
+.light-style .app-chat .app-chat-contacts,
+.light-style .app-chat .app-chat-sidebar-left {
+  background-color: #fff;
+  box-shadow: none;
+}

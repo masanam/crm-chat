@@ -1,0 +1,65 @@
+{
+  "menu": [
+    {
+      "name": "Lead",
+      "url": "/",
+      "icon": "menu-icon tf-icons ti ti-users",
+      "slug": [
+        "dashboard",
+        "lead"
+      ],
+      "submenu": [
+        {
+          "url": "/",
+          "icon": "menu-icon tf-icons ti ti-users",
+          "name": "Lead Management",
+          "slug": "lead"
+        },
+        {
+          "url": "/lead/create",
+          "icon": "menu-icon tf-icons ti ti-users-plus",
+          "name": "Add Lead",
+          "slug": "lead-create"
+        }
+      ]
+    },
+    {
+      "name": "Chat",
+      "icon": "menu-icon tf-icons ti ti-message",
+      "slug": [
+        "app",
+        "laravel"
+      ],
+      "submenu": [
+        {
+          "url": "app/chat",
+          "name": "Chat",
+          "icon": "menu-icon tf-icons ti ti-messages",
+          "slug": "app-chat"
+        }
+      ]
+    },
+    {
+      "name": "Dealer",
+      "icon": "menu-icon tf-icons ti ti-home",
+      "slug": [
+        "dealer",
+        "laravel"
+      ],
+      "submenu": [
+        {
+          "url": "dealer",
+          "name": "Dealer",
+          "icon": "menu-icon tf-icons ti ti-home",
+          "slug": "dealer"
+        },
+        {
+          "url": "dealer",
+          "name": "Add Dealer",
+          "icon": "menu-icon tf-icons ti ti-home-plus",
+          "slug": "dealer"
+        }
+      ]
+    }
+  ]
+}

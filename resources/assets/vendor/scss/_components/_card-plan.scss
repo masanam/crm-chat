@@ -1,0 +1,52 @@
+@use './include' as light;
+
+.card-plan {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    background: light.$white;
+    border-bottom: 1px solid #EAECF0;
+    &-header {
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        border: 1px solid #EAECF0;
+        &-wrapper {
+            padding: 16px 20px 16px 16px;
+            input[type='radio']:checked {
+                background-image: url("https://res.cloudinary.com/dw25z2len/image/upload/v1711077188/check_1_wpqfjz.svg");
+            }
+        }
+        .text-base {
+            font-size: 16px;
+            color: #344054;
+        }
+        &.active {
+            background: #ECFDF3;
+            border: 1px solid #6CE9A6;
+            span {
+                color: #33B6B9 !important;
+            }
+        }
+
+        input[type=radio]:checked + label > img {
+            background: url("https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-128.png") no-repeat;
+        }
+    }
+    &-content {
+        padding: 16px;
+        .title {
+            font-size: 30px;
+            color: #344054;
+            font-weight: 600;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #344054;
+        }
+        .dollar-sign {
+            position: relative;
+            right: 5px;
+        }
+    }
+}

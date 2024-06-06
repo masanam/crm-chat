@@ -1,0 +1,96 @@
+@use './_include' as light;
+
+// variables
+$dashboard-primary-color: #33B6B9;
+$dashboard-border-color-gray: #D0D5DD;
+
+.text-xs {
+    font-size: 12px;
+}
+.text-gray {
+    color: #475467;
+}
+
+.card-datatable {
+    border-radius: 12px;
+    border: 1px solid #EAECF0;
+    background: light.$white;
+    padding: 18px 0px !important;
+
+    .btn-primary {
+        border-radius: 8px !important;
+    }
+    .btn-pagination {
+        border: 1px solid $dashboard-border-color-gray;
+        background: light.$white;
+        border-radius: 8px;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .ti-trash {
+        font-size: 24px;
+    }
+    
+    .badge-member {
+        color: #00cfe8;
+        background: #d9f8fc;
+        display: flex;
+        align-items: center;
+        column-gap: 4px;
+        padding: 4px 12px;
+        width: fit-content;
+        &-dot {
+            width: 7px;
+            height: 7px;
+            background: #00cfe8;
+            border-radius: 50%;
+        }
+    }
+
+    .badge-team {
+        background: #F1F2F4;
+        color: $dashboard-primary-color;
+        border-radius: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 12px 12px;
+        height: 20px;
+    }
+    .badge-status {
+        display: flex;
+        align-items: center;
+        column-gap: 4px;
+        padding: 4px 12px;
+        width: fit-content;
+        &.active {
+            color: #28c76f;
+            background: #dff7e9;
+        }
+        &.inactive {
+            color: #ea5455;
+            background: #fce5e6;
+        }
+        &-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            &.active {
+                background: #28c76f;
+            }
+            &.inactive {
+                background: #ea5455;
+            }
+        }
+    }
+
+    .odd {
+        background: #F9FAFB !important;
+    }
+
+    .text-column-header {
+        color: #475467 !important;
+        font-size: 12px !important;
+    }
+}

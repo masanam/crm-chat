@@ -1,0 +1,22 @@
+.btn-circle-add-contact {
+    border: none;
+    padding: 0px;
+    display: flex;
+    justify-content: space-between;
+    background: transparent;
+    align-items: center;
+    column-gap: 12px;
+
+    .circle-add-contact {
+      background: #4480FF !important;
+      padding: 1px 4px !important;
+      border-radius: 50%;
+    }
+  
+    .text-add-contact {
+      color: #4480FF;
+      font-size: 16px !important;
+      position: relative;
+      top: 8px;
+    }
+}

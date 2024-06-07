@@ -17,6 +17,7 @@ class Table extends Component
     public $buttonHeaderTarget;
     public $headers;
     public $isSelectedTable;
+    public $isUsingTableHeader;
 
     public function __construct(
         $title = 'title',
@@ -24,7 +25,8 @@ class Table extends Component
         $buttonHeaderName = 'add',
         $buttonHeaderTarget = '',
         $headers = [],
-        $isSelectedTable = false
+        $isSelectedTable = false,
+        $isUsingTableHeader = true
     )
     {
         $this->title = $title;
@@ -33,6 +35,7 @@ class Table extends Component
         $this->buttonHeaderTarget = $buttonHeaderTarget;
         $this->headers = $headers;
         $this->isSelectedTable = $isSelectedTable;
+        $this->isUsingTableHeader = $isUsingTableHeader;
     }
 
     /**

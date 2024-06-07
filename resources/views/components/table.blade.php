@@ -1,4 +1,5 @@
-<div class="card-datatable table-responsive-lg pt-0">
+<div class="card-datatable table-responsive pt-0">
+    @if ($isUsingTableHeader)
     <header class="row px-3">
       <div class="col-sm-12 col-md-6">
         <div class="d-flex align-item-center gap-2">
@@ -16,6 +17,7 @@
         </button>
       </div>
     </header>
+    @endif
     <table class="datatables-basic table-striped table dataTable no-footer dtr-column" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info" style="width: 1395px;">
       <thead>
         <tr>

@@ -7,6 +7,36 @@
       "url": "/"
     },
     {
+      "name": "Customer",
+      "slug": "customer-crm",
+      "iconUrl": "assets/svg/icons/customer-icon.svg",
+      "url": "/customer"
+    },
+    {
+      "name": "Activities",
+      "slug": "activities-crm",
+      "iconUrl": "assets/svg/icons/activities-icon.svg",
+      "url": "/activities"
+    },
+    {
+      "name": "Tickets",
+      "slug": "tickets-crm",
+      "iconUrl": "assets/svg/icons/tickets-icon.svg",
+      "url": "/tickets"
+    },
+    {
+      "name": "Internal",
+      "slug": "internal-crm",
+      "iconUrl": "assets/svg/icons/internal-icon.svg",
+      "url": "/internal"
+    },
+    {
+      "name": "Lead Generation",
+      "slug": "lead-generation-crm",
+      "iconUrl": "assets/svg/icons/lead-generation-icon.svg",
+      "url": "/lead-generation"
+    },
+    {
       "url": "app/chat",
       "iconUrl": "assets/svg/icons/lead-icon.svg",
       "name": "Lead",
@@ -86,7 +116,5 @@
         }
       ]
     }
-
-
   ]
 }

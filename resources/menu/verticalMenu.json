@@ -7,10 +7,10 @@
       "url": "/"
     },
     {
-      "name": "Customer",
-      "slug": "customer-crm",
+      "name": "Customers",
+      "slug": "customers.index",
       "iconUrl": "assets/svg/icons/customer-icon.svg",
-      "url": "/customer"
+      "url": "/customers"
     },
     {
       "name": "Activities",

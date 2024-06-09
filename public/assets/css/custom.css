@@ -1,0 +1,12 @@
+/*
+* demo.css
+* File include item demo only specific css only
+******************************************************************************/
+
+.group-chat .sidebar-body .chat-wrapper .card-group {
+  background: #f4f4f4;
+  border: 0 solid #000;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 25px 14px 25px 23px;
+}

@@ -33,7 +33,6 @@ package-lock.log
 # But not these files...
 !/public/assets/*
 /public/assets/js
-/public/assets/css
 /public/assets/vendor
 
 # Package Lock files

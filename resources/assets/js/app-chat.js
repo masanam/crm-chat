@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchInternalNotes();
 
     // Panggil fungsi fetchChatData setiap 7 detik
-    setInterval(fetchChatData, 1500);
+    setInterval(fetchChatData, 7000);
     const chatContactsBody = document.querySelector('.app-chat-contacts .sidebar-body'),
       chatContactListItems = [].slice.call(
         document.querySelectorAll('.chat-contact-list-item:not(.chat-contact-list-item-title)')
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Scroll to bottom function
     function scrollToBottom() {
-      chatHistoryBody.scrollTo(0, chatHistoryBody.scrollHeight);
+      chatHistoryBody?.scrollTo(0, chatHistoryBody.scrollHeight);
     }
     scrollToBottom();
 
@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function () {
       return `${hours}:${minutes}`;
     }
     // Send Message
-    formSendMessage.addEventListener('submit', e => {
+    formSendMessage?.addEventListener('submit', e => {
       e.preventDefault();
       var userId = getQueryParam('user_id');
       if (messageInput.value) {

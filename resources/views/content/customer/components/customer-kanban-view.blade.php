@@ -1,3 +1,3 @@
 <section>
-    <span>customer kanban view</span>
+    <div class="kanban-board"></div>
 </section>

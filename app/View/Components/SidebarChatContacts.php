@@ -23,7 +23,7 @@ class SidebarChatContacts extends Component
     public $wrapperClassname;
 
     public function __construct(
-        $title = 'Chat',
+        $title = null,
         $tabs = [],
         $customHeader = '',
         $isUsingFilterChat = true,

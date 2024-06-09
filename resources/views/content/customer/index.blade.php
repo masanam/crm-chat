@@ -8,7 +8,8 @@
 @endsection
 
 @section('page-style')
-
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/app-chat.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/customer.css') }}" />
 @endsection
 
 @section('vendor-script')
@@ -20,17 +21,18 @@
     <script src="{{ asset('assets/js/app-chat.js') }}"></script>
     <script src="{{ asset('assets/js/components/chat-history.js') }}"></script>
     <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
+    <script src="{{ asset('assets/js/customer.js') }}"></script>
 @endsection
 
 @section('content')
     <div class="row">
         <div class="">
-            <div class="customer overflow-hidden">
+            <div class="app-chat customer overflow-hidden">
                 <x-page-title title="Customers" placeholderSearchText="Search leads"></x-page-title>
                 <div class="row g-0">
-                    {{-- @include('content/customer/components/customer-chat-view')
-                    @include('content/customer/components/customer-kanban-view') --}}
-                    @include('content/customer/components/customer-list-view')
+                    @include('content/customer/components/customer-chat-view')
+                    {{-- @include('content/customer/components/customer-kanban-view') --}}
+                    {{-- @include('content/customer/components/customer-list-view') --}}
                 </div>
             </div>
         </div>

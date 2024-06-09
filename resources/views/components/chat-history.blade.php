@@ -1,6 +1,6 @@
 <div class="col app-chat-history bg-body" id="{{$chatHistoryId}}">
     <div class="chat-history-wrapper">
-        @if($isOneOnOneChat)
+        {{-- @if($isOneOnOneChat)
         <header class="chat-history-header border-bottom bg-white">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex overflow-hidden align-items-center">
@@ -59,7 +59,7 @@
                 @endif
             </div>
         </header>
-        @endif
+        @endif --}}
 
         <div class="chat-history-body bg-white ww">
             <ul class="list-unstyled chat-history">

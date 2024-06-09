@@ -11,7 +11,7 @@ $chat-app-height: calc(100vh - 3.5rem);
 $chat-app-height-with-no-navbar: calc(100vh - 7.5rem);
 $chat-app-horizontal-height-diff: 2.2rem;
 
-$chat-contact-width: 27rem;
+$chat-contact-width: 25rem;
 
 $chat-contact-list-padding-x: 0.75rem;
 $chat-contact-list-padding-y: 0.5rem;
@@ -188,22 +188,20 @@ $chat-list-margin: 1rem;
         }
       }
 
-      .nav-item-custom {
-        font-size: 14px !important;
-
-        &.active {
-          border-bottom: 1px solid #33B6B9;
-          color: $chat-message-text-color;
-          font-weight: 500;
-          background: transparent;
-        }
-      }
-
       .nav-tabs {
-        border-bottom: 1px solid #dbdade;
-        border-top-left-radius: 0.375rem;
-        border-top-right-radius: 0.375rem;
-        background-color: transparent;
+        background: transparent;
+        --bs-nav-tabs-border-radius: 0px;
+        .nav-item-custom {
+          font-size: 14px !important;
+          border: 1px solid #B2BCCA;
+  
+          &.active {
+            color: #FFFFFF;
+            font-weight: 500;
+            background: #667085;
+            box-shadow: none !important;
+          }
+        }
       }
     }
   }

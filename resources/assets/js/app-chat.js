@@ -331,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function () {
               `;
 
           // Append the new li element to the element with class internalNoteHistory
-          internalNoteHistory.appendChild(newLi);
+          internalNoteHistory?.appendChild(newLi);
         });
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -339,63 +339,65 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Send Message
-    formSendInternalMessage.addEventListener('submit', async e => {
-      e.preventDefault();
-      if (internalMessageInput.value) {
-        try {
-          const response = await fetch('https://crm.pasima.co/api/internal-notes', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              user_id: 1, // Replace with the desired user_id
-              lead_id: 1, // Replace with the desired lead_id
-              message: internalMessageInput.value // Replace with the desired message
-            })
-          });
-
-          if (response.ok) {
-            console.log('Data posted successfully!');
-            const responseData = await response.json();
-            const created_at = responseData.created_at;
-            const message = responseData.message;
-            var newLi = document.createElement('li');
-            newLi.className = 'timeline-item pb-4 timeline-item-info border-left-dashed';
-
-            // Populate the li element with data from the API response
-            newLi.innerHTML = `
-                      <span class="timeline-indicator-advanced timeline-indicator-info">
-                          <i class="ti ti-user-circle rounded-circle"></i>
-                      </span>
-                      <div class="timeline-event pb-3">
-                          <div class="timeline-header">
-                              <span class="text-muted">${formatDate(created_at, dateFormat)}</span>
-                          </div>
-                          <div class="timeline-header">
-                              <span class="text-muted">${formatDate(created_at, timeFormat)}</span>
-                          </div>
-                          <p>${message}</p>
-                          <hr />
-                          <div class="d-flex justify-content-between flex-wrap gap-2">
-                              <div class="d-flex flex-wrap">
-                                  <div>
-                                      <p class="mb-0">Dandi</p>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  `;
-            internalNoteHistory.appendChild(newLi);
-            internalMessageInput.value = '';
-          } else {
-            console.error('Failed to post data:', response.statusText);
+    if (formSendInternalMessage) {
+      formSendInternalMessage.addEventListener('submit', async e => {
+        e.preventDefault();
+        if (internalMessageInput.value) {
+          try {
+            const response = await fetch('https://crm.pasima.co/api/internal-notes', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                user_id: 1, // Replace with the desired user_id
+                lead_id: 1, // Replace with the desired lead_id
+                message: internalMessageInput.value // Replace with the desired message
+              })
+            });
+  
+            if (response.ok) {
+              console.log('Data posted successfully!');
+              const responseData = await response.json();
+              const created_at = responseData.created_at;
+              const message = responseData.message;
+              var newLi = document.createElement('li');
+              newLi.className = 'timeline-item pb-4 timeline-item-info border-left-dashed';
+  
+              // Populate the li element with data from the API response
+              newLi.innerHTML = `
+                        <span class="timeline-indicator-advanced timeline-indicator-info">
+                            <i class="ti ti-user-circle rounded-circle"></i>
+                        </span>
+                        <div class="timeline-event pb-3">
+                            <div class="timeline-header">
+                                <span class="text-muted">${formatDate(created_at, dateFormat)}</span>
+                            </div>
+                            <div class="timeline-header">
+                                <span class="text-muted">${formatDate(created_at, timeFormat)}</span>
+                            </div>
+                            <p>${message}</p>
+                            <hr />
+                            <div class="d-flex justify-content-between flex-wrap gap-2">
+                                <div class="d-flex flex-wrap">
+                                    <div>
+                                        <p class="mb-0">Dandi</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+              internalNoteHistory?.appendChild(newLi);
+              internalMessageInput.value = '';
+            } else {
+              console.error('Failed to post data:', response.statusText);
+            }
+          } catch (error) {
+            console.error('Error posting data:', error);
           }
-        } catch (error) {
-          console.error('Error posting data:', error);
         }
-      }
-    });
+      });
+    }
 
     async function fetchChatData() {
       console.log('GET CHAT');

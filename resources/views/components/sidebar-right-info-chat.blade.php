@@ -3,7 +3,7 @@ $getInitial = Helper::getInitial($name);
 @endphp
 
 <div class="col app-chat-sidebar-right app-sidebar {{$sidebarClass}}" id="app-chat-sidebar-right">
-    <div class="d-flex justify-content-between align-items-center mt-3">
+    {{-- <div class="d-flex justify-content-between align-items-center mt-3">
         <div class="d-flex align-items-center gap-2">
             <i class="ti ti-x text-dark fw-bold close-sidebar" data-bs-toggle="sidebar"
             data-overlay data-target="#app-chat-sidebar-right"></i>
@@ -29,8 +29,8 @@ $getInitial = Helper::getInitial($name);
         @if($isUsingBtnHeader)
         <button class="btn btn-create-task d-flex align-items-center justify-content-center w-100" data-bs-toggle="modal" data-bs-target="#create-task">{{ $btnHeaderName }}</button>
         @endif
-    </div>
-    <div class="sidebar-body px-4 pb-4 mt-4">
+    </div> --}}
+    <div class="sidebar-body px-2 mt-4" style="padding-bottom: 4.5rem;">
        {{ $slot }}
     </div>
 </div>

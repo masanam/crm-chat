@@ -1,8 +1,8 @@
 <div class="app-chat-contacts app-sidebar overflow-hidden {{ $wrapperClassname }}" id="app-chat-contacts">
-    <hr class="container-m-nx m-0">
     <div class="sidebar-body">
         <!-- Nav tabs -->
-        <div class="container pt-2">
+        <div class="container pt-2 d-flex justify-content-center">
+            @if ($title)
             <div class="d-flex align-items-center justify-content-between">
                 <h4 class="pt-3 fw-bolder text-dark">{{ $title }}</h4>
                 @if($targetOpenModal)
@@ -10,17 +10,18 @@
                     <i class="ti ti-plus"></i>
                 </button>
                 @endif
-            </div>
+            </div>        
+            @endif
             
             @if($customHeader)
             {{ $customHeader }}
             @else
             <ul class="nav nav-tabs" id="chats-tabs" role="tablist">
                 @foreach($tabs as $key => $value)
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item" role="presentation" style="width: 113px;">
                         <button class="nav-link nav-item-custom {{ $key === 0 ? 'active' : '' }}" id="{{ strtolower($value->name) }}-tab" data-bs-toggle="tab"
                             data-bs-target="#{{ strtolower($value->name) }}" type="button" role="tab" aria-controls="{{ strtolower($value->name) }}"
-                            aria-selected="true">{{ $value->name }} ({{ $value->lengthData }})</button>
+                            aria-selected="true">{{ $value->name }}</button>
                     </li>
                 @endforeach
             </ul>

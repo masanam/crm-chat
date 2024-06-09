@@ -1,0 +1,26 @@
+.customer {
+    .chat-history-wrapper {
+        .nav-tab-chat {
+            background-color: #F7FAFA !important;
+            .nav-item {
+                .nav-link {
+                    &.active {
+                        background: transparent;
+                        font-weight: 700;
+                        color: #1F2124;
+                    }
+                }
+            }
+        }
+        .tab-content-chat {
+            padding: 0px !important;
+        }
+    }
+    .btn-add-contact {
+        border: none;
+        outline: none;
+        background: transparent;
+        color: #0BA5EC;
+        font-size: 12px;
+    }
+}

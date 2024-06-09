@@ -1,5 +1,6 @@
 @switch(strtolower($type))
  @case('new')
+ @case('lead')
     <span class="badge badge-sm rounded-pill text-dark" style="background: #CCE8E8;">
        {{ $type }}
     </span>

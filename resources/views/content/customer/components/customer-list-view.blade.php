@@ -66,7 +66,7 @@ $dummyData2 = (object) [
 $listData = [$dummyData, $dummyData2];
 @endphp
 
-<section class="px-5 py-4">
+<section class="px-5 py-4 tab-pane fade" id="list-view" role="tabpanel">
     <x-table
     :headers="$headers"
     isSelectedTable="{{ true }}"

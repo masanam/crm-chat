@@ -14,16 +14,19 @@ class PageTitle extends Component
     public $placeholderSearchText;
     public $title;
     public $isUsingMultipleView;
+    public $targetOpenModal;
 
     public function __construct(
         $placeholderSearchText = 'placeholder',
         $title = 'Title',
-        $isUsingMultipleView = true
+        $isUsingMultipleView = true,
+        $targetOpenModal = ''
     )
     {
         $this->placeholderSearchText = $placeholderSearchText;
         $this->title = $title;
         $this->isUsingMultipleView = $isUsingMultipleView;
+        $this->targetOpenModal = $targetOpenModal;
     }
     /**
      * Get the view / contents that represent the component.

@@ -22,7 +22,7 @@
     $listTabs = [$tab, $tab2, $tab3];
 @endphp
 
-<section class="d-flex">
+<section class="d-flex tab-pane fade active show" id="chat-view" role="tabpanel">
     <x-sidebar-chat-contacts :tabs="$listTabs" isUsingSearch="{{ false }}">
         <x-slot name="body">
             <div class="tab-content p-0">
@@ -189,7 +189,14 @@
                 <div class="d-flex flex-column gap-1">
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="text-dark fw-bold">Rihanza Fadlitya</span>
-                        <img src="{{asset('assets/svg/icons/edit.svg')}}" alt="edit" width="15">
+                        <img
+                            src="{{asset('assets/svg/icons/edit.svg')}}"
+                            alt="edit"
+                            width="15"
+                            data-bs-toggle="modal"
+                            data-bs-target="#add-edit-contact"
+                            class="cursor-pointer"
+                        >
                     </div>
                     <span class="text-dark" style="font-size: 14px">Head of Sales</span>
                 </div>
@@ -204,7 +211,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn-add-contact">
+            <button class="btn-link" data-bs-toggle="modal" data-bs-target="#add-edit-contact">
                 + Add more contacts
             </button>
         </div>

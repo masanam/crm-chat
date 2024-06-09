@@ -16,11 +16,15 @@
             padding: 0px !important;
         }
     }
-    .btn-add-contact {
-        border: none;
-        outline: none;
-        background: transparent;
-        color: #0BA5EC;
-        font-size: 12px;
+    .hidden {
+        display: none !important;
     }
+}
+
+.btn-link {
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #0BA5EC;
+    font-size: 12px;
 }

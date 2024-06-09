@@ -7,86 +7,41 @@
       "url": "/"
     },
     {
-      "url": "app/chat",
-      "iconUrl": "assets/svg/icons/lead-icon.svg",
-      "name": "Lead",
-      "slug": "lead-list"
+      "name": "Customer",
+      "slug": "customer",
+      "iconUrl": "assets/svg/icons/customer-icon.svg",
+      "url": "/customer"
     },
     {
-      "url": "call",
-      "iconUrl": "assets/svg/icons/call-icon.svg",
-      "name": "Call",
-      "slug": "call-list"
+      "name": "Activities",
+      "slug": "activities",
+      "iconUrl": "assets/svg/icons/activities-icon.svg",
+      "url": "/activities"
     },
     {
-      "url": "groups",
-      "iconUrl": "assets/svg/icons/groups-icon.svg",
-      "name": "Group",
-      "slug": "group-list"
+      "name": "Calls",
+      "slug": "calls",
+      "iconUrl": "assets/svg/icons/calls-icon.svg",
+      "url": "/calls"
     },
     {
-      "url": "tasks",
-      "iconUrl": "assets/svg/icons/task-icon.svg",
-      "name": "Tasks",
-      "slug": "tasks.index"
+      "name": "Tickets",
+      "slug": "tickets",
+      "iconUrl": "assets/svg/icons/tickets-icon.svg",
+      "url": "/tickets"
     },
     {
-      "name": "Master",
-      "slug": "master",
-      "icon": "menu-icon tf-icons ti ti-layout-grid",
-      "submenu": [
-        {
-          "url": "dealers",
-          "icon": "menu-icon tf-icons ti ti-map",
-          "name": "Dealers",
-          "slug": "dealer-list"
-        },
-        {
-          "url": "clients",
-          "icon": "menu-icon tf-icons ti ti-map",
-          "name": "Clients",
-          "slug": "dealer-list"
-        },
-        {
-          "url": "teams",
-          "icon": "menu-icon tf-icons ti ti-map",
-          "name": "Teams",
-          "slug": "dealer-list"
-        },
-        {
-          "url": "products",
-          "icon": "menu-icon tf-icons ti ti-map",
-          "name": "Products",
-          "slug": "product-list"
-        },
-        {
-          "url": "profiles",
-          "icon": "menu-icon tf-icons ti ti-map",
-          "name": "Profiles",
-          "slug": "profile-list"
-        }
-      ]
+      "name": "Internal",
+      "slug": "internal",
+      "iconUrl": "assets/svg/icons/internal-icon.svg",
+      "url": "/groups"
     },
     {
-      "name": "Security",
-      "slug": "security",
-      "icon": "menu-icon tf-icons ti ti-lock",
-      "submenu": [
-        {
-          "url": "roles",
-          "icon": "menu-icon tf-icons ti ti-map",
-          "name": "Role",
-          "slug": "role-list"
-        },
-        {
-          "url": "permissions",
-          "icon": "menu-icon tf-icons ti ti-map",
-          "name": "Permission",
-          "slug": "permission-list"
-        }
-      ]
+      "name": "Lead Generation",
+      "slug": "lead-generation",
+      "iconUrl": "assets/svg/icons/leads-icon.svg",
+      "url": "/lead-generation"
     }
-
 
   ]
 }

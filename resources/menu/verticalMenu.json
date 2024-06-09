@@ -7,10 +7,10 @@
       "url": "/"
     },
     {
-      "name": "Customer",
-      "slug": "customer",
+      "name": "Customers",
+      "slug": "customers.index",
       "iconUrl": "assets/svg/icons/customer-icon.svg",
-      "url": "/customer"
+      "url": "/customers"
     },
     {
       "name": "Activities",
@@ -42,6 +42,5 @@
       "iconUrl": "assets/svg/icons/leads-icon.svg",
       "url": "/lead-generation"
     }
-
   ]
 }

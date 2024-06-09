@@ -78,7 +78,7 @@ $currentRouteName = Route::currentRouteName();
         </ul>
         @endif --}}
         </nav>
-        <div class="d-flex gap-5 align-items-center">
+        <div class="d-flex gap-3 align-items-center">
           <div class="d-flex flex-row gap-3">
             <button class="btn" style="padding: 0.5rem 0.5rem;">
               <img src="{{asset('assets/svg/icons/icon-notification.svg')}}" alt="icon notification">

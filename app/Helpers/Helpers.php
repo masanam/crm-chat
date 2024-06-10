@@ -204,4 +204,48 @@ class Helpers
     // Return the initials
     return $initial;
   }
+
+  public static function getConstants() {
+    $alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+ 
+    $qualityNew = (object) [
+      'label' => 'New',
+      'value' => 'New',
+    ];
+    $qualityHigh = (object) [
+      'label' => 'High Priority',
+      'value' => 'High Priority',
+    ];
+    $qualityContacted = (object) [
+      'label' => 'Contacted',
+      'value' => 'Contacted',
+    ];
+    $qualityNego = (object) [
+      'label' => 'In Negotiation',
+      'value' => 'In Negotiation',
+    ];
+    $qualityLost = (object) [
+      'label' => 'Lost',
+      'value' => 'Lost',
+    ];
+    $stages = [$qualityNew, $qualityHigh, $qualityContacted, $qualityNego, $qualityLost];
+    
+    $qualityWarm = (object) [
+      'label' => 'Warm',
+      'value' => 'Warm',
+    ];
+    $quality = [$qualityWarm];
+
+    $statusActive = (object) [
+      'label' => 'Active',
+      'value' => 'Active',
+    ];
+    $statusInactive = (object) [
+      'label' => 'Inactive',
+      'value' => 'Inactive',
+    ];
+    $status = [$statusActive, $statusInactive];
+
+    return [$stages, $alphabet, $quality, $status];
+  }
 }

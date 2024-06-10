@@ -1,353 +1,287 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Task Management')
+@section('title', 'Chat - Apps')
+
 @section('vendor-style')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/jkanban/jkanban.css') }}" />
 @endsection
 
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/app-chat.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/customer.css') }}" />
 @endsection
 
 @section('vendor-script')
     <script src="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/jkanban/jkanban.js') }}"></script>
 @endsection
 
 @section('page-script')
     <script src="{{ asset('assets/js/app-chat.js') }}"></script>
-    <script src="{{ asset('assets/js/tasks.js') }}"></script>
     <script src="{{ asset('assets/js/components/chat-history.js') }}"></script>
+    <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
+    <script src="{{ asset('assets/js/customer.js') }}"></script>
 @endsection
 
-@section('content')
-
 @php
-    $tab = (object) [
-        'name' => 'Open',
-        'lengthData' => count($dataOpen)
-    ];
-    $tab2 = (object) [
-        'name' => 'Pending',
-        'lengthData' => count($dataPending)
-    ];
-    $tab3 = (object) [
-        'name' => 'Closed',
-        'lengthData' => count($dataClosed)
-    ];
-    $listTabs = [$tab, $tab2, $tab3];
+   [$stages, $alphabet, $quality, $status] = Helper::getConstants();
 @endphp
 
-<div class="row">
-  <div class="">
-    <div class="app-chat card overflow-hidden">
-      <div class="row g-0">
-        <!-- Chat & Contacts -->
-        <x-sidebar-chat-contacts :tabs="$listTabs" placeholderSearchText="Search Customers"
-          targetOpenModalFilter="#filter" title="Customers">
-          <x-slot name="body">
-            <div class="tab-content p-0">
-              {{-- tab active --}}
-              <div class="tab-pane active" id="open" role="tabpanel" aria-labelledby="open-tab">
-                  <ul class="list-unstyled chat-contact-list p-0 mt-2" id="chat-list">
-                      @if (count($dataOpen) > 0)
-                      @foreach ($dataOpen as $row)
-                          <li class="chat-contact-list-item">
-                              <a class="d-flex align-items-center">
-                                  <div
-                                      class="d-flex flex-column chat-contact-info flex-grow-1 ms-2 gap-2">
-                                      <div class="d-flex flex-column gap-1">
-                                          <div class="d-flex justify-content-between align-items-center">
-                                              <h6
-                                                  class="chat-contact-name text-truncate m-0 text-dark fw-bolder">
-                                                  {{ $row->title }}</h6>
-                                              <small id="chat-contact-time">{{ $row->updated_at }}</small>
-                                          </div>
-                                          <small>{{ $row->code }}</small>
-                                      </div>
-                                      <div>
-                                          <p class="chat-contact-status text-chat text-truncate mb-0">
-                                            Thanks team, kindly let me know at the soonest so I can inform customer</p>
-                                      </div>
-                                      <div class="d-flex justify-content-between align-items-center">
-                                          <div class="d-flex align-items-center gap-2">
-                                              <div
-                                                  class="d-flex align-items-center badge badge-sm rounded-pill badge-user text-dark gap-1">
-                                                  <i class="ti ti-user user-icon text-dark"></i>
-                                                  <div class="d-flex align-items-center gap-1">
-                                                      <small>Sally,</small>
-                                                      <small>Princess,</small>
-                                                      <small>+1</small>
-                                                  </div>
-                                              </div>
-                                              <x-badge-priority type="{{ $row->priority }}"></x-badge-priority>
-                                          </div>
-                                          <img src="{{ asset('assets/svg/icons/info.svg') }}"
-                                              alt="info" width="20">
-                                      </div>
-                                  </div>
-                              </a>
-                          </li>
-                      @endforeach
-                      @else
-                      <li class="chat-contact-list-item chat-list-item-0">
-                        <h6 class="text-muted mb-0">No Chats Active Found</h6>
-                      </li>
-                      @endif
-                  </ul>
-              </div>
-              {{-- tab pending --}}
-              <div class="tab-pane" id="pending" role="tabpanel" aria-labelledby="closed-tab">
-                <ul class="list-unstyled chat-contact-list p-0 mt-2" id="chat-list">
-                  @if (count($dataPending) > 0)
-                  @foreach ($dataPending as $row)
-                      <li class="chat-contact-list-item">
-                          <a class="d-flex align-items-center">
-                              <div
-                                  class="d-flex flex-column chat-contact-info flex-grow-1 ms-2 gap-2">
-                                  <div class="d-flex flex-column gap-1">
-                                      <div class="d-flex justify-content-between align-items-center">
-                                          <h6
-                                              class="chat-contact-name text-truncate m-0 text-dark fw-bolder">
-                                              {{ $row->title }}</h6>
-                                          <small id="chat-contact-time">{{ $row->updated_at }}</small>
-                                      </div>
-                                      <small>{{ $row->code }}</small>
-                                  </div>
-                                  <div>
-                                      <p class="chat-contact-status text-chat text-truncate mb-0">
-                                        Thanks team, kindly let me know at the soonest so I can inform customer</p>
-                                  </div>
-                                  <div class="d-flex justify-content-between align-items-center">
-                                      <div class="d-flex align-items-center gap-2">
-                                          <div
-                                              class="d-flex align-items-center badge badge-sm rounded-pill badge-user text-dark gap-1">
-                                              <i class="ti ti-user user-icon text-dark"></i>
-                                              <div class="d-flex align-items-center gap-1">
-                                                  <small>Sally,</small>
-                                                  <small>Princess,</small>
-                                                  <small>+1</small>
-                                              </div>
-                                          </div>
-                                          <x-badge-priority type="{{ $row->priority }}"></x-badge-priority>
-                                      </div>
-                                      <img src="{{ asset('assets/svg/icons/info.svg') }}"
-                                          alt="info" width="20">
-                                  </div>
-                              </div>
-                          </a>
-                      </li>
-                  @endforeach
-                  @else
-                  <li class="chat-contact-list-item chat-list-item-0">
-                    <h6 class="text-muted mb-0">No Chats Pending Found</h6>
-                  </li>
-                  @endif
-              </ul>
-            </div>
-              {{-- tab closed --}}
-              <div class="tab-pane" id="closed" role="tabpanel" aria-labelledby="closed-tab">
-                <ul class="list-unstyled chat-contact-list p-0 mt-2" id="chat-list">
-                  @if (count($dataClosed) > 0)
-                  @foreach ($dataClosed as $row)
-                      <li class="chat-contact-list-item">
-                          <a class="d-flex align-items-center">
-                              <div
-                                  class="d-flex flex-column chat-contact-info flex-grow-1 ms-2 gap-2">
-                                  <div class="d-flex flex-column gap-1">
-                                      <div class="d-flex justify-content-between align-items-center">
-                                          <h6
-                                              class="chat-contact-name text-truncate m-0 text-dark fw-bolder">
-                                              {{ $row->title }}</h6>
-                                          <small id="chat-contact-time">{{ $row->updated_at }}</small>
-                                      </div>
-                                      <small>{{ $row->code }}</small>
-                                  </div>
-                                  <div>
-                                      <p class="chat-contact-status text-chat text-truncate mb-0">
-                                        Thanks team, kindly let me know at the soonest so I can inform customer</p>
-                                  </div>
-                                  <div class="d-flex justify-content-between align-items-center">
-                                      <div class="d-flex align-items-center gap-2">
-                                          <div
-                                              class="d-flex align-items-center badge badge-sm rounded-pill badge-user text-dark gap-1">
-                                              <i class="ti ti-user user-icon text-dark"></i>
-                                              <div class="d-flex align-items-center gap-1">
-                                                  <small>Sally,</small>
-                                                  <small>Princess,</small>
-                                                  <small>+1</small>
-                                              </div>
-                                          </div>
-                                          <x-badge-priority type="{{ $row->priority }}"></x-badge-priority>
-                                      </div>
-                                      <img src="{{ asset('assets/svg/icons/info.svg') }}"
-                                          alt="info" width="20">
-                                  </div>
-                              </div>
-                          </a>
-                      </li>
-                  @endforeach
-                  @else
-                  <li class="chat-contact-list-item chat-list-item-0">
-                    <h6 class="text-muted mb-0">No Chats Pending Found</h6>
-                  </li>
-                  @endif
-                </ul>
-            </div>
-            </div>
-          </x-slot>
-        </x-sidebar-chat-contacts>
-        <!-- /Chat contacts -->
-        <!-- Chat History -->
-        <x-chat-history
-          title="Aditya Rahardi"
-          typeTask="TY-010209"
-          :people="['Sally, Princess']"
-          type="Medium Priority"
-        >
-        </x-chat-history>
-        <!-- /Chat History -->
-        
-        <!-- Sidebar Right -->
-        <x-sidebar-right-info-chat
-          title="Issue SPK"
-          time="Last modified 24 Feb 2024, 00:00 PM"
-          name="Aditya Rahardi"
-          subtitle="+62 811-818-256"
-          email="asmith@hey.com"
-          isUsingBtnHeader="{{ false }}"
-        >
-            <div class="sidebar-card d-flex flex-column">
-              <div class="d-flex flex-column gap-3">
-                <div class="d-flex justify-content-between align-items-center">
-                  <h6 class="text-dark">Status</h6>
-                  <select id="status" class="select2 form-select custom-select text-dark" data-allow-clear="true">
-                      <option value="active">Open</option>
-                      <option value="offline">Close</option>
-                  </select>
-                </div>
-                <div class="d-flex justify-content-between align-items-center">
-                    <h6 class="text-dark">Priority</h6>
-                    <select id="priority" class="select2 form-select custom-select text-dark" data-allow-clear="true">
-                        <option value="high">High Priorty</option>
-                        <option value="medium" selected>Medium Priority</option>
-                        <option value="low">Low Priority</option>
-                    </select>
-                </div>
-                <div class="d-flex justify-content-between align-items-center">
-                    <h6 class="text-dark">Deadline</h6>
-                    <h6 class="text-dark">12 March 2024</h6>
-                </div>
-                <div class="d-flex flex-column">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <h6 class="text-dark">Assigned sales</h6>
-                    <i class="ti ti-chevron-right text-dark"></i>
-                  </div>
-                  <div class="d-flex flex-wrap align-items-center gap-2">
-                    <div class="d-flex align-items-center tag gap-1">
-                        <span class="text-dark">Sally</span>
-                        <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay data-target="#tag"></i>
-                    </div>
-                    <div class="d-flex align-items-center tag gap-1">
-                        <span class="text-dark">Princess</span>
-                        <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay data-target="#tag"></i>
-                    </div>
-                  </div>
-                </div>
-                <div class="d-flex flex-column">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <h6 class="text-dark">Assigned team</h6>
-                    <i class="ti ti-chevron-right text-dark"></i>
-                  </div>
-                  <div class="d-flex flex-wrap align-items-center gap-2">
-                    <div class="d-flex align-items-center tag gap-1">
-                        <span class="text-dark">Sally</span>
-                        <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay data-target="#tag"></i>
-                    </div>
-                    <div class="d-flex align-items-center tag gap-1">
-                        <span class="text-dark">Princess</span>
-                        <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay data-target="#tag"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {{-- product --}}
-            <div class="sidebar-card d-flex flex-column">
-                <div class="d-flex justify-content-between">
-                    <h6 class="text-dark">Product</h6>
-                    <i class="ti ti-chevron-right text-dark"></i>
-                </div>
-                <div class="d-flex flex-wrap gap-2">
-                    <div class="d-flex align-items-center tag gap-1">
-                        <span class="text-dark">Mercedes EQE 350+</span>
-                        <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay data-target="#tag"></i>
-                    </div>
-                    <div class="d-flex align-items-center tag gap-1">
-                        <span class="text-dark">Toyota Corolla</span>
-                        <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay
-                            data-target="#tag"></i>
-                    </div>
-                    <div class="d-flex align-items-center tag gap-1">
-                        <span class="text-dark">Honda Jazz</span>
-                        <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay
-                            data-target="#tag"></i>
-                    </div>
+@section('content')
+    <div class="row">
+        <div class="">
+            <div class="app-chat customer overflow-hidden">
+                <x-page-title title="Customers" placeholderSearchText="Search leads" targetOpenModal="#customers"></x-page-title>
+                <div class="row g-0">
+                    @include('content/customer/components/customer-chat-view')
+                    @include('content/customer/components/customer-kanban-view')
+                    @include('content/customer/components/customer-list-view')
                 </div>
             </div>
-            {{-- internal memo --}}
-            <div class="sidebar-card d-flex flex-column">
-                <div class="d-flex justify-content-between">
-                    <h6>Internal memo</h6>
-                    <i class="ti ti-chevron-right text-dark"></i>
-                </div>
-                <div class="d-flex flex-wrap gap-2">
-                    <p class="text-muted">Firstly, let's talk about Steve's towering height.
-                        While it's impressive, let's try not to make too big a deal out of it.
-                        After all, he's still the same old Steve we know and love.</p>
-                </div>
-            </div>
-            {{-- payment detail --}}
-            <div class="sidebar-card d-flex flex-column">
-                <div class="d-flex justify-content-between">
-                    <h6>Payment details</h6>
-                </div>
-                <div class="d-flex flex-wrap gap-2">
-                    <p class="text-muted">Cash</p>
-                </div>
-            </div>
-        </x-sidebar-right-info-chat>
-        <!-- /Sidebar Right -->
-
-        <div class="app-overlay"></div>
-      </div>
+        </div>
     </div>
-  </div>
-</div>
 
-{{-- modal filter --}}
-<x-modal title="Filter By" name="new-chat" submitText="Apply Filter" name="filter">
-  <x-slot name="sideRightHeader">
-    <button class="btn">Reset</button>    
-  </x-slot>
-  <div class="d-flex flex-column gap-3" style="height: 450px;">
-    <div class="d-flex flex-column">
-      <h6 class="text-dark fw-bold">Priority</h6>
-      <div class="ps-3">
-        <div class="form-check form-check-inline d-flex gap-3">
-          <input class="form-check-input" type="checkbox" id="low" value="low" />
-          <label class="form-check-label text-dark" for="low">Low</label>
+    {{-- modal add new customer --}}
+    <x-modal
+        title="Add New Customer"
+        name="add-customer"
+        submitText="Submit"
+        isModalStack="{{ true }}"
+        targetNameModalStack="customers"
+        modalClass=""
+        buttonSubmitClass=""
+        buttonWrapperSubmitClass="d-flex justify-content-center align-items-center w-100"
+    >
+        <div class="d-flex flex-column gap-3">
+            <div class="d-flex flex-column gap-2">
+                <h6 class="text-dark fw-bold">General Information</h6>
+                <div class="d-flex flex-column gap-3">
+                    <x-input-floating
+                        label="Customer Name"
+                        id="customer name"
+                        name="customer name"
+                    ></x-input-floating>
+                    <div class="d-flex align-items-center justify-content-between gap-3">
+                        <div class="d-flex flex-column">
+                            <span class="text-dark" style="font-size: 14px;">Customer Type</span>
+                            <select id="status" class="form-select custom-select" data-allow-clear="true" style="border: none; padding-left: 0px;">
+                                <option value="b2c">B2C</option>
+                                <option value="b2b">B2B</option>
+                            </select>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <span class="text-dark" style="font-size: 14px;">Stage</span>
+                            <select id="status" class="form-select custom-select" data-allow-clear="true" style="border: none; padding-left: 0px;">
+                                @foreach ($stages as $key => $value)
+                                    <option value="{{ $value->value }}">{{ $value->label }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <span class="text-dark" style="font-size: 14px;">Quality</span>
+                            <select id="status" class="form-select custom-select" data-allow-clear="true" style="border: none; padding-left: 0px;">
+                                <option value="warm">Warm</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-column gap-2 border-bottom border-1 pb-3 align-items-start">
+                <h6 class="text-dark fw-bold">Contact Information</h6>
+                <div class="d-flex flex-column align-items-start gap-3 w-100">
+                    <div class="d-flex justify-content-between gap-5 w-100">
+                        <x-input-floating
+                            label="First Name"
+                            id="first name"
+                            name="first name"
+                        >
+                        </x-input-floating>
+                        <x-input-floating
+                            label="Last Name"
+                            id="last name"
+                            name="last name"
+                        >
+                        </x-input-floating>
+                    </div>
+                    <button class="btn-link">
+                        + Add more channels
+                    </button>
+                </div>
+            </div>
+            <button class="btn-link pb-3">
+                + Add more contacts
+            </button>
+            <div class="d-flex flex-column gap-2">
+                <h6 class="text-dark fw-bold">Deal Information</h6>
+                <div class="d-flex flex-column gap-3 w-100">
+                    <x-input-floating
+                        label="Deal Revenue"
+                        id="deal revenue"
+                        name="deal revenue"
+                    ></x-input-floating>
+                    <div class="d-flex justify-content-between gap-5 w-100">
+                        <x-input-floating
+                            label="Close Date"
+                            id="flatpickr-date"
+                            name="flatpickr-date"
+                        >
+                        </x-input-floating>
+                        <x-input-floating
+                            label="Next Step"
+                            id="next step"
+                            name="next step"
+                        >
+                        </x-input-floating>
+                    </div>
+                    <x-input-floating
+                        label="Description"
+                        id="description"
+                        name="description"
+                    ></x-input-floating>
+                </div>
+            </div>
         </div>
-        <div class="form-check form-check-inline mt-3 d-flex gap-3">
-          <input class="form-check-input" type="checkbox" id="medium" value="medium" />
-          <label class="form-check-label text-dark" for="medium">Medium</label>
-        </div>
-        <div class="form-check form-check-inline mt-3 d-flex gap-3">
-          <input class="form-check-input" type="checkbox" id="high" value="high" />
-          <label class="form-check-label text-dark" for="high">High</label>
-        </div>    
-      </div>
-  </div>
-  </div>
-</x-modal>
+    </x-modal>
 
+    {{-- modal add/select customer --}}
+    <x-modal title="Customers" name="customers" wrapperModalClass="modal-right" isUsingBtnFooter="{{ false }}">
+        <div class="d-flex flex-column gap-3 modal-add-contact">
+            <div class="d-flex flex-column gap-2 border-bottom">
+                <div class="flex-grow-1 input-group input-group-merge rounded-pill">
+                    <span class="input-group-text form-search-custom" id="basic-addon-search31"><i
+                            class="ti ti-search"></i></span>
+                    <input type="text" class="form-control chat-search-input form-search-custom" placeholder="Search contacts"
+                            aria-label="Search contacts" aria-describedby="basic-addon-search31">
+                </div>
+                <div class="d-flex gap-2 align-items-center">
+                    <x-button-add-contact target="#add-customer" name="Add New Customer"></x-button-add-contact>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between">
+                <div class="d-flex flex-column modal-contact">
+                    <div class="d-flex flex-column">
+                        <h6 class="text-dark fw-bold">R</h6>
+                        <div class="d-flex align-items-center gap-2 modal-contact-body">
+                            <div class="flex-shrink-0 avatar">
+                                <span class="avatar-initial rounded-8 bg-label-success text-dark fw-bolder">AR</span>
+                            </div>
+                            <div class="">
+                                <h6 class="text-dark fw-bold modal-contact-title">Ricky Jonathan</h6>
+                                <div class="d-flex align-items-center gap-1">
+                                    <span class="badge badge-sm badge-status rounded-pill text-dark">
+                                    Status
+                                </span>
+                                <span class="badge badge-sm rounded-pill badge-quality text-dark">
+                                    Quality
+                                </span>
+                                <small class="text-muted">Product name</small>    
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                <div class="alphabet">
+                    @foreach($alphabet as $alpha)
+                    <small>{{ $alpha }}</small>
+                    @endforeach
+                </div>   
+            </div>
+        </div>
+    </x-modal>
+
+    {{-- modal add/edit contact --}}
+    <x-modal
+        title="Add Contact"
+        name="add-edit-contact"
+        submitText="Save contact"
+        buttonSubmitClass=""
+        buttonWrapperSubmitClass="d-flex justify-content-center align-items-center w-100"
+    >
+        <div class="d-flex flex-column gap-2 border-bottom border-1 pb-3 align-items-start">
+            <div class="d-flex flex-column gap-3">
+                <div class="d-flex justify-content-between gap-5 w-100">
+                    <x-input-floating
+                        label="First Name"
+                        id="first name"
+                        name="first name"
+                    >
+                    </x-input-floating>
+                    <x-input-floating
+                        label="Last Name"
+                        id="last name"
+                        name="last name"
+                    >
+                    </x-input-floating>
+                </div>
+                <x-input-floating
+                    label="Job Title"
+                    id="job title"
+                    name="job title"
+                >
+                </x-input-floating>
+            </div>
+            <button class="btn-link">
+                + Add more channels
+            </button>
+        </div>
+        <div class="d-flex justify-content-center py-3">
+            <button class="btn-link pb-3 add-contact">
+                + Add more contacts
+            </button>
+        </div>
+    </x-modal>
+
+    {{-- modal filter --}}
+    <x-modal
+        title="Filter"
+        name="filter"
+        submitText="Apply"
+        buttonSubmitClass=""
+        buttonWrapperSubmitClass="d-flex justify-content-center align-items-center w-100"
+        isUsingBtnFooterClose="{{ true }}"
+    >
+        <div class="d-flex flex-column gap-5">
+            <div class="d-flex justify-content-between gap-5 w-100">
+                <x-input-floating
+                    label="Start Date"
+                    id="start-date"
+                    name="start-date"
+                >
+                </x-input-floating>
+                <x-input-floating
+                    label="End Date"
+                    id="end-date"
+                    name="end-date"
+                >
+                </x-input-floating>
+            </div>
+            <x-input-floating
+                label="Status"
+                id="status"
+                name="status"
+                type="select"
+                :options="$status"
+            >
+            </x-input-floating>
+            <x-input-floating
+                label="Quality"
+                id="quality"
+                name="quality"
+                type="select"
+                :options="$quality"
+            >
+            </x-input-floating>
+            <x-input-floating
+                label="Stage"
+                id="stage"
+                name="stage"
+                type="select"
+                :options="$stages"
+            >
+            </x-input-floating>
+        </div>
+    </x-modal>
 @endsection

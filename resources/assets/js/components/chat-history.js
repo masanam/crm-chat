@@ -20,28 +20,32 @@ document.addEventListener('DOMContentLoaded', function () {
     /**
      * @description event delegation for open sidebar
      */
-    getElementChatHistory.addEventListener('click', e => {
-      // check if target is btn info
-      if(e.target.tagName === 'IMG') {
-        if (getElementSidebarRight.style.display !== 'none') {
-          getElementSidebarRight.classList.add('show')
-        } else {
-          getElementSidebarRightOne.classList.add('show')
+    if (getElementChatHistory) {
+      getElementChatHistory.addEventListener('click', e => {
+        // check if target is btn info
+        if(e.target.tagName === 'IMG') {
+          if (getElementSidebarRight.style.display !== 'none') {
+            getElementSidebarRight.classList.add('show')
+          } else {
+            getElementSidebarRightOne.classList.add('show')
+          }
         }
-      }
-    })
+      })
+    }
     
     /**
      * @description close sidebar
      */
-    getElementCloseSidebar.forEach(el => {
-      el.addEventListener('click', () => {
-        if (getElementSidebarRight.style.display !== 'none') {
-          getElementSidebarRight.classList.remove('show')
-        } else {
-          getElementSidebarRightOne.classList.remove('show')
-        }
+    if (getElementCloseSidebar) {
+      getElementCloseSidebar.forEach(el => {
+        el.addEventListener('click', () => {
+          if (getElementSidebarRight.style.display !== 'none') {
+            getElementSidebarRight.classList.remove('show')
+          } else {
+            getElementSidebarRightOne.classList.remove('show')
+          }
+        })
       })
-    })
+    }
   })();
 })

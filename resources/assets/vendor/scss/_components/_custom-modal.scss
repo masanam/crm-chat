@@ -41,8 +41,53 @@
   transform: translateX(0);
 }
 
+.modal-right {
+  .btn-close {
+    box-shadow: none;
+    @include ltr-style {
+      transform: translate(0, 0) !important;
+    }
+
+    @include rtl-style {
+      transform: translate(0, 0) !important;
+    }
+    &:hover {
+      @include ltr-style {
+        transform: translate(0, 0) !important;
+      }
+
+      @include rtl-style {
+        transform: translate(0, 0) !important;
+      }
+    }
+  }
+  
+  .modal-dialog {
+    margin-right: 0;
+    bottom: 28px;
+    height: 100%;
+  }
+  
+  .modal-content {
+    @include border-top-radius(0);
+  }
+}
+
+// Slide from right
+.modal-right.fade .modal-dialog,
+.modal-right .modal.fade .modal-dialog {
+  transform: translateX(100%);
+}
+
+.modal-right.show .modal-dialog,
+.modal-right .modal.show .modal-dialog {
+  transform: translateX(0);
+}
+
 @media (min-width: 576px) {
   .modal {
     margin: 0px !important;
   }
 }
+
+

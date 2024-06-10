@@ -24,6 +24,7 @@ class Modal extends Component
     public $isUsingHeaderTitle;
     public $sideRightHeader;
     public $wrapperModalClass;
+    public $isUsingBtnFooterClose;
 
     public function __construct(
         $modalClass = 'modal-sm',
@@ -38,7 +39,8 @@ class Modal extends Component
         $buttonSubmitClass = 'w-100',
         $isUsingHeaderTitle = true,
         $sideRightHeader = '',
-        $wrapperModalClass = ''
+        $wrapperModalClass = '',
+        $isUsingBtnFooterClose = false
     )
     {
         $this->modalClass = $modalClass;
@@ -54,6 +56,7 @@ class Modal extends Component
         $this->isUsingHeaderTitle = $isUsingHeaderTitle;
         $this->sideRightHeader = $sideRightHeader;
         $this->wrapperModalClass = $wrapperModalClass;
+        $this->isUsingBtnFooterClose = $isUsingBtnFooterClose;
     }
 
     /**

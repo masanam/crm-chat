@@ -1,0 +1,20 @@
+.btn-border {
+    background: #FFFFFF;
+    border: 1px solid #B2BCCA;
+}
+
+.btn-view {
+    padding: 10px 12px !important;
+    background: #FFFFFF;
+    border: 1px solid #B2BCCA;
+
+    &.active {
+        background-color: #D6F0F1 !important;
+        border: 1px solid #33B6B9 !important;
+    }
+}
+
+.btn-view:hover {
+    border: 1px solid #33B6B9 !important;
+    background-color: #D6F0F1 !important;
+}

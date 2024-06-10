@@ -29,6 +29,9 @@
         <input placeholder="" type="{{ $type }}" id="{{ $id }}" name="{{ $name }}" class="input-password" />
         <label for="{{ $id }}">{{ $label }}</label>
         @break
+    @case('date')
+        <input placeholder="" class="form-control" type="{{ $type }}" id="{{ $id }}" name="{{ $name }}" />
+        <label for="{{ $id }}">{{ $label }}</label>
     @default
         <input placeholder="" type="{{ $type }}" id="{{ $id }}" name="{{ $name }}" />
         <label for="{{ $id }}">{{ $label }}</label>

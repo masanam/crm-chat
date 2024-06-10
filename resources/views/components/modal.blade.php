@@ -30,6 +30,9 @@
         @if($isUsingBtnFooter)
         <div class="modal-footer {{ $buttonWrapperSubmitClass }}">
           <button type="button" data-bs-dismiss="modal" class="btn btn-primary {{ $buttonSubmitClass }}">{{ $submitText }}</button>
+          @if ($isUsingBtnFooterClose)
+          <button type="button" data-bs-dismiss="modal" class="btn" style="background: #667085; color: #FFF;">Close</button>
+          @endif
         </div>
         @endif
       </div>

@@ -9,6 +9,8 @@
 @section('page-style')
 <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/group.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/app-chat.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}" />
+
 @endsection
 
 @section('vendor-script')
@@ -21,7 +23,6 @@
 <script src="{{ asset('assets/js/group.js') }}"></script>
 @endsection
 
-
 @section('content')
 <div class="row">
     <div class="">
@@ -31,31 +32,47 @@
                 <!-- Chat & Contacts -->
                 <x-sidebar-chat-contacts title="Internal" :tabs="['New', 'Active', 'Success', 'Failed']" isUsingFilterChat="{{ false }}" placeholderSearchText="Search groups/conversations" targetOpenModal="#new-chat">
                     <x-slot name="customHeader">
-                        @foreach($internalChat as $key => $value)
+                        <ul class="nav nav-tabs" id="chats-tabs1" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link nav-item-custom active" id="new-tab" data-bs-toggle="tab" data-bs-target="#new" type="button" role="tab" aria-controls="new" aria-selected="true">All</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link nav-item-custom " id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button" role="tab" aria-controls="active" aria-selected="true">Unread</button>
+                            </li>
+                        </ul>
 
+                        <!-- @foreach($internalChat as $key => $value)
                         <x-card-chat title="{{ $value->first_name }}  {{ $value->last_name }}">
                             <x-slot name="customTitle">
                                 <h4 class="title-card text-dark fw-bold">{{ $value->first_name }} {{ $value->last_name }}</h3>
                             </x-slot>
                         </x-card-chat>
-                        @endforeach
-
+                        @endforeach -->
                     </x-slot>
 
                     <x-slot name="body" class="sidebar-body">
                         <div class="d-flex flex-column gap-3 chat-wrapper">
                             <div class="d-flex flex-column gap-2 mb-4">
-                                <small class="text-dark fw-600">Groups</small>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <small class="text-dark fw-600">Groups</small>
+                                    <button class="button-none" data-bs-toggle="modal">
+                                        <i class="ti ti-plus"></i>
+                                    </button>
+                                </div>
+
+
                                 <div class="d-flex flex-column gap-2">
                                     <div class="d-flex flex-column gap-4" id="chat-contact-group">
                                         @foreach($groupList as $key => $value)
+
                                         <div class="d-flex flex-column card-group gap-1">
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <span class="text-dark fw-bold" id="chat-group-title">{{ $value->name }}</span>
-                                                <!-- @if($value->countUnread > 0)
-                                                <div class="unread-chat text-center">{{ $value->countUnread }}</div>
-                                                @endif -->
                                             </div>
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <span class="text-dark">{{ $value->message }}</span>
+                                            </div>
+
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <span class="badge badge-sm badge-group rounded-pill" id="chat-group-member">{{ $value->total }} Members</span>
                                                 <small class="time">{{ \Carbon\Carbon::parse($value->created_at)->diffForHumans() }}</small>

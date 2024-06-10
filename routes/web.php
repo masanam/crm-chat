@@ -165,13 +165,13 @@ use App\Http\Controllers\DealerController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\CallController;
-use App\Http\Controllers\CustomerController;
 
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');
 // Route::get('/dashboard/crm', [Crm::class, 'index'])->name('dashboard-crm');
@@ -464,7 +464,7 @@ Route::middleware(['auth'])->group(function () {
   Route::put('profiles/{id}', [ProfileController::class, 'update'])->name('profiles.update');
   Route::delete('profiles/{id}', [ProfileController::class, 'destroy'])->name('profiles.destroy');
 
-  // Route::resource('dealer', DealerController::class);
+  // Route::resource('Task', TaskController::class);
   Route::get('tasks', [TaskController::class, 'index'])->name('tasks.index');
   Route::get('tasks/create', [TaskController::class, 'create'])->name('tasks.create');
   Route::post('tasks', [TaskController::class, 'store'])->name('tasks.store');
@@ -472,6 +472,15 @@ Route::middleware(['auth'])->group(function () {
   Route::get('tasks/{id}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
   Route::put('tasks/{id}', [TaskController::class, 'update'])->name('tasks.update');
   Route::delete('tasks/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+
+  // Route::resource('Customer', CustomerController::class);
+  Route::get('customers', [CustomerController::class, 'index'])->name('customers.index');
+  Route::get('customers/create', [CustomerController::class, 'create'])->name('customers.create');
+  Route::post('customers', [CustomerController::class, 'store'])->name('customers.store');
+  Route::get('customers/{id}', [CustomerController::class, 'show'])->name('customers.show');
+  Route::get('customers/{id}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
+  Route::put('customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
+  Route::delete('customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
 
   // Route::resource('dealer', DealerController::class);
   Route::get('clients', [ClientController::class, 'index'])->name('clients.index');
@@ -519,8 +528,6 @@ Route::middleware(['auth'])->group(function () {
   Route::delete('permissions/{id}', [PermissionController::class, 'destroy'])->name('permissions.destroy');
 
   Route::get('call', [CallController::class, 'index'])->name('call-list');
-
-  Route::get('customer', [CustomerController::class, 'index'])->name('customer.index');
 });
 
 //AUTH ROUTES

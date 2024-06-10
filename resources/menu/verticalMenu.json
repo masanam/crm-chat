@@ -20,7 +20,7 @@
     },
     {
       "name": "Tickets",
-      "slug": "tickets-crm",
+      "slug": "tickets.index",
       "iconUrl": "assets/svg/icons/tickets-icon.svg",
       "url": "/tickets"
     },

@@ -172,6 +172,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\CallController;
+use App\Http\Controllers\TicketController;
 
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');
 // Route::get('/dashboard/crm', [Crm::class, 'index'])->name('dashboard-crm');
@@ -528,6 +529,11 @@ Route::middleware(['auth'])->group(function () {
   Route::delete('permissions/{id}', [PermissionController::class, 'destroy'])->name('permissions.destroy');
 
   Route::get('call', [CallController::class, 'index'])->name('call-list');
+
+  Route::get('customer', [CustomerController::class, 'index'])->name('customer.index');
+
+  // TICKETS
+  Route::get('tickets', [TicketController::class, 'index'])->name('tickets.index');
 });
 
 //AUTH ROUTES

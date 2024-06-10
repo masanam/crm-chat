@@ -27,6 +27,8 @@ mix.webpackConfig({
     libraryTarget: 'umd'
   },
 
+  devtool: 'source-map',
+
   plugins: [
     new IgnorePlugin({
       checkResource(resource, context) {

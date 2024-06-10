@@ -26,7 +26,7 @@
     },
     {
       "name": "Tickets",
-      "slug": "tickets",
+      "slug": "tickets.index",
       "iconUrl": "assets/svg/icons/tickets-icon.svg",
       "url": "/tickets"
     },

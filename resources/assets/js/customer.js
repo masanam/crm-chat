@@ -80,6 +80,72 @@
          monthSelectorType: 'static'
        });
      }
+
+     /**
+      * @description handle navigation customer detail
+      */
+     const btnInfo = document.querySelector('.btn-route-customer');
+     if (btnInfo) {
+      btnInfo.addEventListener('click', (e) => {
+        e.stopPropagation()
+        window.location.href = '/customers/test'
+      })
+     }
+
+     /**
+      * @description set scrollable sidebar client
+      */
+     const sidebarClient = document.querySelector('.sidebar-client-info');
+     if (sidebarClient) {
+      new PerfectScrollbar(sidebarClient, {
+        wheelPropagation: false,
+        suppressScrollX: true
+      });
+     }
+
+     /**
+      * @description handle sub tab communication
+      */
+    const navLinkCommunicationTab = document.querySelectorAll('.sub-nav-communication');
+    const waTab = document.querySelector('#wa');
+    const emailTab = document.querySelector('#email');
+    const weChatTab = document.querySelector('#we-chat');
+    const callsTab = document.querySelector('#call');
+
+    if (navLinkCommunicationTab) {
+      navLinkCommunicationTab.forEach(el => {
+        el?.addEventListener('click', () => {
+          switch (el.getAttribute('data-bs-target')) {
+            case '#wa':
+              waTab.classList.remove('hidden')
+              emailTab.classList.add('hidden')
+              weChatTab.classList.add('hidden')
+              callsTab.classList.add('hidden')
+              break;
+            case '#email':
+              emailTab.classList.remove('hidden')
+              waTab.classList.add('hidden')
+              weChatTab.classList.add('hidden')
+              callsTab.classList.add('hidden')
+              break;
+            case '#we-chat':
+              weChatTab.classList.remove('hidden')
+              waTab.classList.add('hidden')
+              emailTab.classList.add('hidden')
+              callsTab.classList.add('hidden')
+              break;
+            case '#call':
+              callsTab.classList.remove('hidden')
+              waTab.classList.add('hidden')
+              weChatTab.classList.add('hidden')
+              emailTab.classList.add('hidden')
+              break;
+            default:
+              break;
+          }
+        })
+      })
+    }
    })();
  });
  

@@ -104,7 +104,7 @@ class CustomerController extends Controller
    */
   public function show(Task $task)
   {
-    //
+    return view('content.customer.show');
   }
 
   /**

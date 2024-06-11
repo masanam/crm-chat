@@ -30,7 +30,7 @@ $getInitial = Helper::getInitial($name);
         <button class="btn btn-create-task d-flex align-items-center justify-content-center w-100" data-bs-toggle="modal" data-bs-target="#create-task">{{ $btnHeaderName }}</button>
         @endif
     </div> --}}
-    <div class="sidebar-body px-2 mt-4" style="padding-bottom: 4.5rem;">
+    <div class="sidebar-body px-2 {{$sidebarBodyClass}}" style="padding-bottom: 4.5rem;">
        {{ $slot }}
     </div>
 </div>

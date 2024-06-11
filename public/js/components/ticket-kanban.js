@@ -75,43 +75,43 @@
   // Render board dropdown
   function renderBoardDropdown(id) {
     return (
-      "<div class='dropdown'>" +
-      "<i class='dropdown-toggle ti ti-dots-vertical cursor-pointer' id='board-dropdown-" + id + "' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false'></i>" +
-      "<div class='dropdown-menu dropdown-menu-end' aria-labelledby='board-dropdown-" + id + "'>" +
-      "<a class='dropdown-item delete-board' href='javascript:void(0)'> <i class='ti ti-trash ti-xs' me-1></i> <span class='align-middle'>Delete</span></a>" +
-      "<a class='dropdown-item' href='javascript:void(0)'><i class='ti ti-edit ti-xs' me-1></i> <span class='align-middle'>Rename</span></a>" +
-      "<a class='dropdown-item' href='javascript:void(0)'><i class='ti ti-archive ti-xs' me-1></i> <span class='align-middle'>Archive</span></a>" +
-      '</div>' +
-      '</div>'
+      `<div class='dropdown'>
+        <i class='dropdown-toggle ti ti-dots-vertical cursor-pointer' id='board-dropdown-${id}' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false'></i>
+        <div class='dropdown-menu dropdown-menu-end' aria-labelledby='board-dropdown-${id}'>
+          <a class='dropdown-item delete-board' href='javascript:void(0)'> <i class='ti ti-trash ti-xs' me-1></i> <span class='align-middle'>Delete</span></a>
+          <a class='dropdown-item' href='javascript:void(0)'><i class='ti ti-edit ti-xs' me-1></i> <span class='align-middle'>Rename</span></a>
+          <a class='dropdown-item' href='javascript:void(0)'><i class='ti ti-archive ti-xs' me-1></i> <span class='align-middle'>Archive</span></a>
+        </div>
+      </div>`
     );
   }
   // Render item dropdown
-  function renderDropdown() {
+  function renderDropdown(id) {
     return (
-      "<div class='dropdown kanban-tasks-item-dropdown'>" +
-      "<i class='dropdown-toggle ti ti-dots-vertical' id='kanban-tasks-item-dropdown' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false'></i>" +
-      "<div class='dropdown-menu dropdown-menu-end' aria-labelledby='kanban-tasks-item-dropdown'>" +
-      "<a class='dropdown-item' href='javascript:void(0)'>Copy task link</a>" +
-      "<a class='dropdown-item' href='javascript:void(0)'>Duplicate task</a>" +
-      "<a class='dropdown-item delete-task' href='javascript:void(0)'>Delete</a>" +
-      '</div>' +
-      '</div>'
+      `<div class='dropdown kanban-tasks-item-dropdown'>
+        <i class='dropdown-toggle ti ti-dots-vertical' id='kanban-tasks-item-dropdown-${id}' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false'></i>
+        <div class='dropdown-menu dropdown-menu-end' aria-labelledby='kanban-tasks-item-dropdown-${id}'>
+          <a class='dropdown-item' href='javascript:void(0)'>Copy task link</a>
+          <a class='dropdown-item' href='javascript:void(0)'>Duplicate task</a>
+          <a class='dropdown-item delete-task' href='javascript:void(0)'>Delete</a>
+        </div>
+      </div>`
     );
   }
 
   // Render header
-  function renderHeader(color, text) {
+  function renderHeader(id, priority, company, title, dueDate) {
     return (
-      "<div class='d-flex justify-content-between flex-wrap align-items-center mb-2 pb-1'>" +
-      "<div class='item-badges'> " +
-      "<div class='badge rounded-pill bg-label-" +
-      color +
-      "'> " +
-      text +
-      '</div>' +
-      '</div>' +
-      renderDropdown() +
-      '</div>'
+      `<div class='d-flex justify-content-between flex-wrap align-items-center mb-2 pb-1'>
+        <h4>${title}</h4>
+        <p>
+          <span>${company}</span> &#x25CF; 
+          <span>${priority}</span>
+        </p>
+        <p>
+          <i class="fa-regular fa-clock"></i> ${dueDate}</p>
+        ` + renderDropdown(id) + `
+      </div>`
     );
   }
 
@@ -154,24 +154,23 @@
   // Render footer
   function renderFooter(attachments, comments, assigned, members) {
     return (
-      "<div class='d-flex justify-content-between align-items-center flex-wrap mt-2 pt-1'>" +
-      "<div class='d-flex'> " +
-      "<span class='d-flex align-items-center me-2'><i class='ti ti-paperclip ti-xs me-1'></i>" +
-      "<span class='attachments'>" +
-      attachments +
-      '</span>' +
-      "</span> " +
-      "<span class='d-flex align-items-center ms-1'>" +
-      "<i class='ti ti-message-dots ti-xs me-1'></i>" +
-      '<span> ' +
-      comments +
-      '</span>' +
-      '</span>' +
-      '</div>' +
-      "<div class='avatar-group d-flex align-items-center assigned-avatar'>" +
-      renderAvatar(assigned, true, 'xs', null, members) +
-      '</div>' +
-      '</div>'
+      `<span class="border-top"></span>
+      <div class='d-flex justify-content-between align-items-center flex-wrap mt-2 pt-1'>
+        <div class='d-flex'> 
+          <a class='d-flex align-items-center btn-lg'>
+            <img src="${assetsPath}svg/icons/r.svg" style="width: 24px">
+          </a> 
+          <a class='d-flex align-items-center btn-lg'>
+            <img src="${assetsPath}svg/icons/wa-logo.svg" style="width: 24px">
+          </a>
+          <a class='d-flex align-items-center btn-lg'>
+            <img src="${assetsPath}svg/icons/icon-envelope.svg" style="width: 24px">
+          </a>
+          <a class='d-flex align-items-center btn-lg'>
+            <img src="${assetsPath}svg/icons/info-gray.svg" style="width: 24px">
+          </a>
+        </div>
+      </div>`
     );
   }
   // Init kanban
@@ -255,7 +254,7 @@
           document.querySelectorAll('.kanban-board[data-id=' + boardId + '] .kanban-text')
         );
         kanbanText.forEach(function (e) {
-          e.insertAdjacentHTML('beforebegin', renderDropdown());
+          e.insertAdjacentHTML('beforebegin', renderDropdown(boardId));
         });
 
         // prevent sidebar to open onclick dropdown buttons of new tasks
@@ -300,7 +299,8 @@
   // Render custom items
   if (kanbanItem) {
     kanbanItem.forEach(function (el) {
-      const element = "<span class='kanban-text'>" + el.textContent + '</span>';
+      console.log('el', el)
+      // const element = "<span class='kanban-text'></span>";
       let img = '';
       if (el.getAttribute('data-image') !== null) {
         img =
@@ -314,7 +314,8 @@
       if (el.getAttribute('data-badge') !== undefined && el.getAttribute('data-badge-text') !== undefined) {
         el.insertAdjacentHTML(
           'afterbegin',
-          renderHeader(el.getAttribute('data-badge'), el.getAttribute('data-badge-text')) + img + element
+          renderHeader(el.getAttribute('data-eid'), el.getAttribute('data-priority'), el.getAttribute('data-company'), el.getAttribute('data-text'), el.getAttribute('data-due-date')) + img
+          // renderHeader(el.getAttribute('data-eid'), el.getAttribute('data-badge'), el.getAttribute('data-badge-text')) + img + element
         );
       }
       if (

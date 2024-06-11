@@ -85,6 +85,22 @@
               <input type="text" id="due-date" class="form-control" placeholder="Enter Due Date" />
             </div>
             <div class="mb-3">
+                <label class="form-label" for="company">Company</label>
+                <select id="company" class="select2 form-select">
+                    <option value="PT. Maju Bersama">PT. Maju Bersama</option>
+                    <option value="ABC">ABC</option>
+                    <option value="XYZ">XYZ</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="priority">Priority</label>
+                <select id="priority" class="form-select">
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Slow">Slow</option>
+                </select>
+            </div>
+            <!-- <div class="mb-3">
               <label class="form-label" for="label"> Label</label>
               <select class="select2 select2-label form-select" id="label">
                 <option data-color="bg-label-success" value="UX">UX</option>
@@ -125,7 +141,7 @@
                   </span>
                 </div>
               </div>
-            </div>
+            </div> -->
             <div class="d-flex flex-wrap">
               <button type="button" class="btn btn-primary me-3" data-bs-dismiss="offcanvas">
                 Update

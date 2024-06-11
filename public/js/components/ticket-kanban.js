@@ -100,17 +100,14 @@
   }
 
   // Render header
-  function renderHeader(id, priority, company, title, dueDate) {
+  function renderHeader(id, priority, company, dueDate) {
     return (
       `<div class='d-flex justify-content-between flex-wrap align-items-center mb-2 pb-1'>
-        <h4>${title}</h4>
-        <p>
-          <span>${company}</span> &#x25CF; 
-          <span>${priority}</span>
-        </p>
-        <p>
-          <i class="fa-regular fa-clock"></i> ${dueDate}</p>
-        ` + renderDropdown(id) + `
+        <span>${company}</span> 
+        <span>&#x25CF; ${priority}</span>
+      </div>
+      <div class="mb-3">
+        <i class="fa-regular fa-clock"></i> ${dueDate}
       </div>`
     );
   }
@@ -152,7 +149,7 @@
   }
 
   // Render footer
-  function renderFooter(attachments, comments, assigned, members) {
+  function renderFooter(id) {
     return (
       `<span class="border-top"></span>
       <div class='d-flex justify-content-between align-items-center flex-wrap mt-2 pt-1'>
@@ -299,8 +296,9 @@
   // Render custom items
   if (kanbanItem) {
     kanbanItem.forEach(function (el) {
-      console.log('el', el)
-      // const element = "<span class='kanban-text'></span>";
+      const element = `
+      <span class='kanban-text'><h4>${el.getAttribute('data-text')}</h4></span>
+      `;
       let img = '';
       if (el.getAttribute('data-image') !== null) {
         img =
@@ -314,22 +312,16 @@
       if (el.getAttribute('data-badge') !== undefined && el.getAttribute('data-badge-text') !== undefined) {
         el.insertAdjacentHTML(
           'afterbegin',
-          renderHeader(el.getAttribute('data-eid'), el.getAttribute('data-priority'), el.getAttribute('data-company'), el.getAttribute('data-text'), el.getAttribute('data-due-date')) + img
-          // renderHeader(el.getAttribute('data-eid'), el.getAttribute('data-badge'), el.getAttribute('data-badge-text')) + img + element
+          element + renderHeader(el.getAttribute('data-eid'), el.getAttribute('data-priority'), el.getAttribute('data-company'), el.getAttribute('data-due-date')) + img
         );
       }
       if (
-        el.getAttribute('data-comments') !== undefined ||
-        el.getAttribute('data-due-date') !== undefined ||
-        el.getAttribute('data-assigned') !== undefined
+        el.getAttribute('data-due-date') !== undefined
       ) {
         el.insertAdjacentHTML(
           'beforeend',
           renderFooter(
-            el.getAttribute('data-attachments'),
-            el.getAttribute('data-comments'),
-            el.getAttribute('data-assigned'),
-            el.getAttribute('data-members')
+            el.getAttribute('data-eid')
           )
         );
       }
@@ -363,18 +355,18 @@
   }
 
   // Render add new inline with boards
-  if (kanbanContainer) {
-    // kanbanContainer.appendChild(kanbanAddNewBoard);
-  }
+  // if (kanbanContainer) {
+  // kanbanContainer.appendChild(kanbanAddNewBoard);
+  // }
 
   // Makes kanban title editable for rendered boards
   if (kanbanTitleBoard) {
+    const arColor = ['secondary', 'success', 'info', 'danger', 'warning'];
+
+    let col = 0;
     kanbanTitleBoard.forEach(function (elem) {
-      console.log('elem', elem);
-      elem.classList.add('badge', 'bg-label-primary', 'rounded-pill');
-      console.log('elem', elem);
+      elem.classList.add('badge', 'bg-label-' + arColor[col], 'rounded-pill');
       const boardId = elem.parentNode.parentNode.getAttribute('data-id');
-      console.log('elem.parentNode', elem.parentNode);
 
       elem.addEventListener('mouseenter', function () {
         this.contentEditable = 'true';
@@ -382,6 +374,7 @@
 
       // Appends delete icon with title
       elem.insertAdjacentHTML('afterend', renderBoardDropdown(boardId));
+      col++;
     });
   }
 

@@ -7,40 +7,16 @@
       {
         "id": "open-1",
         "text": "Ticket Name",
-        "comments": "12",
-        "badge-text": "UX",
         "company": "PT Maju Bersama",
         "priority": "High",
-        "badge": "success",
-        "due-date": "5 April 2025",
-        "attachments": "4",
-        "assigned": [
-          "12.png",
-          "5.png"
-        ],
-        "members": [
-          "Bruce",
-          "Clark"
-        ]
+        "due-date": "5 April 2025"
       },
       {
-        "id": "open-1",
-        "text": "Ticket Name",
-        "comments": "12",
-        "badge-text": "UX",
-        "company": "PT Maju Bersama",
-        "priority": "High",
-        "badge": "success",
-        "due-date": "5 April 2025",
-        "attachments": "4",
-        "assigned": [
-          "12.png",
-          "5.png"
-        ],
-        "members": [
-          "Bruce",
-          "Clark"
-        ]
+        "id": "open-2",
+        "text": "Ticket Name 2",
+        "company": "PT Maju Mundur Kena",
+        "priority": "Slow",
+        "due-date": "25 Mei 2025"
       }
     ]
   },
@@ -48,7 +24,22 @@
     "id": "board-in-progress",
     "title": "In Progress",
     "badge-title": "info",
-    "item": []
+    "item": [
+      {
+        "id": "in-progress-1",
+        "text": "Ticket Name 3",
+        "company": "PT Ga bisa",
+        "priority": "Medium",
+        "due-date": "15 Januari 2025"
+      },
+      {
+        "id": "in-progress-2",
+        "text": "Ticket Name 4",
+        "company": "PT Bisa OK",
+        "priority": "Slow",
+        "due-date": "12 Desember 2025"
+      }
+    ]
   },
   {
     "id": "board-closed",

@@ -5,7 +5,7 @@
 <div class="row">
   <!-- Vehicles overview -->
   <div class="col-xxl-12 mb-4 order-5 order-xxl-0">
-    <div class="card">
+    <div class="sidebar-card">
       <div class="card-header">
         <div class="card-title mb-0">
           <h5 class="m-0">Pipeline</h5>
@@ -89,7 +89,7 @@
 <div class="row">
   <!-- Delivery Performance -->
   <div class="col-lg-6 col-xxl-4 mb-4 order-2 order-xxl-2">
-    <div class="card h-100">
+    <div class="sidebar-card h-100">
       <div class="card-header d-flex align-items-center justify-content-between mb-2">
         <div class="card-title mb-0">
           <h5 class="m-0 me-2">Activities</h5>
@@ -217,7 +217,7 @@
   <!--/ Delivery Performance -->
   <!-- Reasons for delivery exceptions -->
   <div class="col-md-6 col-xxl-4 mb-4 order-1 order-xxl-3">
-    <div class="card h-100">
+    <div class="sidebar-card h-100">
       <div class="card-header d-flex align-items-center justify-content-between">
         <div class="card-title mb-0">
           <h5 class="m-0 me-2">Reasons exceptions</h5>
@@ -400,7 +400,7 @@
   <!--/ Reasons for delivery exceptions -->
   <!-- Orders by Countries -->
   <div class="col-md-6 col-xxl-4 mb-4 order-0 order-xxl-4">
-    <div class="card h-100">
+    <div class="sidebar-card h-100">
       <div class="card-header d-flex justify-content-between pb-2">
         <div class="card-title mb-1">
           <h5 class="m-0 me-2">Leads Status</h5>
@@ -607,7 +607,7 @@
 
 <!-- Shipment statistics-->
 <div class="col-lg-6 col-xxl-6 mb-4 order-3 order-xxl-1">
-  <div class="card">
+  <div class="sidebar-card">
     <div class="card-header d-flex align-items-center justify-content-between">
       <div class="card-title mb-0">
         <h5 class="m-0 me-2">Statistics</h5>

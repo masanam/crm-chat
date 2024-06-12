@@ -532,6 +532,10 @@ Route::middleware(['auth'])->group(function () {
 
   // TICKETS
   Route::get('tickets', [TicketController::class, 'index'])->name('tickets.index');
+
+  // Route::get('/kanban', function () {
+  //   return view('content.apps.app-kanban'); // Your Blade template name
+  // });
 });
 
 //AUTH ROUTES

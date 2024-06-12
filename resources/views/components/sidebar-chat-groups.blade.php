@@ -1,10 +1,13 @@
-<div class="app-chat-contacts app-sidebar overflow-hidden {{ $wrapperClassname }}" id="app-chat-contacts">
+<div class="app-chat-contacts app-sidebar overflow-hidden" id="app-chat-contacts">
     <div class="sidebar-body">
         <!-- Nav tabs -->
-        <div class="container pt-2 d-flex justify-content-center">
+        <div class="container pt-2 pb-2 justify-content-end">
             @if ($title)
             <div class="d-flex align-items-center justify-content-between">
-                <h4 class="pt-3 fw-bolder text-dark">{{ $title }}</h4>
+                <h4 class="pt-3 fw-bolder text-dark">
+                    <img src="{{asset('assets/svg/icons/corporate_fare.svg')}}" />
+                    {{ $title }}
+                </h4>
                 @if($targetOpenModal)
                 <button class="button-none" data-bs-toggle="modal" data-bs-target="{{ $targetOpenModal }}">
                     <i class="ti ti-plus"></i>
@@ -25,7 +28,6 @@
             </ul>
             @endif
 
-            @if($isUsingSearch)
             <div class="d-flex align-items-center flex-row sidebar-header mt-3">
                 <div class="d-flex align-items-center flex-grow-1 me-3 me-lg-0">
 
@@ -40,8 +42,17 @@
                 </button>
                 @endif
             </div>
-            @endif
         </div>
+
+        <ul class="nav nav-tabs" id="chats-tabs" role="tablist">
+            <li class="nav-item bg-white" role="presentation" style="width: 113px; border:1px solid #dbdade;">
+                <button class="nav-link nav-item-custom" id="new-tab" data-bs-toggle="tab" data-bs-target="#new" type="button" role="tab" aria-controls="new" aria-selected="true">All</button>
+            </li>
+            <li class="nav-item bg-dark" role="presentation" style="width: 113px;">
+                <button class="nav-link nav-item-custom text-white" id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button" role="tab" aria-controls="active" aria-selected="false" tabindex="-1">Unread</button>
+            </li>
+        </ul>
+
 
         <!-- body -->
         {{ $body }}

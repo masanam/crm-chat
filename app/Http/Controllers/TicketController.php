@@ -9,6 +9,7 @@ class TicketController extends Controller
 {
   public function index(TicketKanban $kanban)
   {
-    return $kanban->render('content.ticket.index');
+    // return $kanban->render('content.ticket.index');
+    return view('content.ticket.index');
   }
 }

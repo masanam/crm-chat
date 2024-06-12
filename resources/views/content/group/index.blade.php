@@ -121,8 +121,8 @@
                     <div class="d-flex flex-column mt-3">
                         <h6 class="text-dark fw-bold">Group in common</h6>
                         <div class="d-flex flex-column gap-4">
-                            @foreach($groupChat as $key => $value)
-                            <x-card-chat title="{{ $value->groupName }}" subtitle="{{ $value->countMembers }} Members">
+                            @foreach($groupList as $key => $value)
+                            <x-card-chat title="{{ $value->name }}" subtitle="{{ $value->total }} Members">
                             </x-card-chat>
                             @endforeach
                         </div>
@@ -149,8 +149,8 @@
             </div>
         </div>
         <div class="d-flex flex-column gap-3">
-            @foreach($groupMember as $key => $value)
-            <x-card-chat title="{{ $value->name }}" subtitle="{{ $value->position }}">
+            @foreach($chatList as $key => $value)
+            <x-card-chat title="{{ $value->client_name }}" subtitle="">
             </x-card-chat>
             @endforeach
         </div>
@@ -170,13 +170,13 @@
         <div class="d-flex flex-column">
             <h6 class="text-dark">Members</h6>
             <div class="d-flex px-3 flex-column gap-4">
-                @foreach($groupMember as $key => $value)
+                @foreach($chatList as $key => $value)
                 <div class="d-flex justify-content-between align-items-center">
-                    <label class="form-check-label" for="{{ $value->name }}">
-                        <x-card-chat title="{{ $value->name }}" subtitle="{{ $value->position }}">
+                    <label class="form-check-label" for="{{ $value->client_name }}">
+                        <x-card-chat title="{{ $value->client_name }}" subtitle="">
                         </x-card-chat>
                     </label>
-                    <input class="form-check-input" type="checkbox" id="{{ $value->name }}" value="{{ $value->name }}" />
+                    <input class="form-check-input" type="checkbox" id="{{ $value->client_name }}" value="{{ $value->client_name }}" />
                 </div>
                 @endforeach
             </div>

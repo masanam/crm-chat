@@ -1,0 +1,62 @@
+[
+  {
+    "id": "board-open",
+    "title": "Open",
+    "badge-title": "success",
+    "item": [
+      {
+        "id": "open-1",
+        "text": "Ticket Name",
+        "company": "PT Maju Bersama",
+        "priority": "High",
+        "due-date": "5 April 2025"
+      },
+      {
+        "id": "open-2",
+        "text": "Ticket Name 2",
+        "company": "PT Maju Mundur Kena",
+        "priority": "Slow",
+        "due-date": "25 Mei 2025"
+      }
+    ]
+  },
+  {
+    "id": "board-in-progress",
+    "title": "In Progress",
+    "badge-title": "info",
+    "item": [
+      {
+        "id": "in-progress-1",
+        "text": "Ticket Name 3",
+        "company": "PT Ga bisa",
+        "priority": "Medium",
+        "due-date": "15 Januari 2025"
+      },
+      {
+        "id": "in-progress-2",
+        "text": "Ticket Name 4",
+        "company": "PT Bisa OK",
+        "priority": "Slow",
+        "due-date": "12 Desember 2025"
+      }
+    ]
+  },
+  {
+    "id": "board-closed",
+    "title": "Closed",
+    "badge-title": "primary",
+    "item": []
+  },
+  {
+    "id": "board-pending",
+    "title": "Pending",
+    "badge-title": "success",
+    "item": []
+  },
+  {
+    "id": "board-kiv",
+    "title": "KIV",
+    "badge-title": "success",
+    "item": []
+  }
+]

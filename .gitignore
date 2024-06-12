@@ -27,8 +27,9 @@ package-lock.log
 /.idea
 /.vscode
 
-/public/css
-/public/js
+/public/css/app.css
+/public/js/app*
+/public/js/laravel*
 /public/mix-manifest.json
 # But not these files...
 !/public/assets/*

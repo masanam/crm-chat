@@ -27,7 +27,7 @@
 @endsection
 
 @php
-   [$stages, $alphabet, $quality, $status] = Helper::getConstants();
+   [$stages, $alphabet, $quality, $status, $listChannels] = Helper::getConstants();
 @endphp
 
 @section('content')
@@ -106,12 +106,22 @@
                         >
                         </x-input-floating>
                     </div>
-                    <button class="btn-link">
+
+                    {{-- !! Dont remove this tag --}}
+                    <div class="hidden" id="wrapper-channel-customer"></div>
+                    {{-- !! Dont remove this tag --}}
+                    
+                    <button class="btn-link"  id="btn-more-channel-customer">
                         + Add more channels
                     </button>
                 </div>
             </div>
-            <button class="btn-link pb-3">
+            
+            {{-- !! Dont remove this tag --}}
+            <div class="hidden" id="wrapper-dynamic-form-customer"></div>
+            {{-- !! Dont remove this tag --}}
+
+            <button class="btn-link pb-3" id="btn-more-contact-customer">
                 + Add more contacts
             </button>
             <div class="d-flex flex-column gap-2">
@@ -216,6 +226,28 @@
                     >
                     </x-input-floating>
                 </div>
+                <div class="d-flex justify-content-between gap-5 w-100">
+                    <x-input-floating
+                        label="Channel"
+                        placeholder="Please select channel"
+                        id="channel"
+                        name="channel"
+                        type="select"
+                        :options="$listChannels"
+                    >
+                    </x-input-floating>
+                    <x-input-floating
+                        label="Contact"
+                        id="contact"
+                        name="contact"
+                    >
+                    </x-input-floating>
+                </div>
+                
+                {{-- !! Dont remove this tag --}}
+                <div class="hidden" id="wrapper-channel"></div>
+                {{-- !! Dont remove this tag --}}
+
                 <x-input-floating
                     label="Job Title"
                     id="job title"
@@ -223,12 +255,17 @@
                 >
                 </x-input-floating>
             </div>
-            <button class="btn-link">
+            <button class="btn-link" id="btn-more-channel">
                 + Add more channels
             </button>
         </div>
+        
+        {{-- !! Dont remove this tag --}}
+        <div class="hidden" id="wrapper-dynamic-form"></div>
+        {{-- !! Dont remove this tag --}}
+        
         <div class="d-flex justify-content-center py-3">
-            <button class="btn-link pb-3 add-contact">
+            <button class="btn-link pb-3 add-contact" id="btn-more-contact">
                 + Add more contacts
             </button>
         </div>

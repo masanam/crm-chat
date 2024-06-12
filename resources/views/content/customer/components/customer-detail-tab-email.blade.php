@@ -1,7 +1,15 @@
 <section class="tab-email d-flex flex-column gap-2">
     <div class="d-flex justify-content-between card-filter">
-        <span>filter by</span>
-        <button>filter</button>
+        <div class="d-flex header-filter">
+            <button class="active">Open</button>
+            <button>Archived</button>
+            <button>Snoozed</button>
+            <button>Trash</button>
+        </div>
+        <button class="btn btn-sm button-filter">
+            <img src="{{asset('assets/svg/icons/filter_list.svg')}}" alt="info" width="20">
+            Filters
+        </button>
     </div>
     <div class="d-flex flex-column">
         <div class="card-email">
@@ -30,5 +38,8 @@
                 </div>
             </div>
         </div>
+        <button class="button-float">
+            <img src="{{asset('assets/svg/icons/icon-send-email.svg')}}" alt="icon-send-email" width="55">
+        </button>
     </div>
 </section>

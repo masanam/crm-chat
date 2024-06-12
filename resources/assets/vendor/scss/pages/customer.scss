@@ -57,6 +57,22 @@
 
         .card-filter {
             padding: 12px 16px;
+            .header-filter {
+                button {
+                    outline: none;
+                    padding: 4px 12px;
+                    border: 1px solid #B2BCCA;
+                    background: #FFFFFF;
+
+                    &.active {
+                        background-color: #667085;
+                        color: #FFFFFF;
+                    }
+                }
+            }
+            .button-filter {
+                border: 1px solid #B2BCCA;
+            }
         }
 
         .card-email {
@@ -67,6 +83,24 @@
                 padding: 8px 20px;
                 font-size: 14px;
                 width: 100%;
+            }
+        }
+
+        .button-float {
+            outline: none;
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            margin-left: 28rem;
+            background-color: #33B6B9;
+            border: none;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+
+            img {
+                margin-bottom: 15px;
             }
         }
     }

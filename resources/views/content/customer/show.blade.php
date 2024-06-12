@@ -46,7 +46,9 @@
         'value' => 'Randy Haris'
     ];
 
-    $listInsight = [$insight1, $insight2, $insight3, $insight4, $insight5]
+    $listInsight = [$insight1, $insight2, $insight3, $insight4, $insight5];
+
+    [$stages, $alphabet, $quality, $status, $listChannels] = Helper::getConstants();
 @endphp
 
 @section('content')
@@ -293,4 +295,71 @@
             </div>
         </div>
     </div>
+
+    {{-- modal add/edit contact --}}
+    <x-modal
+        title="Add Contact"
+        name="add-edit-contact"
+        submitText="Save contact"
+        buttonSubmitClass=""
+        buttonWrapperSubmitClass="d-flex justify-content-center align-items-center w-100"
+    >
+        <div class="d-flex flex-column gap-2 border-bottom border-1 pb-3 align-items-start">
+            <div class="d-flex flex-column gap-3">
+                <div class="d-flex justify-content-between gap-5 w-100">
+                    <x-input-floating
+                        label="First Name"
+                        id="first name"
+                        name="first name"
+                    >
+                    </x-input-floating>
+                    <x-input-floating
+                        label="Last Name"
+                        id="last name"
+                        name="last name"
+                    >
+                    </x-input-floating>
+                </div>
+                <div class="d-flex justify-content-between gap-5 w-100">
+                    <x-input-floating
+                        label="Channel"
+                        placeholder="Please select channel"
+                        id="channel"
+                        name="channel"
+                        type="select"
+                        :options="$listChannels"
+                    >
+                    </x-input-floating>
+                    <x-input-floating
+                        label="Contact"
+                        id="contact"
+                        name="contact"
+                    >
+                    </x-input-floating>
+                </div>
+                
+                {{-- !! Dont remove this tag --}}
+                <div class="hidden" id="wrapper-channel"></div>
+                {{-- !! Dont remove this tag --}}
+
+                <x-input-floating
+                    label="Job Title"
+                    id="job title"
+                    name="job title"
+                >
+                </x-input-floating>
+            </div>
+            <button class="btn-link" id="btn-more-channel">
+                + Add more channels
+            </button>
+        </div>
+        {{-- !! Dont remove this tag --}}
+        <div class="hidden" id="wrapper-dynamic-form"></div>
+        {{-- !! Dont remove this tag --}}
+        <div class="d-flex justify-content-center py-3">
+            <button class="btn-link pb-3 add-contact" id="btn-more-contact">
+                + Add more contacts
+            </button>
+        </div>
+    </x-modal>
 @endsection

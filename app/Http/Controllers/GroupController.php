@@ -26,6 +26,7 @@ class GroupController extends Controller
 
     $chatList = DB::table('get_list_chat as ic')
       ->select('*')
+      ->limit(10)
       ->get();
 
 
@@ -39,8 +40,10 @@ class GroupController extends Controller
       ->select('g.name', 'gm.group_id', DB::raw('count(gm.id) as total'), 'gc.message', 'gc.created_at')
       ->leftJoin('groups as g', 'g.id', '=', 'gm.group_id')
       ->leftJoin('group_chats as gc', 'gc.group_id', '=', 'g.id')
+      ->distinct('g.name')
       ->groupBy('g.name', 'gm.group_id', 'gc.message', 'gc.created_at')
-      ->orderby('gc.created_at', 'asc')
+      ->orderby('g.name', 'asc')
+      ->limit(10)
       ->get();
 
     // dd($chatList);

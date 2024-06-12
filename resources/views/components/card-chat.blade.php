@@ -17,22 +17,31 @@ $getInitial = Helper::getInitial($title);
         </div>
     </div>
     @else
-    <div class="d-flex flex-column w-100">
-        <div class="d-flex align-items-center justify-content-between">
-            @if($customTitle)
-            {{ $customTitle }}
-            @else
-            <span class="text-dark fw-bold" id="chat-title">{{ $title }}</span>
-            @endif
-            
+    <div class="d-flex flex-column w-100 list-group-item" style="border-bottom:1px solid #dbdade !important;">
+        <a href="#">
+            <div class="d-flex align-items-center justify-content-between">
+                @if($customTitle)
+                {{ $customTitle }}
+                @else
+                <div class="text-start text-dark fw-bold" id="chat-title">{{ $title }}</div>
+                @endif
+            </div>
+            <div class="d-flex align-items-center justify-content-between">
+                <span class="text-muted">{{ $subtitle }}</span>
+                <span class="time">{{ $time }}</span>
+            </div>
+            <div class="d-flex justify-content-between">
+                <div class="d-flex gap-0">
+                    @if($totalMember)
+                    <span class="badge bg-primary rounded-pill ms-auto">{{ $totalMember }} Member</span>
+                    @endif
+                </div>
+            </div>
+
             @if($countUnread)
-            <div class="unread-chat text-center">{{ $countUnread }}</div>
+            <div class="badge bg-danger rounded-pill ms-auto">{{ $countUnread }}</div>
             @endif
-        </div>
-        <div class="d-flex align-items-center justify-content-between">
-            <small class="text-muted">{{ $subtitle }}</small>
-            <small class="time">{{ $time }}</small>
-        </div>
+        </a>
     </div>
     @endif
 </div>

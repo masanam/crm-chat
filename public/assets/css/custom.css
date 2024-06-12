@@ -10,3 +10,55 @@
   box-shadow: none;
   padding: 25px 14px 25px 23px;
 }
+
+.content-wrapper {
+  -ms-flex-align: stretch;
+  -ms-flex-pack: justify;
+  align-items: stretch;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  justify-content: space-between;
+  padding:0 30px;
+}
+
+.card {
+  background-clip: padding-box;
+  border: 1px solid #666;
+  box-shadow:none;
+}
+
+.card {
+  --bs-card-spacer-y: 1.5rem;
+  --bs-card-spacer-x: 1.5rem;
+  --bs-card-title-spacer-y: 0.875rem;
+  --bs-card-border-width: 0;
+  --bs-card-border-color: #dbdade;
+  --bs-card-border-radius: 0.375rem;
+  --bs-card-box-shadow: none;
+  --bs-card-inner-border-radius: 0.375rem;
+  --bs-card-cap-padding-y: 1.5rem;
+  --bs-card-cap-padding-x: 1.5rem;
+  --bs-card-cap-bg: transparent;
+  --bs-card-cap-color: ;
+  --bs-card-height: ;
+  --bs-card-color: ;
+  --bs-card-bg: #fff;
+  --bs-card-img-overlay-padding: 1.5rem;
+  --bs-card-group-margin: 0.75rem;
+  word-wrap: break-word;
+  background-clip: border-box;
+  background-color: var(--bs-card-bg);
+  border: var(--bs-card-border-width) solid var(--bs-card-border-color);
+  border-radius: var(--bs-card-border-radius);
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: var(--bs-card-height);
+  min-width: 0;
+  position: relative;
+}

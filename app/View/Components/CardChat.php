@@ -15,6 +15,7 @@ class CardChat extends Component
     public $subtitle;
     public $rightBody;
     public $countUnread;
+    public $totalMember;
     public $time;
     public $customTitle;
 
@@ -23,14 +24,15 @@ class CardChat extends Component
         $subtitle = '',
         $rightBody = '',
         $countUnread = 0,
+        $totalMember = 0,
         $time = '',
         $customTitle = ''
-    )
-    {
+    ) {
         $this->title = $title;
         $this->subtitle = $subtitle;
         $this->rightBody = $rightBody;
         $this->countUnread = $countUnread;
+        $this->totalMember = $totalMember;
         $this->time = $time;
         $this->customTitle = $customTitle;
     }

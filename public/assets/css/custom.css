@@ -31,6 +31,13 @@
   box-shadow:none;
 }
 
+.sidebar-card {
+  background: #fff;
+  border: 1px solid #dde0e4;
+  border-radius: 12px;
+  padding: 16px;
+}
+
 .card {
   --bs-card-spacer-y: 1.5rem;
   --bs-card-spacer-x: 1.5rem;

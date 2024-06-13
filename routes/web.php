@@ -530,8 +530,6 @@ Route::middleware(['auth'])->group(function () {
 
   Route::get('call', [CallController::class, 'index'])->name('call-list');
 
-  Route::get('customer', [CustomerController::class, 'index'])->name('customer.index');
-
   // TICKETS
   Route::get('tickets', [TicketController::class, 'index'])->name('tickets.index');
 

@@ -66,8 +66,10 @@
                                                         {{ $value->tag }}
                                                     </span>
                                                 </div>
-                                                <img src="{{ asset('assets/svg/icons/info.svg') }}" alt="info"
+                                                <button class="btn-route-customer">
+                                                    <img src="{{ asset('assets/svg/icons/info.svg') }}" alt="info"
                                                     width="20">
+                                                </button>
                                             </div>
                                         </div>
 

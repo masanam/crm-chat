@@ -246,6 +246,24 @@ class Helpers
     ];
     $status = [$statusActive, $statusInactive];
 
-    return [$stages, $alphabet, $quality, $status];
+    $channel = (object) [
+      'label' => 'WhatsApp',
+      'value' => 'wa',
+    ];
+    $channel2 = (object) [
+      'label' => 'Email',
+      'value' => 'email',
+    ];
+    $channel3 = (object) [
+      'label' => 'WeChat',
+      'value' => 'wechat',
+    ];
+    $channel4 = (object) [
+      'label' => 'Instagram',
+      'value' => 'instagram',
+    ];
+    $listChannels = [$channel, $channel2, $channel3, $channel4];
+
+    return [$stages, $alphabet, $quality, $status, $listChannels];
   }
 }

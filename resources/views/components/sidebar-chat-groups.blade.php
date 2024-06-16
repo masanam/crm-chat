@@ -44,15 +44,16 @@
             </div>
         </div>
 
-        <ul class="nav nav-tabs" id="chats-tabs" role="tablist">
-            <li class="nav-item bg-white" role="presentation" style="width: 113px; border:1px solid #dbdade;">
-                <button class="nav-link nav-item-custom" id="new-tab" data-bs-toggle="tab" data-bs-target="#new" type="button" role="tab" aria-controls="new" aria-selected="true">All</button>
-            </li>
-            <li class="nav-item bg-dark" role="presentation" style="width: 113px;">
-                <button class="nav-link nav-item-custom text-white" id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button" role="tab" aria-controls="active" aria-selected="false" tabindex="-1">Unread</button>
-            </li>
-        </ul>
-
+        <div class="container pt-2 d-flex justify-content-center">
+            <ul class="nav nav-tabs" id="chats-tabs" role="tablist">
+                <li class="nav-item" role="presentation" style="width: 113px;">
+                    <button class="nav-link nav-item-custom active" id="new-tab" data-bs-toggle="tab" data-bs-target="#new" type="button" role="tab" aria-controls="new" aria-selected="true">All</button>
+                </li>
+                <li class="nav-item" role="presentation" style="width: 113px;">
+                    <button class="nav-link nav-item-custom " id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button" role="tab" aria-controls="active" aria-selected="false" tabindex="-1">Unread</button>
+                </li>
+            </ul>
+        </div>
 
         <!-- body -->
         {{ $body }}

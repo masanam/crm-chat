@@ -93,7 +93,7 @@
                 <!-- /Chat History Group -->
 
                 <!-- Sidebar Right Group -->
-                <x-sidebar-right-info-chat title="About Group" name="Toyota Woodlands" subtitle="Awesome team of Toyota Woodlands" isUsingBtnHeader="{{ false }}" isUsingBtnEdit="{{ false }}">
+                <x-sidebar-right-info-chat title="About Group" name="Toyota Woodlands" subtitle="Awesome team of Toyota Woodlands" isUsingBtnHeader="{{ false }}" isUsingBtnEdit="{{ false }}" sidebarClass="sidebar-one-on-one">
                     <div class="sidebar-card d-flex flex-column">
                         <div class="d-flex justify-content-between">
                             <h6 class="text-dark fw-bold">Group introduction</h6>
@@ -104,11 +104,8 @@
                     <div class="d-flex flex-column gap-2 mt-3">
                         <h6 class="text-dark fw-bold">Members</h6>
                         <div class="d-flex flex-column gap-4">
-                            @foreach($groupMember as $key => $value)
-                            <x-card-chat title="{{ $value->name }}" subtitle="{{ $value->position }}">
-                                <x-slot name="rightBody">
-                                    <small class="text-xs">{{ $value->role }}</small>
-                                </x-slot>
+                            @foreach($groupList as $key => $value)
+                            <x-card-chat title="{{ $value->name }}">
                             </x-card-chat>
                             @endforeach
                         </div>
@@ -117,7 +114,7 @@
                 <!-- /Sidebar Right Group -->
 
                 <!-- Sidebar Right One on One -->
-                <x-sidebar-right-info-chat title="Profile" name="Ricky Jonathan" subtitle="Head of Sales" isUsingBtnHeader="{{ false }}" isUsingBtnEdit="{{ false }}" customAvatarClass="custom-avatar" customSubtitleClass="custom-subtitle" sidebarClass="sidebar-one-on-one">
+                <x-sidebar-right-info-chat title="Profile" name="Ricky Jonathan" subtitle="Head of Sales" isUsingBtnHeader="{{ false }}" isUsingBtnEdit="{{ false }}" customAvatarClass="custom-avatar" customSubtitleClass="custom-subtitle">
                     <div class="d-flex flex-column mt-3">
                         <h6 class="text-dark fw-bold">Group in common</h6>
                         <div class="d-flex flex-column gap-4">

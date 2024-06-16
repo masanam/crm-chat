@@ -14,13 +14,16 @@
     kanbanAddBoardBtn = document.querySelector('.kanban-add-board-btn'),
     datePicker = document.querySelector('#due-date'),
     select2 = $('.select2'), // ! Using jquery vars due to select2 jQuery dependency
-    assetsPath = document.querySelector('html').getAttribute('data-assets-path');
+    assetsPath = document.querySelector('html').getAttribute('data-assets-path'),
+    baseUrl = document.querySelector('html').getAttribute('data-base-url');
 
   // Init kanban Offcanvas
   const kanbanOffcanvas = new bootstrap.Offcanvas(kanbanSidebar);
 
   // Get kanban data
-  const kanbanResponse = await fetch(assetsPath + 'json/components/ticket-kanban.json');
+  // const kanbanResponse = await fetch(assetsPath + 'json/components/ticket-kanban.json');
+  const kanbanResponse = await fetch(baseUrl + '/api/tickets');
+  console.log('kanbanResponse', kanbanResponse);
   if (!kanbanResponse.ok) {
     console.error('error', kanbanResponse);
   }
@@ -176,16 +179,16 @@
     gutter: '15px',
     widthBoard: '250px',
     dragItems: true,
-    boards: boards,
+    boards: boards.data,
     dragBoards: true,
-    addItemButton: true,
-    buttonContent: '+ Add Item',
-    itemAddOptions: {
-      enabled: true, // add a button to board for easy item creation
-      content: '+ Add New Item', // text or html content of the board button
-      class: 'kanban-title-button btn', // default class of the button
-      footer: false // position the button on footer
-    },
+    // addItemButton: true,
+    // buttonContent: '+ Add Item',
+    // itemAddOptions: {
+    //   enabled: true, // add a button to board for easy item creation
+    //   content: '+ Add New Item', // text or html content of the board button
+    //   class: 'kanban-title-button btn', // default class of the button
+    //   footer: false // position the button on footer
+    // },
     click: function (el) {
       let element = el;
       let title = element.getAttribute('data-eid')
@@ -223,65 +226,65 @@
         );
     },
 
-    buttonClick: function (el, boardId) {
-      const addNew = document.createElement('form');
-      addNew.setAttribute('class', 'new-item-form');
-      addNew.innerHTML =
-        '<div class="mb-3">' +
-        '<textarea class="form-control add-new-item" rows="2" placeholder="Add Content" autofocus required></textarea>' +
-        '</div>' +
-        '<div class="mb-3">' +
-        '<button type="submit" class="btn btn-primary btn-sm me-2">Add</button>' +
-        '<button type="button" class="btn btn-label-secondary btn-sm cancel-add-item">Cancel</button>' +
-        '</div>';
-      kanban.addForm(boardId, addNew);
+    // buttonClick: function (el, boardId) {
+    //   const addNew = document.createElement('form');
+    //   addNew.setAttribute('class', 'new-item-form');
+    //   addNew.innerHTML =
+    //     '<div class="mb-3">' +
+    //     '<textarea class="form-control add-new-item" rows="2" placeholder="Add Content" autofocus required></textarea>' +
+    //     '</div>' +
+    //     '<div class="mb-3">' +
+    //     '<button type="submit" class="btn btn-primary btn-sm me-2">Add</button>' +
+    //     '<button type="button" class="btn btn-label-secondary btn-sm cancel-add-item">Cancel</button>' +
+    //     '</div>';
+    //   kanban.addForm(boardId, addNew);
 
-      addNew.addEventListener('submit', function (e) {
-        e.preventDefault();
-        const currentBoard = [].slice.call(
-          document.querySelectorAll('.kanban-board[data-id=' + boardId + '] .kanban-item')
-        );
-        kanban.addElement(boardId, {
-          title: "<span class='kanban-text'>" + e.target[0].value + '</span>',
-          id: boardId + '-' + currentBoard.length + 1
-        });
+    //   addNew.addEventListener('submit', function (e) {
+    //     e.preventDefault();
+    //     const currentBoard = [].slice.call(
+    //       document.querySelectorAll('.kanban-board[data-id=' + boardId + '] .kanban-item')
+    //     );
+    //     kanban.addElement(boardId, {
+    //       title: "<span class='kanban-text'>" + e.target[0].value + '</span>',
+    //       id: boardId + '-' + currentBoard.length + 1
+    //     });
 
-        // add dropdown in new boards
-        const kanbanText = [].slice.call(
-          document.querySelectorAll('.kanban-board[data-id=' + boardId + '] .kanban-text')
-        );
-        kanbanText.forEach(function (e) {
-          e.insertAdjacentHTML('beforebegin', renderDropdown(boardId));
-        });
+    //     // add dropdown in new boards
+    //     const kanbanText = [].slice.call(
+    //       document.querySelectorAll('.kanban-board[data-id=' + boardId + '] .kanban-text')
+    //     );
+    //     kanbanText.forEach(function (e) {
+    //       e.insertAdjacentHTML('beforebegin', renderDropdown(boardId));
+    //     });
 
-        // prevent sidebar to open onclick dropdown buttons of new tasks
-        const newTaskDropdown = [].slice.call(document.querySelectorAll('.kanban-item .kanban-tasks-item-dropdown'));
-        if (newTaskDropdown) {
-          newTaskDropdown.forEach(function (e) {
-            e.addEventListener('click', function (el) {
-              el.stopPropagation();
-            });
-          });
-        }
+    //     // prevent sidebar to open onclick dropdown buttons of new tasks
+    //     const newTaskDropdown = [].slice.call(document.querySelectorAll('.kanban-item .kanban-tasks-item-dropdown'));
+    //     if (newTaskDropdown) {
+    //       newTaskDropdown.forEach(function (e) {
+    //         e.addEventListener('click', function (el) {
+    //           el.stopPropagation();
+    //         });
+    //       });
+    //     }
 
-        // delete tasks for new boards
-        const deleteTask = [].slice.call(
-          document.querySelectorAll('.kanban-board[data-id=' + boardId + '] .delete-task')
-        );
-        deleteTask.forEach(function (e) {
-          e.addEventListener('click', function () {
-            const id = this.closest('.kanban-item').getAttribute('data-eid');
-            kanban.removeElement(id);
-          });
-        });
-        addNew.remove();
-      });
+    //     // delete tasks for new boards
+    //     const deleteTask = [].slice.call(
+    //       document.querySelectorAll('.kanban-board[data-id=' + boardId + '] .delete-task')
+    //     );
+    //     deleteTask.forEach(function (e) {
+    //       e.addEventListener('click', function () {
+    //         const id = this.closest('.kanban-item').getAttribute('data-eid');
+    //         kanban.removeElement(id);
+    //       });
+    //     });
+    //     addNew.remove();
+    //   });
 
-      // Remove form on clicking cancel button
-      addNew.querySelector('.cancel-add-item').addEventListener('click', function (e) {
-        addNew.remove();
-      });
-    }
+    //   // Remove form on clicking cancel button
+    //   addNew.querySelector('.cancel-add-item').addEventListener('click', function (e) {
+    //     addNew.remove();
+    //   });
+    // }
   });
 
   // Kanban Wrapper scrollbar

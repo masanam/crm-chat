@@ -23,6 +23,11 @@
           {{ $sideRightHeader }}
         </div>
         @endif
+        
+        {{-- !! slot header --}}
+        {{ $header }}
+        {{-- !! slot header --}}
+
         <div class="modal-body px-4 py-3">
           {{ $slot }}
         </div>

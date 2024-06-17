@@ -71,6 +71,16 @@
     ];
     $listMembers = [$member1, $member2];
 
+    $meetingModeOnline = (object) [
+      'label' => 'Online',
+      'value' => 'online',
+    ];
+    $meetingModeOffline = (object) [
+      'label' => 'Offline',
+      'value' => 'offline',
+    ];
+    $listMeetingMode = [$meetingModeOnline, $meetingModeOffline];
+
     [$stages, $alphabet, $quality, $status, $listChannels, $listTicketTypes, $listPrioritys, $listStatusProjects] = Helper::getConstants();
 @endphp
 
@@ -318,6 +328,9 @@
         </div>
     </div>
 
+    {{-- modal activities --}}
+    @include('content/customer/components/customer-modal-activities')
+    
     {{-- modal add/edit contact --}}
     <x-modal
         title="Add Contact"
@@ -498,4 +511,5 @@
             ></x-input-floating>
         </div>
     </x-modal> 
+    
 @endsection

@@ -25,6 +25,30 @@
       },
     ]
 
+    const fullToolbar = [
+      [
+        {
+          size: []
+        }
+      ],
+      ['bold', 'italic', 'underline'],
+      [
+        {
+          list: 'ordered'
+        },
+        {
+          list: 'bullet'
+        },
+      ],
+      [
+        {
+          align: []
+        }
+      ],
+      ['link', 'image', 'video'],
+      ['clean']
+    ];
+
     const chatHistoryWrapper = document.querySelector('.chat-history-wrapper');
 
     if (chatHistoryWrapper) {
@@ -394,34 +418,165 @@
     /**
      * @description text editor for modal new/reply email
      */
-    const fullToolbar = [
-      [
-        {
-          size: []
-        }
-      ],
-      ['bold', 'italic', 'underline'],
-      [
-        {
-          list: 'ordered'
-        },
-        {
-          list: 'bullet'
-        },
-      ],
-      [
-        {
-          align: []
-        }
-      ],
-      ['link', 'image', 'video'],
-      ['clean']
-    ];
     const commentEditor = document.querySelector('#full-editor');
     if (commentEditor) {
       new Quill(commentEditor, {
         bounds: commentEditor,
         placeholder: 'Write a Comment... ',
+        modules: {
+          toolbar: fullToolbar
+        },
+        theme: 'snow'
+      });
+    }
+
+    /**
+     * @description handle open close dropdown button new in tab activities
+     */
+    const getBtnDropdown = document.querySelector('#add-dropdown')
+    const getModalDropdown = document.querySelector('.modal-dropdown')
+    if (getBtnDropdown) {
+      getBtnDropdown.addEventListener('click', () => {
+        const isHidden = getModalDropdown.className.includes('hidden')
+
+        if (isHidden) {
+          getModalDropdown.classList.remove('hidden')
+        } else {
+          getModalDropdown.classList.add('hidden')
+        }
+      })
+    }
+
+    /**
+     * @description handle input date for all modal activities
+     */
+    const dateInput = document.querySelectorAll("#date");
+    if (dateInput.length > 0) {
+      dateInput.forEach(el => {
+        el.flatpickr({
+          monthSelectorType: 'static'
+        });
+      })
+    }
+
+    const startDateInput = document.querySelectorAll("#start_date");
+    if (startDateInput.length > 0) {
+      startDateInput.forEach(el => {
+        el.flatpickr({
+          enableTime: true,
+          noCalendar: true
+        });
+      })
+    }
+
+    const endDateInput = document.querySelectorAll("#end_date");
+    if (endDateInput.length > 0) {
+      endDateInput.forEach(el => {
+        el.flatpickr({
+          enableTime: true,
+          noCalendar: true
+        });
+      })
+    }
+
+    /**
+     * @description text editor for modal activities (Log a Call)
+     */
+    const logCallEditor = document.querySelector('#full-editor-log-call');
+    if (logCallEditor) {
+      new Quill(logCallEditor, {
+        bounds: logCallEditor,
+        placeholder: 'Write a note... ',
+        modules: {
+          toolbar: fullToolbar
+        },
+        theme: 'snow'
+      });
+    }
+
+    /**
+     * @description text editor for modal activities (Log a Meeting)
+     */
+     const logMeetingEditor = document.querySelector('#full-editor-log-meeting');
+     if (logMeetingEditor) {
+       new Quill(logMeetingEditor, {
+         bounds: logMeetingEditor,
+         placeholder: 'Write a note... ',
+         modules: {
+           toolbar: fullToolbar
+         },
+         theme: 'snow'
+       });
+     }
+
+     /**
+     * @description text editor for modal activities (Log a task)
+     */
+    const logTaskEditor = document.querySelector('#full-editor-log-task');
+    if (logTaskEditor) {
+      new Quill(logTaskEditor, {
+        bounds: logTaskEditor,
+        placeholder: 'Write a note... ',
+        modules: {
+          toolbar: fullToolbar
+        },
+        theme: 'snow'
+      });
+    }
+
+    /**
+     * @description text editor for modal activities (Schedule a Call)
+     */
+     const scheduleCallEditor = document.querySelector('#full-editor-schedule-call');
+     if (scheduleCallEditor) {
+       new Quill(scheduleCallEditor, {
+         bounds: scheduleCallEditor,
+         placeholder: 'Write a note... ',
+         modules: {
+           toolbar: fullToolbar
+         },
+         theme: 'snow'
+       });
+     }
+
+     /**
+     * @description text editor for modal activities (Schedule a Meeting)
+     */
+    const scheduleMeetingEditor = document.querySelector('#full-editor-schedule-meeting');
+    if (scheduleMeetingEditor) {
+      new Quill(scheduleMeetingEditor, {
+        bounds: scheduleMeetingEditor,
+        placeholder: 'Write a note... ',
+        modules: {
+          toolbar: fullToolbar
+        },
+        theme: 'snow'
+      });
+    }
+
+    /**
+     * @description text editor for modal activities (Schedule a Task)
+     */
+     const scheduleTaskEditor = document.querySelector('#full-editor-schedule-task');
+     if (scheduleTaskEditor) {
+       new Quill(scheduleTaskEditor, {
+         bounds: scheduleTaskEditor,
+         placeholder: 'Write a note... ',
+         modules: {
+           toolbar: fullToolbar
+         },
+         theme: 'snow'
+       });
+     }
+
+    /**
+    * @description text editor for modal activities (Add Notes)
+    */
+    const addNotesEditor = document.querySelector('#full-editor-add-notes');
+    if (addNotesEditor) {
+      new Quill(addNotesEditor, {
+        bounds: addNotesEditor,
+        placeholder: 'Write a note... ',
         modules: {
           toolbar: fullToolbar
         },

@@ -1,9 +1,41 @@
 <section class="tab-pane tab-activities fade active show" id="tab-activities" role="tabpanel">
     <div class="d-flex flex-wrap justify-content-between card-filter mt-3">
-        <button class="btn btn-sm button-new" data-bs-toggle="modal" data-bs-target="#add-ticket">
+        <button class="btn btn-sm button-new" id="add-dropdown">
             New
             <i class="ti ti-dots-vertical"></i>
         </button>
+        <div class="modal-dropdown hidden">
+            <div class="d-flex flex-column gap-1 align-items-start">
+                <button class="btn d-flex gap-2" style="font-size: 12px" data-bs-toggle="modal" data-bs-target="#log-call">
+                    <img src="{{asset('assets/svg/icons/call-end.svg')}}" alt="call" width="15">
+                    Log a Call
+                </button>
+                <button class="btn d-flex gap-2" style="font-size: 12px" data-bs-toggle="modal" data-bs-target="#log-meeting">
+                    <img src="{{asset('assets/svg/icons/icon-log-meeting.svg')}}" alt="log-meeting" width="15">
+                    Log a Meeting
+                </button>
+                <button class="btn d-flex gap-2" style="font-size: 12px" data-bs-toggle="modal" data-bs-target="#log-task">
+                    <img src="{{asset('assets/svg/icons/icon-log-task.svg')}}" alt="log-task" width="15">
+                    Log a Task
+                </button>
+                <button class="btn d-flex gap-2" style="font-size: 12px" data-bs-toggle="modal" data-bs-target="#add-notes">
+                    <img src="{{asset('assets/svg/icons/icon-add-note.svg')}}" alt="add-note" width="15">
+                    Add Notes
+                </button>
+                <button class="btn d-flex gap-2" style="font-size: 12px" data-bs-toggle="modal" data-bs-target="#schedule-call">
+                    <img src="{{asset('assets/svg/icons/icon-schedule-call.svg')}}" alt="schedule-call" width="15">
+                    Schedule Call
+                </button>
+                <button class="btn d-flex gap-2" style="font-size: 12px" data-bs-toggle="modal" data-bs-target="#schedule-meeting">
+                    <img src="{{asset('assets/svg/icons/icon-schedule-calendar.svg')}}" alt="schedule-calendar" width="15">
+                    Schedule Meeting
+                </button>
+                <button class="btn d-flex gap-2" style="font-size: 12px" data-bs-toggle="modal" data-bs-target="#schedule-task">
+                    <img src="{{asset('assets/svg/icons/icon-schedule-task.svg')}}" alt="schedule-task" width="15">
+                    Schedule Task
+                </button>
+            </div>
+        </div>
         <div class="d-flex align-items-center gap-3">
             <div class="d-flex header-filter gap-1">
                 <button class="active btn-list-view">

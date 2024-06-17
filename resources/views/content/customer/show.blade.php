@@ -3,8 +3,10 @@
 @section('title', 'Customer Detail - Apps')
 
 @section('vendor-style')
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/quill/typography.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/quill/katex.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/quill/editor.css') }}" />
 @endsection
 
 @section('page-style')
@@ -13,8 +15,9 @@
 @endsection
 
 @section('vendor-script')
-    <script src="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
+    <script src="{{asset('assets/vendor/libs/quill/katex.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/quill/quill.js')}}"></script>
 @endsection
 
 @section('page-script')
@@ -48,19 +51,48 @@
 
     $listInsight = [$insight1, $insight2, $insight3, $insight4, $insight5];
 
-    [$stages, $alphabet, $quality, $status, $listChannels] = Helper::getConstants();
+    $team1 = (object) [
+      'label' => 'Finance',
+      'value' => 'finance',
+    ];
+    $team2 = (object) [
+      'label' => 'Admin',
+      'value' => 'admin',
+    ];
+    $listTeams = [$team1, $team2];
+
+    $member1 = (object) [
+      'label' => 'Jane Doe',
+      'value' => 'jane doe',
+    ];
+    $member2 = (object) [
+      'label' => 'John Doe',
+      'value' => 'john doe',
+    ];
+    $listMembers = [$member1, $member2];
+
+    $meetingModeOnline = (object) [
+      'label' => 'Online',
+      'value' => 'online',
+    ];
+    $meetingModeOffline = (object) [
+      'label' => 'Offline',
+      'value' => 'offline',
+    ];
+    $listMeetingMode = [$meetingModeOnline, $meetingModeOffline];
+
+    [$stages, $alphabet, $quality, $status, $listChannels, $listTicketTypes, $listPrioritys, $listStatusProjects] = Helper::getConstants();
 @endphp
 
 @section('content')
     <div class="row">
         <div class="">
             <div class="app-chat customer-detail overflow-hidden">
-                {{-- <x-page-title title="Customers" placeholderSearchText="Search leads" targetOpenModal="#customers"></x-page-title> --}}
                 <div class="row g-0">
                     <div class="d-flex">
                         
                         <!-- Customer info -->
-                        <x-sidebar-right-info-chat sidebarClass="show sidebar-customer-info" sidebarBodyClass="mt-2">
+                        <x-sidebar-right-info-chat isUsingHeader="{{ false }}" sidebarClass="show sidebar-customer-info" sidebarBodyClass="mt-2">
                             <div class="sidebar-card d-flex flex-column">
                                 <div class="d-flex flex-column gap-3">
                                     <div class="d-flex flex-column justify-content-center align-items-center gap-2">
@@ -213,13 +245,13 @@
                         <div class="d-flex flex-column" style="width: 45%">
                             <ul class="nav nav-tabs nav-tabs-customer-detail" role="tablist">
                                 <li class="nav-item">
-                                  <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#tab-activities" aria-controls="tab-activities" aria-selected="true">Activities</button>
+                                  <button type="button" class="nav-link nav-item-customer-detail active" role="tab" data-bs-toggle="tab" data-bs-target="#tab-activities" aria-controls="tab-activities" aria-selected="true">Activities</button>
                                 </li>
                                 <li class="nav-item">
-                                  <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#tab-communication" aria-controls="tab-communication" aria-selected="false">Communication</button>
+                                  <button type="button" class="nav-link nav-item-customer-detail" role="tab" data-bs-toggle="tab" data-bs-target="#tab-communication" aria-controls="tab-communication" aria-selected="false">Communication</button>
                                 </li>
                                 <li class="nav-item">
-                                  <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#tab-ticket" aria-controls="tab-ticket" aria-selected="false">Tickets</button>
+                                  <button type="button" class="nav-link nav-item-customer-detail" role="tab" data-bs-toggle="tab" data-bs-target="#tab-ticket" aria-controls="tab-ticket" aria-selected="false">Tickets</button>
                                 </li>
                             </ul>
                             <div class="tab-content-chat">
@@ -230,7 +262,7 @@
                         </div>
 
                         <!-- Client info -->
-                        <x-sidebar-right-info-chat sidebarClass="show sidebar-client-info" sidebarBodyClass="mt-2">
+                        <x-sidebar-right-info-chat isUsingHeader="{{ false }}" sidebarClass="show sidebar-client-info" sidebarBodyClass="mt-2">
                             <x-card-progress></x-card-progress>
                             <div class="sidebar-card d-flex flex-column">
                                 <h6 class="text-dark">Insights</h6>
@@ -296,6 +328,9 @@
         </div>
     </div>
 
+    {{-- modal activities --}}
+    @include('content/customer/components/customer-modal-activities')
+    
     {{-- modal add/edit contact --}}
     <x-modal
         title="Add Contact"
@@ -362,4 +397,119 @@
             </button>
         </div>
     </x-modal>
+
+    {{-- modal new/reply email --}}
+    <x-modal
+        title="New Message"
+        name="communication-email"
+        submitText="Send"
+        buttonSubmitClass=""
+        buttonWrapperSubmitClass="d-flex justify-content-center align-items-center w-100"
+    >
+        <div class="d-flex flex-column gap-4">
+            <x-input-floating
+                label="Reply to"
+                id="reply_to"
+                name="reply_to"
+            >
+            </x-input-floating>
+            <x-input-floating
+                label="Subject"
+                id="subject"
+                name="subject"
+            >
+            </x-input-floating>
+            <div class="full-editor" id="full-editor">
+            </div>
+        </div>
+    </x-modal>
+    
+    {{-- modal add ticket --}}
+    <x-modal
+        title="Add Ticket"
+        name="add-ticket"
+        submitText="Submit"
+        buttonSubmitClass=""
+        buttonWrapperSubmitClass="d-flex justify-end w-100 justify-content-center"
+        modalClass=""
+    >
+        <div class="d-flex flex-column gap-4">
+            <x-input-floating
+                label="Ticket Name"
+                id="ticket_name"
+                name="ticket_name"
+            >
+            </x-input-floating>
+            <div class="d-flex justify-content-between gap-5 w-100">
+                <x-input-floating
+                    label="Ticket ID"
+                    id="ticket_id"
+                    name="ticket_id"
+                >
+                </x-input-floating>
+                <x-input-floating
+                    label="Resolution Date"
+                    id="resolution-date"
+                    name="resolution-date"
+                >
+                </x-input-floating>
+            </div>
+            <div class="d-flex align-items-center justify-content-between gap-3">
+                <div class="d-flex flex-column">
+                    <span class="text-dark" style="font-size: 14px;">Ticket Type</span>
+                    <select id="status" class="form-select custom-select" data-allow-clear="true" style="border: none; padding-left: 0px;">
+                        @foreach ($listTicketTypes as $key => $value)
+                            <option value="{{ $value->value }}">{{ $value->label }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="d-flex flex-column">
+                    <span class="text-dark" style="font-size: 14px;">Priority</span>
+                    <select id="status" class="form-select custom-select" data-allow-clear="true" style="border: none; padding-left: 0px;">
+                        @foreach ($listPrioritys as $key => $value)
+                            <option value="{{ $value->value }}">{{ $value->label }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="d-flex flex-column">
+                    <span class="text-dark" style="font-size: 14px;">Status</span>
+                    <select id="status" class="form-select custom-select" data-allow-clear="true" style="border: none; padding-left: 0px;">
+                        @foreach ($listStatusProjects as $key => $value)
+                            <option value="{{ $value->value }}">{{ $value->label }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between gap-5 w-100">
+                <x-input-floating
+                    label="Team"
+                    placeholder="Please select team"
+                    id="team"
+                    name="team"
+                    type="select"
+                    :options="$listTeams"
+                >
+                </x-input-floating>
+                <x-input-floating
+                    label="Member"
+                    placeholder="Please select member"
+                    id="member"
+                    name="member"
+                    type="select"
+                    :options="$listMembers"
+                >
+                </x-input-floating>
+            </div>
+            <x-input-floating
+                id="ticket_note"
+                name="ticket_note"
+                label="Ticket Notes"
+                placeholder="Write a note"
+                type="textarea"
+                cols="33"
+                rows="5"
+            ></x-input-floating>
+        </div>
+    </x-modal> 
+    
 @endsection

@@ -19,7 +19,7 @@
         @break
  
     @case('textarea')
-        <textarea rows="{{ $rows }}" cols="{{ $cols }}" id="{{ $id }}" name="{{ $name }}" placeholder="">
+        <textarea rows="{{ $rows }}" cols="{{ $cols }}" id="{{ $id }}" name="{{ $name }}" placeholder="{{ $placeholder }}">
         </textarea>
         <label for="{{ $id }}">{{ $label }}</label>
         @break

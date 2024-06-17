@@ -25,6 +25,7 @@ class Modal extends Component
     public $sideRightHeader;
     public $wrapperModalClass;
     public $isUsingBtnFooterClose;
+    public $header; // slot
 
     public function __construct(
         $modalClass = 'modal-sm',
@@ -40,7 +41,8 @@ class Modal extends Component
         $isUsingHeaderTitle = true,
         $sideRightHeader = '',
         $wrapperModalClass = '',
-        $isUsingBtnFooterClose = false
+        $isUsingBtnFooterClose = false,
+        $header = ''
     )
     {
         $this->modalClass = $modalClass;
@@ -57,6 +59,7 @@ class Modal extends Component
         $this->sideRightHeader = $sideRightHeader;
         $this->wrapperModalClass = $wrapperModalClass;
         $this->isUsingBtnFooterClose = $isUsingBtnFooterClose;
+        $this->header = $header;
     }
 
     /**

@@ -68,10 +68,45 @@
             case '#kanban-view':
               chatView.classList.add('hidden')
               kanbanView.classList.remove('hidden')
+              listView.classList.add('hidden')
               break;
             case '#list-view':
               kanbanView.classList.add('hidden')
               listView.classList.remove('hidden')
+              chatView.classList.add('hidden')
+              break;
+            default:
+              break;
+          }
+        })
+      })
+    }
+
+    /**
+     * @description fix handle navigate between tab in customer detail
+     */
+    const navItemCustomerDetail = document.querySelectorAll('.nav-item-customer-detail')
+    const tabActivities = document.querySelector('#tab-activities')
+    const tabCommunication = document.querySelector('#tab-communication')
+    const tabTicket = document.querySelector('#tab-ticket')
+    if (navItemCustomerDetail) {
+      navItemCustomerDetail.forEach(el => {
+        el?.addEventListener('click', () => {
+          switch (el.getAttribute('data-bs-target')) {
+            case '#tab-activities':
+              tabActivities.classList.remove('hidden')
+              tabCommunication.classList.add('hidden')
+              tabTicket.classList.add('hidden')
+              break;
+            case '#tab-communication':
+              tabActivities.classList.add('hidden')
+              tabCommunication.classList.remove('hidden')
+              tabTicket.classList.add('hidden')
+              break;
+            case '#tab-ticket':
+              tabActivities.classList.add('hidden')
+              tabCommunication.classList.add('hidden')
+              tabTicket.classList.remove('hidden')
               break;
             default:
               break;
@@ -129,7 +164,7 @@
     const waTab = document.querySelector('#wa');
     const emailTab = document.querySelector('#email');
     const weChatTab = document.querySelector('#we-chat');
-    const callsTab = document.querySelector('#call');
+    const instagramTab = document.querySelector('#instagram');
 
     if (navLinkCommunicationTab) {
       navLinkCommunicationTab.forEach(el => {
@@ -139,22 +174,22 @@
               waTab.classList.remove('hidden')
               emailTab.classList.add('hidden')
               weChatTab.classList.add('hidden')
-              callsTab.classList.add('hidden')
+              instagramTab.classList.add('hidden')
               break;
             case '#email':
               emailTab.classList.remove('hidden')
               waTab.classList.add('hidden')
               weChatTab.classList.add('hidden')
-              callsTab.classList.add('hidden')
+              instagramTab.classList.add('hidden')
               break;
             case '#we-chat':
               weChatTab.classList.remove('hidden')
               waTab.classList.add('hidden')
               emailTab.classList.add('hidden')
-              callsTab.classList.add('hidden')
+              instagramTab.classList.add('hidden')
               break;
-            case '#call':
-              callsTab.classList.remove('hidden')
+            case '#instagram':
+              instagramTab.classList.remove('hidden')
               waTab.classList.add('hidden')
               weChatTab.classList.add('hidden')
               emailTab.classList.add('hidden')
@@ -344,6 +379,55 @@
          getWrapperDynamicFormCustomer.appendChild(wrapperContact)
        })
      }
+
+    /**
+     * @description adding scrollbar in wrapper detail tab communication email
+     */
+    const wrapperCustomerDetailEmail = document.querySelector('#customer-detail-content-email')
+    if (wrapperCustomerDetailEmail) {
+      new PerfectScrollbar(wrapperCustomerDetailEmail, {
+        wheelPropagation: false,
+        suppressScrollX: true
+      });
+    }
+
+    /**
+     * @description text editor for modal new/reply email
+     */
+    const fullToolbar = [
+      [
+        {
+          size: []
+        }
+      ],
+      ['bold', 'italic', 'underline'],
+      [
+        {
+          list: 'ordered'
+        },
+        {
+          list: 'bullet'
+        },
+      ],
+      [
+        {
+          align: []
+        }
+      ],
+      ['link', 'image', 'video'],
+      ['clean']
+    ];
+    const commentEditor = document.querySelector('#full-editor');
+    if (commentEditor) {
+      new Quill(commentEditor, {
+        bounds: commentEditor,
+        placeholder: 'Write a Comment... ',
+        modules: {
+          toolbar: fullToolbar
+        },
+        theme: 'snow'
+      });
+    }
    })();
  });
  

@@ -70,9 +70,6 @@
                     }
                 }
             }
-            .button-filter {
-                border: 1px solid #B2BCCA;
-            }
         }
 
         .card-email {
@@ -104,6 +101,84 @@
             }
         }
     }
+
+    .tab-ticket {
+        .card-filter {
+            padding: 12px 6px;
+            .header-filter {
+                button {
+                    outline: none;
+                    padding: 4px 12px;
+                    border: 1px solid #B2BCCA;
+                    background: #FFFFFF;
+
+                    &.active {
+                        background-color: #667085;
+                        color: #FFFFFF;
+                    }
+                }
+            }
+        }
+
+        .wrapper-content-ticket {
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            padding: 12px 20px;
+        }
+        
+        .card-ticket {
+            border-bottom: 1px solid #98A2B3;
+
+            .badge-user {
+                background: #DDE0E4 !important;
+                .user-icon {
+                  font-size: 14px;
+                }
+            }
+        }
+
+    }
+
+    .tab-activities {
+        .card-filter {
+            padding: 12px 6px;
+            .header-filter {
+                button {
+                    outline: none;
+                    padding: 4px 12px;
+                    border: 1px solid #B2BCCA;
+                    background: #FFFFFF;
+
+                    &.active {
+                        background-color: #D6F0F1;
+                        color: #33B6B9;
+                        border: 1px solid #33B6B9;
+                    }
+                }
+            }
+        }
+
+        .btn-list-view {
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+
+        .btn-library {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+    }
+
+    .button-filter {
+        border: 1px solid #B2BCCA;
+    }
+    .button-new {
+        border: 1px solid #33B6B9;
+        outline: none;
+        padding: 4px 8px;
+        background-color: #D6F0F1;
+        color: #33B6B9;
+    }
 }
 
 .btn-link {
@@ -126,4 +201,20 @@
 
 .hidden {
     display: none;
+}
+
+.full-editor {
+    font-size: 0.9385rem;
+    outline: none;
+    border: 1px solid gray !important;
+    border-radius: 5px;
+    color: gray;
+    transition: 0.1s ease-out;
+    width: 100%;
+}
+
+.ql-toolbar {
+    outline: none;
+    border: 1px solid gray !important;
+    border-radius: 5px;
 }

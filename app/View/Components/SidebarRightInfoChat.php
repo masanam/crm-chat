@@ -23,6 +23,7 @@ class SidebarRightInfoChat extends Component
     public $customSubtitleClass;
     public $sidebarClass;
     public $sidebarBodyClass;
+    public $isUsingHeader;
 
     public function __construct(
         $title = 'Title',
@@ -36,7 +37,8 @@ class SidebarRightInfoChat extends Component
         $customAvatarClass = '',
         $customSubtitleClass = '',
         $sidebarClass = 'sidebar-group',
-        $sidebarBodyClass = 'mt-4'
+        $sidebarBodyClass = 'mt-4',
+        $isUsingHeader = true
     )
     {
         $this->title = $title;
@@ -51,6 +53,7 @@ class SidebarRightInfoChat extends Component
         $this->customSubtitleClass = $customSubtitleClass;
         $this->sidebarClass = $sidebarClass;
         $this->sidebarBodyClass = $sidebarBodyClass;
+        $this->isUsingHeader = $isUsingHeader;
     }
 
     /**

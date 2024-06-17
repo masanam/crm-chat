@@ -11,24 +11,21 @@
               <button type="button" class="nav-link sub-nav-communication" role="tab" data-bs-toggle="tab" data-bs-target="#we-chat" aria-controls="we-chat" aria-selected="false">WeChat</button>
             </li>
             <li class="nav-item">
-              <button type="button" class="nav-link sub-nav-communication" role="tab" data-bs-toggle="tab" data-bs-target="#call" aria-controls="call" aria-selected="false">Calls</button>
+              <button type="button" class="nav-link sub-nav-communication" role="tab" data-bs-toggle="tab" data-bs-target="#instagram" aria-controls="instagram" aria-selected="false">Instagram</button>
             </li>
         </ul>
         <div class="tab-content-chat">
             <div class="tab-pane fade show active" id="wa" role="tabpanel">
-                <x-chat-history title="ww" typeTask="Toyota Avanza" :people="['Me']"
-                    type="cold"></x-chat-history>
+                <x-chat-history></x-chat-history>
             </div>
             <div class="tab-pane fade" id="email" role="tabpanel">
                 @include('content/customer/components/customer-detail-tab-email')
             </div>
             <div class="tab-pane fade" id="we-chat" role="tabpanel">
-                <x-chat-history title="Aditya Rahardi" typeTask="Toyota Avanza" :people="['Me']"
-                    type="cold"></x-chat-history>
+                <x-chat-history></x-chat-history>
             </div>
-            <div class="tab-pane fade" id="call" role="tabpanel">
-                <x-chat-history title="Aditya Rahardi" typeTask="Toyota Avanza" :people="['Me']"
-                    type="cold"></x-chat-history>
+            <div class="tab-pane fade" id="instagram" role="tabpanel">
+                <x-chat-history></x-chat-history>
             </div>
         </div>
     </div>

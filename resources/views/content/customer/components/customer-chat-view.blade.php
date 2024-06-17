@@ -128,8 +128,7 @@
     </div>
     <!-- /Chat History -->
     <!-- Sidebar Right -->
-    <x-sidebar-right-info-chat title="Profile" time="Last modified 24 Feb 2024, 00:00 PM" name="Aditya Rahardi"
-        subtitle="+62 811-818-256" sidebarClass="show">
+    <x-sidebar-right-info-chat isUsingHeader="{{ false }}" sidebarClass="show">
         <div class="sidebar-card d-flex flex-column">
             <div class="d-flex flex-column gap-3">
                 <div class="d-flex flex-column justify-content-center align-items-center gap-2">

@@ -3,20 +3,23 @@
 @section('title', 'Customers - Apps')
 
 @section('vendor-style')
+    <link rel="stylesheet" href="{{asset('assets/vendor/libs/jkanban/jkanban.css')}}" />
+    <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/jkanban/jkanban.css') }}" />
 @endsection
 
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/app-chat.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/customer.css') }}" />
+    <link rel="stylesheet" href="{{asset('css/components/ticket-kanban.css')}}" />
 @endsection
 
 @section('vendor-script')
     <script src="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/jkanban/jkanban.js') }}"></script>
+    <script src="{{asset('assets/vendor//libs/select2/select2.js')}}"></script>
 @endsection
 
 @section('page-script')
@@ -24,6 +27,7 @@
     <script src="{{ asset('assets/js/components/chat-history.js') }}"></script>
     <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
     <script src="{{ asset('assets/js/customer.js') }}"></script>
+    <script src="{{asset('js/components/ticket-kanban.js')}}"></script>
 @endsection
 
 @php

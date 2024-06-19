@@ -6,8 +6,10 @@
             </div>
             <div class="d-flex align-items-center gap-1">
                 <span class="text-dark fw-bold">{{ $title }}</span>
+                @if ($subtitle)
                 <span class="text-dark">-</span>
                 <span class="text-dark">{{ $subtitle }}</span>
+                @endif
             </div>
         </div>
         <span style="font-size: 12px;">{{ $createdAt }}</span>

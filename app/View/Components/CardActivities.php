@@ -17,7 +17,7 @@ class CardActivities extends Component
     public function __construct(
         $title = '',
         $createdAt = '',
-        $subtitle = 'for you'
+        $subtitle = ''
     )
     {
         $this->title = $title;

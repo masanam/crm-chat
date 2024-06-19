@@ -71,7 +71,7 @@
                 <small style="font-size: 12px">Abel is excited to implement a new software soon. We have already given a demo to Aaron from his team, and Abbie seems to be interested in the upcoming features as well. </small>
             </div>
         </x-card-activities>
-        <x-card-activities title="Meeting" createdAt="04 / Jun / 24 21:00">
+        <x-card-activities title="Meeting" subtitle="for you" createdAt="04 / Jun / 24 21:00">
             <div class="d-flex justify-content-between align-items-start">
                 <div class="d-flex flex-column gap-1">
                     <span class="text-dark fw-bold">Meeting - sales demo with Customer Name</span>

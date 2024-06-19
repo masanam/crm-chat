@@ -17,7 +17,7 @@
             </button>
         </div>
         <div class="d-flex flex-column gap-3 wrapper-content-ticket" id="customer-detail-content-email">
-            <div class="card-ticket d-flex flex-column gap-3 pb-4">
+            <div class="card-ticket d-flex flex-column gap-3 pb-4" onclick="window.location.href = '/customers/test/ticket'">
                 <div class="d-flex justify-content-between align-items-center">
                     <span class="text-dark fw-bold">Cek stock</span>
                     <span style="font-size: 12px;">Today, 3 Jun 2024 15.53</span>
@@ -33,7 +33,7 @@
                     </span>
                 </div>
             </div>
-            <div class="card-ticket d-flex flex-column gap-3 pb-4">
+            <div class="card-ticket d-flex flex-column gap-3 pb-4" onclick="window.location.href = '/customers/test/ticket'">
                 <div class="d-flex justify-content-between align-items-center">
                     <span class="text-dark fw-bold">Cek stock</span>
                     <span style="font-size: 12px;">Today, 3 Jun 2024 15.53</span>

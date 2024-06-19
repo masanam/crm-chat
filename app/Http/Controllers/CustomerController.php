@@ -150,4 +150,20 @@ class CustomerController extends Controller
     Task::find($id)->delete();
     return response()->json(['success' => 'Data deleted successfully.']);
   }
+
+  /**
+   * Display detail email in tab communication sub tab email
+   */
+  public function detailEmail()
+  {
+    return view('content.customer.detail-email');
+  }
+
+  /**
+   * Display detail ticket in tab tickets
+   */
+  public function detailTicket()
+  {
+    return view('content.customer.detail-ticket');
+  }
 }

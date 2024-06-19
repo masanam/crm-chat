@@ -30,7 +30,6 @@
 
 @section('content')
 <div class="app-kanban">
-
   <!-- Add new board -->
   <!-- <div class="row">
     <div class="col-12">
@@ -48,11 +47,40 @@
     </div>
   </div> -->
 
+  <div class="row">
+    <div class="">
+      <div class="app-chat customer overflow-hidden">
+        <section class="d-flex flex-row justify-content-between align-items-center px-5 py-2 bg-white">
+          <h4 class="fw-bolder text-dark mb-0">Tickets</h4>
+          <div class="d-flex flex-row gap-4 align-items-center">
+            <div class="d-flex flex-row align-items-center gap-2">
+              <button type="button" class="btn btn-icon me-2 btn-primary rounded-circle" data-bs-toggle="offcanvas" data-bs-target="#addEditTask">
+                <span class="ti ti-plus"></span>
+              </button>
+              <button type="button" class="btn btn-border" data-bs-toggle="modal" data-bs-target="#filter">
+                <img src="{{asset('assets/svg/icons/filter_list.svg')}}" alt="info" width="20">Filters
+              </button>
+            </div>
+            <div class="d-flex align-items-center flex-grow-1 me-3 me-lg-0">
+              <div class="flex-grow-1 input-group input-group-merge rounded-pill">
+                <span class="input-group-text form-search-custom" id="basic-addon-search31">
+                  <i class="ti ti-search"></i>
+                </span>
+                <input type="text" class="form-control chat-search-input form-search-custom" placeholder="Search Tickets ..." aria-label="Search Tickets ..." aria-describedby="basic-addon-search31">
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="row g-0"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Kanban Wrapper -->
   <div class="kanban-wrapper"></div>
 
   <!-- Edit Task & Activities -->
-  <div class="offcanvas offcanvas-end kanban-update-item-sidebar">
+  <div id="addEditTask" class="offcanvas offcanvas-end kanban-update-item-sidebar">
     <div class="offcanvas-header border-bottom">
       <h5 class="offcanvas-title">Edit Task</h5>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -85,20 +113,30 @@
               <input type="text" id="due-date" class="form-control" placeholder="Enter Due Date" />
             </div>
             <div class="mb-3">
-                <label class="form-label" for="company">Company</label>
-                <select id="company" class="select2 form-select">
-                    <option value="PT. Maju Bersama">PT. Maju Bersama</option>
-                    <option value="ABC">ABC</option>
-                    <option value="XYZ">XYZ</option>
-                </select>
+              <label class="form-label" for="company">Company</label>
+              <select id="company" class="select2 form-select">
+                <option value="PT. Maju Bersama">PT. Maju Bersama</option>
+                <option value="ABC">ABC</option>
+                <option value="XYZ">XYZ</option>
+              </select>
             </div>
             <div class="mb-3">
-                <label class="form-label" for="priority">Priority</label>
-                <select id="priority" class="form-select">
-                    <option value="High">High</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Slow">Slow</option>
-                </select>
+              <label class="form-label" for="priority">Priority</label>
+              <select id="priority" class="form-select">
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Slow">Slow</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="status">Status</label>
+              <select id="status" class="form-select">
+                <option value="Open">Open</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Closed">Closed</option>
+                <option value="Pending">Pending</option>
+                <option value="KIV">KIV</option>
+              </select>
             </div>
             <!-- <div class="mb-3">
               <label class="form-label" for="label"> Label</label>

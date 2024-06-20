@@ -132,7 +132,7 @@
                 <!-- /Chat History Group -->
 
                 <!-- Sidebar Right Group -->
-                <x-sidebar-right-info-chat title="About Group" name="Toyota Woodlands" subtitle="Awesome team of Toyota Woodlands" isUsingBtnHeader="{{ false }}" isUsingBtnEdit="{{ false }}" sidebarClass="sidebar-one-on-one">
+                <x-sidebar-right-info-chat title="About Group" name="Alpha Sales" subtitle="Awesome team of Alpha Sales" isUsingBtnHeader="{{ false }}" isUsingBtnEdit="{{ false }}" sidebarClass="sidebar-one-on-one">
                     <div class="sidebar-card d-flex flex-column">
                         <div class="d-flex justify-content-between align-items-center">
                             <h6 class="text-dark fw-bold">Group introduction</h6>

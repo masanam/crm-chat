@@ -1,10 +1,13 @@
 @php
 $getInitial = Helper::getInitial($title);
+$bglabel = ($totalMember > 1) ? 'bg-label-warning':'bg-label-success';
+$avatarOnline = ($totalMember > 1) ? 'avatar avatar-online':'avatar avatar-offline';
+
 @endphp
 
 <div class="d-flex align-items-center gap-2 w-100">
     <div class="flex-shrink-0 avatar">
-        <span class="avatar-initial rounded-8 bg-label-success text-dark fw-bolder">{{ $getInitial }}</span>
+        <span class="avatar-initial {{$avatarOnline}} rounded-8 {{$bglabel}} text-dark fw-bolder">{{ $getInitial }}</span>
     </div>
     @if($rightBody)
     <div class="d-flex justify-content-between w-100 align-items-center">
@@ -17,7 +20,7 @@ $getInitial = Helper::getInitial($title);
         </div>
     </div>
     @else
-    <div class="d-flex flex-column w-100 list-group-item" style="border-bottom:1px solid #dbdade !important;">
+    <div class="d-flex flex-column w-100 list-group-item">
         <a href="#">
             <div class="d-flex align-items-center justify-content-between">
                 @if($customTitle)

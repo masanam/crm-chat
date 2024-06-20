@@ -22,6 +22,7 @@
 <script src="{{ asset('assets/js/components/chat-history.js') }}"></script>
 <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
 <script src="{{ asset('assets/js/group.js') }}"></script>
+
 <script>
     var acc = document.getElementsByClassName("accordion");
     var i;
@@ -131,7 +132,7 @@
                 <!-- /Chat History Group -->
 
                 <!-- Sidebar Right Group -->
-                <x-sidebar-right-info-chat title="About Group" name="Toyota Woodlands" subtitle="Awesome team of Toyota Woodlands" isUsingBtnHeader="{{ false }}" isUsingBtnEdit="{{ false }}" sidebarClass="sidebar-one-on-one">
+                <x-sidebar-right-info-chat title="About Group" name="Alpha Sales" subtitle="Awesome team of Alpha Sales" isUsingBtnHeader="{{ false }}" isUsingBtnEdit="{{ false }}" sidebarClass="sidebar-one-on-one">
                     <div class="sidebar-card d-flex flex-column">
                         <div class="d-flex justify-content-between align-items-center">
                             <h6 class="text-dark fw-bold">Group introduction</h6>
@@ -148,10 +149,25 @@
 
                         <div class="d-flex px-3 flex-column gap-4">
                             @foreach($chatList as $key => $value)
+                            @php
+                            $getInitial = Helper::getInitial($value->client_name);
+                            @endphp
+
                             <div class="d-flex justify-content-between align-items-center">
                                 <label class="form-check-label" for="{{ $value->client_name }}">
-                                    <x-card-chat title="{{ $value->client_name }}" subtitle="">
-                                    </x-card-chat>
+                                    <div class="d-flex align-items-center gap-2 w-100">
+                                        <div class="flex-shrink-0 avatar">
+                                            <span class="avatar-initial rounded-8 {{$bglabel}} text-dark fw-bolder">{{ $getInitial }}</span>
+                                        </div>
+                                        <div class="d-flex flex-column w-100 list-group-item">
+                                            <a href="#">
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <div class="text-start text-dark fw-bold" id="chat-title">{{ $value->client_name }}</div>
+                                                </div>
+
+                                            </a>
+                                        </div>
+                                    </div>
                                 </label>
                                 <i class="ti ti-dots-vertical" id="add-dropdown"></i>
                                 <div class="modal-dropdown-member hidden">
@@ -162,7 +178,7 @@
                                         </button>
                                         <button class="btn d-flex gap-2" style="font-size: 12px" data-bs-toggle="modal" data-bs-target="#log-meeting">
                                             Delete
-                                            <img src="{{asset('assets/svg/icons/icon-log-meeting.svg')}}" alt="log-meeting" width="15">
+                                            <img src="{{asset('assets/svg/icons/delete-member.svg')}}" alt="log-meeting" width="15">
                                         </button>
                                     </div>
                                 </div>
@@ -219,10 +235,23 @@
     <div class="d-flex flex-column gap-3 modal-add-contact">
         <div class="d-flex flex-column gap-3">
             @foreach($chatList as $key => $value)
+            @php
+            $getInitial = Helper::getInitial($value->client_name);
+            @endphp
+
             <div class="d-flex justify-content-between align-items-center">
-                <x-card-chat title="{{ $value->client_name }}" subtitle="">
-                </x-card-chat>
-                <input class="form-check-input" type="checkbox" id="{{ $value->client_name }}" value="{{ $value->client_name }}" />
+                <div class="d-flex align-items-center gap-2 w-100">
+                    <div class="flex-shrink-0 avatar">
+                        <span class="avatar-initial rounded-8 {{$bglabel}} text-dark fw-bolder">{{ $getInitial }}</span>
+                    </div>
+                    <div class="d-flex flex-column w-100 list-group-item">
+                        <a href="#">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="text-start text-dark fw-bold" id="chat-title">{{ $value->client_name }}</div>
+                            </div>
+                        </a>
+                    </div>
+                </div> <input class="form-check-input" type="checkbox" id="{{ $value->client_name }}" value="{{ $value->client_name }}" />
             </div>
 
             @endforeach

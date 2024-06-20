@@ -75,6 +75,8 @@
         .card-email {
             border-bottom: 1px solid #98A2B3;
             width: 100%;
+            cursor: pointer;
+            
             .card-email-body {
                 background: #FFFFFF;
                 padding: 8px 20px;
@@ -128,6 +130,7 @@
         
         .card-ticket {
             border-bottom: 1px solid #98A2B3;
+            cursor: pointer;
 
             .badge-user {
                 background: #DDE0E4 !important;
@@ -189,6 +192,26 @@
         padding: 4px 8px;
         background-color: #D6F0F1;
         color: #33B6B9;
+    }
+}
+
+.customer-detail-email {
+    .sidebar-customer-info, .sidebar-client-info {
+        padding: 0px 16px !important;
+    }
+    .btn-back {
+        border: none;
+        outline: none;
+        background: transparent;
+        padding: 0px;
+    }
+    .btn-reply {
+        border: none;
+        outline: none;
+        background:#33B6B9;
+        padding: 8px 14px;
+        border-radius: 8px;
+        color: #FFF;
     }
 }
 

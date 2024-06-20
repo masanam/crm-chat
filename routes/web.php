@@ -482,6 +482,8 @@ Route::middleware(['auth'])->group(function () {
   Route::get('customers/{id}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
   Route::put('customers/{id}', [CustomerController::class, 'update'])->name('customers.update');
   Route::delete('customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+  Route::get('customers/{id}/email', [CustomerController::class, 'detailEmail'])->name('customers.detailEmail');
+  Route::get('customers/{id}/ticket', [CustomerController::class, 'detailTicket'])->name('customers.detailTicket');
 
   // Route::resource('dealer', DealerController::class);
   Route::get('clients', [ClientController::class, 'index'])->name('clients.index');

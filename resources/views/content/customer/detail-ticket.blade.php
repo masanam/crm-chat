@@ -1,12 +1,9 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Customer Detail - Apps')
+@section('title', 'Customers - Apps')
 
 @section('vendor-style')
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/quill/typography.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/quill/katex.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/quill/editor.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css') }}" />
 @endsection
 
 @section('page-style')
@@ -15,71 +12,25 @@
 @endsection
 
 @section('vendor-script')
-    <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
-    <script src="{{asset('assets/vendor/libs/quill/katex.js')}}"></script>
-    <script src="{{asset('assets/vendor/libs/quill/quill.js')}}"></script>
+    <script src="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
 @endsection
 
 @section('page-script')
-    <script src="{{ asset('assets/js/app-chat.js') }}"></script>
-    <script src="{{ asset('assets/js/components/chat-history.js') }}"></script>
-    <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
     <script src="{{ asset('assets/js/customer.js') }}"></script>
+    <script src="{{ asset('assets/js/customer-detail-email.js') }}"></script>
 @endsection
 
 @php
     $insight1 = (object) [
-        'name' => 'Last Follow Up',
+        'name' => 'Ticket Open for',
         'value' => '4 Days'
     ];
     $insight2 = (object) [
-        'name' => 'Customer Lifetime',
+        'name' => 'Resolution',
         'value' => '34 Days'
     ];
-    $insight3 = (object) [
-        'name' => 'Last Communication Date',
-        'value' => 'Apr 11, 2024 05:12 PM'
-    ];
-    $insight4 = (object) [
-        'name' => 'Last Communication Mode',
-        'value' => 'WhatsApp'
-    ];
-    $insight5 = (object) [
-        'name' => 'Last Communication by',
-        'value' => 'Randy Haris'
-    ];
 
-    $listInsight = [$insight1, $insight2, $insight3, $insight4, $insight5];
-
-    $team1 = (object) [
-      'label' => 'Finance',
-      'value' => 'finance',
-    ];
-    $team2 = (object) [
-      'label' => 'Admin',
-      'value' => 'admin',
-    ];
-    $listTeams = [$team1, $team2];
-
-    $member1 = (object) [
-      'label' => 'Jane Doe',
-      'value' => 'jane doe',
-    ];
-    $member2 = (object) [
-      'label' => 'John Doe',
-      'value' => 'john doe',
-    ];
-    $listMembers = [$member1, $member2];
-
-    $meetingModeOnline = (object) [
-      'label' => 'Online',
-      'value' => 'online',
-    ];
-    $meetingModeOffline = (object) [
-      'label' => 'Offline',
-      'value' => 'offline',
-    ];
-    $listMeetingMode = [$meetingModeOnline, $meetingModeOffline];
+    $listInsight = [$insight1, $insight2];
 
     [$stages, $alphabet, $quality, $status, $listChannels, $listTicketTypes, $listPrioritys, $listStatusProjects] = Helper::getConstants();
 @endphp
@@ -87,7 +38,7 @@
 @section('content')
     <div class="row">
         <div class="">
-            <div class="app-chat customer-detail overflow-hidden">
+            <div class="app-chat customer-detail-email overflow-hidden">
                 <div class="row g-0">
                     <div class="d-flex">
                         
@@ -242,23 +193,15 @@
                         </x-sidebar-right-info-chat>
                         <!-- /Customer info -->
 
-                        <div class="d-flex flex-column" style="width: 45%">
-                            <ul class="nav nav-tabs nav-tabs-customer-detail" role="tablist">
-                                <li class="nav-item">
-                                  <button type="button" class="nav-link nav-item-customer-detail active" role="tab" data-bs-toggle="tab" data-bs-target="#tab-activities" aria-controls="tab-activities" aria-selected="true">Activities</button>
-                                </li>
-                                <li class="nav-item">
-                                  <button type="button" class="nav-link nav-item-customer-detail" role="tab" data-bs-toggle="tab" data-bs-target="#tab-communication" aria-controls="tab-communication" aria-selected="false">Communication</button>
-                                </li>
-                                <li class="nav-item">
-                                  <button type="button" class="nav-link nav-item-customer-detail" role="tab" data-bs-toggle="tab" data-bs-target="#tab-ticket" aria-controls="tab-ticket" aria-selected="false">Tickets</button>
-                                </li>
-                            </ul>
-                            <div class="tab-content-chat">
-                                @include('content/customer/components/customer-tab-activities')
-                                @include('content/customer/components/customer-tab-communication')
-                                @include('content/customer/components/customer-tab-ticket')
-                            </div>
+                        <div class="d-flex flex-column align-items-start gap-3 mt-2" style="width: 45%">
+                            <x-chat-history
+                                isUsingHeader={{ true }}
+                                type="cold"
+                                :people="['Johnson']"
+                                title="Issue SPK"
+                                typeTask="TY-010209"
+                            >
+                            </x-chat-history>
                         </div>
 
                         <!-- Client info -->
@@ -278,9 +221,38 @@
                                     @endforeach
                                 </div>
                             </div>
+                            <div class="sidebar-card d-flex flex-column gap-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-dark">Ticket Type</span>
+                                    <select id="status" class="form-select custom-select" data-allow-clear="true" style="border: none; padding-left: 0px; bottom: 0px;">
+                                        @foreach ($listTicketTypes as $key => $value)
+                                            <option value="{{ $value->value }}">{{ $value->label }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-dark">Ticket ID</span>
+                                    <span>TY-010209</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-dark">Resolution Date</span>
+                                    <span>6 June 2024</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-dark">Priority</span>
+                                    <select id="priority" class="form-select custom-select" data-allow-clear="true" style="border: none; padding-left: 0px; bottom: 0px;">
+                                        <option value="high">High</option>
+                                        <option value="medium">Mediu </option>
+                                    </select>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-dark">Created by</span>
+                                    <span>Randy Haris</span>
+                                </div>
+                            </div>
                             <div class="sidebar-card d-flex flex-column">
                                 <div class="d-flex justify-content-between">
-                                    <h6 class="text-dark">Assigned staff</h6>
+                                    <h6 class="text-dark">Team</h6>
                                     <i class="ti ti-chevron-right text-dark"></i>
                                 </div>
                                 <div class="d-flex flex-wrap gap-2">
@@ -296,29 +268,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="sidebar-card d-flex flex-column">
-                                <div class="d-flex justify-content-between">
-                                    <h6 class="text-dark">Products</h6>
-                                    <i class="ti ti-chevron-right text-dark"></i>
-                                </div>
-                                <div class="d-flex flex-wrap gap-2">
-                                    <div class="d-flex align-items-center tag gap-1">
-                                        <span class="text-dark">Mercedes EQE 350+</span>
-                                        <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay
-                                            data-target="#tag"></i>
-                                    </div>
-                                    <div class="d-flex align-items-center tag gap-1">
-                                        <span class="text-dark">Toyota Corolla</span>
-                                        <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay
-                                            data-target="#tag"></i>
-                                    </div>
-                                    <div class="d-flex align-items-center tag gap-1">
-                                        <span class="text-dark">Honda Jazz</span>
-                                        <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay
-                                            data-target="#tag"></i>
-                                    </div>
-                                </div>
-                            </div>
 
                         </x-sidebar-right-info-chat>
                         <!-- Client info -->
@@ -327,189 +276,4 @@
             </div>
         </div>
     </div>
-
-    {{-- modal activities --}}
-    @include('content/customer/components/customer-modal-activities')
-    
-    {{-- modal add/edit contact --}}
-    <x-modal
-        title="Add Contact"
-        name="add-edit-contact"
-        submitText="Save contact"
-        buttonSubmitClass=""
-        buttonWrapperSubmitClass="d-flex justify-content-center align-items-center w-100"
-    >
-        <div class="d-flex flex-column gap-2 border-bottom border-1 pb-3 align-items-start">
-            <div class="d-flex flex-column gap-3">
-                <div class="d-flex justify-content-between gap-5 w-100">
-                    <x-input-floating
-                        label="First Name"
-                        id="first name"
-                        name="first name"
-                    >
-                    </x-input-floating>
-                    <x-input-floating
-                        label="Last Name"
-                        id="last name"
-                        name="last name"
-                    >
-                    </x-input-floating>
-                </div>
-                <div class="d-flex justify-content-between gap-5 w-100">
-                    <x-input-floating
-                        label="Channel"
-                        placeholder="Please select channel"
-                        id="channel"
-                        name="channel"
-                        type="select"
-                        :options="$listChannels"
-                    >
-                    </x-input-floating>
-                    <x-input-floating
-                        label="Contact"
-                        id="contact"
-                        name="contact"
-                    >
-                    </x-input-floating>
-                </div>
-                
-                {{-- !! Dont remove this tag --}}
-                <div class="hidden" id="wrapper-channel"></div>
-                {{-- !! Dont remove this tag --}}
-
-                <x-input-floating
-                    label="Job Title"
-                    id="job title"
-                    name="job title"
-                >
-                </x-input-floating>
-            </div>
-            <button class="btn-link" id="btn-more-channel">
-                + Add more channels
-            </button>
-        </div>
-        {{-- !! Dont remove this tag --}}
-        <div class="hidden" id="wrapper-dynamic-form"></div>
-        {{-- !! Dont remove this tag --}}
-        <div class="d-flex justify-content-center py-3">
-            <button class="btn-link pb-3 add-contact" id="btn-more-contact">
-                + Add more contacts
-            </button>
-        </div>
-    </x-modal>
-
-    {{-- modal new/reply email --}}
-    <x-modal
-        title="New Message"
-        name="communication-email"
-        submitText="Send"
-        buttonSubmitClass=""
-        buttonWrapperSubmitClass="d-flex justify-content-center align-items-center w-100"
-    >
-        <div class="d-flex flex-column gap-4">
-            <x-input-floating
-                label="Reply to"
-                id="reply_to"
-                name="reply_to"
-            >
-            </x-input-floating>
-            <x-input-floating
-                label="Subject"
-                id="subject"
-                name="subject"
-            >
-            </x-input-floating>
-            <div class="full-editor" id="full-editor">
-            </div>
-        </div>
-    </x-modal>
-    
-    {{-- modal add ticket --}}
-    <x-modal
-        title="Add Ticket"
-        name="add-ticket"
-        submitText="Submit"
-        buttonSubmitClass=""
-        buttonWrapperSubmitClass="d-flex justify-end w-100 justify-content-center"
-        modalClass=""
-    >
-        <div class="d-flex flex-column gap-4">
-            <x-input-floating
-                label="Ticket Name"
-                id="ticket_name"
-                name="ticket_name"
-            >
-            </x-input-floating>
-            <div class="d-flex justify-content-between gap-5 w-100">
-                <x-input-floating
-                    label="Ticket ID"
-                    id="ticket_id"
-                    name="ticket_id"
-                >
-                </x-input-floating>
-                <x-input-floating
-                    label="Resolution Date"
-                    id="resolution-date"
-                    name="resolution-date"
-                >
-                </x-input-floating>
-            </div>
-            <div class="d-flex align-items-center justify-content-between gap-3">
-                <div class="d-flex flex-column">
-                    <span class="text-dark" style="font-size: 14px;">Ticket Type</span>
-                    <select id="status" class="form-select custom-select" data-allow-clear="true" style="border: none; padding-left: 0px;">
-                        @foreach ($listTicketTypes as $key => $value)
-                            <option value="{{ $value->value }}">{{ $value->label }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="d-flex flex-column">
-                    <span class="text-dark" style="font-size: 14px;">Priority</span>
-                    <select id="status" class="form-select custom-select" data-allow-clear="true" style="border: none; padding-left: 0px;">
-                        @foreach ($listPrioritys as $key => $value)
-                            <option value="{{ $value->value }}">{{ $value->label }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="d-flex flex-column">
-                    <span class="text-dark" style="font-size: 14px;">Status</span>
-                    <select id="status" class="form-select custom-select" data-allow-clear="true" style="border: none; padding-left: 0px;">
-                        @foreach ($listStatusProjects as $key => $value)
-                            <option value="{{ $value->value }}">{{ $value->label }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="d-flex justify-content-between gap-5 w-100">
-                <x-input-floating
-                    label="Team"
-                    placeholder="Please select team"
-                    id="team"
-                    name="team"
-                    type="select"
-                    :options="$listTeams"
-                >
-                </x-input-floating>
-                <x-input-floating
-                    label="Member"
-                    placeholder="Please select member"
-                    id="member"
-                    name="member"
-                    type="select"
-                    :options="$listMembers"
-                >
-                </x-input-floating>
-            </div>
-            <x-input-floating
-                id="ticket_note"
-                name="ticket_note"
-                label="Ticket Notes"
-                placeholder="Write a note"
-                type="textarea"
-                cols="33"
-                rows="5"
-            ></x-input-floating>
-        </div>
-    </x-modal> 
-    
 @endsection

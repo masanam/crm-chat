@@ -28,7 +28,7 @@ $chat-sidebar-header-padding-x: 0px;
 $chat-sidebar-header-padding-y: 0.73rem;
 
 $chat-history-header-padding-x: 1.25rem;
-$chat-history-header-padding-y: 1.5rem;
+$chat-history-header-padding-y: 1rem;
 $chat-history-header-bg: rgba(241, 242, 244, 1);
 
 $chat-history-footer-padding-x: 0.5rem;
@@ -249,6 +249,7 @@ $chat-list-margin: 1rem;
     .layout-navbar-hidden & {
       height: $chat-app-height-with-no-navbar;
     }
+    width: 100%;
     @include light.media-breakpoint-up($menu-collapsed-layout-breakpoint) {
       .layout-horizontal & {
         height: calc($chat-app-height - $chat-app-horizontal-height-diff);

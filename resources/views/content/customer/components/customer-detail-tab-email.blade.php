@@ -12,7 +12,7 @@
         </button>
     </div>
     <div class="d-flex flex-column" id="customer-detail-content-email">
-        <div class="card-email">
+        <div class="card-email" onclick="window.location.href = '/customers/test/email'">
             <div class="card-email-body d-flex flex-column gap-2">
                 <div class="d-flex justify-content-between align-items-center">
                     <span class="text-dark fw-bold">Jonny Ki</span>

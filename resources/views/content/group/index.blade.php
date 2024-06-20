@@ -149,10 +149,25 @@
 
                         <div class="d-flex px-3 flex-column gap-4">
                             @foreach($chatList as $key => $value)
+                            @php
+                            $getInitial = Helper::getInitial($value->client_name);
+                            @endphp
+
                             <div class="d-flex justify-content-between align-items-center">
                                 <label class="form-check-label" for="{{ $value->client_name }}">
-                                    <x-card-chat title="{{ $value->client_name }}" subtitle="">
-                                    </x-card-chat>
+                                    <div class="d-flex align-items-center gap-2 w-100">
+                                        <div class="flex-shrink-0 avatar">
+                                            <span class="avatar-initial rounded-8 {{$bglabel}} text-dark fw-bolder">{{ $getInitial }}</span>
+                                        </div>
+                                        <div class="d-flex flex-column w-100 list-group-item">
+                                            <a href="#">
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <div class="text-start text-dark fw-bold" id="chat-title">{{ $value->client_name }}</div>
+                                                </div>
+
+                                            </a>
+                                        </div>
+                                    </div>
                                 </label>
                                 <i class="ti ti-dots-vertical" id="add-dropdown"></i>
                                 <div class="modal-dropdown-member hidden">

@@ -22,6 +22,7 @@
 <script src="{{ asset('assets/js/components/chat-history.js') }}"></script>
 <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
 <script src="{{ asset('assets/js/group.js') }}"></script>
+
 <script>
     var acc = document.getElementsByClassName("accordion");
     var i;
@@ -162,7 +163,7 @@
                                         </button>
                                         <button class="btn d-flex gap-2" style="font-size: 12px" data-bs-toggle="modal" data-bs-target="#log-meeting">
                                             Delete
-                                            <img src="{{asset('assets/svg/icons/icon-log-meeting.svg')}}" alt="log-meeting" width="15">
+                                            <img src="{{asset('assets/svg/icons/delete-member.svg')}}" alt="log-meeting" width="15">
                                         </button>
                                     </div>
                                 </div>

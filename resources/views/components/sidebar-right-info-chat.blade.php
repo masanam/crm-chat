@@ -7,7 +7,7 @@ $getInitial = Helper::getInitial($name);
     <div class="d-flex justify-content-between align-items-center mt-3">
         <div class="d-flex align-items-center gap-2">
             <i class="ti ti-x text-dark fw-bold close-sidebar" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right"></i>
-            <h4 class="text-sidebar-header fw-bold text-dark">{{ $title }}</h4>
+            <h4 class="text-sidebar-header fw-bold text-dark" id="group-title">{{ $title }}</h4>
         </div>
         @if($isUsingBtnEdit)
         <button class="btn" data-bs-toggle="modal" data-bs-target="#modal">
@@ -16,7 +16,7 @@ $getInitial = Helper::getInitial($name);
         @endif
     </div>
     @endif
-    
+
     @if ($isUsingHeader)
     <div class="sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-4 pt-4">
         <p class="timezone">{{ $time }}</p>

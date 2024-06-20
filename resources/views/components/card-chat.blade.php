@@ -20,7 +20,7 @@ $avatarOnline = ($totalMember > 1) ? 'avatar avatar-online':'avatar avatar-offli
         </div>
     </div>
     @else
-    <div class="d-flex flex-column w-100 list-group-item" style="border-bottom:1px solid #dbdade !important;">
+    <div class="d-flex flex-column w-100 list-group-item">
         <a href="#">
             <div class="d-flex align-items-center justify-content-between">
                 @if($customTitle)

@@ -53,7 +53,22 @@ $currentRouteName = Route::currentRouteName();
 
     <!-- Layout page -->
     <div class="layout-page">
-      <header class="d-flex gap-5 align-items-center justify-content-end" style="background: #EEF8F9; padding: 1rem 2.5rem;">
+      <header
+        @class([
+          'd-flex gap-5 align-items-center',
+          'justify-content-end' => Route::currentRouteName() != 'customers.show',
+          'justify-content-between' => Route::currentRouteName() == 'customers.show'
+        ])
+        style="background: #EEF8F9; padding: 1rem 2.5rem;"
+      >
+        @if (Route::currentRouteName() == 'customers.show')
+          <button class="btn d-flex gap-2 fw-bold text-dark" onclick="window.history.back()">
+            <i class="ti ti-arrow-left text-dark"></i>
+            Back
+          </button>
+        @endif
+
+        <!-- <header class = "" (['d-flex gap-5 align-items-center', 'justify-content-end'=> $currentRouteName == 'dashboard-crm']) style="background: #EEF8F9; padding: 1rem 2.5rem;"> -->
         {{-- <img class="text-dark" src="{{asset('assets/svg/icons/info-dark.svg')}}" alt="info">
         <span class="text-dark" style="font-size: 16px; font-weight: 700;">Get started now! <a href="#" style="color: #4480FF; text-decoration-line: underline;">Contact support</a></span> --}}
         {{-- @if ($currentRouteName == 'dashboard-crm')

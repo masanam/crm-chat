@@ -19,6 +19,7 @@ class ChatHistory extends Component
     public $isOneOnOneChat; 
     public $chatHistoryId; 
     public $type; 
+    public $isUsingHeader;
 
     public function __construct(
         $title = 'Title',
@@ -28,7 +29,8 @@ class ChatHistory extends Component
         $customHeader = '',
         $isOneOnOneChat = false,
         $chatHistoryId = '',
-        $type = ''
+        $type = '',
+        $isUsingHeader = false
     )
     {
         $this->title = $title;
@@ -39,6 +41,7 @@ class ChatHistory extends Component
         $this->isOneOnOneChat = $isOneOnOneChat;
         $this->chatHistoryId = $chatHistoryId;
         $this->type = $type;
+        $this->isUsingHeader = $isUsingHeader;
     }
 
     /**

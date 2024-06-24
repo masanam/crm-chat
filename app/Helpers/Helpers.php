@@ -246,6 +246,91 @@ class Helpers
     ];
     $status = [$statusActive, $statusInactive];
 
-    return [$stages, $alphabet, $quality, $status];
+    $channel = (object) [
+      'label' => 'WhatsApp',
+      'value' => 'wa',
+    ];
+    $channel2 = (object) [
+      'label' => 'Email',
+      'value' => 'email',
+    ];
+    $channel3 = (object) [
+      'label' => 'WeChat',
+      'value' => 'wechat',
+    ];
+    $channel4 = (object) [
+      'label' => 'Instagram',
+      'value' => 'instagram',
+    ];
+    $listChannels = [$channel, $channel2, $channel3, $channel4];
+
+    $ticketType = (object) [
+      'label' => 'Document',
+      'value' => 'document',
+    ];
+    $ticketType2 = (object) [
+      'label' => 'Complaint',
+      'value' => 'complaint',
+    ];
+    $ticketType3 = (object) [
+      'label' => 'Technical',
+      'value' => 'technical',
+    ];
+    $ticketType4 = (object) [
+      'label' => 'Issue',
+      'value' => 'issue',
+    ];
+    $ticketType5 = (object) [
+      'label' => 'Others',
+      'value' => 'others',
+    ];
+    $listTicketTypes = [$ticketType, $ticketType2, $ticketType3, $ticketType4, $ticketType5];
+
+    $priority = (object) [
+      'label' => 'Low',
+      'value' => 'low',
+    ];
+    $priority2 = (object) [
+      'label' => 'Medium',
+      'value' => 'medium',
+    ];
+    $priority3 = (object) [
+      'label' => 'High',
+      'value' => 'high',
+    ];
+    $listPrioritys = [$priority, $priority2, $priority3];
+
+    $statusProject = (object) [
+      'label' => 'Open',
+      'value' => 'open',
+    ];
+    $statusProject2 = (object) [
+      'label' => 'In-progress',
+      'value' => 'in-progress',
+    ];
+    $statusProject3 = (object) [
+      'label' => 'Closed',
+      'value' => 'closed',
+    ];
+    $statusProject3 = (object) [
+      'label' => 'Pending',
+      'value' => 'pending',
+    ];
+    $statusProject4 = (object) [
+      'label' => 'KIV',
+      'value' => 'kiv',
+    ];
+    $listStatusProjects = [$statusProject , $statusProject2, $statusProject3, $statusProject4];
+
+    return [
+      $stages,
+      $alphabet,
+      $quality,
+      $status,
+      $listChannels,
+      $listTicketTypes,
+      $listPrioritys,
+      $listStatusProjects
+    ];
   }
 }

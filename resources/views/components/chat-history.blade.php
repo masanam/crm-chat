@@ -1,39 +1,14 @@
 <div class="col app-chat-history bg-body" id="{{$chatHistoryId}}">
     <div class="chat-history-wrapper">
-        {{-- @if($isOneOnOneChat)
-        <header class="chat-history-header border-bottom bg-white">
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="d-flex overflow-hidden align-items-center">
-                    <h6 class="m-0 text-dark fw-bold">{{ $title }}</h6>
-                </div>
-                <div class="d-flex align-items-center gap-3">
-                    @if($isUsingBtnPhone)
-                    <button class="btn p-0" type="button" id="chat-header-actions">
-                        <img src="{{asset('assets/svg/icons/phone.svg')}}" alt="phone" width="20">
-                    </button>
-                    @endif
-                    <button class="btn p-0" type="button" id="chat-header-actions-info">
-                        <img src="{{asset('assets/svg/icons/info.svg')}}" alt="info" width="20">
-                    </button>
-                </div>
-            </div>
-        </header>
-        @else
+        @if($isUsingHeader)
         <header>
             <div class="chat-history-header border-bottom bg-white">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex overflow-hidden align-items-center">
-                        <h6 class="m-0 text-dark fw-bold">{{ $title }}</h6>
-                    </div>
-                    <div class="d-flex align-items-center gap-3">
-                        @if($isUsingBtnPhone)
-                        <button class="btn p-0" type="button" id="chat-header-actions">
-                            <img src="{{asset('assets/svg/icons/phone.svg')}}" alt="phone" width="20">
-                        </button>
-                        @endif
-                        <button class="btn p-0" type="button" id="chat-header-actions-info">
-                            <img src="{{asset('assets/svg/icons/info.svg')}}" alt="info" width="20">
-                        </button>
+                        <button class="btn d-flex gap-2 fw-bold text-dark" onclick="window.history.back()">
+                            <i class="ti ti-arrow-left text-dark"></i>
+                          </button>
+                        <span class="m-0 text-dark fw-bold" style="font-size: 22px">{{ $title }}</span>
                     </div>
                 </div>
             </div>
@@ -59,7 +34,7 @@
                 @endif
             </div>
         </header>
-        @endif --}}
+        @endif
 
         <div class="chat-history-body bg-white ww">
             <ul class="list-unstyled chat-history">

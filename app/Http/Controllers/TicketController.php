@@ -5,14 +5,88 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
-use App\Kanban\TicketKanban;
 use App\Models\Task;
+use App\Models\TaskStatus;
+use App\Models\Client;
 
 class TicketController extends Controller
 {
-  public function index(TicketKanban $kanban)
+  public function index(Request $request)
   {
-    return view('content.ticket.index');
+    try {
+      $validator = Validator::make($request->all(), [
+        'q' => ['string'],
+      ]);
+
+      if ($validator->fails()) {
+        return response()->json(
+          [
+            'status' => 422,
+            'message' => $validator->errors(),
+            'results' => null,
+          ],
+          422
+        );
+      }
+
+      $params = $validator->validate();
+
+      $perPage = $params['per_page'] ?? 20;
+      $search = $params['q'] ?? null;
+
+      $clients = $clients = DB::select(
+        'select
+            c.id, o.name as text
+        from
+            clients c
+        join organizations o on o.id = c.organization_id 
+        where c.name like ? or o.name like ?
+      ',
+        ['%' . $search . '%', '%' . $search . '%']
+      );
+
+      $statuses = TaskStatus::all();
+
+      return view('content.ticket.index', compact('clients', 'statuses'));
+    } catch (\Exception $e) {
+      return view('content.ticket.index');
+    }
+  }
+
+  public function upsert(Request $request): RedirectResponse
+  {
+    try {
+      $validator = Validator::make($request->all(), [
+        'title' => ['string', 'required'],
+        'deadline' => ['date', 'required'],
+        'client_id' => ['integer', 'required'],
+        'priority' => ['string', 'required'],
+        'status_id' => ['integer', 'required'],
+      ]);
+
+      $params = $validator->validate();
+
+      $model = Task::updateOrCreate(
+        [
+          'id' => $request->id,
+        ],
+        [
+          'title' => $params['title'],
+          'deadline' => $params['deadline'],
+          'client_id' => (int) $params['client_id'],
+          'priority' => $params['priority'],
+          'status_id' => (int) $params['status_id'],
+          'user_id' => Auth::user()->profile_id,
+        ]
+      );
+
+      return redirect('/tickets');
+    } catch (\Exception $e) {
+      dd($e);
+    }
   }
 }

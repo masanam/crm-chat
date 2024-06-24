@@ -17,7 +17,17 @@ class Task extends Model
    *
    * @var array<int, string>
    */
-  protected $fillable = ['project_id', 'user_id', 'status_id', 'title', 'deadline', 'description', 'priority', 'code'];
+  protected $fillable = [
+    'project_id',
+    'client_id',
+    'user_id',
+    'status_id',
+    'title',
+    'deadline',
+    'description',
+    'priority',
+    'code',
+  ];
 
   public function client(): BelongsTo
   {
@@ -31,6 +41,6 @@ class Task extends Model
 
   public function user(): BelongsTo
   {
-    return $this->belongsTo(User::class);
+    return $this->belongsTo(Profile::class);
   }
 }

@@ -12,6 +12,7 @@ class TicketController extends Controller
   public function get()
   {
     $tasks = Task::with(['status', 'client.organization'])
+      ->orderBy('status_id')
       ->get()
       ->groupBy('status_id')
       ->map(function ($taskGroup, $statusId) {

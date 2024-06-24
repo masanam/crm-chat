@@ -93,49 +93,49 @@
             <span class="align-middle">Edit</span>
           </button>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-activity">
             <i class="ti ti-trending-up me-2"></i>
             <span class="align-middle">Activity</span>
           </button>
-        </li>
+        </li> -->
       </ul>
       <div class="tab-content px-0 pb-0">
         <!-- Update item/tasks -->
         <div class="tab-pane fade show active" id="tab-update" role="tabpanel">
-          <form>
+          <form action="{{ route('tickets.upsert') }}" method="post">
+            @csrf
+            <input type="hidden" id="task_id" name="task_id" value="">
             <div class="mb-3">
               <label class="form-label" for="title">Title</label>
-              <input type="text" id="title" class="form-control" placeholder="Enter Title" />
+              <input type="text" name="title" id="title" class="form-control" placeholder="Enter Title" />
             </div>
             <div class="mb-3">
-              <label class="form-label" for="due-date">Due Date</label>
-              <input type="text" id="due-date" class="form-control" placeholder="Enter Due Date" />
+              <label class="form-label" for="deadline">Due Date</label>
+              <input type="text" name="deadline" id="deadline" class="due-date form-control" placeholder="Enter Due Date" />
             </div>
             <div class="mb-3">
-              <label class="form-label" for="company">Company</label>
-              <select id="company" class="select2 form-select">
-                <option value="PT. Maju Bersama">PT. Maju Bersama</option>
-                <option value="ABC">ABC</option>
-                <option value="XYZ">XYZ</option>
+              <label class="form-label" for="client_id">Company</label>
+              <select name="client_id" id="client_id" class="select2 form-select">
+                @foreach($clients as $client)
+                <option value="{{ $client->id }}">{{ $client->text }}</option>
+                @endforeach
               </select>
             </div>
             <div class="mb-3">
               <label class="form-label" for="priority">Priority</label>
-              <select id="priority" class="form-select">
-                <option value="High">High</option>
-                <option value="Medium">Medium</option>
-                <option value="Slow">Slow</option>
+              <select name="priority" id="priority" class="form-select">
+                <option value="High Priority">High Priority</option>
+                <option value="Medium Priority">Medium Priority</option>
+                <option value="Slow Priority">Slow Priority</option>
               </select>
             </div>
             <div class="mb-3">
-              <label class="form-label" for="status">Status</label>
-              <select id="status" class="form-select">
-                <option value="Open">Open</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Closed">Closed</option>
-                <option value="Pending">Pending</option>
-                <option value="KIV">KIV</option>
+              <label class="form-label" for="status_id">Status</label>
+              <select name="status_id" id="status_id" class="form-select">
+                @foreach($statuses as $status)
+                <option value="{{ $status->id }}">{{ $status->name }}</option>
+                @endforeach
               </select>
             </div>
             <!-- <div class="mb-3">
@@ -181,7 +181,7 @@
               </div>
             </div> -->
             <div class="d-flex flex-wrap">
-              <button type="button" class="btn btn-primary me-3" data-bs-dismiss="offcanvas">
+              <button type="submit" class="btn btn-primary me-3" data-bs-dismiss="offcanvas">
                 Update
               </button>
               <button type="button" class="btn btn-label-danger" data-bs-dismiss="offcanvas">

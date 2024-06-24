@@ -106,15 +106,15 @@
           <form>
             <div class="mb-3">
               <label class="form-label" for="title">Title</label>
-              <input type="text" id="title" class="form-control" placeholder="Enter Title" />
+              <input type="text" name="title" id="title" class="form-control" placeholder="Enter Title" />
             </div>
             <div class="mb-3">
               <label class="form-label" for="due-date">Due Date</label>
-              <input type="text" id="due-date" class="form-control" placeholder="Enter Due Date" />
+              <input type="text" name="due-date" id="due-date" class="form-control" placeholder="Enter Due Date" />
             </div>
             <div class="mb-3">
               <label class="form-label" for="company">Company</label>
-              <select id="company" class="select2 form-select">
+              <select name="company" id="company" class="form-select">
                 <option value="PT. Maju Bersama">PT. Maju Bersama</option>
                 <option value="ABC">ABC</option>
                 <option value="XYZ">XYZ</option>
@@ -122,7 +122,7 @@
             </div>
             <div class="mb-3">
               <label class="form-label" for="priority">Priority</label>
-              <select id="priority" class="form-select">
+              <select name="priority" id="priority" class="form-select">
                 <option value="High">High</option>
                 <option value="Medium">Medium</option>
                 <option value="Slow">Slow</option>
@@ -130,7 +130,7 @@
             </div>
             <div class="mb-3">
               <label class="form-label" for="status">Status</label>
-              <select id="status" class="form-select">
+              <select name="status" id="status" class="form-select">
                 <option value="Open">Open</option>
                 <option value="In Progress">In Progress</option>
                 <option value="Closed">Closed</option>

@@ -12,18 +12,17 @@
     kanbanAddNewBoard = document.querySelector('.kanban-add-new-board'),
     kanbanAddNewInput = [].slice.call(document.querySelectorAll('.kanban-add-board-input')),
     kanbanAddBoardBtn = document.querySelector('.kanban-add-board-btn'),
-    datePicker = document.querySelector('#due-date'),
+    datePicker = document.querySelector('.due-date'),
     select2 = $('.select2'), // ! Using jquery vars due to select2 jQuery dependency
-    assetsPath = document.querySelector('html').getAttribute('data-assets-path'),
-    baseUrl = document.querySelector('html').getAttribute('data-base-url');
+    assetsPath = document.querySelector('html').getAttribute('data-assets-path');
 
   // Init kanban Offcanvas
   const kanbanOffcanvas = new bootstrap.Offcanvas(kanbanSidebar);
 
   // Get kanban data
   // const kanbanResponse = await fetch(assetsPath + 'json/components/ticket-kanban.json');
-  const kanbanResponse = await fetch(baseUrl + '/api/tickets');
-  console.log('kanbanResponse', kanbanResponse);
+  const kanbanResponse = await fetch(`${baseUrl}api/tickets`);
+
   if (!kanbanResponse.ok) {
     console.error('error', kanbanResponse);
   }
@@ -34,6 +33,7 @@
     datePicker.flatpickr({
       monthSelectorType: 'static',
       altInput: true,
+      minDate: 'today',
       altFormat: 'j F, Y',
       dateFormat: 'Y-m-d'
     });
@@ -41,28 +41,28 @@
 
   //! TODO: Update Event label and guest code to JS once select removes jQuery dependency
   // select2
-  if (select2.length) {
-    function renderLabels(option) {
-      if (!option.id) {
-        return option.text;
-      }
-      var $badge = "<div class='badge " + $(option.element).data('color') + " rounded-pill'> " + option.text + '</div>';
-      return $badge;
-    }
+  // if (select2.length) {
+  //   function renderLabels(option) {
+  //     if (!option.id) {
+  //       return option.text;
+  //     }
+  //     var $badge = "<div class='badge " + $(option.element).data('color') + " rounded-pill'> " + option.text + '</div>';
+  //     return $badge;
+  //   }
 
-    select2.each(function () {
-      var $this = $(this);
-      $this.wrap("<div class='position-relative'></div>").select2({
-        placeholder: 'Select Label',
-        dropdownParent: $this.parent(),
-        templateResult: renderLabels,
-        templateSelection: renderLabels,
-        escapeMarkup: function (es) {
-          return es;
-        }
-      });
-    });
-  }
+  //   select2.each(function () {
+  //     var $this = $(this);
+  //     $this.wrap("<div class='position-relative'></div>").select2({
+  //       placeholder: 'Select Label',
+  //       dropdownParent: $this.parent(),
+  //       templateResult: renderLabels,
+  //       templateSelection: renderLabels,
+  //       escapeMarkup: function (es) {
+  //         return es;
+  //       }
+  //     });
+  //   });
+  // }
 
   // Comment editor
   if (commentEditor) {

@@ -534,6 +534,7 @@ Route::middleware(['auth'])->group(function () {
 
   // TICKETS
   Route::get('tickets', [TicketController::class, 'index'])->name('tickets.index');
+  Route::post('tickets/upsert', [TicketController::class, 'upsert'])->name('tickets.upsert');
 
   // Route::get('/kanban', function () {
   //   return view('content.apps.app-kanban'); // Your Blade template name

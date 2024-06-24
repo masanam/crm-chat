@@ -8,6 +8,7 @@ use App\Http\Controllers\apps\InternalNoteController;
 use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\TicketController;
+use App\Http\Controllers\API\ClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +80,7 @@ Route::middleware('auth:sanctum')->group(function () {
   // );
 });
 Route::get('/tickets', [TicketController::class, 'get']);
+Route::get('/clients', [ClientController::class, 'get']);
 
 Route::post('/send-whatsapp', [Chat::class, 'sendWhatsAppMessage']);
 Route::post('/receive-chat', [Chat::class, 'receiveWhatsAppMessage']);

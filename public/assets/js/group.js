@@ -36,23 +36,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-            /**
-     * @description handle open close dropdown button new in tab activities
-     */
-    const getBtnDropdown = document.querySelector('#add-dropdown')
-    const getModalDropdown = document.querySelector('.modal-dropdown-member')
-    if (getBtnDropdown) {
-      getBtnDropdown.addEventListener('click', () => {
-        const isHidden = getModalDropdown.className.includes('hidden')
-
-        if (isHidden) {
-          getModalDropdown.classList.remove('hidden')
-        } else {
-          getModalDropdown.classList.add('hidden')
-        }
-      })
-    }
-
         // Flow Chat Contact
         // ---------------------------------------------------------------------
         const renderHeaderChatHistory = ({

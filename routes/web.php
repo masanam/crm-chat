@@ -173,6 +173,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\PaymentController;
 
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');
 // Route::get('/dashboard/crm', [Crm::class, 'index'])->name('dashboard-crm');
@@ -546,4 +547,5 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['guest'])->group(function () {
   Route::get('/login', [AuthController::class, 'loginPage']);
   Route::post('/login', [AuthController::class, 'login'])->name('login');
+  Route::get('/sign-up', [AuthController::class, 'signUp'])->name('register');
 });

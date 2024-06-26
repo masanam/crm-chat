@@ -36,6 +36,72 @@ $authentication-1-inner-max-width: 500px !default;
         color: black !important;
       }
     }
+
+    .title {
+      font-size: 54px;
+      color: #344054;
+      margin: 0 !important;
+    }
+    .subtitle {
+      font-size: 30px;
+      font-weight: 800;
+      color: #33B6B9;
+      margin: 0 !important;
+    }
+
+    .sign-up-label {
+      font-size: 20px;
+      font-weight: 800;
+      color: #1D2939;
+    }
+    .sign-up-input, .sign-up-select {
+      border-radius: 40px;
+      border: 1px solid #87909B;
+      padding: 8px 14px;
+    }
+    .sign-up-input:focus, .sign-up-select:focus {
+      border: 3px solid #0D7072 !important;
+    }
+    .btn-submit {
+      border: 2px solid #000000;
+      border-radius: 30px;
+      padding: 8px 0px;
+    }
+  }
+
+  &.payment {
+    .payment-title {
+      font-size: 32px;
+      color: #33B6B9;
+      margin: 0 !important;
+    }
+    .payment-subtitle {
+      font-size: 32px;
+      font-weight: 700;
+      color: #000;
+      margin: 0 !important;
+    }
+
+    .wrapper-payment-icon {
+      border-radius: 6px;
+      border: 1px solid #B2BCCA;
+      background: var(--White, #FFF);
+      padding: 4px 7px;
+      height: fit-content;
+    }
+
+    .wrapper-card-discover {
+      padding: 8px 0px 0px 0px;
+      img {
+          width: 50px;
+      }
+    }
+
+    .text-info-security {
+      color: #33B6B9;
+      font-weight: 400;
+      font-size: 12px;
+    }
   }
 
   &.authentication-cover {
@@ -127,6 +193,25 @@ $authentication-1-inner-max-width: 500px !default;
     font-size: 16px;
   }
 }
+
+.hidden {
+  display: none;
+}
+
+.auth-bg {
+  .signup-bg {
+    width: 768px;
+    height: 695px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+  }
+}
+
+.container-form-stepper {
+  max-height: 590px;
+}
+
 
 // authentication multisteps responsive styles
 @media (max-height: 636px) {

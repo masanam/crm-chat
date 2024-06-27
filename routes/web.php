@@ -174,6 +174,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\StripePaymentController;
 
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');
 // Route::get('/dashboard/crm', [Crm::class, 'index'])->name('dashboard-crm');
@@ -548,4 +549,12 @@ Route::middleware(['guest'])->group(function () {
   Route::get('/login', [AuthController::class, 'loginPage']);
   Route::post('/login', [AuthController::class, 'login'])->name('login');
   Route::get('/sign-up', [AuthController::class, 'signUp'])->name('register');
+});
+
+//Stripe
+Route::controller(StripePaymentController::class)->group(function () {
+  Route::get('stripe', 'stripe');
+  Route::get('subscribe', 'subscribe');
+  Route::post('stripe', 'stripePost')->name('stripe.post');
+  Route::post('payment', 'processPayment')->name('stripe.payment');;
 });

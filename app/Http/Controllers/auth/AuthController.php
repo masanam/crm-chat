@@ -59,4 +59,10 @@ class AuthController extends Controller
 
     return redirect('/'); // Redirect to the home page or any other page you prefer
   }
+
+  public function signUp()
+  {
+    $pageConfigs = ['myLayout' => 'blank'];
+    return view('content.authentications.auth-signup', ['pageConfigs' => $pageConfigs]);
+  }
 }

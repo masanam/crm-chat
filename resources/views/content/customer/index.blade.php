@@ -230,6 +230,12 @@
                     >
                     </x-input-floating>
                 </div>
+                <x-input-floating
+                    label="Job Title"
+                    id="job title"
+                    name="job title"
+                >
+                </x-input-floating>
                 <div class="d-flex justify-content-between gap-5 w-100">
                     <x-input-floating
                         label="Channel"
@@ -252,12 +258,6 @@
                 <div class="hidden" id="wrapper-channel"></div>
                 {{-- !! Dont remove this tag --}}
 
-                <x-input-floating
-                    label="Job Title"
-                    id="job title"
-                    name="job title"
-                >
-                </x-input-floating>
             </div>
             <button class="btn-link" id="btn-more-channel">
                 + Add more channels

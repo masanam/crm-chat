@@ -153,7 +153,7 @@ $chat-list-margin: 1rem;
           display: flex;
           justify-content: space-between;
           padding: $chat-contact-list-padding-y $chat-contact-list-padding-x;
-          margin: $chat-contact-list-margin-y $chat-contact-list-margin-x;
+          // margin: $chat-contact-list-margin-y $chat-contact-list-margin-x;
 
           cursor: pointer;
           a {

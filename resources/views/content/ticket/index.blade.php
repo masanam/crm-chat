@@ -26,6 +26,20 @@
 
 @section('page-script')
 <script src="{{asset('js/components/ticket-kanban.js')}}"></script>
+<script>
+  $(document).ready(function () {
+    $('#team_id').on('change', function (e) {
+      var team_id = $(this).val();
+      $.get(baseUrl + 'api/get-members?team_id=' + team_id, function (res) {
+        const data = res.results;
+        $("#member_id").empty()
+        data.forEach((item) => {
+          $("#member_id").append('<option value="' + item.id + '">' + item.name + '</option>')
+        })
+      })
+    });
+  });
+</script>
 @endsection
 
 @section('content')
@@ -107,36 +121,63 @@
             @csrf
             <input type="hidden" id="task_id" name="task_id" value="">
             <div class="mb-3">
-              <label class="form-label" for="title">Title</label>
-              <input type="text" name="title" id="title" class="form-control" placeholder="Enter Title" />
+              <label class="form-label" for="title">Ticket Name</label>
+              <input type="text" name="title" id="title" class="form-control" placeholder="Enter Ticket Name" />
+            </div>
+            <div class="d-flex flex-row mb-3 gap-4">
+              <div class="mb-3">
+                <label class="form-label" for="code">Ticket ID</label>
+                <input type="text" name="code" id="code" class="form-control" placeholder="Enter Ticket ID" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="deadline">Resolution Date</label>
+                <input type="text" name="deadline" id="deadline" class="due-date form-control" placeholder="Enter Due Date" />
+              </div>
+            </div>
+            <div class="d-flex flex-row gap-2">
+              <div class="mb-3">
+                <label class="form-label" for="type">Ticket Type</label>
+                <select name="type" id="type" class="select2 form-select">
+                  <option value="Document">Document</option>
+                  <option value="Complaint">Complaint</option>
+                  <option value="Technical">Technical</option>
+                  <option value="Issue">Issue</option>
+                  <option value="Others">Others</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="priority">Priority</label>
+                <select name="priority" id="priority" class="form-select">
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="status_id">Status</label>
+                <select name="status_id" id="status_id" class="select2 form-select">
+                  @foreach($statuses as $status)
+                  <option value="{{ $status->id }}">{{ $status->name }}</option>
+                  @endforeach
+                </select>
+              </div>
             </div>
             <div class="mb-3">
-              <label class="form-label" for="deadline">Due Date</label>
-              <input type="text" name="deadline" id="deadline" class="due-date form-control" placeholder="Enter Due Date" />
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="client_id">Company</label>
-              <select name="client_id" id="client_id" class="select2 form-select">
-                @foreach($clients as $client)
-                <option value="{{ $client->id }}">{{ $client->text }}</option>
+              <label class="form-label" for="team_id">Team</label>
+              <select name="team_id" id="team_id" class="select2 form-select">
+                <option value="">Select your team</option>
+                @foreach($teams as $team)
+                <option value="{{ $team->id }}">{{ $team->name }}</option>
                 @endforeach
               </select>
             </div>
             <div class="mb-3">
-              <label class="form-label" for="priority">Priority</label>
-              <select name="priority" id="priority" class="form-select">
-                <option value="High Priority">High Priority</option>
-                <option value="Medium Priority">Medium Priority</option>
-                <option value="Slow Priority">Slow Priority</option>
-              </select>
+              <label class="form-label" for="member_id">Members</label>
+              <select name="member_id" id="member_id" class="select2 form-select"></select>
             </div>
             <div class="mb-3">
-              <label class="form-label" for="status_id">Status</label>
-              <select name="status_id" id="status_id" class="form-select">
-                @foreach($statuses as $status)
-                <option value="{{ $status->id }}">{{ $status->name }}</option>
-                @endforeach
-              </select>
+              <label class="form-label" for="internal_note">Ticket Notes</label>
+              <textarea name="internal_note" rows="4" id="internal_note" class="form-control"></textarea>
             </div>
             <!-- <div class="mb-3">
               <label class="form-label" for="label"> Label</label>

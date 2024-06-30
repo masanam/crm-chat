@@ -105,20 +105,18 @@
                         </div>
 
 
-                        <div class="d-flex flex-column gap-3 chat-wrapper">
-
-                            <div class="d-flex flex-column gap-2">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <span class="h5 mb-1">1 on 1</span>
-                                    <span class="badge bg-light rounded-pill ms-auto text-dark">10</span>
-                                </div>
-
-                                <div class="d-flex flex-column gap-4" id="chat-contact-one">
-                                    @foreach($chatList as $key => $value)
-                                    <x-card-chat title="{{ $value->client_name }}" subtitle="{{ $value->message }}" time="{{ \Carbon\Carbon::parse($value->created_at)->format('d-m-Y') }}">
-                                    </x-card-chat>
-                                    @endforeach
-                                </div>
+                        <button class="accordion accordion-button bg-lighter rounded-0 collapsed" style="padding:15px;border-bottom:1px solid #dbdade;">
+                            <span class="d-flex flex-column w-100">
+                                <span class=" h5 mb-1">1 on 1</span>
+                            </span>
+                            <span class="badge bg-light rounded-pill ms-auto text-dark float-right">10</span>
+                        </button>
+                        <div class="panel" id="chat-contact-one" style="display: block;">
+                            <div class="d-flex flex-column gap-4 w-100" style="padding: 12px 0px;">
+                                @foreach($chatList as $key => $value)
+                                <x-card-chat title="{{ $value->client_name }}" subtitle="{{ $value->message }}" time="{{ \Carbon\Carbon::parse($value->created_at)->format('d-m-Y') }}">
+                                </x-card-chat>
+                                @endforeach
                             </div>
                         </div>
                     </x-slot>

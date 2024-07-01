@@ -4,12 +4,16 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\JsonResponse;
 
 use App\Models\Task;
+use App\Models\TeamMember;
 
 class TicketController extends Controller
 {
-  public function get()
+  public function get(): JsonResponse
   {
     $tasks = Task::with(['status', 'client.organization'])
       ->orderBy('status_id')
@@ -42,6 +46,45 @@ class TicketController extends Controller
       'message' => 'Board list',
       'data' => $tasks,
     ]);
+  }
+
+  public function getMembers(Request $request): JsonResponse
+  {
+    try {
+      $validator = Validator::make($request->all(), [
+        'team_id' => ['required', 'integer'],
+      ]);
+
+      $params = $validator->validate();
+
+      $model = DB::select(
+        "
+        select
+          team_members.id as id,
+          concat(profiles.first_name, ' ', profiles.last_name) as name
+        from
+          team_members
+          inner join profiles on team_members.user_id::varchar = profiles.id::varchar
+        where
+          team_members.id = " . $params['team_id']
+      );
+
+      return response()->json(
+        [
+          'message' => 'Member retrieved successfully',
+          'results' => $model,
+        ],
+        200
+      );
+    } catch (Exception $e) {
+      return response()->json(
+        [
+          'message' => $e->getMessage(),
+          'results' => [],
+        ],
+        500
+      );
+    }
   }
 
   private function getBadgeTitle($statusName)

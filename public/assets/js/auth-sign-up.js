@@ -11,12 +11,13 @@
     const getBtnSubmit = document.querySelector('.btn-submit')
     const getFooter = document.querySelector('.footer')
     let step = 1
+    let scrollbar
     
     if (getContainerFormStepper) {
-      new PerfectScrollbar(getContainerFormStepper, {
-        wheelPropagation: false,
-        suppressScrollX: true
-      });
+        scrollbar = new PerfectScrollbar(getContainerFormStepper, {
+            wheelPropagation: false,
+            suppressScrollX: true
+        });
     }
 
     if (getFormStepper) {
@@ -70,15 +71,9 @@
                     <input class="sign-up-input" type="text" name="industry" id="industry" placeholder="Industry">
                 </div>
             </div>
-            <div class="d-flex justify-content-between gap-5">
-                <div class="d-flex flex-column gap-2 w-100">
-                    <label class="sign-up-label" for="team_number">Number of Team</label>
-                    <input class="sign-up-input" type="number" name="team_number" id="team_number" placeholder="Number of Team">
-                </div>
-                <div class="d-flex flex-column gap-2 w-100">
-                    <label class="sign-up-label" for="usecase">Use-case</label>
-                    <select class="sign-up-select" name="usecase" id="usecase" placeholder="Select usecase"></select>
-                </div>
+            <div class="d-flex flex-column gap-2 w-100">
+                <label class="sign-up-label" for="team_number">Number of Team</label>
+                <input class="sign-up-input" type="number" name="team_number" id="team_number" placeholder="Number of Team">
             </div>
         </div>
             `
@@ -191,6 +186,7 @@
                                     </div>
             `
             getBtnSubmit.innerHTML = 'Go to Dashboard'
+            scrollbar?.destroy()
             break;
           default:
             break;
@@ -211,7 +207,7 @@
                       monthSelectorType: 'static'
                   });
               }
-          } 
+          }
         })
       }
     }

@@ -18,7 +18,7 @@
             @else
             <ul class="nav nav-tabs" id="chats-tabs" role="tablist">
                 @foreach($tabs as $key => $value)
-                <li class="nav-item" role="presentation" style="width: 113px;">
+                <li class="nav-item" role="presentation" style="width: 80px;">
                     <button class="nav-link nav-item-custom {{ $key === 0 ? 'active' : '' }}" id="{{ strtolower($value->name) }}-tab" data-bs-toggle="tab" data-bs-target="#{{ strtolower($value->name) }}" type="button" role="tab" aria-controls="{{ strtolower($value->name) }}" aria-selected="true">{{ $value->name }}</button>
                 </li>
                 @endforeach

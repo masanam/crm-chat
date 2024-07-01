@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Task;
 use App\Models\TaskStatus;
+use App\Models\Team;
 use App\Models\Client;
 
 class TicketController extends Controller
@@ -50,8 +51,9 @@ class TicketController extends Controller
       );
 
       $statuses = TaskStatus::all();
+      $teams = Team::all();
 
-      return view('content.ticket.index', compact('clients', 'statuses'));
+      return view('content.ticket.index', compact('clients', 'statuses', 'teams'));
     } catch (\Exception $e) {
       return view('content.ticket.index');
     }
@@ -62,10 +64,13 @@ class TicketController extends Controller
     try {
       $validator = Validator::make($request->all(), [
         'title' => ['string', 'required'],
+        'code' => ['string', 'required'],
         'deadline' => ['date', 'required'],
-        'client_id' => ['integer', 'required'],
         'priority' => ['string', 'required'],
         'status_id' => ['integer', 'required'],
+        'team_id' => ['integer'],
+        'member_id' => ['integer'],
+        'internal_note' => ['string'],
       ]);
 
       $params = $validator->validate();
@@ -76,10 +81,13 @@ class TicketController extends Controller
         ],
         [
           'title' => $params['title'],
+          'code' => $params['code'],
           'deadline' => $params['deadline'],
-          'client_id' => (int) $params['client_id'],
           'priority' => $params['priority'],
-          'status_id' => (int) $params['status_id'],
+          'status_id' => $params['status_id'],
+          'team_id' => $params['team_id'],
+          'member_id' => $params['member_id'],
+          'internal_note' => $params['internal_note'],
           'user_id' => Auth::user()->profile_id,
         ]
       );

@@ -80,6 +80,7 @@ Route::middleware('auth:sanctum')->group(function () {
   // );
 });
 Route::get('/tickets', [TicketController::class, 'get']);
+Route::get('/get-members', [TicketController::class, 'getMembers']);
 Route::get('/clients', [ClientController::class, 'get']);
 
 Route::post('/send-whatsapp', [Chat::class, 'sendWhatsAppMessage']);

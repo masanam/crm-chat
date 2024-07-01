@@ -157,16 +157,16 @@
       `<span class="border-top"></span>
       <div class='d-flex justify-content-between align-items-center flex-wrap mt-2 pt-1'>
         <div class='d-flex'> 
-          <a class='d-flex align-items-center btn-lg'>
+          <a class='d-flex align-items-center btn-lg pe-auto'>
             <img src="${assetsPath}svg/icons/r.svg" style="width: 24px">
           </a> 
-          <a class='d-flex align-items-center btn-lg'>
+          <a class='d-flex align-items-center btn-lg pe-auto'>
             <img src="${assetsPath}svg/icons/wa-logo.svg" style="width: 24px">
           </a>
-          <a class='d-flex align-items-center btn-lg'>
+          <a class='d-flex align-items-center btn-lg pe-auto'>
             <img src="${assetsPath}svg/icons/icon-envelope.svg" style="width: 24px">
           </a>
-          <a class='d-flex align-items-center btn-lg'>
+          <a class='d-flex align-items-center btn-lg pe-auto'>
             <img src="${assetsPath}svg/icons/info-gray.svg" style="width: 24px">
           </a>
         </div>
@@ -301,7 +301,7 @@
   if (kanbanItem) {
     kanbanItem.forEach(function (el) {
       const element = `
-      <span class='kanban-text'><h4>${el.getAttribute('data-text')}</h4></span>
+      <span class='kanban-text'><h5>${el.getAttribute('data-text')}</h5></span>
       `;
       let img = '';
       if (el.getAttribute('data-image') !== null) {
@@ -369,12 +369,12 @@
 
     let col = 0;
     kanbanTitleBoard.forEach(function (elem) {
-      elem.classList.add('badge', 'bg-label-' + arColor[col], 'rounded-pill');
+      elem.classList.add('badge', 'bg-label-' + arColor[col], 'rounded-pill', 'fs-6');
       const boardId = elem.parentNode.parentNode.getAttribute('data-id');
 
-      elem.addEventListener('mouseenter', function () {
-        this.contentEditable = 'true';
-      });
+      // elem.addEventListener('mouseenter', function () {
+      //   this.contentEditable = 'true';
+      // });
 
       // Appends delete icon with title
       elem.insertAdjacentHTML('afterend', renderBoardDropdown(boardId));

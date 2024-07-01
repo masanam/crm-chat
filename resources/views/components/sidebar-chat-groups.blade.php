@@ -21,7 +21,7 @@
             @else
             <ul class="nav nav-tabs" id="chats-tabs" role="tablist">
                 @foreach($tabs as $key => $value)
-                <li class="nav-item" role="presentation" style="width: 113px;">
+                <li class="nav-item" role="presentation" style="width: 80px;">
                     <button class="nav-link nav-item-custom {{ $key === 0 ? 'active' : '' }}" id="{{ strtolower($value->name) }}-tab" data-bs-toggle="tab" data-bs-target="#{{ strtolower($value->name) }}" type="button" role="tab" aria-controls="{{ strtolower($value->name) }}" aria-selected="true">{{ $value->name }}</button>
                 </li>
                 @endforeach
@@ -46,10 +46,10 @@
 
         <div class="container pt-2 d-flex justify-content-center">
             <ul class="nav nav-tabs" id="chats-tabs" role="tablist">
-                <li class="nav-item" role="presentation" style="width: 113px;">
+                <li class="nav-item" role="presentation" style="width: 80px;">
                     <button class="nav-link nav-item-custom active" id="new-tab" data-bs-toggle="tab" data-bs-target="#new" type="button" role="tab" aria-controls="new" aria-selected="true">All</button>
                 </li>
-                <li class="nav-item" role="presentation" style="width: 113px;">
+                <li class="nav-item" role="presentation" style="width: 80px;">
                     <button class="nav-link nav-item-custom " id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button" role="tab" aria-controls="active" aria-selected="false" tabindex="-1">Unread</button>
                 </li>
             </ul>

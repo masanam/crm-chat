@@ -92,7 +92,7 @@
     </x-sidebar-chat-contacts>
 
     <!-- Chat History -->
-    <div class="d-flex flex-column chat-history-wrapper" style="width: 40%">
+    <div class="d-flex flex-column chat-history-wrapper" style="width: 50%">
         <ul class="nav nav-tabs nav-tab-chat" role="tablist">
             <li class="nav-item">
               <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#wa" aria-controls="wa" aria-selected="true">WhatsApp</button>

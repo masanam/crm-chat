@@ -105,6 +105,7 @@
   align-items: center;
   flex: 0 1 auto;
   margin: 0;
+  width: 180px;
 
   .menu-item.active > & {
     &.menu-toggle {
@@ -222,6 +223,7 @@
         > .menu-link {
           font-weight: $font-weight-medium;
         }
+        background-color: transparent !important;
       }
     }
   }

@@ -83,9 +83,9 @@ document.addEventListener('DOMContentLoaded', function () {
             memberCount
         }) => {
             const renderHeaderChat = renderHeaderChatHistory({ isOneOnOneChat, title, memberCount })
-            
+
             return `
-            <div class="chat-history-wrapper">
+            <div class="chat-history-wrapper" id="chat-history-internal">
                 ${renderHeaderChat}
 
                 <div class="chat-history-body bg-white">

@@ -67,6 +67,7 @@ class TicketController extends Controller
         'code' => ['string', 'required'],
         'deadline' => ['date', 'required'],
         'priority' => ['string', 'required'],
+        'client_id' => ['integer', 'required'],
         'status_id' => ['integer', 'required'],
         'team_id' => ['integer'],
         'member_id' => ['integer'],
@@ -84,6 +85,7 @@ class TicketController extends Controller
           'code' => $params['code'],
           'deadline' => $params['deadline'],
           'priority' => $params['priority'],
+          'client_id' => $params['client_id'],
           'status_id' => $params['status_id'],
           'team_id' => $params['team_id'],
           'member_id' => $params['member_id'],
@@ -92,7 +94,7 @@ class TicketController extends Controller
         ]
       );
 
-      return redirect('/tickets');
+      return redirect('/customers/' . $model->id . '/ticket');
     } catch (\Exception $e) {
       dd($e);
     }

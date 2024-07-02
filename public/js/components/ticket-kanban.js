@@ -224,7 +224,9 @@
       //     "<span class='avatar-initial rounded-circle bg-label-secondary'><i class='ti ti-plus ti-xs text-heading'></i></span>" +
       //     '</div>'
       //   );
-      window.location.href = baseUrl + 'customers/test';
+      const eid = el.getAttribute('data-eid').match(/\d+/g)[0]
+
+      window.location.href = baseUrl + `customers/${eid}/ticket`;
     },
 
     // buttonClick: function (el, boardId) {

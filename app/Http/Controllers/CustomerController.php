@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
-use Yajra\DataTables\Facades\Datatables;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\Datatables;
+
+use App\Models\Task;
+use App\Models\TaskStatus;
 
 class CustomerController extends Controller
 {
@@ -162,8 +164,11 @@ class CustomerController extends Controller
   /**
    * Display detail ticket in tab tickets
    */
-  public function detailTicket()
+  public function detailTicket(Request $request, $id)
   {
-    return view('content.customer.detail-ticket');
+    $model = Task::with('client', 'status', 'team', 'member', 'user')->find($id);
+    $statuses = TaskStatus::all();
+
+    return view('content.customer.detail-ticket', compact('model', 'statuses'));
   }
 }

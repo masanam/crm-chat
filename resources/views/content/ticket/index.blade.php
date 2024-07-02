@@ -96,30 +96,44 @@
   <!-- Edit Task & Activities -->
   <div id="addEditTask" class="offcanvas offcanvas-end kanban-update-item-sidebar">
     <div class="offcanvas-header border-bottom">
-      <h5 class="offcanvas-title">Edit Task</h5>
+      <h5 class="offcanvas-title">Add Task</h5>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-      <ul class="nav nav-tabs tabs-line">
+      <!-- <ul class="nav nav-tabs tabs-line">
         <li class="nav-item">
           <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-update">
             <i class="ti ti-edit me-2"></i>
             <span class="align-middle">Edit</span>
           </button>
-        </li>
+        </li> -->
         <!-- <li class="nav-item">
           <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-activity">
             <i class="ti ti-trending-up me-2"></i>
             <span class="align-middle">Activity</span>
           </button>
         </li> -->
-      </ul>
+      <!-- </ul> -->
       <div class="tab-content px-0 pb-0">
         <!-- Update item/tasks -->
         <div class="tab-pane fade show active" id="tab-update" role="tabpanel">
           <form action="{{ route('tickets.upsert') }}" method="post">
             @csrf
             <input type="hidden" id="task_id" name="task_id" value="">
+            <div class="d-flex flex-row justify-content-between mb-3 gap-4">
+              <div class="d-inline-flex p2">
+                <!-- <label class="form-label" for="status_id">Status</label> -->
+                <select name="client_id" id="client_id" class="select2 form-select">
+                  @foreach($clients as $client)
+                  <option value="{{ $client->id }}">{{ $client->text }}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="p2 ms-auto">
+                <!-- <label class="form-label" for="status_id">Status</label> -->
+                {{ Auth::user()->profile->first_name }} {{ Auth::user()->profile->last_name }}
+              </div>
+            </div>
             <div class="mb-3">
               <label class="form-label" for="title">Ticket Name</label>
               <input type="text" name="title" id="title" class="form-control" placeholder="Enter Ticket Name" />

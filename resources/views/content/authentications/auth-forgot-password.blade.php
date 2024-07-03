@@ -4,7 +4,7 @@
 
 @extends('layouts/layoutMaster')
 
-@section('title', 'Login')
+@section('title', 'Forgot Password')
 
 @section('vendor-style')
     <!-- Vendor -->
@@ -25,8 +25,7 @@
 @endsection
 
 @section('page-script')
-    <script src="{{ asset('assets/js/auth-sign-up.js') }}"></script>
-    <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
+    <script src="{{asset('assets/js/pages-auth.js')}}"></script>
 @endsection
 
 @php
@@ -35,27 +34,32 @@
 
 @section('content')
     <div class="d-flex justify-content-between">
-        <div class="w-100 d-flex flex-column justify-content-between">
+        <div class="w-100 d-flex flex-column justify-content-between container-wrapper">
             <div>
-                <a href="/">
-                    <img src="{{ asset('assets/svg/icons/pasima-logo.svg') }}" alt="pasima-logo" width="250">
-                </a>
-                <div class="container-xxl container-form-stepper">
-                    <div class="authentication-wrapper authentication-basic payment">
-                        <div class="w-100 py-4 px-5 d-flex flex-column gap-5">
-                            <div class="d-flex flex-column gap-5 form-stepper"></div>
-                            <button class="btn-primary btn-submit">Continue</button>
+                <header>
+                    <a href="/">
+                        <img src="{{ asset('assets/svg/icons/pasima-logo.svg') }}" alt="pasima-logo" width="250">
+                    </a>
+                </header>
+                <div class="container-xxl">
+                    <div class="authentication-wrapper authentication-basic">
+                        <div class="w-100 py-4 px-5 d-flex flex-column gap-4">
+                            <div class="d-flex flex-column gap-5" id="forgot-password-content"></div>
+                            <button class="btn-primary btn-submit">Send code</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <footer class="footer d-flex gap-5" style="position: initial;">
-                <a href="#" class="text-primary">Term and Condition</a>
-                <a href="#" class="text-primary">Privacy Policy</a>
+            <footer style="position: relative; padding: 1rem 4rem;">
+                <div class="d-flex align-items-center gap-4" id="forgot-password-stepper">
+                    <div class="step-passed"></div>
+                    <div class="step-upcoming"></div>
+                    <div class="step-upcoming"></div>
+                </div>
             </footer>
         </div>
         <div class="auth-bg w-100">
-            <img src="{{ asset('assets/img/backgrounds/signup-bg.png') }}" alt="auth bg" class="signup-bg">
+            <img src="{{ asset('assets/img/backgrounds/auth-forgot-password-bg.png') }}" alt="auth bg" class="signup-bg">
         </div>
     </div>
 @endsection

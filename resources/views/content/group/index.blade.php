@@ -78,7 +78,7 @@
                             $bglabel = ($value->total > 1) ? 'bg-label-warning':'bg-label-success';
                             @endphp
 
-                            <div class="d-flex align-items-center justify-content-between pb-4 list-group-item-action" style="padding:10px;border-bottom:1px solid #dbdade">
+                            <div class="d-flex align-items-center justify-content-between pb-4 list-group-item-action" style="padding:10px 0px;border-bottom:1px solid #dbdade">
                                 <div class="d-flex align-items-center gap-2 w-100">
                                     <div class="flex-shrink-0 avatar">
                                         <span class="avatar-initial rounded-8 {{$bglabel}} text-dark fw-bolder">{{ $getInitial }}</span>
@@ -88,8 +88,8 @@
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <div class="text-start text-dark fw-bold" id="chat-title">{{ $value->name }}</div>
                                             </div>
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <span class="text-muted">{{ $value->message }}</span>
+                                            <div class="d-flex align-items-center justify-content-between gap-2">
+                                                <span class="text-muted" style="width: 145px;">{{ $value->message }}</span>
                                                 <span class="time">{{ \Carbon\Carbon::parse($value->created_at)->format('d-m-Y') }}</span>
                                             </div>
                                             <div class="d-flex justify-content-between">

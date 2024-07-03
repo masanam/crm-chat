@@ -129,10 +129,10 @@ document.addEventListener('DOMContentLoaded', function () {
       chatContactListItem.addEventListener('click', e => {
         // Remove active class from chat contact list item
         chatContactListItems.forEach(chatContactListItem => {
-          chatContactListItem.classList.remove('active');
+          chatContactListItem.classList.remove('highlight');
         });
         // Add active class to current chat contact list item
-        e.currentTarget.classList.add('active');
+        e.currentTarget.classList.add('highlight');
       });
     });
 

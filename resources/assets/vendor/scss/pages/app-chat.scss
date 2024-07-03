@@ -186,6 +186,9 @@ $chat-list-margin: 1rem;
             font-size: 14px;
           }
         }
+        li.chat-contact-list-item.highlight {
+          background: #EEF8F9 !important;
+        }
       }
 
       .nav-tabs {

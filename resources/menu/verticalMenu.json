@@ -32,7 +32,7 @@
     },
     {
       "name": "Internal",
-      "slug": "internal",
+      "slug": "group-list",
       "iconUrl": "assets/svg/icons/internal-icon.svg",
       "url": "/groups"
     },

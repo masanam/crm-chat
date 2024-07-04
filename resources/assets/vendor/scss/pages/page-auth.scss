@@ -17,7 +17,6 @@ $authentication-1-inner-max-width: 500px !default;
 
   .authentication-inner {
     width: 100%;
-    height: 550px;
     .card {
       border-radius: 25px !important;
       height: 100%;
@@ -48,24 +47,56 @@ $authentication-1-inner-max-width: 500px !default;
       color: #33B6B9;
       margin: 0 !important;
     }
+    .login-title {
+      font-size: 64px;
+    }
+    .login-subtitle {
+      font-size: 25px !important;
+    }
 
     .sign-up-label {
       font-size: 20px;
       font-weight: 800;
       color: #1D2939;
     }
+
     .sign-up-input, .sign-up-select {
       border-radius: 40px;
       border: 1px solid #87909B;
       padding: 8px 14px;
     }
+
     .sign-up-input:focus, .sign-up-select:focus {
       border: 3px solid #0D7072 !important;
     }
+
     .btn-submit {
       border: 2px solid #000000;
       border-radius: 30px;
       padding: 8px 0px;
+    }
+    
+    .otp-input {
+      width: 60px;
+      height: 80px;
+      border-radius: 5px;
+      border: 1px solid #D0D5DD;
+      margin: 0 10px;
+      text-align: center;
+      font-size: 36px;
+      cursor: not-allowed;
+      pointer-events: none;
+      background: #F2F4F7;
+    }
+   
+    .otp-input:focus {
+      border: 1px solid #33B6B9;
+      outline: none;
+    }
+   
+    .otp-input:nth-child(1) {
+      cursor: pointer;
+      pointer-events: all;
     }
   }
 
@@ -147,14 +178,12 @@ $authentication-1-inner-max-width: 500px !default;
   }
 
   &.authentication-basic .authentication-inner {
-    max-width: $authentication-1-inner-max-width;
+    width: 100%;
     position: relative;
     &:before {
       @include light.media-breakpoint-down(sm) {
         display: none;
       }
-      width: 238px;
-      height: 233px;
       content: ' ';
       position: absolute;
       top: -55px;
@@ -165,8 +194,6 @@ $authentication-1-inner-max-width: 500px !default;
       @include light.media-breakpoint-down(sm) {
         display: none;
       }
-      width: 180px;
-      height: 180px;
       content: ' ';
       position: absolute;
       z-index: -1;
@@ -194,6 +221,21 @@ $authentication-1-inner-max-width: 500px !default;
   }
 }
 
+footer {
+  .step-passed {
+    background: #33B6B9;
+    width: 33%;
+    height: 8px;
+    border-radius: 4px;
+  }
+  .step-upcoming {
+    background: #D9D9D9;
+    width: 33%;
+    height: 8px;
+    border-radius: 4px;
+  }
+}
+
 .hidden {
   display: none;
 }
@@ -212,6 +254,17 @@ $authentication-1-inner-max-width: 500px !default;
   max-height: 590px;
 }
 
+.container-wrapper {
+  max-height: 700px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
 
 // authentication multisteps responsive styles
 @media (max-height: 636px) {
@@ -267,5 +320,14 @@ $authentication-1-inner-max-width: 500px !default;
   }
   .authentication-wrapper.authentication-basic {
     justify-content: center;
+  }
+}
+
+@media (min-width: 1140px) and (max-width: 1282px) {
+  .login-title {
+    font-size: 28px !important;
+  }
+  .login-subtitle {
+    font-size: 18px !important;
   }
 }

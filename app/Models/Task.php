@@ -47,6 +47,11 @@ class Task extends Model
     return $this->belongsTo(Team::class);
   }
 
+  public function lead(): BelongsTo
+  {
+    return $this->belongsTo(Lead::class);
+  }
+
   public function member(): BelongsTo
   {
     return $this->belongsTo(TeamMember::class);

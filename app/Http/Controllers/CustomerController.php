@@ -166,7 +166,7 @@ class CustomerController extends Controller
    */
   public function detailTicket(Request $request, $id)
   {
-    $model = Task::with('client', 'status', 'team', 'member', 'user')->find($id);
+    $model = Task::with('client', 'status', 'team', 'member', 'lead', 'user')->find($id);
     $statuses = TaskStatus::all();
 
     return view('content.customer.detail-ticket', compact('model', 'statuses'));

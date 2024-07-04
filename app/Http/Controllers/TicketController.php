@@ -76,6 +76,8 @@ class TicketController extends Controller
 
       $params = $validator->validate();
 
+      $assignedLead = AssignedLead::where('profile_id', Auth::user()->profile_id)->first();
+
       $model = Task::updateOrCreate(
         [
           'id' => $request->id,
@@ -89,6 +91,7 @@ class TicketController extends Controller
           'status_id' => $params['status_id'],
           'team_id' => $params['team_id'],
           'member_id' => $params['member_id'],
+          'lead_id' => $assignedLead->lead_id ?? null,
           'internal_note' => $params['internal_note'],
           'user_id' => Auth::user()->profile_id,
         ]

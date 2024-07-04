@@ -18,10 +18,10 @@
 @endsection
 
 @section('vendor-script')
-    <script src="{{ asset('assets/vendor/libs/@form-validation/umd/bundle/popular.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/@form-validation/umd/plugin-bootstrap5/index.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
+<script src="{{asset('assets/vendor/libs/@form-validation/umd/bundle/popular.min.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/@form-validation/umd/plugin-bootstrap5/index.min.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js')}}"></script>
+<script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
 @endsection
 
 @section('page-script')
@@ -34,7 +34,7 @@
 @endphp
 
 @section('content')
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between" id="auth-signup">
         <div class="w-100 d-flex flex-column justify-content-between">
             <div>
                 <a href="/">
@@ -42,10 +42,164 @@
                 </a>
                 <div class="container-xxl container-form-stepper">
                     <div class="authentication-wrapper authentication-basic payment">
-                        <div class="w-100 py-4 px-5 d-flex flex-column gap-5">
-                            <div class="d-flex flex-column gap-5 form-stepper"></div>
-                            <button class="btn-primary btn-submit">Continue</button>
-                        </div>
+                        <form class="w-100 py-4 px-5 d-flex flex-column gap-5" id="signup-form" >
+                            @csrf
+                            <div id="step1-validation" class="hidden">
+                                <div class="d-flex flex-column align-items-center">
+                                    <h1 class="title">Start your free trial</h1>
+                                    <h2 class="subtitle">14-day free trial</h2>
+                                </div>
+                                <div class="d-flex flex-column gap-2 mb-3">
+                                    <label class="sign-up-label" for="email">You work email</label>
+                                    <input class="sign-up-input" type="text" name="email" id="email" placeholder="Email">
+                                </div>
+                                <button class="btn-primary btn-submit w-100 mt-2" id="btn-next" type="submit">Continue</button>
+                            </div>
+                            <div id="step2-validation" class="hidden">
+                                <div class="d-flex flex-column gap-3">
+                                    <div class="d-flex justify-content-between gap-5">
+                                        <div class="d-flex flex-column gap-2 w-100 mb-3">
+                                            <label class="sign-up-label" for="first_name">First Name</label>
+                                            <input class="sign-up-input" type="text" name="first_name" id="first_name" placeholder="First Name">
+                                            <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+                                        </div>
+                                        <div class="d-flex flex-column gap-2 w-100 mb-3">
+                                            <label class="sign-up-label" for="last_name">Last Name</label>
+                                            <input class="sign-up-input" type="text" name="last_name" id="last_name" placeholder="Last Name">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-column gap-2 w-100 mb-3">
+                                        <label class="sign-up-label" for="phone_number">Phone Number</label>
+                                        <input class="sign-up-input" type="number" name="phone_number" id="phone_number" placeholder="Phone Number">
+                                    </div>
+                                </div>
+                                <button class="btn-primary btn-submit w-100 mt-2" id="btn-next">Continue</button>
+                            </div>
+                            <div id="step3-validation" class="hidden">
+                                <div class="d-flex flex-column gap-3">
+                                    <div class="d-flex flex-column gap-2 w-100 mb-3">
+                                        <label class="sign-up-label" for="company">Company Name</label>
+                                        <input class="sign-up-input" type="text" name="company" id="company" placeholder="Company Name">
+                                    </div>
+                                    <div class="d-flex justify-content-between gap-5">
+                                        <div class="d-flex flex-column gap-2 w-100 mb-3">
+                                            <label class="sign-up-label" for="job">Job Title</label>
+                                            <input class="sign-up-input" type="text" name="job" id="job" placeholder="Job Title">
+                                        </div>
+                                        <div class="d-flex flex-column gap-2 w-100 mb-3">
+                                            <label class="sign-up-label" for="industry">Industry</label>
+                                            <input class="sign-up-input" type="text" name="industry" id="industry" placeholder="Industry">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-column gap-2 w-100 mb-3">
+                                        <label class="sign-up-label" for="team_number">Number of Team</label>
+                                        <input class="sign-up-input" type="number" name="team_number" id="team_number" placeholder="Number of Team">
+                                    </div>
+                                </div>
+                                <button class="btn-primary btn-submit w-100 mt-2" id="btn-next">Continue</button>
+                            </div>
+                            <div id="step4-validation" class="hidden">
+                                <div class="d-flex flex-column gap-2 mb-3">
+                                    <label class="sign-up-label" for="new_password">Password</label>
+                                    <input class="sign-up-input" type="password" name="new_password" id="new_password" placeholder="Password">
+                                </div>
+                                <button class="btn-primary btn-submit w-100 mt-2" id="btn-next" type="submit">Continue</button>
+                            </div>
+                            <div id="step5-validation" class="">
+                                <div class="d-flex flex-column align-items-start">
+                                    <h1 class="payment-title">You're About to Get 14 Days of Free Power!</h1>
+                                    <h2 class="payment-subtitle">Start Now.</h2>
+                                </div>
+                                <div class="d-flex flex-column gap-4">
+                                    <div class="d-flex justify-content-between gap-5">
+                                        <span class="text-dark fw-bold" style="font-size: 24px">Set Up Your Credit Card</span>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="wrapper-payment-icon">
+                                              <img src="assets/svg/icons/visa.svg" alt="icon-visa">
+                                            </div>
+                                            <div class="wrapper-payment-icon wrapper-card-discover">
+                                              <img src="assets/svg/icons/discover.svg" alt="icon-discover">
+                                            </div>
+                                            <div class="wrapper-payment-icon">
+                                              <img src="assets/svg/icons/maestro.svg" alt="icon-maestro">
+                                            </div>
+                                            <div class="wrapper-payment-icon">
+                                              <img src="assets/svg/icons/master-card.svg" alt="icon-master-card">
+                                            </div>
+                                          </div>
+                                    </div>
+                                    <div class="d-flex flex-column gap-3">
+                                        <div class="d-flex flex-column gap-2 mb-3">
+                                            <label class="sign-up-label" for="card_number">Card Number</label>
+                                            <input class="sign-up-input" type="number" name="card_number" id="card_number" placeholder="Card card number">
+                                        </div>
+                                        <div class="d-flex justify-content-between gap-5">
+                                            <div class="d-flex flex-column gap-2 w-100 mb-3">
+                                                <label class="sign-up-label" for="exp_date">Expiration Date</label>
+                                                <input class="sign-up-input" type="text" name="exp_date" id="exp_date" placeholder="MM/YY">
+                                            </div>
+                                            <div class="d-flex flex-column gap-2 w-100 mb-3">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <label class="sign-up-label" for="security_code">Card Security Code</label>
+                                                    <small class="text-info-security">What is this?</small>
+                                                </div>
+                                                <input class="sign-up-input" type="password" name="security_code" id="security_code" placeholder="CVV">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column gap-4">
+                                    <span class="text-dark fw-bold" style="font-size: 24px">Billing Address</span>
+                                    <div class="d-flex flex-column gap-3">
+                                        <div class="d-flex justify-content-between gap-5">
+                                            <div class="d-flex flex-column gap-2 w-100 mb-3">
+                                                <label class="sign-up-label" for="firstName">First Name</label>
+                                                <input class="sign-up-input" type="text" name="firstName" id="firstName" placeholder="First Name">
+                                            </div>
+                                            <div class="d-flex flex-column gap-2 w-100 mb-3">
+                                                <label class="sign-up-label" for="lastName">Last Name</label>
+                                                <input class="sign-up-input" type="text" name="lastName" id="lastName" placeholder="Last Name">
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-column gap-2 mb-3">
+                                            <label class="sign-up-label" for="emailAddress">Email Address</label>
+                                            <input class="sign-up-input" type="text" name="emailAddress" id="emailAddress" placeholder="Email Address">
+                                        </div>
+                                        <div class="d-flex flex-column gap-2 mb-3">
+                                            <label class="sign-up-label" for="address">Street Address</label>
+                                            <input class="sign-up-input" type="text" name="address" id="address" placeholder="Street Address">
+                                        </div>
+                                        <div class="d-flex justify-content-between gap-5">
+                                            <div class="d-flex flex-column gap-2 w-100 mb-3">
+                                                <label class="sign-up-label" for="state">State/Province</label>
+                                                <input class="sign-up-input" type="text" name="state" id="state" placeholder="State/Province">
+                                            </div>
+                                            <div class="d-flex flex-column gap-2 w-100 mb-3">
+                                                <label class="sign-up-label" for="city">City</label>
+                                                <input class="sign-up-input" type="text" name="city" id="city" placeholder="City">
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between gap-5">
+                                            <div class="d-flex flex-column gap-2 w-100 mb-3">
+                                                <label class="sign-up-label" for="postal_code">Postal Code</label>
+                                                <input class="sign-up-input" type="number" name="postal_code" id="postal_code" placeholder="Postal Code">
+                                            </div>
+                                            <div class="d-flex flex-column gap-2 w-100 mb-3">
+                                                <label class="sign-up-label" for="phone">Phone</label>
+                                                <input class="sign-up-input" type="number" name="phone" id="phone" placeholder="Phone">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn-primary btn-submit w-100 mt-5" id="btn-submit-payment" type="submit">Start your Free Trial</button>
+                            </div>
+                                                                    {{-- <div id="step6-validation">
+                                        <div class="d-flex flex-column gap-4 align-items-center">
+                                            <img src="assets/svg/icons/icon-payment-success.svg" alt="icon-payment-success" width="211">
+                                            <h1 class="payment-title text-center">Congratulations! Your Registration for 14-Days Free Trial has been successful</h1>
+                                        </div>
+                                    </div> --}}
+                        </form>
                     </div>
                 </div>
             </div>

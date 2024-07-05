@@ -31,7 +31,7 @@
                             @endif
 
 
-                            <form role="form" action="{{ route('stripe.post') }}" method="post" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="{{ env('STRIPE_KEY') }}" id="payment-form">
+                            <form role="form" action="{{ route('stripe.post') }}" method="post" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="pk_test_51OzD44P2jpJZ1J5syWQeAqIyfEta7xpLGwAAmuLtziPmFIJzxHDBG7WedNjUt6vobzP0AQspvVtIs9cGe39wLCcW00JlACclAC" id="payment-form">
                                 @csrf
                                 <div class='form-row row'>
                                     <div class='col-xs-12 form-group required'>
@@ -93,6 +93,8 @@
 
 <script src="https://js.stripe.com/v2/"></script>
 <script type="text/javascript">
+    var name = '{{ env('STRIPE_KEY') }}';
+
     var stripe = Stripe('pk_test_51OzD44P2jpJZ1J5syWQeAqIyfEta7xpLGwAAmuLtziPmFIJzxHDBG7WedNjUt6vobzP0AQspvVtIs9cGe39wLCcW00JlACclAC');
 
     $(function() {

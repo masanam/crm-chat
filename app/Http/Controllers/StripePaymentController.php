@@ -44,8 +44,8 @@ class StripePaymentController extends Controller
                 "state" => "Banten",
                 "country" => "INA",
             ],
-            "email" => $request->email,
-            "name" => $request->nama,
+            "email" => $request->emailAddress,
+            "name" => $request->firstName.' '.$request->lastName ,
             "source" => $request->stripeToken
         ));
 

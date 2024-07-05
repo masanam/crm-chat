@@ -1,5 +1,5 @@
 @php
-    $customizerHidden = 'customizer-hide';
+$customizerHidden = 'customizer-hide';
 @endphp
 
 @extends('layouts/layoutMaster')
@@ -7,14 +7,16 @@
 @section('title', 'Login')
 
 @section('vendor-style')
-    <!-- Vendor -->
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/@form-validation/umd/styles/index.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" />
+<!-- Vendor -->
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/@form-validation/umd/styles/index.min.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+
 @endsection
 
 @section('page-style')
-    <!-- Page -->
-    <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/page-auth.css') }}">
+<!-- Page -->
+<link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/page-auth.css') }}">
 @endsection
 
 @section('vendor-script')
@@ -22,15 +24,90 @@
 <script src="{{asset('assets/vendor/libs/@form-validation/umd/plugin-bootstrap5/index.min.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js')}}"></script>
 <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 @endsection
 
 @section('page-script')
-    <script src="{{ asset('assets/js/auth-sign-up.js') }}"></script>
-    <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
+<script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
+<script src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+    var stripe = Stripe('pk_test_51OzD44P2jpJZ1J5syWQeAqIyfEta7xpLGwAAmuLtziPmFIJzxHDBG7WedNjUt6vobzP0AQspvVtIs9cGe39wLCcW00JlACclAC');
+
+    $(function() {
+        /*------------------------------------------
+        --------------------------------------------
+        Stripe Payment Code
+        --------------------------------------------
+        --------------------------------------------*/
+
+        var $form = $(".require-validation");
+        $('form.require-validation').bind('submit', function(e) {
+            var $form = $(".require-validation"),
+                inputSelector = ['input[type=email]', 'input[type=password]',
+                    'input[type=text]', 'input[type=file]',
+                    'textarea'
+                ].join(', '),
+                $inputs = $form.find('.required').find(inputSelector),
+                $errorMessage = $form.find('div.error'),
+                valid = true;
+            $errorMessage.addClass('hide');
+
+
+
+            $('.has-error').removeClass('has-error');
+            $inputs.each(function(i, el) {
+                var $input = $(el);
+                if ($input.val() === '') {
+                    $input.parent().addClass('has-error');
+                    $errorMessage.removeClass('hide');
+                    e.preventDefault();
+                }
+            });
+
+
+            if (!$form.data('cc-on-file')) {
+                e.preventDefault();
+                Stripe.setPublishableKey($form.data('stripe-publishable-key'));
+                Stripe.createToken({
+                    number: $('.card-number').val(),
+                    cvc: $('.card-cvc').val(),
+                    exp_month: $('.card-expiry-month').val(),
+                    exp_year: $('.card-expiry-year').val()
+                }, stripeResponseHandler);
+            }
+
+        });
+
+
+
+        /*------------------------------------------
+        --------------------------------------------
+        Stripe Response Handler
+        --------------------------------------------
+        --------------------------------------------*/
+
+        function stripeResponseHandler(status, response) {
+            if (response.error) {
+                $('.error')
+                    .removeClass('hide')
+                    .find('.alert')
+                    .text(response.error.message);
+            } else {
+
+                /* token contains id, last4, and card type */
+                var token = response['id'];
+                $form.find('input[type=text]').empty();
+                $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
+                $form.get(0).submit();
+            }
+        }
+    });
+</script>
 @endsection
 
 @php
-    $step = 6;
+$step = 6;
 @endphp
 
 @section('content')
@@ -41,8 +118,15 @@
                     <img src="{{ asset('assets/svg/icons/pasima-logo.svg') }}" alt="pasima-logo" width="250">
                 </a>
                 <div class="container-xxl container-form-stepper">
+                @if (Session::has('success'))
+                            <div class="alert alert-success text-center">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                                <p>{{ Session::get('success') }}</p>
+                            </div>
+                            @endif
+
                     <div class="authentication-wrapper authentication-basic payment">
-                        <form class="w-100 py-4 px-5 d-flex flex-column gap-5" id="signup-form" >
+                        <form role="form" action="{{ route('stripe.post') }}" method="post" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="pk_test_51OzD44P2jpJZ1J5syWQeAqIyfEta7xpLGwAAmuLtziPmFIJzxHDBG7WedNjUt6vobzP0AQspvVtIs9cGe39wLCcW00JlACclAC" id="payment-form">
                             @csrf
                             <div id="step1-validation" class="hidden">
                                 <div class="d-flex flex-column align-items-center">
@@ -131,19 +215,24 @@
                                     <div class="d-flex flex-column gap-3">
                                         <div class="d-flex flex-column gap-2 mb-3">
                                             <label class="sign-up-label" for="card_number">Card Number</label>
-                                            <input class="sign-up-input" type="number" name="card_number" id="card_number" placeholder="Card card number">
+                                            <input class="sign-up-input card-number" type="text" name="card_number" id="card_number" placeholder="Card card number">
                                         </div>
                                         <div class="d-flex justify-content-between gap-5">
                                             <div class="d-flex flex-column gap-2 w-100 mb-3">
-                                                <label class="sign-up-label" for="exp_date">Expiration Date</label>
-                                                <input class="sign-up-input" type="text" name="exp_date" id="exp_date" placeholder="MM/YY">
+                                                <label class="sign-up-label" for="exp_date">Expiration Month</label>
+                                                <input class="sign-up-input card-expiry-month" type="text" name="exp_month" id="exp_month" placeholder="MM">
                                             </div>
+                                            <div class="d-flex flex-column gap-2 w-100 mb-3">
+                                                <label class="sign-up-label" for="exp_date">Expiration Year</label>
+                                                <input class="sign-up-input card-expiry-year" type="text" name="exp_year" id="exp_year" placeholder="YYYY">
+                                            </div>
+
                                             <div class="d-flex flex-column gap-2 w-100 mb-3">
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <label class="sign-up-label" for="security_code">Card Security Code</label>
                                                     <small class="text-info-security">What is this?</small>
                                                 </div>
-                                                <input class="sign-up-input" type="password" name="security_code" id="security_code" placeholder="CVV">
+                                                <input class="sign-up-input card-cvc" type="password" name="security_code" id="security_code" placeholder="CVC">
                                             </div>
                                         </div>
                                     </div>
@@ -191,7 +280,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button class="btn-primary btn-submit w-100 mt-5" id="btn-submit-payment" type="submit">Start your Free Trial</button>
+
+                                <button class="btn-primary btn-submit w-100 mt-5" type="submit">Start your Free Trial</button>
                             </div>
                                                                     {{-- <div id="step6-validation">
                                         <div class="d-flex flex-column gap-4 align-items-center">
@@ -203,13 +293,13 @@
                     </div>
                 </div>
             </div>
-            <footer class="footer d-flex gap-5" style="position: initial;">
-                <a href="#" class="text-primary">Term and Condition</a>
-                <a href="#" class="text-primary">Privacy Policy</a>
-            </footer>
         </div>
-        <div class="auth-bg w-100">
-            <img src="{{ asset('assets/img/backgrounds/signup-bg.png') }}" alt="auth bg" class="signup-bg">
-        </div>
+        <footer class="footer d-flex gap-5" style="position: initial;">
+            <a href="#" class="text-primary">Term and Condition</a>
+            <a href="#" class="text-primary">Privacy Policy</a>
+        </footer>
     </div>
+    <div class="auth-bg w-100">
+    </div>
+</div>
 @endsection

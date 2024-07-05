@@ -29,6 +29,7 @@ $customizerHidden = 'customizer-hide';
 @endsection
 
 @section('page-script')
+<script src="{{ asset('assets/js/auth-sign-up.js') }}"></script>
 <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
 <script src="https://js.stripe.com/v2/"></script>
 <script type="text/javascript">
@@ -229,7 +230,7 @@ $step = 6;
 
                                             <div class="d-flex flex-column gap-2 w-100 mb-3">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                    <label class="sign-up-label" for="security_code">Card Security Code</label>
+                                                    <label class="sign-up-label" for="security_code">Security Code</label>
                                                     <small class="text-info-security">What is this?</small>
                                                 </div>
                                                 <input class="sign-up-input card-cvc" type="password" name="security_code" id="security_code" placeholder="CVC">
@@ -300,6 +301,8 @@ $step = 6;
         </footer>
     </div>
     <div class="auth-bg w-100">
-    </div>
+      <img src="{{ asset('assets/img/backgrounds/signup-bg.png') }}" alt="auth bg" class="signup-bg">
+  </div>
+
 </div>
 @endsection

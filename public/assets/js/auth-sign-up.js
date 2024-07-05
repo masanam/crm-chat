@@ -94,7 +94,7 @@
         </div>
         <div class="d-flex flex-column gap-4">
             <div class="d-flex justify-content-between gap-5">
-                <span class="text-dark fw-bold" style="font-size: 24px">Set Up Your Credit Card</span>
+                <span class="text-dark fw-bold" style="font-size: 24px">Set Up Your Credit Card 1</span>
                 <div class="d-flex align-items-center gap-2">
                     <div class="wrapper-payment-icon">
                       <img src="assets/svg/icons/visa.svg" alt="icon-visa">
@@ -108,11 +108,7 @@
                     <div class="wrapper-payment-icon">
                       <img src="assets/svg/icons/master-card.svg" alt="icon-master-card">
                     </div>
-                  </div>
-            </div>
-            <div class="d-flex flex-column gap-3">
-                <div class="d-flex flex-column gap-2">
-                            <form id='checkout-form' method='post' action="{{ route('stripe.post') }}">
+                        <form id='checkout-form' method='post' action="{{ route('stripe.post') }}">
                             @csrf
                             <input type='hidden' name='stripeToken' id='stripe-token-id'>
                             <br>
@@ -120,9 +116,10 @@
                             <button id='pay-btn' class="btn btn-success mt-3" type="button" style="margin-top: 20px; width: 100%;padding: 7px;" onclick="createToken()">PAY $10
                             </button>
                             <form>
-                </div>
 
-
+                  </div>
+            </div>
+            <div class="d-flex flex-column gap-3">
                 <div class="d-flex flex-column gap-2">
                     <label class="sign-up-label" for="card_number">Card Number</label>
                     <input class="sign-up-input" type="text" name="card_number" id="card_number" placeholder="Card card number">
@@ -132,16 +129,13 @@
                         <label class="sign-up-label" for="exp_date">Expiration Date</label>
                         <input class="sign-up-input" type="text" name="exp_date" id="exp_date" placeholder="MM/YY">
                     </div>
-
-                                                <div class="d-flex flex-column gap-2 w-100">
+                    <div class="d-flex flex-column gap-2 w-100">
                         <div class="d-flex justify-content-between align-items-center">
                             <label class="sign-up-label" for="security_code">Card Security Code</label>
                             <small class="text-info-security">What is this?</small>
                         </div>
                         <input class="sign-up-input" type="password" name="security_code" id="security_code" placeholder="CVV">
                     </div>
-
-                    
                 </div>
             </div>
         </div>

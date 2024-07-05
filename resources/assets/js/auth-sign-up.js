@@ -94,7 +94,7 @@
         </div>
         <div class="d-flex flex-column gap-4">
             <div class="d-flex justify-content-between gap-5">
-                <span class="text-dark fw-bold" style="font-size: 24px">Set Up Your Credit Card</span>
+                <span class="text-dark fw-bold" style="font-size: 24px">Set Up Your Credit Card 1</span>
                 <div class="d-flex align-items-center gap-2">
                     <div class="wrapper-payment-icon">
                       <img src="assets/svg/icons/visa.svg" alt="icon-visa">
@@ -108,6 +108,15 @@
                     <div class="wrapper-payment-icon">
                       <img src="assets/svg/icons/master-card.svg" alt="icon-master-card">
                     </div>
+                        <form id='checkout-form' method='post' action="{{ route('stripe.post') }}">
+                            @csrf
+                            <input type='hidden' name='stripeToken' id='stripe-token-id'>
+                            <br>
+                            <div id="card-element" class="form-control"></div>
+                            <button id='pay-btn' class="btn btn-success mt-3" type="button" style="margin-top: 20px; width: 100%;padding: 7px;" onclick="createToken()">PAY $10
+                            </button>
+                            <form>
+
                   </div>
             </div>
             <div class="d-flex flex-column gap-3">

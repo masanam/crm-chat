@@ -541,7 +541,13 @@ Route::middleware(['auth'])->group(function () {
   // Route::get('/kanban', function () {
   //   return view('content.apps.app-kanban'); // Your Blade template name
   // });
+
+  Route::get('/dynamic-form', function () {
+    return view('dynamic_form');
+  });
 });
+
+
 
 //AUTH ROUTES
 

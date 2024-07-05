@@ -34,13 +34,36 @@ class StripePaymentController extends Controller
     {
         // Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
         Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-        Stripe\Customer::create();
+        // Stripe\Customer::create();
+        // Create a new Stripe customer.
+        $customer = Stripe\Customer::create(array(
+            "address" => [
+                "line1" => "Puri Bintaro Hijau",
+                "postal_code" => "360001",
+                "city" => "Tangerang",
+                "state" => "Banten",
+                "country" => "INA",
+            ],
+            "email" => $request->email,
+            "name" => $request->nama,
+            "source" => $request->stripeToken
+        ));
 
         Stripe\Charge::create([
             "amount" => 10 * 100,
             "currency" => "usd",
-            "source" => $request->stripeToken,
-            "description" => "Test payment from Customer."
+            "customer" => $customer->id,
+            "description" => "Test payment from Masanam.",
+            "shipping" => [
+                "name" => "Masanam",
+                "address" => [
+                    "line1" => "510 Townsend St",
+                    "postal_code" => "98140",
+                    "city" => "San Francisco",
+                    "state" => "CA",
+                    "country" => "US",
+                ],
+            ]
         ]);
 
         return back()

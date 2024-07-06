@@ -2,16 +2,16 @@
 $configData = Helper::appClasses();
 
 $user = request()->user();
-$userName = $user->name;
+$userName = 'Dandi';
 
-function initials($name){
-$words = explode(" ", $name );
-$initials = null;
-foreach ($words as $w) {
-$initials .= $w[0];
-}
-return strtoupper($initials);
-}
+// function initials($name){
+//$words = explode(" ", $name );
+//$initials = null;
+//foreach ($words as $w) {
+//$initials .= $w[0];
+//}
+//return strtoupper($initials);
+//} 
 @endphp
 
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">

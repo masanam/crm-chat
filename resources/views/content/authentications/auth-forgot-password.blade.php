@@ -43,10 +43,58 @@
                 </header>
                 <div class="container-xxl">
                     <div class="authentication-wrapper authentication-basic">
-                        <div class="w-100 py-4 px-5 d-flex flex-column gap-4">
-                            <div class="d-flex flex-column gap-5" id="forgot-password-content"></div>
-                            <button class="btn-primary btn-submit">Send code</button>
-                        </div>
+                        <form role="form" onSubmit="return false" id="form-forgot-password" class="w-100 py-4 px-5 d-flex flex-column gap-4">
+                            @csrf
+                            <div id="forgot-password-step1">
+                                <div class="d-flex flex-column gap-4 align-items-center">
+                                    <img src="assets/svg/icons/icon-forgot-password.svg" alt="icon-forgot-password">
+                                    <span class="text-dark fw-bold text-center" style="font-size: 26px;">Forgot Your Password?</span>
+                                    <span class="text-center" style="font-size: 24px">Don’t worry we get you covered. Please select a password recovery method below.</span>
+                                  </div>
+                                  <div class="d-flex flex-column gap-3 mt-5">
+                                      <div class="d-flex flex-column gap-2 w-100 mb-3">
+                                          <input class="sign-up-input" type="text" name="email" id="email" placeholder="Email">
+                                      </div>
+                                  </div>
+                            </div>
+                            <div class="hidden" id="forgot-password-step2">
+                                <div class="d-flex flex-column gap-4 align-items-center">
+                                    <img src="assets/svg/icons/icon-check-email.svg" alt="icon-check-email">
+                                    <span class="text-dark fw-bold text-center" style="font-size: 26px;">Verification Code Entry</span>
+                                    <span class="text-center" style="font-size: 24px">Please enter the verification code sent to your email address:</span>
+                                  </div>
+                                  <div class="d-flex flex-column align-items-center gap-3 mt-5">
+                                      <div class="d-flex justify-content-center w-100" id="otp-input-wrapper">
+                                          <input name='otp1' class="otp-input" type="text" inputmode="numeric" maxlength="1" />
+                                          <input name='otp2' class="otp-input" type="text" inputmode="numeric" maxlength="1" />
+                                          <input name='otp3' class="otp-input" type="text" inputmode="numeric" maxlength="1" />
+                                          <input name='otp4' class="otp-input" type="text" inputmode="numeric" maxlength="1" />
+                                      </div>
+                                      <div class="d-flex justify-content-center gap-1" id="resend-wrapper">
+                                          <span style="font-size: 16px;">If you didn’t receive the code, click
+                                            <a href="javascript:void(0)" class="text-dark fw-bold cursor-pointer" id="btn-resend-email">resend code</a>
+                                          </span>
+                                          <span style="font-size: 16px;" id="time-remaining"></span>
+                                      </div>
+                                  </div>
+                            </div>
+                            <div class="hidden" id="forgot-password-step3">
+                                <div class="d-flex flex-column gap-4 align-items-center mt-2">
+                                    <img src="assets/svg/icons/icon-new-password.svg" alt="icon-new-password">
+                                    <span class="text-dark fw-bold text-center" style="font-size: 26px;">Create New Password</span>
+                                    <span class="text-center" style="font-size: 24px">Please enter and confirm your new password</span>
+                                  </div>
+                                  <div class="d-flex flex-column gap-3 mt-5">
+                                      <div class="d-flex flex-column mb-3">
+                                        <input class="sign-up-input" type="password" name="password" id="password" placeholder="Create new password">
+                                      </div>
+                                      <div class="d-flex flex-column mb-3">
+                                        <input class="sign-up-input" type="password" name="confirm_password" id="confim_password" placeholder="Confirm new password">
+                                      </div>
+                                  </div>
+                            </div>
+                            <button class="btn-primary btn-submit" type="submit">Send code</button>
+                        </form>
                     </div>
                 </div>
             </div>

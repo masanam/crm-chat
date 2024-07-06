@@ -195,91 +195,169 @@ document.addEventListener('DOMContentLoaded', function (e) {
       /**
        * @description render dynamic forgot password content
        */
-      const getWrapper = document.querySelector('#forgot-password-content');
+      const getWrapper = document.querySelector('#form-forgot-password');
       const getBtnSubmit = document.querySelector('.btn-submit');
       const getForgotPasswordStepper = document.querySelector('#forgot-password-stepper');
-
+      const getStep1 = document.querySelector('#forgot-password-step1')
+      const getStep2 = document.querySelector('#forgot-password-step2')
+      const getStep3 = document.querySelector('#forgot-password-step3')
       let step = 1;
 
-      if (getWrapper) {
-        const renderFormByStep = () => {
-          switch (step) {
-            case 1:
-              getWrapper.innerHTML = `
-                <div class="d-flex flex-column gap-4 align-items-center">
-                  <img src="assets/svg/icons/icon-forgot-password.svg" alt="icon-forgot-password">
-                  <span class="text-dark fw-bold text-center" style="font-size: 26px;">Forgot Your Password?</span>
-                  <span class="text-center" style="font-size: 24px">Don’t worry we get you covered. Please select a password recovery method below.</span>
-                </div>
-                <div class="d-flex flex-column gap-3">
-                    <div class="d-flex flex-column gap-2 w-100">
-                        <input class="sign-up-input" type="text" name="email" id="email" placeholder="Email">
-                    </div>
-                </div>
-              `
-              getBtnSubmit.innerHTML = 'Send Code'
-              break;
-            case 2:
-              getWrapper.innerHTML = `
-                <div class="d-flex flex-column gap-4 align-items-center">
-                  <img src="assets/svg/icons/icon-check-email.svg" alt="icon-check-email">
-                  <span class="text-dark fw-bold text-center" style="font-size: 26px;">Verification Code Entry</span>
-                  <span class="text-center" style="font-size: 24px">Please enter the verification code sent to your email address:</span>
-                </div>
-                <div class="d-flex flex-column gap-3">
-                    <div class="d-flex justify-content-center w-100" id="otp-input-wrapper">
-                        <input class="otp-input" type="text" inputmode="numeric" maxlength="1" />
-                        <input class="otp-input" type="text" inputmode="numeric" maxlength="1" />
-                        <input class="otp-input" type="text" inputmode="numeric" maxlength="1" />
-                        <input class="otp-input" type="text" inputmode="numeric" maxlength="1" />
-                    </div>
-                    <div class="d-flex justify-content-center gap-1" id="resend-wrapper">
-                        <span style="font-size: 16px;">If you didn’t receive the code, click
-                          <a href="javascript:void(0)" class="text-dark fw-bold cursor-pointer" id="btn-resend-email">resend code</a>
-                        </span>
-                        <span style="font-size: 16px;" id="time-remaining"></span>
-                    </div>
-                </div>
-              `
-              getBtnSubmit.innerHTML = 'Reset Password'
-              getForgotPasswordStepper.children[step - 1].setAttribute('class', 'step-passed')
-              handleOtpInput()
-              handleSendCode()
-              break;
-            case 3:
-              getWrapper.innerHTML = `
-                <div class="d-flex flex-column gap-4 align-items-center mt-2">
-                  <img src="assets/svg/icons/icon-new-password.svg" alt="icon-new-password">
-                  <span class="text-dark fw-bold text-center" style="font-size: 26px;">Create New Password</span>
-                  <span class="text-center" style="font-size: 24px">Please enter and confirm your new password</span>
-                </div>
-                <div class="d-flex flex-column gap-3">
-                    <input class="sign-up-input" type="text" name="password" id="password" placeholder="Create new password">
-                    <input class="sign-up-input" type="text" name="confim_password" id="confim_password" placeholder="Confirm new password">
-                </div>
-              `
-              getForgotPasswordStepper.children[step - 1].setAttribute('class', 'step-passed')
-              break;
-            default:
-              break;
-          }
-        }
-        
-        renderFormByStep()
-
-        if (getBtnSubmit) {
-          getBtnSubmit.addEventListener('click', () => {
-            if (step === 3) {
-              // reset form
-              step = 1
-              getForgotPasswordStepper.children[1].setAttribute('class', 'step-upcoming')
-              getForgotPasswordStepper.children[2].setAttribute('class', 'step-upcoming')
-              renderFormByStep()
-            } else {
-              step++
-              renderFormByStep()
+      const fv1 = FormValidation.formValidation(getStep1, {
+        fields: {
+          email: {
+            validators: {
+              notEmpty: {
+                message: 'Please enter your email'
+              },
+              emailAddress: {
+                message: 'Please enter valid email address'
+              }
             }
+          },
+        },
+        plugins: {
+          trigger: new FormValidation.plugins.Trigger(),
+          bootstrap5: new FormValidation.plugins.Bootstrap5({
+            eleValidClass: '',
+            rowSelector: '.mb-3'
+          }),
+          submitButton: new FormValidation.plugins.SubmitButton(),
 
+          defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+          autoFocus: new FormValidation.plugins.AutoFocus()
+        },
+        init: instance => {
+          instance.on('plugins.message.placed', function (e) {
+            if (e.element.parentElement.classList.contains('input-group')) {
+              e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
+            }
+          });
+          instance.on('core.form.valid', function() {
+            step++
+            getStep1.setAttribute('class', 'hidden')
+            getStep2.setAttribute('class', '')
+            getBtnSubmit.innerHTML = 'Reset Password'
+            getForgotPasswordStepper.children[step - 1].setAttribute('class', 'step-passed')
+            handleOtpInput()
+            handleSendCode()
+          })
+        }
+      });
+
+      const fv2 = FormValidation.formValidation(getStep2, {
+        fields: {
+          otp: {
+            validators: {
+              notEmpty: {
+                message: 'Please enter otp'
+              },
+            }
+          },
+        },
+        plugins: {
+          trigger: new FormValidation.plugins.Trigger(),
+          bootstrap5: new FormValidation.plugins.Bootstrap5({
+            eleValidClass: '',
+            rowSelector: '.mb-3'
+          }),
+          submitButton: new FormValidation.plugins.SubmitButton(),
+
+          defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+          autoFocus: new FormValidation.plugins.AutoFocus()
+        },
+        init: instance => {
+          instance.on('plugins.message.placed', function (e) {
+            if (e.element.parentElement.classList.contains('input-group')) {
+              e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
+            }
+          });
+          instance.on('core.form.valid', function() {
+            step++
+            getStep2.setAttribute('class', 'hidden')
+            getStep3.setAttribute('class', '')
+          })
+        }
+      });
+
+      const fv3 = FormValidation.formValidation(getStep3, {
+        fields: {
+          password: {
+            validators: {
+              notEmpty: {
+                message: 'Please enter your password'
+              },
+              stringLength: {
+                min: 6,
+                message: 'Password must be more than 6 characters'
+              }
+            }
+          },
+          'confirm_password': {
+            validators: {
+              notEmpty: {
+                message: 'Please confirm password'
+              },
+              identical: {
+                compare: function () {
+                  return getStep3.querySelector('[name="password"]').value;
+                },
+                message: 'The password and its confirm are not the same'
+              },
+              stringLength: {
+                min: 6,
+                message: 'Password must be more than 6 characters'
+              }
+            }
+          },
+        },
+        plugins: {
+          trigger: new FormValidation.plugins.Trigger(),
+          bootstrap5: new FormValidation.plugins.Bootstrap5({
+            eleValidClass: '',
+            rowSelector: '.mb-3'
+          }),
+          submitButton: new FormValidation.plugins.SubmitButton(),
+
+          defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+          autoFocus: new FormValidation.plugins.AutoFocus()
+        },
+        init: instance => {
+          instance.on('plugins.message.placed', function (e) {
+            if (e.element.parentElement.classList.contains('input-group')) {
+              e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
+            }
+          });
+          instance.on('core.form.valid', function() {
+            step++
+            getStep2.setAttribute('class', 'hidden')
+            getStep3.setAttribute('class', '')
+          })
+        }
+      });
+
+
+      if (getWrapper) {
+        if (getBtnSubmit) {
+          getBtnSubmit.addEventListener('click', (e) => {
+            e.preventDefault()
+            switch (step) {
+              case 1:
+                fv1.validate()
+                break;
+              case 2:
+                // fv2.validate()
+                step++
+                getStep2.setAttribute('class', 'hidden')
+                getStep3.setAttribute('class', '')
+                getForgotPasswordStepper.children[step - 1].setAttribute('class', 'step-passed')
+                break;
+              case 3:
+                fv3.validate()
+                break;
+              default:
+                break;
+            }
           })
         }
       }

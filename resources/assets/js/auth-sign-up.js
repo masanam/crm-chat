@@ -7,7 +7,7 @@
  document.addEventListener('DOMContentLoaded', function () {
    (async function () {
     const getContainerFormStepper = document.querySelector('.container-form-stepper')
-    const getFormStepper = document.querySelector('#signup-form')
+    const getFormStepper = document.querySelector('#payment-form')
     const getStep1 = document.querySelector('#step1-validation')
     const getStep2 = document.querySelector('#step2-validation')
     const getStep3 = document.querySelector('#step3-validation')
@@ -16,6 +16,7 @@
     const getBtnNext = document.querySelectorAll('#btn-next')
     const getBtnSubmit = document.querySelector('#btn-submit-payment')
     const getFooter = document.querySelector('.footer')
+    const getImgBackground = document.querySelector('.auth-bg > img')
     let step = 1
     let scrollbar
     let fv1, fv2, fv3, fv4, fv5
@@ -150,7 +151,7 @@
                   e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
                 }
                 instance.on('core.form.valid', function() {
-                    step++
+                    step = 4
                     getStep3.setAttribute('class', 'hidden')
                     getStep4.setAttribute('class', '')
                   })
@@ -165,9 +166,6 @@
                   notEmpty: {
                     message: 'Please enter your password'
                   },
-                  emailAddress: {
-                    message: 'Please enter valid email address'
-                  }
                 }
               }
             },
@@ -190,6 +188,8 @@
                 step++
                 getStep4.setAttribute('class', 'hidden')
                 getStep5.setAttribute('class', '')
+                getFooter.setAttribute('class', 'hidden')
+                getImgBackground.setAttribute('class', 'signup-bg-payment')
               })
             }
         });
@@ -291,10 +291,9 @@
                   e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
                 }
                 instance.on('core.form.valid', function() {
-                    // step++
-                    // getStep5.setAttribute('class', 'hidden')
-                    // getStep5.setAttribute('class', '')
-                    console.log('ww')
+                    step++
+                    getStep5.setAttribute('class', 'hidden')
+                    getStep5.setAttribute('class', '')
                   })
               });
             }
@@ -313,6 +312,7 @@
         getBtnNext.forEach(btnNext => {
             btnNext.addEventListener('click', (e) => {
                 e.preventDefault()
+                console.log(step)
                 switch (step) {
                     case 1:
                         fv1.validate()

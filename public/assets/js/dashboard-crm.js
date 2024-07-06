@@ -476,5 +476,40 @@ document.addEventListener('DOMContentLoaded', function () {
               }
             });
         }
+
+        /**
+         * @description show hide content modal cancel subs
+         */
+        const getContentStep1 = document.querySelector('#cancel-subs-step1')
+        const getContentStep2 = document.querySelector('#cancel-subs-step2')
+        const getBtnSubmitCancelSubs = document.querySelector('#btn-submit-cancel-subs')
+        const getBtnCancelSubs = document.querySelector('#btn-cancel-subs')
+        const getBtnSuccessCancelSubs = document.querySelector('#btn-success-cancel-subs')
+        let step = 1
+
+        if (getContentStep1 && getContentStep2) {
+          getBtnSubmitCancelSubs.addEventListener('click', () => {
+            step++
+            if (step === 1) {
+              getContentStep1.setAttribute('class', '')
+              getContentStep2.setAttribute('class', 'hidden')
+            }
+            if (step === 2) {
+              getContentStep1.setAttribute('class', 'hidden')
+              getContentStep2.setAttribute('class', '')
+              getBtnSubmitCancelSubs.innerHTML = 'Cancel my subscription'
+              getBtnSubmitCancelSubs.setAttribute('data-bs-toggle', 'modal')
+              getBtnSubmitCancelSubs.setAttribute('data-bs-target', '#success-cancel-subs')
+            }
+          })
+          getBtnCancelSubs.addEventListener('click', () => {
+            step = 1
+          })
+        } 
+        if (getBtnSuccessCancelSubs) {
+          getBtnSuccessCancelSubs.addEventListener('click', () => {
+            document.querySelector('.modal-backdrop').remove()
+          })
+        }
     })();
 });

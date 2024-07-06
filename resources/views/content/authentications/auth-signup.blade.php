@@ -120,13 +120,21 @@ $step = 6;
                 </a>
                 <div class="container-xxl container-form-stepper">
                 @if (Session::has('success'))
-                            <div class="alert alert-success text-center">
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                                <p>{{ Session::get('success') }}</p>
-                            </div>
-                            @endif
+                <div class="authentication-wrapper authentication-basic payment">
+                    <div class="d-flex flex-column gap-4 align-items-center">
+                        <img src="assets/svg/icons/icon-payment-success.svg" alt="icon-payment-success" width="211">
+                        <h1 class="payment-title text-center">Congratulations! Your Registration for 14-Days Free Trial has been successful</h1>
+                    </div>
+                </div>          
+                @endif
 
-                    <div class="authentication-wrapper authentication-basic payment">
+                    <div
+                        @class([
+                            'authentication-wrapper authentication-basic payment',
+                            'hidden' => Session::has('success'),
+                        ])
+                        class="authentication-wrapper authentication-basic payment"
+                    >
                         <form role="form" action="{{ route('stripe.post') }}" method="post" class="require-validation w-100 py-4 px-5 d-flex flex-column gap-5" data-cc-on-file="false" data-stripe-publishable-key="pk_test_51OzD44P2jpJZ1J5syWQeAqIyfEta7xpLGwAAmuLtziPmFIJzxHDBG7WedNjUt6vobzP0AQspvVtIs9cGe39wLCcW00JlACclAC" id="payment-form">
                             @csrf
                             <div id="step1-validation" class="">
@@ -284,12 +292,6 @@ $step = 6;
 
                                 <button class="btn-primary btn-submit w-100 mt-5" type="submit">Start your Free Trial</button>
                             </div>
-                                                                    {{-- <div id="step6-validation">
-                                        <div class="d-flex flex-column gap-4 align-items-center">
-                                            <img src="assets/svg/icons/icon-payment-success.svg" alt="icon-payment-success" width="211">
-                                            <h1 class="payment-title text-center">Congratulations! Your Registration for 14-Days Free Trial has been successful</h1>
-                                        </div>
-                                    </div> --}}
                         </form>
                     </div>
                 </div>

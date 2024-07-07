@@ -7,7 +7,7 @@
 @import '../_custom-variables/pages';
 
 // Variables
-$chat-app-height: calc(100vh - 3.5rem);
+$chat-app-height: calc(100vh - 11.5rem);
 $chat-app-height-with-no-navbar: calc(100vh - 7.5rem);
 $chat-app-horizontal-height-diff: 2.2rem;
 
@@ -20,7 +20,7 @@ $chat-contact-list-margin-x: 0.75rem;
 $chat-contact-list-margin-y: 0.25rem;
 
 $chat-history-padding-x: 1.5rem;
-$chat-history-padding-y: 2rem;
+$chat-history-padding-y: 6rem;
 $chat-history-height: calc(100vh - 15.5rem);
 $chat-history-height-with-no-nabvar: calc(100vh - 16.5rem);
 
@@ -64,7 +64,7 @@ $chat-list-margin: 1rem;
 
     .sidebar-header {
       position: relative;
-      // padding: $chat-sidebar-header-padding-y $chat-sidebar-header-padding-x;
+      padding: 0.73rem 1.25rem;
       column-gap: 1rem;
 
       .timezone {
@@ -105,6 +105,7 @@ $chat-list-margin: 1rem;
   }
 
   .app-chat-contacts {
+    background: #FFF !important;
     position: absolute;
     left: calc(-#{$chat-contact-width} - 1rem);
     height: $chat-app-height;
@@ -194,6 +195,7 @@ $chat-list-margin: 1rem;
       .nav-tabs {
         background: transparent;
         --bs-nav-tabs-border-radius: 0px;
+        border-bottom: 1px solid #dbdade;
         .nav-item-custom {
           font-size: 14px !important;
           border: 1px solid #B2BCCA;
@@ -260,7 +262,8 @@ $chat-list-margin: 1rem;
     }
 
     .chat-history-header {
-      padding: $chat-history-header-padding-y $chat-history-header-padding-x;
+      padding: 0.575rem 1.25rem;
+      background: #FFF;
 
       .user-status {
         margin-bottom: 0.1rem;
@@ -355,8 +358,9 @@ $chat-list-margin: 1rem;
       background: $chat-history-header-bg;
       position: relative;
       height: 108px;
-      padding-bottom: 0.625rem;
-      bottom: 30px;
+      bottom: 100px;
+      padding: 0.575rem 0.5rem;
+      border-radius: 0.375rem;
 
       .form-message-sender {
         background: transparent !important;

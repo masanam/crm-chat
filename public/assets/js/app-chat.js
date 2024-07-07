@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
                   </div>
               </div>
               <div class="user-avatar flex-shrink-0 ">
-                    <div class="avatar"><span class="avatar-initial rounded-8 text-dark fw-bolder sender-avatar">D</span></div>
+                    <div class="avatar"><span class="avatar-initial rounded-circle bg-label-primary">D</span></div>
                 </div>
           </div>
         `;
@@ -439,37 +439,34 @@ document.addEventListener('DOMContentLoaded', function () {
             if (message.from === '+14155238886') {
               newMessage.className = 'chat-message chat-message-right';
               newMessage.innerHTML = `
-            <div class="d-flex align-items-end overflow-hidden">
+            <div class="d-flex overflow-hidden overflow-hidden">
                 <div class="chat-message-wrapper flex-grow-1 w-50">
                     <div class="chat-message-text">
                         <p class="mb-0">${message.message}</p>
                     </div>
                     <div class="text-end text-muted mt-1">
-                      <small>${formatDate(message.created_at, timeFormat)}</small>
-                      <i class='ti ti-checks ti-xs me-1'></i>
-                    </div>
-                    <div class="text-end text-muted mt-1">
-                      <small class="sender-message">${sender_name}</small>
+                    <i class='ti ti-checks ti-xs me-1'></i>
+                    <small>${sender_name}, ${formatDate(message.created_at, dateFormat)}</small>
                     </div>
                 </div>
                 <div class="user-avatar flex-shrink-0 ">
-                    <div class="avatar"><span class="avatar-initial rounded-8 text-dark fw-bolder sender-avatar">${initials}</span></div>
+                    <div class="avatar"><span class="avatar-initial rounded-circle bg-label-primary">${initials}</span></div>
                 </div>
             </div>
           `;
             } else {
               newMessage.className = 'chat-message';
               newMessage.innerHTML = `
-            <div class="d-flex align-items-end overflow-hidden">
+            <div class="d-flex overflow-hidden">
                 <div class="user-avatar flex-shrink-0 me-2">
-                    <div class="avatar"><span class="avatar-initial rounded-8 bg-label-success text-dark fw-bolder">AR</span></div>
+                    <div class="avatar"><span class="avatar-initial rounded-circle bg-label-secondary">AR</span></div>
                 </div>
                 <div class="chat-message-wrapper flex-grow-1">
                     <div class="chat-message-text">
                         <p class="mb-0">${message.message}</p>
                     </div>
                     <div class="text-muted mt-1">
-                        <small>${formatDate(message.created_at, timeFormat)}</small>
+                        <small>${formatDate(message.created_at, dateFormat)}</small>
                     </div>
                 </div>
             </div>

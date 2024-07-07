@@ -206,8 +206,8 @@
                                 </ul>
                             </div>
                             <!-- Chat message form -->
-                            <div class="chat-history-footer shadow-sm">
-                                <form class="form-send-message d-flex justify-content-between align-items-center" method="POST" ">
+                            <div class="chat-history-footer">
+                                <form class="form-send-message d-flex justify-content-between align-items-center" style="padding: 8px; background: #fff; margin-top: 12px; border-radius: 8px;" method="POST" ">
                                     <input class="form-control message-input border-0 me-3 shadow-none"
                                         placeholder="Type your message here">
                                     <div class="message-actions d-flex align-items-center">

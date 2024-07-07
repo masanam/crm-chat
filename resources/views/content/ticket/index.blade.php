@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/jkanban/jkanban.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/toastr/toastr.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/quill/typography.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/quill/katex.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/quill/editor.css')}}" />
@@ -20,6 +21,7 @@
 <script src="{{asset('assets/vendor//libs/flatpickr/flatpickr.js')}}"></script>
 <script src="{{asset('assets/vendor//libs/select2/select2.js')}}"></script>
 <script src="{{asset('assets/vendor//libs/jkanban/jkanban.js')}}"></script>
+<script src="{{asset('assets/vendor//libs/toastr/toastr.js')}}"></script>
 <script src="{{asset('assets/vendor//libs/quill/katex.js')}}"></script>
 <script src="{{asset('assets/vendor//libs/quill/quill.js')}}"></script>
 @endsection
@@ -27,6 +29,24 @@
 @section('page-script')
 <script src="{{asset('js/components/ticket-kanban.js')}}"></script>
 <script>
+  $(function () {
+    // Select2
+    var select2 = $('.select2');
+    if (select2.length) {
+      select2.each(function () {
+        var $this = $(this);
+        $this.wrap('<div class="position-relative"></div>').select2({
+          dropdownParent: $this.parent(),
+          placeholder: $this.data('placeholder'), // for dynamic placeholder
+          dropdownCss: {
+            minWidth: '150px' // set a minimum width for the dropdown
+          }
+        });
+      });
+      $('.select2-selection__rendered').addClass('w-px-150');
+    }
+  });
+
   $(document).ready(function () {
     $('#team_id').on('change', function (e) {
       var team_id = $(this).val();

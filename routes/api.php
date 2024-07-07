@@ -84,6 +84,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 Route::get('/tickets', [TicketController::class, 'get']);
 Route::get('/get-members', [TicketController::class, 'getMembers']);
+Route::get('/is_lead/{id}', [TicketController::class, 'isLead']);
 Route::get('/clients', [ClientController::class, 'get']);
 
 Route::post('/companies/{id}/change', [CompanyController::class, 'change']);

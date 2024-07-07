@@ -13,6 +13,7 @@ use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\Team;
 use App\Models\Client;
+use App\Models\AssignedLead;
 
 class TicketController extends Controller
 {
@@ -24,14 +25,9 @@ class TicketController extends Controller
       ]);
 
       if ($validator->fails()) {
-        return response()->json(
-          [
-            'status' => 422,
-            'message' => $validator->errors(),
-            'results' => null,
-          ],
-          422
-        );
+        return redirect('index')
+          ->withErrors($validator)
+          ->withInput();
       }
 
       $params = $validator->validate();

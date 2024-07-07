@@ -18,6 +18,7 @@
 @section('vendor-script')
     <script src="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
+    <script src="{{ asset('assets/js/components/app-chat.js') }}"></script>
 @endsection
 
 @section('page-script')
@@ -75,6 +76,33 @@
 
                 postData($(this).data('id'), newValue, $(this).data('type'), $(this).data('url'));
             });
+
+            $(document).ready(function() {
+                const modalButton = $('#add-contact #add-channel');
+
+                modalButton.click(function() {
+                    alert(1)
+                });
+            });
+                // let html = `
+                //     <div class="d-flex flex-row mb-3 gap-4">
+                //         <div class="mb-3">
+                //             <label class="form-label" for="whatsapp">Whatsapp</label>
+                //             <select name="last_name" id="last_name" class="form-select form-control">
+                //                 <option value="whatsapp">Whatsapp</option>
+                //                 <option value="email">Email</option>
+                //             </select>
+                //         </div>
+                //         <div class="mb-3">
+                //             <label class="form-label" for="contact">Contact</label>
+                //             <input type="text" name="contact" id="contact" class="form-control" placeholder="Enter Number" />
+                //         </div>
+                //     </div>
+                // `
+
+                // console.log(html)
+                // $('#more-contact').append(html)
+            // })
         });
     </script>
 @endsection
@@ -107,6 +135,7 @@
                                             <div>
                                                 <img src="{{ asset('assets/svg/icons/icon-calendar.svg') }}" alt="calendar"
                                                     width="15">
+                                                    <!-- get closed date -->
                                                 <span style="font-size: 12px">{{ date('M d, Y', strtotime($model->client->created_at)) }}</span>
                                             </div>
                                             <div>
@@ -156,21 +185,22 @@
                                         <span class="text-dark fw-bold" style="font-size: 18px">Contact Information</span>
                                         <i class="ti ti-chevron-down text-dark"></i>
                                     </div>
+                                    @foreach($contacts as $contact)
                                     <div class="d-flex flex-column gap-2 border-bottom border-1 pb-3">
                                         <div class="d-flex flex-column gap-1">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <span class="text-dark fw-bold">{{ $model->lead->assignedLead ? $model->lead->assignedLead->profile->first_name . ' ' . $model->lead->assignedLead->profile->last_name : '' }}</span>
+                                                <span class="text-dark fw-bold">{{ $contact->first_name ?? '' }} {{ $contact->last_name ?? '' }}</span>
                                                 <img src="{{ asset('assets/svg/icons/edit.svg') }}" alt="edit"
                                                     width="15" data-bs-toggle="modal" data-bs-target="#add-edit-contact"
                                                     class="cursor-pointer">
                                             </div>
-                                            <span class="text-dark" style="font-size: 14px">{{ $model->lead->assignedLead->profile->job_title }}</span>
+                                            <span class="text-dark" style="font-size: 14px">{{ $contact->job_title ?? '' }}</span>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div>
                                                 <img src="{{ asset('assets/svg/icons/icon-contact-mail.svg') }}" alt="contact"
                                                     width="15">
-                                                <span style="font-size: 12px">{{ $model->lead->phone_number }}</span>
+                                                <span style="font-size: 12px">{{ $contact->whatsapp ?? '' }}</span>
                                             </div>
                                             <div>
                                                 <img src="{{ asset('assets/svg/icons/icon-circle-outline.svg') }}"
@@ -178,8 +208,21 @@
                                                 <span style="font-size: 12px">WhatsApp</span>
                                             </div>
                                         </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <img src="{{ asset('assets/svg/icons/icon-contact-mail.svg') }}" alt="contact"
+                                                    width="15">
+                                                <span style="font-size: 12px">{{ $contact->email ?? '' }}</span>
+                                            </div>
+                                            <div>
+                                                <img src="{{ asset('assets/svg/icons/icon-circle-outline.svg') }}"
+                                                    alt="circle" width="15">
+                                                <span style="font-size: 12px">Email</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <button class="btn-link" data-bs-toggle="modal" data-bs-target="#add-edit-contact">
+                                    @endforeach
+                                    <button class="btn-link" data-bs-toggle="modal" data-bs-target="#add-contact">
                                         + Add more contacts
                                     </button>
                                 </div>
@@ -245,14 +288,63 @@
                         </div>
 
                         <div class="col-6 p2">
-                            <x-chat-history
-                                isUsingHeader={{ true }}
-                                type="cold"
-                                :people="['Rihanza']"
-                                title="{{ $model->title }}"
-                                typeTask="{{ $model->code }}"
-                            >
-                            </x-chat-history>
+                            <div class="col app-chat-history bg-body" id="">
+                                <div class="chat-history-wrapper">
+                                    <header>
+                                        <div class="chat-history-header border-bottom bg-white">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex overflow-hidden align-items-center">
+                                                    <button class="btn d-flex gap-2 fw-bold text-dark" onclick="window.history.back()">
+                                                        <i class="ti ti-arrow-left text-dark"></i>
+                                                    </button>
+                                                    <span class="m-0 text-dark fw-bold" style="font-size: 22px">{{ $model->title }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex align-items-center gap-2 py-1 chat-history-header-tag px-2 py-2">
+                                            <div class="d-flex align-items-center badge badge-sm rounded-pill badge-user text-dark gap-1">
+                                                <i class="ti ti-user user-icon text-dark"></i>
+                                                <div class="d-flex align-items-center gap-1">
+                                                    @foreach($model->team->members as $member)
+                                                    <small>{{ $member->profile->first_name }} {{ $member->profile->last_name }},</small>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                            <x-badge-priority type="{{ $model->priority }}"></x-badge-priority>
+                                            <small>{{ $model->code }}</small>
+                                        </div>
+                                    </header>
+
+                                    <!--
+                                    ketika buat ticket, sekaligus buat group, dan semua orang yang di group member itu yang bisa saling chat di chat-history
+                                    tambahkan add member dengan modal
+                                    -->
+                                    <div class="chat-history-body bg-white ww">
+                                        <ul class="list-unstyled chat-history">
+                                            No chats here
+                                        </ul>
+                                    </div>
+
+                                    <!-- Chat message form -->
+                                    <div class="chat-history-footer">
+                                        <form class="form-send-message d-flex flex-column justify-content-between h-100" action="" method="POST" enctype="multipart/form-data">
+                                            <input class=" form-control message-input border-0 me-3 shadow-none bg-transparent" placeholder="Write message">
+                                            <div class="message-actions d-flex align-items-center justify-content-between ps-2 pe-3">
+                                                <div class="d-flex align-items-center">
+                                                    <label for="attach-doc" class="form-label mb-0">
+                                                        <img src="{{asset('assets/svg/icons/note_alt.svg')}}" alt="info" width="24">
+                                                        <input type="file" id="attach-doc" hidden>
+                                                    </label>
+                                                </div>
+                                                <button class="message-btn d-flex send-msg-btn rounded-circle" type="submit">
+                                                    <img src="{{asset('assets/svg/icons/send.svg')}}" alt="info" width="24">
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="col-3 p-2">
@@ -298,9 +390,9 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="text-dark">Priority</span>
                                         <select class="form-select select-task-editable custom-select" data-id="{{ $model->id }}" data-type="priority" data-url="api/tasks/{{ $model->id }}/change" data-allow-clear="true" style="border: none; padding-left: 0px; bottom: 0px;">
-                                            <option value="LOW" {{ strtoupper($model->priority) == 'LOW' ? 'selected' : '' }}>LOW</option>
-                                            <option value="MEDIUM" {{ strtoupper($model->priority) == 'MEDIUM' ? 'selected' : '' }}>MEDIUM</option>
-                                            <option value="HIGH" {{ strtoupper($model->priority) == 'HIGH' ? 'selected' : '' }}>HIGH</option>
+                                            <option value="Low" {{ $model->priority == 'Low' ? 'selected' : '' }}>Low</option>
+                                            <option value="Medium" {{ $model->priority == 'Medium' ? 'selected' : '' }}>Medium</option>
+                                            <option value="High" {{ $model->priority == 'High' ? 'selected' : '' }}>High</option>
                                         </select>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center">
@@ -317,21 +409,31 @@
                                 </div>
 
                                 <div class="sidebar-card d-flex flex-column">
-                                    <div class="d-flex justify-content-between">
-                                        <span class="text-dark">Teams</span>
-                                        <span>{{ $model->team->name }}</span>
-                                    </div>
-                                    <div class="d-flex flex-wrap gap-2">
-                                        @if($model->team)
-                                        @foreach($model->team->members as $member)
-                                        <div class="d-flex align-items-center tag gap-1">
-                                            <span class="text-dark">{{ $member->profile->first_name }} {{ $member->profile->last_name }}</span>
-                                            <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay
-                                                data-target="#tag"></i>
+                                    <span class="text-dark">Teams</span>
+                                    <div>
+                                        <div class="d-flex flex-wrap mb-3 gap-2">
+                                            <div class="d-flex align-items-center tag gap-1">
+                                                <span class="text-dark">{{ $model->team->name ?? ' - ' }}</span>
                                             </div>
-                                        @endforeach
-                                        @endif
+                                        </div>
                                     </div>
+                                    <span class="text-dark">Assignee</span>
+                                    <div>
+                                        <div class="d-flex flex-wrap mb-3 gap-2">
+                                            @if($model->team)
+                                            @foreach($model->team->members as $member)
+                                            <div class="d-flex align-items-center tag gap-1">
+                                                <span class="text-dark">{{ $member->profile->first_name }} {{ $member->profile->last_name }}</span>
+                                                <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay
+                                                    data-target="#tag"></i>
+                                            </div>
+                                            @endforeach
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <a href="javascript:;" id="add-assignee" data-bs-toggle="modal" data-bs-target="#add-assignee" data-task="{{ $model->id }}" class="btn-link">
+                                        + Add Assignee
+                                    </a>
                                 </div>
 
                             </x-sidebar-right-info-chat>
@@ -342,4 +444,80 @@
             </div>
         </div>
     </div>
+
+    <x-modal title="Add Assignee" modalClass="modal-md" url="{{ route('tickets.add-assignee') }}" isPost="true" submitText="Save" name="add-assignee">
+        <div class="d-flex flex-column gap-3">
+            <input type="hidden" name="client_id" value="{{ $model->client_id }}">
+            <input type="hidden" name="task_id" value="{{ $model->id }}">
+            <div class="d-flex flex-row mb-3 gap-4">
+                <div class="mb-3">
+                    <label class="form-label" for="first_name">First Name</label>
+                    <input type="text" name="first_name" id="first_name" class="form-control" placeholder="Enter First Name" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="last_name">Last Name</label>
+                    <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Enter Last Name" />
+                </div>
+            </div>
+        </div>
+    </x-modal>
+
+    <x-modal title="Add Contact" modalClass="modal-md" url="{{ route('customers.add-contact') }}" isPost="true" submitText="Save" name="add-contact">
+        <div class="d-flex flex-column gap-3">
+            <input type="hidden" name="client_id" value="{{ $model->client_id }}">
+            <input type="hidden" name="task_id" value="{{ $model->id }}">
+            <div class="d-flex flex-row mb-3 gap-4">
+                <div class="mb-3">
+                    <label class="form-label" for="first_name">First Name</label>
+                    <input type="text" name="first_name" id="first_name" class="form-control" placeholder="Enter First Name" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="last_name">Last Name</label>
+                    <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Enter Last Name" />
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="job_title">Job Title</label>
+                <select name="job_title" id="job_title" class="form-select form-control">
+                    <option value="Sales Executive">Sales Executive</option>
+                    <option value="Sales Representative">Sales Representative</option>
+                    <option value="Senior Sales">Senior Sales</option>
+                    <option value="Branch Manager">Branch Manager</option>
+                </select>
+            </div>
+            <div id="more-contact">
+                <div class="d-flex flex-row mb-3 gap-4">
+                    <div class="mb-3">
+                        <label class="form-label" for="whatsapp">Whatsapp</label>
+                        <select name="whatsapp" id="whatsapp" class="form-select form-control">
+                            <option value="whatsapp" selected>Whatsapp</option>
+                            <!-- <option value="email">Email</option> -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="whatsapp_contact">Contact</label>
+                        <input type="text" name="whatsapp_contact" id="whatsapp_contact" class="form-control" placeholder="Enter Phone Number" />
+                    </div>
+                </div>
+                <div class="d-flex flex-row mb-3 gap-4">
+                    <div class="mb-3">
+                        <label class="form-label" for="email">email</label>
+                        <select name="email" id="email" class="form-select form-control">
+                            <option value="email" selected>Email</option>
+                            <!-- <option value="email">Email</option> -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="email_contact">Contact</label>
+                        <input type="text" name="email_contact" id="email_contact" class="form-control" placeholder="Enter Email" />
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="mb-3">
+                <a href="javascript:;" class="btn-link" id="#add-channel">
+                    + Add more channels
+                </a>
+            </div> -->
+        </div>
+    </x-modal>
 @endsection

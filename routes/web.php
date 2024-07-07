@@ -485,6 +485,7 @@ Route::middleware(['auth'])->group(function () {
   Route::delete('customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
   Route::get('customers/{id}/email', [CustomerController::class, 'detailEmail'])->name('customers.detailEmail');
   Route::get('customers/{id}/ticket', [CustomerController::class, 'detailTicket'])->name('customers.detailTicket');
+  Route::post('customers/add-contact', [CustomerController::class, 'addContact'])->name('customers.add-contact');
 
   // Route::resource('dealer', DealerController::class);
   Route::get('clients', [ClientController::class, 'index'])->name('clients.index');
@@ -536,6 +537,7 @@ Route::middleware(['auth'])->group(function () {
   // TICKETS
   Route::get('tickets', [TicketController::class, 'index'])->name('tickets.index');
   Route::post('tickets/upsert', [TicketController::class, 'upsert'])->name('tickets.upsert');
+  Route::post('tickets/add-assignee', [TicketController::class, 'addAssignee'])->name('tickets.add-assignee');
 
   // Route::get('/kanban', function () {
   //   return view('content.apps.app-kanban'); // Your Blade template name

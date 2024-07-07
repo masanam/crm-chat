@@ -226,7 +226,22 @@
       //   );
       const eid = el.getAttribute('data-eid').match(/\d+/g)[0]
 
-      window.location.href = baseUrl + `customers/${eid}/ticket`;
+      // check if eid not lead
+      async function is_lead() {
+        await fetch(`${baseUrl}api/is_lead/${eid}`)
+          .then((res) => {
+            if (res.ok) {
+              window.location.href = baseUrl + `customers/${eid}/ticket`;
+              exit();
+            }
+
+            throw new Error('Your task is not in lead')
+          })
+          .then(text => console.log('text', text))
+          .catch(error => toastr.warning(error))
+      }
+
+      is_lead()
     },
 
     // buttonClick: function (el, boardId) {

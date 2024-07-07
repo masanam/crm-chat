@@ -1,25 +1,23 @@
 @php
 $configData = Helper::appClasses();
-
-$user = request()->user();
-$userName = 'Dandi';
-
-// function initials($name){
-//$words = explode(" ", $name );
-//$initials = null;
-//foreach ($words as $w) {
-//$initials .= $w[0];
-//}
-//return strtoupper($initials);
-//} 
 @endphp
 
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
 
   <!-- ! Hide app brand if navbar-full -->
   @if(!isset($navbarFull))
-  <div style="padding: 1.1rem 1rem; background: #EEF8F9;">
-    <img src="{{asset('assets/svg/icons/pasima-logo-sidebar.svg')}}" alt="pasima-logo">
+  <div class="app-brand demo">
+    <a href="{{url('/')}}" class="app-brand-link">
+      <span class="app-brand-logo demo">
+        @include('_partials.macros',["height"=>20])
+      </span>
+      <span class="app-brand-text demo menu-text fw-bold">{{config('variables.templateName')}}</span>
+    </a>
+
+    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+      <i class="ti menu-toggle-icon d-none d-xl-block ti-sm align-middle"></i>
+      <i class="ti ti-x d-block d-xl-none ti-sm align-middle"></i>
+    </a>
   </div>
   @endif
 
@@ -66,14 +64,11 @@ $userName = 'Dandi';
 
     {{-- main menu --}}
     <li class="menu-item {{$activeClass}}">
-      <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}" class="dropdown-btn {{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}" @if (isset($menu->target) and !empty($menu->target)) target="_blank" @endif>
+      <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}" class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}" @if (isset($menu->target) and !empty($menu->target)) target="_blank" @endif>
         @isset($menu->icon)
-        <i class="{{ $menu->icon }} "></i>
+        <i class="{{ $menu->icon }}"></i>
         @endisset
-        @isset($menu->iconUrl)
-        <img src="{{ asset($menu->iconUrl) }}" alt="menu-icon" style="{{ $activeClass && !isset($menu->submenu) ? 'filter: brightness(0) invert(1);' : '' }}">
-        @endisset
-        <div class="{{ isset($menu->iconUrl) ? 'ms-2' : '' }}">{{ isset($menu->name) ? __($menu->name) : '' }}</div>
+        <div>{{ isset($menu->name) ? __($menu->name) : '' }}</div>
         @isset($menu->badge)
         <div class="badge bg-{{ $menu->badge[0] }} rounded-pill ms-auto">{{ $menu->badge[1] }}</div>
 

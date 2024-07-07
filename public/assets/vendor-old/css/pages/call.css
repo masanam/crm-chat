@@ -1,0 +1,64 @@
+.call-content {
+  position: relative;
+  height: calc(100vh - 3.5rem);
+}
+.layout-navbar-hidden .call-content {
+  height: calc(100vh - 7.5rem);
+}
+@media (min-width: 1200px) {
+  .layout-horizontal .call-content {
+    height: calc(100vh - 3.5rem - 2.2rem) !important;
+  }
+}
+
+.modal-call .badge-call {
+  width: 160px;
+  display: -ms-flexbox;
+  display: flex;
+  height: 160px;
+  padding: 0px 49px;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+  border-radius: 40px;
+  background: rgba(68, 128, 255, 0.8);
+  font-family: "Roboto";
+  font-size: 40px;
+  font-weight: 600;
+}
+.modal-call .info-call h4, .modal-call .info-call h6 {
+  -webkit-margin-before: 0px !important;
+          margin-block-start: 0px !important;
+  -webkit-margin-after: 0px !important;
+          margin-block-end: 0px !important;
+  -webkit-margin-start: 0px !important;
+     -moz-margin-start: 0px !important;
+          margin-inline-start: 0px !important;
+  -webkit-margin-end: 0px !important;
+     -moz-margin-end: 0px !important;
+          margin-inline-end: 0px !important;
+}
+.modal-call .info-call h6 {
+  font-size: 16px !important;
+  color: #616A75;
+}
+.modal-call .btn-additional {
+  border-radius: 56px;
+  padding: 24px;
+  border: none;
+}
+.modal-call .wrapper-button-call {
+  margin-top: 7rem;
+}
+.modal-call .wrapper-button-call .btn-additional {
+  border-radius: 56px;
+  padding: 24px;
+  border: none;
+}
+.modal-call .wrapper-button-call .btn-additional.grey {
+  background-color: #DDE0E4;
+}
+.modal-call .wrapper-button-call .btn-additional.red {
+  background-color: #FBC5BC;
+}

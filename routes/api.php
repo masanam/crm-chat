@@ -8,6 +8,9 @@ use App\Http\Controllers\apps\InternalNoteController;
 use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\TicketController;
+use App\Http\Controllers\API\CompanyController;
+use App\Http\Controllers\API\LeadController;
+use App\Http\Controllers\API\TaskController;
 use App\Http\Controllers\API\ClientController;
 
 /*
@@ -81,7 +84,12 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 Route::get('/tickets', [TicketController::class, 'get']);
 Route::get('/get-members', [TicketController::class, 'getMembers']);
+Route::get('/is_lead/{id}', [TicketController::class, 'isLead']);
 Route::get('/clients', [ClientController::class, 'get']);
+
+Route::post('/companies/{id}/change', [CompanyController::class, 'change']);
+Route::post('/leads/{id}/change', [LeadController::class, 'change']);
+Route::post('/tasks/{id}/change', [TaskController::class, 'change']);
 
 Route::post('/send-whatsapp', [Chat::class, 'sendWhatsAppMessage']);
 Route::post('/receive-chat', [Chat::class, 'receiveWhatsAppMessage']);

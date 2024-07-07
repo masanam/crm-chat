@@ -33,4 +33,14 @@ class Client extends Model
   {
     return $this->hasOne(Organization::class, 'id', 'organization_id');
   }
+
+  /**
+   * Get all of the contacts for the Client
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\HasMany
+   */
+  public function contacts(): HasMany
+  {
+    return $this->hasMany(Contact::class, 'client_id', 'id');
+  }
 }

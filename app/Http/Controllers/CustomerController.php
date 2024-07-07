@@ -2,9 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
-use Yajra\DataTables\Facades\Datatables;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\Datatables;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
+use App\Models\Task;
+use App\Models\TaskChat;
+use App\Models\TaskStatus;
+use App\Models\Profile;
+use App\Models\Contact;
+use App\Models\InternalChat;
 
 class CustomerController extends Controller
 {
@@ -162,8 +170,73 @@ class CustomerController extends Controller
   /**
    * Display detail ticket in tab tickets
    */
-  public function detailTicket()
+  public function detailTicket(Request $request, $id)
   {
-    return view('content.customer.detail-ticket');
+    $model = Task::with('client', 'status', 'team', 'member', 'lead', 'user')->find($id);
+    $contacts = Contact::where('client_id', $model->client_id)->get();
+    $group_chats = TaskChat::join('profiles', 'profiles.id', '=', 'task_chats.created_by')
+      ->where('task_chats.task_id', $model->id)
+      ->get();
+
+    if (empty($model->is_lead) || $model->is_lead == null || !$model->lead->id) {
+      redirect('/tickets');
+    }
+
+    $statuses = TaskStatus::all();
+    $chats = InternalChat::where('from', '3dbcb102-3a16-484c-9332-b30de6ac1ef4')
+      ->orWhere('to', '3dbcb102-3a16-484c-9332-b30de6ac1ef4')
+      ->orderBy('id')
+      ->get()
+      ->toArray();
+    $chats = json_encode($chats);
+
+    return view('content.customer.detail-ticket', compact('model', 'statuses', 'chats', 'group_chats', 'contacts'));
+  }
+
+  public function addContact(Request $request)
+  {
+    try {
+      $validator = Validator::make($request->all(), [
+        'first_name' => ['required', 'string'],
+        'last_name' => ['string'],
+        'job_title' => ['string'],
+        'whatsapp_contact' => ['string'],
+        'email_contact' => ['string'],
+        'client_id' => ['required', 'integer'],
+        'task_id' => ['required', 'integer'],
+      ]);
+
+      if ($validator->fails()) {
+        return redirect('customers/' . $request->task_id . '/ticket')
+          ->withErrors($validator)
+          ->withInput();
+      }
+
+      $params = $validator->validate();
+
+      Contact::updateOrCreate(
+        [
+          'client_id' => $params['client_id'],
+          'whatsapp' => $params['whatsapp_contact'],
+          'email' => $params['email_contact'],
+        ],
+        [
+          'first_name' => $params['first_name'],
+          'last_name' => $params['last_name'],
+          'job_title' => $params['job_title'],
+          'whatsapp' => $params['whatsapp_contact'],
+          'email' => $params['email_contact'],
+          'client_id' => $params['client_id'],
+          'created_by' => Auth::user()->profile_id,
+        ]
+      );
+
+      return redirect('customers/' . $params['task_id'] . '/ticket');
+    } catch (Exception $e) {
+      return redirect('customers/' . $params['task_id'] . '/ticket')->with(
+        'error',
+        'Something went wrong. Please try again later.'
+      );
+    }
   }
 }

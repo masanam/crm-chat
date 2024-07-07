@@ -178,6 +178,14 @@ use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\FormBuilderController;
 use App\Http\Controllers\FormsController;
 
+Route::get('/test123', [Chat::class, 'test']);
+
+Route::get('/clear', function () {
+    $clearcache = Artisan::call('config:clear');
+    echo "Cache cleared<br>";
+
+});
+
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');
 // Route::get('/dashboard/crm', [Crm::class, 'index'])->name('dashboard-crm');
 // locale

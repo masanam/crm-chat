@@ -1,0 +1,283 @@
+.authentication-wrapper {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  width: 100%;
+}
+.authentication-wrapper .authentication-inner {
+  width: 100%;
+}
+.authentication-wrapper .authentication-inner .card {
+  border-radius: 25px !important;
+  height: 100%;
+}
+.authentication-wrapper.authentication-basic {
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+}
+.authentication-wrapper.authentication-basic .card-body {
+  padding: 4rem;
+}
+.authentication-wrapper.authentication-basic .card-body .text-blue {
+  color: #1660CF;
+}
+.authentication-wrapper.authentication-basic .card-body input {
+  color: black !important;
+}
+.authentication-wrapper.authentication-basic .title {
+  font-size: 54px;
+  color: #344054;
+  margin: 0 !important;
+}
+.authentication-wrapper.authentication-basic .subtitle {
+  font-size: 30px;
+  font-weight: 800;
+  color: #33B6B9;
+  margin: 0 !important;
+}
+.authentication-wrapper.authentication-basic .login-title {
+  font-size: 64px;
+}
+.authentication-wrapper.authentication-basic .login-subtitle {
+  font-size: 25px !important;
+}
+.authentication-wrapper.authentication-basic .sign-up-label {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1D2939;
+}
+.authentication-wrapper.authentication-basic .sign-up-input, .authentication-wrapper.authentication-basic .sign-up-select {
+  border-radius: 40px;
+  border: 1px solid #87909B;
+  padding: 8px 14px;
+}
+.authentication-wrapper.authentication-basic .sign-up-input:focus, .authentication-wrapper.authentication-basic .sign-up-select:focus {
+  border: 3px solid #0D7072 !important;
+}
+.authentication-wrapper.authentication-basic .btn-submit {
+  border: 2px solid #000000;
+  border-radius: 30px;
+  padding: 8px 0px;
+}
+.authentication-wrapper.authentication-basic .otp-input {
+  width: 60px;
+  height: 80px;
+  border-radius: 5px;
+  border: 1px solid #D0D5DD;
+  margin: 0 10px;
+  text-align: center;
+  font-size: 36px;
+  cursor: not-allowed;
+  pointer-events: none;
+  background: #F2F4F7;
+}
+.authentication-wrapper.authentication-basic .otp-input:focus {
+  border: 1px solid #33B6B9;
+  outline: none;
+}
+.authentication-wrapper.authentication-basic .otp-input:nth-child(1) {
+  cursor: pointer;
+  pointer-events: all;
+}
+.authentication-wrapper.payment .payment-title {
+  font-size: 32px;
+  color: #33B6B9;
+  margin: 0 !important;
+}
+.authentication-wrapper.payment .payment-subtitle {
+  font-size: 32px;
+  font-weight: 700;
+  color: #000;
+  margin: 0 !important;
+}
+.authentication-wrapper.payment .wrapper-payment-icon {
+  border-radius: 6px;
+  border: 1px solid #B2BCCA;
+  background: var(--White, #FFF);
+  padding: 4px 7px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+}
+.authentication-wrapper.payment .wrapper-card-discover {
+  padding: 8px 0px 0px 0px;
+}
+.authentication-wrapper.payment .wrapper-card-discover img {
+  width: 50px;
+}
+.authentication-wrapper.payment .text-info-security {
+  color: #33B6B9;
+  font-weight: 400;
+  font-size: 12px;
+}
+.authentication-wrapper.authentication-cover {
+  -ms-flex-align: start;
+      align-items: flex-start;
+}
+.authentication-wrapper.authentication-cover .authentication-inner {
+  height: 100%;
+  margin: auto 0;
+}
+.authentication-wrapper.authentication-cover .authentication-inner .auth-cover-bg {
+  width: 100%;
+  margin: 2rem 0 2rem 2rem;
+  height: calc(100vh - 4rem);
+  border-radius: 1.125rem;
+  position: relative;
+}
+.authentication-wrapper.authentication-cover .authentication-inner .auth-cover-bg .auth-illustration {
+  max-height: 65%;
+  z-index: 1;
+}
+.authentication-wrapper.authentication-cover .authentication-inner .platform-bg {
+  position: absolute;
+  width: 100%;
+  bottom: 0%;
+  left: 0%;
+  height: 35%;
+}
+.authentication-wrapper.authentication-cover .authentication-inner .auth-multisteps-bg-height {
+  height: 100vh;
+}
+.authentication-wrapper.authentication-cover .authentication-inner .auth-multisteps-bg-height > img:first-child {
+  z-index: 1;
+}
+.authentication-wrapper.authentication-basic .authentication-inner {
+  width: 100%;
+  position: relative;
+}
+.authentication-wrapper.authentication-basic .authentication-inner:before {
+  content: " ";
+  position: absolute;
+  top: -55px;
+  left: -40px;
+}
+@media (max-width: 575.98px) {
+  .authentication-wrapper.authentication-basic .authentication-inner:before {
+    display: none;
+  }
+}
+.authentication-wrapper.authentication-basic .authentication-inner:after {
+  content: " ";
+  position: absolute;
+  z-index: -1;
+  bottom: -30px;
+  right: -56px;
+}
+@media (max-width: 575.98px) {
+  .authentication-wrapper.authentication-basic .authentication-inner:after {
+    display: none;
+  }
+}
+.authentication-wrapper .auth-input-wrapper .auth-input {
+  max-width: 50px;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+  font-size: 150%;
+}
+
+.footer {
+  padding: 1rem 4rem;
+  position: relative;
+  top: 20px;
+}
+.footer a {
+  font-size: 16px;
+}
+
+footer .step-passed {
+  background: #33B6B9;
+  width: 33%;
+  height: 8px;
+  border-radius: 4px;
+}
+footer .step-upcoming {
+  background: #D9D9D9;
+  width: 33%;
+  height: 8px;
+  border-radius: 4px;
+}
+
+.hidden {
+  display: none;
+}
+
+.auth-bg .signup-bg {
+  width: 768px;
+  height: 695px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+.auth-bg .signup-bg-payment {
+  width: 645px;
+  height: 695px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+
+.container-form-stepper {
+  max-height: 590px;
+}
+
+.container-wrapper {
+  max-height: 700px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+@media (max-height: 636px) {
+  .auth-multisteps-bg-height {
+    height: 100% !important;
+  }
+}
+@media (max-width: 575.98px) {
+  .authentication-wrapper .auth-input-wrapper .auth-input {
+    font-size: 1.125rem;
+  }
+}
+#twoStepsForm .fv-plugins-bootstrap5-row-invalid .form-control {
+  border-color: #ea5455;
+}
+
+.light-style .authentication-wrapper.authentication-bg {
+  background-color: #fff;
+}
+.light-style .auth-cover-bg-color {
+  background-color: #f8f7fa;
+}
+
+.dark-style .authentication-wrapper.authentication-bg {
+  background-color: #2f3349;
+}
+.dark-style .auth-cover-bg-color {
+  background-color: #25293c;
+}
+
+@media (max-width: 1141px) {
+  .auth-bg {
+    display: none;
+  }
+  .authentication-wrapper.authentication-basic {
+    -ms-flex-pack: center;
+        justify-content: center;
+  }
+}
+@media (min-width: 1140px) and (max-width: 1282px) {
+  .login-title {
+    font-size: 28px !important;
+  }
+  .login-subtitle {
+    font-size: 18px !important;
+  }
+}

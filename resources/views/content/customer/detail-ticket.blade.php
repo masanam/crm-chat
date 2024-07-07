@@ -431,7 +431,7 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <a href="javascript:;" id="add-assignee" data-bs-toggle="modal" data-bs-target="#add-assignee" data-task="{{ $model->id }}" class="btn-link">
+                                    <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#add-assignee" data-task="{{ $model->id }}" class="btn-link">
                                         + Add Assignee
                                     </a>
                                 </div>
@@ -445,22 +445,40 @@
         </div>
     </div>
 
-    <x-modal title="Add Assignee" modalClass="modal-md" url="{{ route('tickets.add-assignee') }}" isPost="true" submitText="Save" name="add-assignee">
-        <div class="d-flex flex-column gap-3">
+    <div class="modal fade" id="add-assignee" aria-hidden="true">
+        <form method="post" action="{{ route('tickets.add-assignee') }}">
+            @csrf
             <input type="hidden" name="client_id" value="{{ $model->client_id }}">
             <input type="hidden" name="task_id" value="{{ $model->id }}">
-            <div class="d-flex flex-row mb-3 gap-4">
-                <div class="mb-3">
-                    <label class="form-label" for="first_name">First Name</label>
-                    <input type="text" name="first_name" id="first_name" class="form-control" placeholder="Enter First Name" />
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="last_name">Last Name</label>
-                    <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Enter Last Name" />
+            <div class="modal-dialog model-md" role="document">
+                <div class="modal-content">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center py-3 px-4">
+                            <h4 class="modal-title text-dark fw-bold" id="exampleModalLabel2">Add Assignee</h5>
+                        </div>
+                    </div>
+
+                    <div class="modal-body px-4 py-3">
+                        <div class="d-flex flex-column gap-3">
+                            <div class="mb-3 gap-4">
+                                <label class="form-label" for="created_by">First Name</label>
+                                <select type="text" name="created_by" id="created_by" class="select2 form-select form-control">
+                                    @foreach($profiles as $profile)
+                                    <option value="{{ $profile->id }}">{{ $profile->first_name }} {{ $profile->last_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+                        <button type="button" data-bs-dismiss="modal" class="btn" style="background: #667085; color: #FFF;">Close</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </x-modal>
+        </form>
+    </div>
 
     <x-modal title="Add Contact" modalClass="modal-md" url="{{ route('customers.add-contact') }}" isPost="true" submitText="Save" name="add-contact">
         <div class="d-flex flex-column gap-3">

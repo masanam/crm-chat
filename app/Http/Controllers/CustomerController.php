@@ -177,6 +177,12 @@ class CustomerController extends Controller
     $group_chats = TaskChat::join('profiles', 'profiles.id', '=', 'task_chats.created_by')
       ->where('task_chats.task_id', $model->id)
       ->get();
+    $members = [];
+    foreach ($model->team->members as $key => $value) {
+      $members[] = $value->profile->id;
+    }
+
+    $profiles = Profile::whereNotIn('id', $members)->get();
 
     if (empty($model->is_lead) || $model->is_lead == null || !$model->lead->id) {
       redirect('/tickets');
@@ -190,7 +196,10 @@ class CustomerController extends Controller
       ->toArray();
     $chats = json_encode($chats);
 
-    return view('content.customer.detail-ticket', compact('model', 'statuses', 'chats', 'group_chats', 'contacts'));
+    return view(
+      'content.customer.detail-ticket',
+      compact('model', 'statuses', 'chats', 'group_chats', 'contacts', 'profiles')
+    );
   }
 
   public function addContact(Request $request)

@@ -11,8 +11,10 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Task;
 use App\Models\TaskStatus;
+use App\Models\TaskChat;
 use App\Models\Team;
 use App\Models\Client;
+use App\Models\Profile;
 use App\Models\AssignedLead;
 
 class TicketController extends Controller
@@ -95,7 +97,36 @@ class TicketController extends Controller
 
       return redirect('/customers/' . $model->id . '/ticket');
     } catch (\Exception $e) {
-      dd($e);
+      return redirect('/customers/' . $model->id . '/ticket');
+    }
+  }
+
+  public function addAssignee(Request $request)
+  {
+    try {
+      $validator = Validator::make($request->all(), [
+        'created_by' => ['required', 'string'],
+      ]);
+
+      if ($validator->fails()) {
+        return redirect('index')
+          ->withErrors($validator)
+          ->withInput();
+      }
+
+      $params = $validator->validate();
+
+      $profile = Profile::find($params['created_by']);
+      $name = $profile->first_name . ' ' . $profile->last_name;
+      $model = TaskChat::create([
+        'created_by' => $params['created_by'],
+        'task_id' => $request->task_id,
+        'message' => $name,
+      ]);
+
+      return redirect('customers/' . $request->task_id . '/ticket');
+    } catch (Exception $e) {
+      return redirect('customers/' . $request->task_id . '/ticket');
     }
   }
 }

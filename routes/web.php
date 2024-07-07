@@ -174,6 +174,17 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\StripePaymentController;
+use App\Http\Controllers\FormBuilderController;
+use App\Http\Controllers\FormsController;
+
+Route::get('/test123', [Chat::class, 'test']);
+
+Route::get('/clear', function () {
+    $clearcache = Artisan::call('config:clear');
+    echo "Cache cleared<br>";
+
+});
 
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');
 // Route::get('/dashboard/crm', [Crm::class, 'index'])->name('dashboard-crm');
@@ -542,7 +553,13 @@ Route::middleware(['auth'])->group(function () {
   // Route::get('/kanban', function () {
   //   return view('content.apps.app-kanban'); // Your Blade template name
   // });
+
+  Route::get('/dynamic-form', function () {
+    return view('dynamic_form');
+  });
 });
+
+
 
 //AUTH ROUTES
 
@@ -550,4 +567,35 @@ Route::middleware(['guest'])->group(function () {
   Route::get('/login', [AuthController::class, 'loginPage']);
   Route::post('/login', [AuthController::class, 'login'])->name('login');
   Route::get('/sign-up', [AuthController::class, 'signUp'])->name('register');
+  Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
 });
+
+//Stripe
+Route::controller(StripePaymentController::class)->group(function () {
+  Route::get('stripe', 'stripe');
+  Route::get('subscribe', 'subscribe');
+  Route::post('stripe', 'stripePost')->name('stripe.post');
+  Route::post('payment', 'processPayment')->name('stripe.payment');;
+});
+
+// Start Form Builder===============================================================
+// Step 1
+Route::get('form-builder', [FormBuilderController::class, 'index']);
+// Step 2
+Route::view('formbuilder', 'FormBuilder.create');
+// Step 3
+Route::post('save-form-builder', [FormBuilderController::class, 'create']);
+// Step 4
+Route::delete('form-delete/{id}', [FormBuilderController::class, 'destroy']);
+
+// Step 5
+Route::view('edit-form-builder/{id}', 'FormBuilder.edit');
+Route::get('get-form-builder-edit', [FormBuilderController::class, 'editData']);
+Route::post('update-form-builder', [FormBuilderController::class, 'update']);
+
+// Step 6
+Route::view('read-form-builder/{id}', 'FormBuilder.read');
+Route::get('get-form-builder', [FormsController::class, 'read']);
+Route::post('save-form-transaction', [FormsController::class, 'create']);
+
+// End Form Builder===============================================================

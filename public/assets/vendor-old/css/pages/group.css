@@ -1,0 +1,32 @@
+.group-chat .title-card {
+  position: relative;
+  top: 6px;
+}
+.group-chat .text-xs {
+  font-size: 10px;
+}
+.group-chat .custom-avatar {
+  padding: 28px;
+}
+.group-chat .custom-subtitle {
+  margin-top: 0px !important;
+}
+.group-chat .sidebar-body .fw-600 {
+  font-weight: 600;
+}
+.group-chat .sidebar-body .chat-wrapper {
+  padding: 8px 24px;
+}
+.group-chat .sidebar-body .chat-wrapper .card-group {
+  padding: 25px 0px;
+  padding-left: 23px;
+  padding-right: 14px;
+  border-radius: 21px;
+  border: 0px solid #000;
+  background: #F4F4F4;
+  box-shadow: 1px 2px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.group-chat .sidebar-body .chat-wrapper .card-group .badge-group {
+  background: #33B6B9;
+  border-radius: 8px;
+}

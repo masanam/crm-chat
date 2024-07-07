@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const getElementCloseSidebar = document.querySelectorAll('.close-sidebar')
     const getElementChatHistory = document.querySelector('.app-chat-history')
     const getElementSidebarRightOne = document.querySelector('.sidebar-one-on-one')
-
+    
     // Sidebar right scrollbar
     if (getElementSidebarRight) {
       new PerfectScrollbar(getElementSidebarRight, {
@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if(e.target.tagName === 'IMG') {
           if (getElementSidebarRight.style.display !== 'none') {
             getElementSidebarRight.classList.add('show')
+            const getElementChatInternal = document.querySelector('#chat-history-internal')
+            getElementChatInternal.style.width = '580px'
           } else {
             getElementSidebarRightOne.classList.add('show')
           }
@@ -41,6 +43,8 @@ document.addEventListener('DOMContentLoaded', function () {
         el.addEventListener('click', () => {
           if (getElementSidebarRight.style.display !== 'none') {
             getElementSidebarRight.classList.remove('show')
+            const getElementChatInternal = document.querySelector('#chat-history-internal')
+            getElementChatInternal.style.width = '100%'
           } else {
             getElementSidebarRightOne.classList.remove('show')
           }

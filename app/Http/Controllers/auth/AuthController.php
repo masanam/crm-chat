@@ -65,4 +65,10 @@ class AuthController extends Controller
     $pageConfigs = ['myLayout' => 'blank'];
     return view('content.authentications.auth-signup', ['pageConfigs' => $pageConfigs]);
   }
+
+  public function forgotPassword()
+  {
+    $pageConfigs = ['myLayout' => 'blank'];
+    return view('content.authentications.auth-forgot-password', ['pageConfigs' => $pageConfigs]);
+  }
 }

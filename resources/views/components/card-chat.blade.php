@@ -30,10 +30,10 @@ $avatarOnline = ($totalMember > 1) ? 'avatar avatar-online':'avatar avatar-offli
                 @endif
             </div>
             <div class="d-flex align-items-center justify-content-between">
-                <span class="text-muted">{{ $subtitle }}</span>
+                <span class="text-muted" style="width: 145px;">{{ $subtitle }}</span>
                 <span class="time">{{ $time }}</span>
             </div>
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between gap-2">
                 <div class="d-flex gap-0">
                     @if($totalMember)
                     <span class="badge bg-primary rounded-pill ms-auto">{{ $totalMember }} Member</span>

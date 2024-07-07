@@ -291,6 +291,7 @@ $step = 6;
                                 </div>
 
                                 <button class="btn-primary btn-submit w-100 mt-5" type="submit">Start your Free Trial</button>
+                                <img src="{{ asset('assets/img/backgrounds/stripe.png') }}" alt="stripe logo" width="150" class="mt-2">
                             </div>
                         </form>
                     </div>

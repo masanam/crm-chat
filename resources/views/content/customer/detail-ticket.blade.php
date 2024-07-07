@@ -279,7 +279,7 @@
                                     </div>
                                     <div class="d-flex flex-column">
                                         <span class="text-dark" style="font-weight: 600;">Next Step</span>
-                                        <span style="font-size: 13px; color: #616A75;">{{ $model->lead->next_step }}</span>
+                                        <span style="font-size: 13px; color: #616A75;" contenteditable="true" class="lead-editable" data-id="{{ $model->lead_id }}" data-type="next_step" data-url="api/leads/{{ $model->lead_id }}/change">{{ $model->lead->next_step ?? '' }}</span>
                                     </div>
                                 </div>
 
@@ -420,10 +420,10 @@
                                     <span class="text-dark">Assignee</span>
                                     <div>
                                         <div class="d-flex flex-wrap mb-3 gap-2">
-                                            @if($model->team)
-                                            @foreach($model->team->members as $member)
+                                            @if($chats)
+                                            @foreach($chats as $chat)
                                             <div class="d-flex align-items-center tag gap-1">
-                                                <span class="text-dark">{{ $member->profile->first_name }} {{ $member->profile->last_name }}</span>
+                                                <span class="text-dark">{{ $chat->profile->first_name }} {{ $chat->profile->last_name }}</span>
                                                 <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay
                                                     data-target="#tag"></i>
                                             </div>

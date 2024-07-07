@@ -177,6 +177,7 @@ class CustomerController extends Controller
     $group_chats = TaskChat::join('profiles', 'profiles.id', '=', 'task_chats.created_by')
       ->where('task_chats.task_id', $model->id)
       ->get();
+
     $members = [];
     foreach ($model->team->members as $key => $value) {
       $members[] = $value->profile->id;
@@ -189,12 +190,11 @@ class CustomerController extends Controller
     }
 
     $statuses = TaskStatus::all();
-    $chats = InternalChat::where('from', '3dbcb102-3a16-484c-9332-b30de6ac1ef4')
-      ->orWhere('to', '3dbcb102-3a16-484c-9332-b30de6ac1ef4')
-      ->orderBy('id')
-      ->get()
-      ->toArray();
-    $chats = json_encode($chats);
+    $chats = TaskChat::with('profile')
+      ->select('created_by')
+      ->where('task_id', $model->id)
+      ->groupBy('created_by')
+      ->get();
 
     return view(
       'content.customer.detail-ticket',

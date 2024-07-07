@@ -26,7 +26,7 @@ class TaskChat extends Model
    *
    * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
    */
-  public function profile(): BelongsTo
+  public function profile()
   {
     return $this->belongsTo(Profile::class, 'created_by', 'id');
   }

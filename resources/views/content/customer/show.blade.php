@@ -28,7 +28,7 @@
     <script type="text/javascript">
 
     $(document).ready(function(){      
-      var postURL = "<?php echo url('addmore'); ?>";
+      var postURL = "<?php echo url('customers/addmore'); ?>";
       var i=1;  
       $('#add-more').click(function(){  
            i++;  
@@ -49,7 +49,7 @@
       });
 
 
-      $('#submit').click(function(){            
+      $('#add-submit').click(function(){            
            $.ajax({  
                 url:postURL,  
                 method:"POST",  
@@ -586,8 +586,8 @@
     
     {{-- modal add/edit Deals Info --}}
 
-    <div class="modal fade " id="add-deals-info" aria-hidden="true">
-    <div class="modal-dialog " role="document">
+    <div class="modal fade" id="add-deals-info" aria-hidden="true">
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="d-flex align-items-center justify-content-between border border-bottom-2">
           <div class="d-flex align-items-center p-3">
@@ -596,65 +596,55 @@
         </div>
         
         <div class="modal-body px-4 py-3">
-        <div class="d-flex flex-column gap-2 border-bottom border-1 pb-3 align-items-start">
-            <div class="d-flex flex-column gap-3">
             <div class="form-group">
                 <form name="add_name" id="add_name">  
-                <div class="table-responsive">
-                    <table class="table table-border" colspan='0' rowspan='0' id="dynamic_field">
-                    <tr>  
-                            <td>
-                                Revenue
-                            </td>  
-                            <td>
-                                <input type="text" name="revenue" placeholder="" class="form-control name_list" />
-                            </td>  
-                        </tr>  
+                    <div class="table-responsive">
+                        <table class="table table-borderless" id="dynamic_field">
                         <tr>  
-                            <td>
-                                Close Date
-                            </td>  
-                            <td>
-                                <input type="date" name="close-date" placeholder="" class="form-control name_list" />
-                            </td>  
-                        </tr>  
-                        <tr>  
-                            <td>
-                                Source
-                            </td>  
-                            <td>
-                                <select name="close-date" class="form-select name_list">
-                                    <option>Web</option>
-                                    <option>Chat</option>
-                                    <option>Call</option>
-                                </select>
-                            </td>  
-                        </tr>  
+                                <td>
+                                    Revenue
+                                </td>  
+                                <td>
+                                    <input type="text" name="revenue" placeholder="" class="form-control name_list" />
+                                </td>  
+                            </tr>  
+                            <tr>  
+                                <td>
+                                    Close Date
+                                </td>  
+                                <td>
+                                    <input type="date" name="close-date" placeholder="" class="form-control name_list" />
+                                </td>  
+                            </tr>  
+                            <tr>  
+                                <td>
+                                    Source
+                                </td>  
+                                <td>
+                                    <select name="close-date" class="form-select name_list">
+                                        <option>Web</option>
+                                        <option>Chat</option>
+                                        <option>Call</option>
+                                    </select>
+                                </td>  
+                                <td>
+                                <button type="button" class="btn btn-icon me-2 btn-primary rounded-circle" id="add-more" >
+                                    <span class="ti ti-plus"></span>
+                                </button>
+                                </td>  
+                            </tr>  
 
+                        </table>  
+                    </div>
+                    </div> 
+            </div>
 
-                        <tr>  
-                            <td>
-                                <input type="text" name="label[]" placeholder="" class="form-control label_list" />
-                            </td>  
-                            <td>
-                                <input type="text" name="name[]" placeholder="" class="form-control name_list" />
-                            </td>  
-                        </tr>  
-                    </table>  
+                <div class="modal-footer d-flex justify-content-center align-items-center w-100 p-4">
+                    <button type="button" data-bs-dismiss="modal" id="add-submit" class="btn btn-primary" >Save Info</button>
+                    <button type="button" data-bs-dismiss="modal" class="btn" style="background: #667085; color: #FFF;">Close</button>
                 </div>
                 </form>  
-            </div> 
-            </div>
-            <button class="btn-link" id="add-more">
-                + Add more fields
-            </button>
-        </div>
-        </div>
 
-        <div class="modal-footer d-flex justify-content-center align-items-center w-100">
-          <button type="button" data-bs-dismiss="modal" class="btn btn-primary ">Save Info</button>
-          <button type="button" data-bs-dismiss="modal" class="btn" style="background: #667085; color: #FFF;">Close</button>
-        </div>
       </div>
     </div>
 </div>

@@ -34,7 +34,7 @@ Route::controller(RegisterController::class)->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-  Route::resource('products', ProductController::class);
+  // Route::resource('products', ProductController::class);
   // Route::post('/users/logout', [UserController::class, 'logoutUser']); // Done
   // Route::get('/users', [UserController::class, 'getUsers'])->middleware('permission:can-access-all-users'); // Done
   // Route::get('/users/{id}', [UserController::class, 'getUser'])->middleware('permission:can-access-all-users'); // Done

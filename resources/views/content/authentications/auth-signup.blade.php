@@ -120,16 +120,24 @@ $step = 6;
                 </a>
                 <div class="container-xxl container-form-stepper">
                 @if (Session::has('success'))
-                            <div class="alert alert-success text-center">
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                                <p>{{ Session::get('success') }}</p>
-                            </div>
-                            @endif
+                <div class="authentication-wrapper authentication-basic payment">
+                    <div class="d-flex flex-column gap-4 align-items-center">
+                        <img src="assets/svg/icons/icon-payment-success.svg" alt="icon-payment-success" width="211">
+                        <h1 class="payment-title text-center">Congratulations! Your Registration for 14-Days Free Trial has been successful</h1>
+                    </div>
+                </div>          
+                @endif
 
-                    <div class="authentication-wrapper authentication-basic payment">
-                        <form role="form" action="{{ route('stripe.post') }}" method="post" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="pk_test_51OzD44P2jpJZ1J5syWQeAqIyfEta7xpLGwAAmuLtziPmFIJzxHDBG7WedNjUt6vobzP0AQspvVtIs9cGe39wLCcW00JlACclAC" id="payment-form">
+                    <div
+                        @class([
+                            'authentication-wrapper authentication-basic payment',
+                            'hidden' => Session::has('success'),
+                        ])
+                        class="authentication-wrapper authentication-basic payment"
+                    >
+                        <form role="form" action="{{ route('stripe.post') }}" method="post" class="require-validation w-100 py-4 px-5 d-flex flex-column gap-5" data-cc-on-file="false" data-stripe-publishable-key="pk_test_51OzD44P2jpJZ1J5syWQeAqIyfEta7xpLGwAAmuLtziPmFIJzxHDBG7WedNjUt6vobzP0AQspvVtIs9cGe39wLCcW00JlACclAC" id="payment-form">
                             @csrf
-                            <div id="step1-validation" class="hidden">
+                            <div id="step1-validation" class="">
                                 <div class="d-flex flex-column align-items-center">
                                     <h1 class="title">Start your free trial</h1>
                                     <h2 class="subtitle">14-day free trial</h2>
@@ -190,7 +198,7 @@ $step = 6;
                                 </div>
                                 <button class="btn-primary btn-submit w-100 mt-2" id="btn-next" type="submit">Continue</button>
                             </div>
-                            <div id="step5-validation" class="">
+                            <div id="step5-validation" class="hidden">
                                 <div class="d-flex flex-column align-items-start">
                                     <h1 class="payment-title">You're About to Get 14 Days of Free Power!</h1>
                                     <h2 class="payment-subtitle">Start Now.</h2>
@@ -283,26 +291,19 @@ $step = 6;
                                 </div>
 
                                 <button class="btn-primary btn-submit w-100 mt-5" type="submit">Start your Free Trial</button>
+                                <img src="{{ asset('assets/img/backgrounds/stripe.png') }}" alt="stripe logo" width="150" class="mt-2">
                             </div>
-                                                                    {{-- <div id="step6-validation">
-                                        <div class="d-flex flex-column gap-4 align-items-center">
-                                            <img src="assets/svg/icons/icon-payment-success.svg" alt="icon-payment-success" width="211">
-                                            <h1 class="payment-title text-center">Congratulations! Your Registration for 14-Days Free Trial has been successful</h1>
-                                        </div>
-                                    </div> --}}
                         </form>
                     </div>
                 </div>
             </div>
+            <footer class="footer d-flex gap-5" style="position: initial;">
+                <a href="#" class="text-primary">Term and Condition</a>
+                <a href="#" class="text-primary">Privacy Policy</a>
+            </footer>
         </div>
-        <footer class="footer d-flex gap-5" style="position: initial;">
-            <a href="#" class="text-primary">Term and Condition</a>
-            <a href="#" class="text-primary">Privacy Policy</a>
-        </footer>
+        <div class="auth-bg w-100">
+            <img src="{{ asset('assets/img/backgrounds/signup-bg.png') }}" alt="auth bg" class="signup-bg">
+        </div>
     </div>
-    <div class="auth-bg w-100">
-      <img src="{{ asset('assets/img/backgrounds/signup-bg.png') }}" alt="auth bg" class="signup-bg">
-  </div>
-
-</div>
 @endsection

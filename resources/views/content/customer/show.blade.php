@@ -25,6 +25,74 @@
     <script src="{{ asset('assets/js/components/chat-history.js') }}"></script>
     <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
     <script src="{{ asset('assets/js/customer.js') }}"></script>
+    <script type="text/javascript">
+
+    $(document).ready(function(){      
+      var postURL = "<?php echo url('addmore'); ?>";
+      var i=1;  
+      $('#add-more').click(function(){  
+           i++;  
+           $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td><input type="text" name="name[]" placeholder="" class="form-control name_list" /></td><td width="5%"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>');  
+      });  
+
+
+      $(document).on('click', '.btn_remove', function(){  
+           var button_id = $(this).attr("id");   
+           $('#row'+button_id+'').remove();  
+      });  
+
+
+      $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+
+
+      $('#submit').click(function(){            
+           $.ajax({  
+                url:postURL,  
+                method:"POST",  
+                data:$('#add_name').serialize(),
+                type:'json',
+                success:function(data)  
+                {
+                    if(data.error){
+                        printErrorMsg(data.error);
+                    }else{
+                        i=1;
+                        $('.dynamic-added').remove();
+                        $('#add_name')[0].reset();
+                        $(".print-success-msg").find("ul").html('');
+                        $(".print-success-msg").css('display','block');
+                        $(".print-error-msg").css('display','none');
+                        $(".print-success-msg").find("ul").append('<li>Record Inserted Successfully.</li>');
+                    }
+                }  
+           });  
+
+      });  
+
+
+      function printErrorMsg (msg) {
+
+         $(".print-error-msg").find("ul").html('');
+
+         $(".print-error-msg").css('display','block');
+
+         $(".print-success-msg").css('display','none');
+
+         $.each( msg, function( key, value ) {
+
+            $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+
+         });
+
+      }
+
+    });  
+
+</script>
 @endsection
 
 @php
@@ -206,6 +274,10 @@
 
                             <div class="sidebar-card d-flex flex-column gap-3">
                                 <div class="d-flex justify-content-between align-items-center">
+                                <img src="{{ asset('assets/svg/icons/edit.svg') }}" alt="edit"
+                                                width="15" data-bs-toggle="modal" data-bs-target="#add-deals-info"
+                                                class="cursor-pointer">
+
                                     <span class="text-dark fw-bold" style="font-size: 18px">Deals Information</span>
                                     <i class="ti ti-chevron-down text-dark"></i>
                                 </div>
@@ -512,4 +584,139 @@
         </div>
     </x-modal> 
     
+    {{-- modal add/edit Deals Info --}}
+
+    <div class="modal fade " id="add-deals-info" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+      <div class="modal-content">
+        <div class="d-flex align-items-center justify-content-between border border-bottom-2">
+          <div class="d-flex align-items-center p-3">
+            <h4 class="modal-title text-dark fw-bold" id="exampleModalLabel2">Add Deals Info</h5>
+          </div>
+        </div>
+        
+        <div class="modal-body px-4 py-3">
+        <div class="d-flex flex-column gap-2 border-bottom border-1 pb-3 align-items-start">
+            <div class="d-flex flex-column gap-3">
+            <div class="form-group">
+                <form name="add_name" id="add_name">  
+                <div class="table-responsive">
+                    <table class="table table-border" colspan='0' rowspan='0' id="dynamic_field">
+                    <tr>  
+                            <td>
+                                Revenue
+                            </td>  
+                            <td>
+                                <input type="text" name="revenue" placeholder="" class="form-control name_list" />
+                            </td>  
+                        </tr>  
+                        <tr>  
+                            <td>
+                                Close Date
+                            </td>  
+                            <td>
+                                <input type="date" name="close-date" placeholder="" class="form-control name_list" />
+                            </td>  
+                        </tr>  
+                        <tr>  
+                            <td>
+                                Source
+                            </td>  
+                            <td>
+                                <select name="close-date" class="form-select name_list">
+                                    <option>Web</option>
+                                    <option>Chat</option>
+                                    <option>Call</option>
+                                </select>
+                            </td>  
+                        </tr>  
+
+
+                        <tr>  
+                            <td>
+                                <input type="text" name="label[]" placeholder="" class="form-control label_list" />
+                            </td>  
+                            <td>
+                                <input type="text" name="name[]" placeholder="" class="form-control name_list" />
+                            </td>  
+                        </tr>  
+                    </table>  
+                </div>
+                </form>  
+            </div> 
+            </div>
+            <button class="btn-link" id="add-more">
+                + Add more fields
+            </button>
+        </div>
+        </div>
+
+        <div class="modal-footer d-flex justify-content-center align-items-center w-100">
+          <button type="button" data-bs-dismiss="modal" class="btn btn-primary ">Save Info</button>
+          <button type="button" data-bs-dismiss="modal" class="btn" style="background: #667085; color: #FFF;">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+    {{-- modal add/edit Deals Info --}}
+    <x-modal
+        title="Add Deals Info"
+        name="add-deals-info1"
+        submitText="Save Info"
+        buttonSubmitClass=""
+        buttonWrapperSubmitClass="d-flex justify-content-center align-items-center w-100"
+    >
+        <div class="d-flex flex-column gap-2 border-bottom border-1 pb-3 align-items-start">
+            <div class="d-flex flex-column gap-3">
+                <div class="d-flex justify-content-between gap-5 w-100">
+                <span class="text-dark" style="font-weight: 600;">Revenue</span>
+                <x-input-floating
+                        label="Revenue"
+                        id="revenue"
+                        name="revenue"
+                        value="2000000"
+                    >
+                    </x-input-floating>
+                </div>
+                <div class="d-flex justify-content-between gap-5 w-100">
+                <span class="text-dark" style="font-weight: 600;">Close Date</span>
+                <x-input-floating
+                        label="Close Date"
+                        id="close-date"
+                        name="close-date"
+                        type="date"
+                        value="10/08/2024"
+                    >
+                    </x-input-floating>
+                </div>
+
+                <div class="d-flex justify-content-between gap-5 w-100">
+                <span class="text-dark" style="font-weight: 600;">Source</span>
+                    <x-input-floating
+                        label="Source"
+                        placeholder="Please select source"
+                        id="source"
+                        name="source"
+                        type="select"
+                        :options="$listChannels"
+                    >
+                    </x-input-floating>
+                </div>
+                
+                {{-- !! Dont remove this tag --}}
+                <div class="hidden" id="wrapper-source"></div>
+                {{-- !! Dont remove this tag --}}
+
+            </div>
+            <button class="btn-link" id="btn-more">
+                + Add more fields
+            </button>
+        </div>
+        {{-- !! Dont remove this tag --}}
+        <div class="hidden" id="wrapper-dynamic-form"></div>
+        {{-- !! Dont remove this tag --}}
+    </x-modal>
+
+
 @endsection

@@ -242,7 +242,15 @@
 
         <div class="sidebar-card d-flex flex-column gap-3">
             <div class="d-flex justify-content-between align-items-center">
-                <span class="text-dark fw-bold" style="font-size: 18px">Deals Information</span>
+                <div class="d-flex align-items-center gap-2">
+                    <img
+                        src="{{asset('assets/svg/icons/edit.svg')}}"
+                        alt="edit"
+                        width="15"
+                        class="cursor-pointer"
+                    >
+                    <span class="text-dark fw-bold" style="font-size: 18px">Deals Information</span>
+                </div>
                 <i class="ti ti-chevron-down text-dark"></i>
             </div>
             <div class="d-flex flex-column">

@@ -29,7 +29,7 @@
 
     $(document).ready(function(){      
       var postURL = "<?php echo url('customers/addmore'); ?>";
-      var i=1;  
+      var i=0;  
       $('#add-more').click(function(){  
            i++;  
            $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td><input type="text" name="name[]" placeholder="" class="form-control name_list" /></td><td width="5%"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>');  
@@ -150,6 +150,14 @@
     $listMeetingMode = [$meetingModeOnline, $meetingModeOffline];
 
     [$stages, $alphabet, $quality, $status, $listChannels, $listTicketTypes, $listPrioritys, $listStatusProjects] = Helper::getConstants();
+
+$leads = App\Models\Lead::where('id','156')->get();
+foreach ($leads as $row){
+    $labels = explode (",", $row->label); 
+    $names = explode (",", $row->name); 
+}
+                                
+
 @endphp
 
 @section('content')
@@ -300,10 +308,17 @@
                                         <option value="test-drive">Outboned</option>
                                     </select>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
+                                <!-- <div class="d-flex justify-content-between align-items-center">
                                     <span class="text-dark" style="font-weight: 600;">Field</span>
                                     <span>Options</span>
-                                </div>
+                                </div> -->
+                                @foreach (array_combine($labels, $names) as $label => $name)
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-dark" style="font-weight: 600;">{{ $label }}</span>
+                                    <span>{{ $name }}</span>
+                                </div>    
+                                @endforeach
+
                                 <div class="d-flex flex-column">
                                     <span class="text-dark" style="font-weight: 600;">Next Step</span>
                                     <span style="font-size: 13px; color: #616A75;">Follow up after 2 days by sending
@@ -627,16 +642,15 @@
                                         <option>Call</option>
                                     </select>
                                 </td>  
-                                <td>
-                                <button type="button" class="btn btn-icon me-2 btn-primary rounded-circle" id="add-more" >
-                                    <span class="ti ti-plus"></span>
-                                </button>
-                                </td>  
                             </tr>  
 
                         </table>  
                     </div>
                     </div> 
+                    <button type="button" class="btn-link" id="add-more" >
+                    + Add more fields
+                    </button>
+
             </div>
 
                 <div class="modal-footer d-flex justify-content-center align-items-center w-100 p-4">

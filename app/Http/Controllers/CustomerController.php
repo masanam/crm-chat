@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\Lead;
+
 use Yajra\DataTables\Facades\Datatables;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class CustomerController extends Controller
 {
@@ -235,19 +238,19 @@ class CustomerController extends Controller
 
   public function addMorePost(Request $request)
   {
-      $rules = [];
-      foreach($request->input('name') as $key => $value) {
-          $rules["name.{$key}"] = 'required';
-      }
-      $validator = Validator::make($request->all(), $rules);
 
-      if ($validator->passes()) {
-          foreach($request->input('name') as $key => $value) {
-              TagList::create(['name'=>$value]);
-          }
+    $name_fields =[];
+    if(isset($request->name) && is_array($request->name)){
+      $name_fields = implode(",", $request->name); 
+    }
+    $label_fields=[];
+    // foreach($request->label as $key => $value) {
+    if(isset($request->label) && is_array($request->label)){
+      $label_fields = implode(",", $request->label); 
+    }
 
-          return response()->json(['success'=>'done']);
-      }
-      return response()->json(['error'=>$validator->errors()->all()]);
+      Lead::where('id','156')->update(['name' => $name_fields, 'label' => $label_fields ]);
+      return response()->json(['success'=>'done']);
+      // return response()->json(['error'=>$validator->errors()->all()]);
   }
 }

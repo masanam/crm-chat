@@ -18,13 +18,14 @@
 @section('vendor-script')
     <script src="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
-    <script src="{{ asset('assets/js/components/app-chat.js') }}"></script>
+    <!-- <script src="{{ asset('assets/js/components/app-chat.js') }}"></script> -->
 @endsection
 
 @section('page-script')
     <!-- <script src="{{ asset('assets/libs/bootstrap-editable/bootstrap-editable.min.js') }}"></script> -->
     <script src="{{ asset('assets/js/customer.js') }}"></script>
     <script src="{{ asset('assets/js/customer-detail-email.js') }}"></script>
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#ticket-created').text(moment("{{ date('Y-m-d H:i:s', strtotime($model->created_at)) }}").fromNow())
@@ -84,25 +85,58 @@
                     alert(1)
                 });
             });
-                // let html = `
-                //     <div class="d-flex flex-row mb-3 gap-4">
-                //         <div class="mb-3">
-                //             <label class="form-label" for="whatsapp">Whatsapp</label>
-                //             <select name="last_name" id="last_name" class="form-select form-control">
-                //                 <option value="whatsapp">Whatsapp</option>
-                //                 <option value="email">Email</option>
-                //             </select>
-                //         </div>
-                //         <div class="mb-3">
-                //             <label class="form-label" for="contact">Contact</label>
-                //             <input type="text" name="contact" id="contact" class="form-control" placeholder="Enter Number" />
-                //         </div>
-                //     </div>
-                // `
+        });
+    </script>
+    <script>
+        socket = io('https://pasma-websocket-q13qeu2vg-elviskudo1s-projects.vercel.app/', {
+            auth: {
+                token: "{{ env('WS_AUTH_TOKEN') }}"
+            }
+        });
 
-                // console.log(html)
-                // $('#more-contact').append(html)
-            // })
+        socket.on("connect", () => {
+            console.log("connected");
+        });
+
+        socket.on("disconnect", () => {
+            console.log("disconnected");
+        });
+
+        socket.on('chat message', (msg) => {
+            addMessage(msg);
+        });
+
+        function sendMessage() {
+            const messageInput = document.getElementById('message');
+            const message = {
+                user: user,
+                message: messageInput.value
+            };
+
+            socket.emit('chat message', message);
+            $.post('/messages', message);
+
+            messageInput.value = '';
+        }
+
+        function addMessage(message) {
+            const messages = document.getElementById('messages');
+            const messageElement = document.createElement('li');
+            messageElement.textContent = `${message.user}: ${message.message}`;
+            messages.appendChild(messageElement);
+        }
+
+        document.getElementById('send').addEventListener('click', sendMessage);
+        document.getElementById('message').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        user = 'User' + Math.floor((Math.random() * 100) + 1);
+
+        $.get('/messages').then(response => {
+            response.data.forEach(addMessage);
         });
     </script>
 @endsection
@@ -120,169 +154,7 @@
                         <div class="col-3 p2">
                             <!-- Customer info -->
                             <x-sidebar-right-info-chat isUsingHeader="{{ false }}" sidebarClass="show sidebar-customer-info" sidebarBodyClass="mt-2">
-                                <div class="sidebar-card d-flex flex-column">
-                                    <div class="d-flex flex-column gap-3">
-                                        <div class="d-flex flex-column justify-content-center align-items-center gap-2">
-                                            <div class="flex-shrink-0 avatar">
-                                                <span
-                                                    class="avatar-initial border-12 bg-avatar-call text-dark fw-bolder">{{ Helper::getInitial($model->client->organization->name) }}</span>
-                                            </div>
-                                            <span class="text-dark fw-bold" style="font-size: 22px">{{ $model->client->organization->name }}</span>
-                                            @php $is_lead = $model->lead_id ? 'Lead' : '' @endphp
-                                            <x-badge-stage type="{{ $is_lead }}"></x-badge-stage>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center px-2">
-                                            <div>
-                                                <img src="{{ asset('assets/svg/icons/icon-calendar.svg') }}" alt="calendar"
-                                                    width="15">
-                                                    <!-- get closed date -->
-                                                <span style="font-size: 12px">{{ date('M d, Y', strtotime($model->client->created_at)) }}</span>
-                                            </div>
-                                            <div>
-                                                <img src="{{ asset('assets/svg/icons/icon-dolar.svg') }}" alt="dolar"
-                                                    width="15">
-                                                <span style="font-size: 12px">{{ $model->lead ? 'Rp ' . number_format($model->lead->amount, 0, ',', '.') : '' }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="sidebar-card d-flex flex-column">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h6 class="text-dark">Status</h6>
-                                        <select id="status" data-id="{{ $model->lead_id }}" data-type="status" data-url="api/leads/{{ $model->lead_id }}/change" class="form-select select-lead-editable custom-select" data-allow-clear="true">
-                                            <option value="new" {{ strtolower($model->lead->status) == "new" ? 'selected' : '' }}>New</option>
-                                            <option value="active" {{ strtolower($model->lead->status) == "active" ? 'selected' : '' }}>Active</option>
-                                            <option value="closed" {{ strtolower($model->lead->status) == "closed" ? 'selected' : '' }}>Closed</option>
-                                        </select>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h6 class="text-dark">Quality</h6>
-                                        <select id="quality" data-id="{{ $model->lead_id }}" data-type="quality" data-url="api/leads/{{ $model->lead_id }}/change" class="form-select select-lead-editable custom-select" data-allow-clear="true">
-                                            <option value="cold" {{ strtolower($model->lead->quality) == "cold" ? 'selected' : '' }}>Cold</option>
-                                            <option value="warm" {{ strtolower($model->lead->quality) == "warm" ? 'selected' : '' }}>Warm</option>
-                                            <option value="hot" {{ strtolower($model->lead->quality) == "hot" ? 'selected' : '' }}>Hot</option>
-                                        </select>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h6 class="text-dark">Stage</h6>
-                                        <select id="stage" data-id="{{ $model->lead_id }}" data-type="stage" data-url="api/leads/{{ $model->lead_id }}/change" class="form-select select-lead-editable custom-select" data-allow-clear="true">
-                                            <option value="Test Drive" {{ $model->lead->stage == 'Test Drive' ? 'selected' : '' }}>Test Drive</option>
-                                        </select>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h6 class="text-dark">Customer Type</h6>
-                                        <select id="customer_type" data-id="{{ $model->lead_id }}" data-type="customer_type" data-url="api/leads/{{ $model->lead_id }}/change" class="form-select select-lead-editable custom-select" data-allow-clear="true">
-                                            <option value="B2B" {{ strtoupper($model->lead->customer_type) == 'b2b' ? 'selected' : '' }}>B2B</option>
-                                            <option value="B2C" {{ strtoupper($model->lead->customer_type) == 'b2c' ? 'selected' : '' }}>B2C</option>
-                                            <option value="C2B" {{ strtoupper($model->lead->customer_type) == 'c2b' ? 'selected' : '' }}>C2B</option>
-                                            <option value="C2C" {{ strtoupper($model->lead->customer_type) == 'c2c' ? 'selected' : '' }}>C2C</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="sidebar-card d-flex flex-column gap-3">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-dark fw-bold" style="font-size: 18px">Contact Information</span>
-                                        <i class="ti ti-chevron-down text-dark"></i>
-                                    </div>
-                                    @foreach($contacts as $contact)
-                                    <div class="d-flex flex-column gap-2 border-bottom border-1 pb-3">
-                                        <div class="d-flex flex-column gap-1">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="text-dark fw-bold">{{ $contact->first_name ?? '' }} {{ $contact->last_name ?? '' }}</span>
-                                                <img src="{{ asset('assets/svg/icons/edit.svg') }}" alt="edit"
-                                                    width="15" data-bs-toggle="modal" data-bs-target="#add-edit-contact"
-                                                    class="cursor-pointer">
-                                            </div>
-                                            <span class="text-dark" style="font-size: 14px">{{ $contact->job_title ?? '' }}</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <img src="{{ asset('assets/svg/icons/icon-contact-mail.svg') }}" alt="contact"
-                                                    width="15">
-                                                <span style="font-size: 12px">{{ $contact->whatsapp ?? '' }}</span>
-                                            </div>
-                                            <div>
-                                                <img src="{{ asset('assets/svg/icons/icon-circle-outline.svg') }}"
-                                                    alt="circle" width="15">
-                                                <span style="font-size: 12px">WhatsApp</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <img src="{{ asset('assets/svg/icons/icon-contact-mail.svg') }}" alt="contact"
-                                                    width="15">
-                                                <span style="font-size: 12px">{{ $contact->email ?? '' }}</span>
-                                            </div>
-                                            <div>
-                                                <img src="{{ asset('assets/svg/icons/icon-circle-outline.svg') }}"
-                                                    alt="circle" width="15">
-                                                <span style="font-size: 12px">Email</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endforeach
-                                    <button class="btn-link" data-bs-toggle="modal" data-bs-target="#add-contact">
-                                        + Add more contacts
-                                    </button>
-                                </div>
-
-                                <div class="sidebar-card d-flex flex-column gap-3">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-dark fw-bold" style="font-size: 18px">Company Information</span>
-                                        <i class="ti ti-chevron-down text-dark"></i>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-dark">Company Name</span>
-                                        <span class="company-editable" data-id="{{ $model->client_id }}" data-type="name" data-url="api/companies/{{ $model->client_id }}/change">{{ $model->client->organization->name ?? ' - ' }}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-dark">Industry</span>
-                                        <span class="company-editable" data-id="{{ $model->client_id }}" data-type="industry" data-url="api/companies/{{ $model->client_id }}/change">{{ $model->client->organization->industry ?? ' - ' }}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-dark">Location</span>
-                                        <span class="company-editable" data-id="{{ $model->client_id }}" data-type="address" data-url="api/companies/{{ $model->client_id }}/change">{{ $model->client->organization->address ?? ' - ' }}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-dark">Website</span>
-                                        <span class="company-editable" data-id="{{ $model->client_id }}" data-type="website" data-url="api/companies/{{ $model->client_id }}/change">{{ $model->client->organization->website ?? ' - ' }}</span>
-                                    </div>
-                                </div>
-
-                                <div class="sidebar-card d-flex flex-column gap-3">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-dark fw-bold" style="font-size: 18px">Deals Information</span>
-                                        <i class="ti ti-chevron-down text-dark"></i>
-                                    </div>
-                                    <div class="d-flex flex-column">
-                                        <span class="text-dark" style="font-weight: 600;">Description</span>
-                                        <span style="font-size: 13px; color: #616A75;" contenteditable="true" class="lead-editable" data-id="{{ $model->lead_id }}" data-type="notes" data-url="api/leads/{{ $model->lead_id }}/change">{{ $model->lead->notes ?? ' - ' }}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-dark" style="font-weight: 600;">Revenue</span>
-                                        <span>Rp {{ number_format($model->lead->amount, 0, ',', '.') }}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-dark" style="font-weight: 600;">Close Date</span>
-                                        <span>{{ date('m D Y', strtotime($model->lead->closed_date)) }}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-dark" style="font-weight: 600;">Source</span>
-                                        <select id="status" class="form-select custom-select" data-allow-clear="true">
-                                            <option value="test-drive">{{ $model->lead->source }}</option>
-                                        </select>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-dark" style="font-weight: 600;">Field</span>
-                                        <span>Options</span>
-                                    </div>
-                                    <div class="d-flex flex-column">
-                                        <span class="text-dark" style="font-weight: 600;">Next Step</span>
-                                        <span style="font-size: 13px; color: #616A75;" contenteditable="true" class="lead-editable" data-id="{{ $model->lead_id }}" data-type="next_step" data-url="api/leads/{{ $model->lead_id }}/change">{{ $model->lead->next_step ?? '' }}</span>
-                                    </div>
-                                </div>
-
+                                <x-client-ticket :taskId="$model->id"></x-client-ticket>
                             </x-sidebar-right-info-chat>
                             <!-- /Customer info -->
                         </div>
@@ -320,14 +192,19 @@
                                     ketika buat ticket, sekaligus buat group, dan semua orang yang di group member itu yang bisa saling chat di chat-history
                                     tambahkan add member dengan modal
                                     -->
-                                    <div class="chat-history-body bg-white ww">
+                                    <!-- <div class="chat-history-body bg-white ww">
                                         <ul class="list-unstyled chat-history">
                                             No chats here
                                         </ul>
+                                    </div> -->
+                                    <ul id="messages" class="mb-4"></ul>
+                                    <div class="flex">
+                                        <input type="text" id="message" class="border p-2 flex-grow" placeholder="Type your message">
+                                        <button id="send" class="bg-blue-500 text-white p-2 ml-2">Send</button>
                                     </div>
 
                                     <!-- Chat message form -->
-                                    <div class="chat-history-footer">
+                                    <!-- <div class="chat-history-footer">
                                         <form class="form-send-message d-flex flex-column justify-content-between h-100" action="" method="POST" enctype="multipart/form-data">
                                             <input class=" form-control message-input border-0 me-3 shadow-none bg-transparent" placeholder="Write message">
                                             <div class="message-actions d-flex align-items-center justify-content-between ps-2 pe-3">
@@ -342,7 +219,7 @@
                                                 </button>
                                             </div>
                                         </form>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -350,92 +227,7 @@
                         <div class="col-3 p-2">
                             <!-- Client info -->
                             <x-sidebar-right-info-chat isUsingHeader="{{ false }}" sidebarClass="show sidebar-client-info" sidebarBodyClass="mt-2">
-                                <x-card-progress statusId="{{ $model->status_id }}" statusName="{{ $model->status->name }}"></x-card-progress>
-                                <div class="sidebar-card d-flex flex-column">
-                                    <h6 class="text-dark">Insights</h6>
-                                    <div class="d-flex flex-column gap-3">
-                                        <div class="d-flex gap-1">
-                                            <i class="ti ti-clock-hour-4 text-dark" style="font-size: 17px;"></i>
-                                            <div class="d-flex flex-column gap-1">
-                                                <span class="text-xs">Ticket Open For</span>
-                                                <span class="text-xs text-dark fw-bold" id="ticket-created">0 days</span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex gap-1">
-                                            <i class="ti ti-clock-hour-4 text-dark" style="font-size: 17px;"></i>
-                                            <div class="d-flex flex-column gap-1">
-                                                <span class="text-xs">Resolution</span>
-                                                <span class="text-xs text-dark fw-bold" id="ticket-deadline">0 days</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="sidebar-card d-flex flex-column gap-2">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-dark">Ticket Type</span>
-                                        <select class="form-select select-task-editable custom-select" data-id="{{ $model->id }}" data-type="type" data-url="api/tasks/{{ $model->id }}/change" data-allow-clear="true" style="border: none; padding-left: 0px; bottom: 0px;">
-                                            @foreach ($listTicketTypes as $key => $value)
-                                                <option value="{{ $value->value }}" {{ $value->value == $model->type ? 'selected' : '' }}>{{ $value->label }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-dark">Ticket ID</span>
-                                        <span contenteditable="true" class="task-editable" data-id="{{ $model->id }}" data-type="code" data-url="api/tasks/{{ $model->id }}/change">{{ $model->code ?? ' - ' }}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-dark">Resolution Date</span>
-                                        <span>{{ date('d M Y', strtotime($model->deadline)) }}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-dark">Priority</span>
-                                        <select class="form-select select-task-editable custom-select" data-id="{{ $model->id }}" data-type="priority" data-url="api/tasks/{{ $model->id }}/change" data-allow-clear="true" style="border: none; padding-left: 0px; bottom: 0px;">
-                                            <option value="Low" {{ $model->priority == 'Low' ? 'selected' : '' }}>Low</option>
-                                            <option value="Medium" {{ $model->priority == 'Medium' ? 'selected' : '' }}>Medium</option>
-                                            <option value="High" {{ $model->priority == 'High' ? 'selected' : '' }}>High</option>
-                                        </select>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-dark">Created by</span>
-                                        <span>{{ $model->user->first_name }} {{ $model->user->last_name }}</span>
-                                    </div>
-                                </div>
-
-                                <div class="sidebar-card d-flex flex-column">
-                                    <div class="">
-                                        <h6 class="text-dark">Notes</h6>
-                                        <span contenteditable="true" class="text-dark task-editable" data-id="{{ $model->id }}" data-type="internal_note" data-url="api/tasks/{{ $model->id }}/change">{{ $model->internal_note }}</span>
-                                    </div>
-                                </div>
-
-                                <div class="sidebar-card d-flex flex-column">
-                                    <span class="text-dark">Teams</span>
-                                    <div>
-                                        <div class="d-flex flex-wrap mb-3 gap-2">
-                                            <div class="d-flex align-items-center tag gap-1">
-                                                <span class="text-dark">{{ $model->team->name ?? ' - ' }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <span class="text-dark">Assignee</span>
-                                    <div>
-                                        <div class="d-flex flex-wrap mb-3 gap-2">
-                                            @if($chats)
-                                            @foreach($chats as $chat)
-                                            <div class="d-flex align-items-center tag gap-1">
-                                                <span class="text-dark">{{ $chat->profile->first_name }} {{ $chat->profile->last_name }}</span>
-                                                <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay
-                                                    data-target="#tag"></i>
-                                            </div>
-                                            @endforeach
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#add-assignee" data-task="{{ $model->id }}" class="btn-link">
-                                        + Add Assignee
-                                    </a>
-                                </div>
-
+                                <x-ticket-progress :taskId="$model->id"></x-ticket-progress>
                             </x-sidebar-right-info-chat>
                             <!-- Client info -->
                         </div>

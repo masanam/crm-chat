@@ -23,17 +23,13 @@
         </textarea>
         <label for="{{ $id }}">{{ $label }}</label>
         @break
-
     @case('password')
         <i class="ti ti-eye-off icon-password"></i>
         <input placeholder="" type="{{ $type }}" id="{{ $id }}" name="{{ $name }}" class="input-password" />
         <label for="{{ $id }}">{{ $label }}</label>
         @break
-    @case('date')
-        <input placeholder="" class="form-control" type="{{ $type }}" id="{{ $id }}" name="{{ $name }}" />
-        <label for="{{ $id }}">{{ $label }}</label>
     @default
-        <input placeholder="" type="{{ $type }}" id="{{ $id }}" name="{{ $name }}" />
+        <input placeholder="" type="{{ $type }}" id="{{ $id }}" name="{{ $name }}" value="{{ $value }}"/>
         <label for="{{ $id }}">{{ $label }}</label>
     @endswitch
   </div>

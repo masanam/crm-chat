@@ -264,6 +264,25 @@ class Helpers
     ];
     $listChannels = [$channel, $channel2, $channel3, $channel4];
 
+    $source1 = (object) [
+      'label' => 'WhatsApp',
+      'value' => 'wa',
+    ];
+    $source2 = (object) [
+      'label' => 'Email',
+      'value' => 'email',
+    ];
+    $source3 = (object) [
+      'label' => 'WeChat',
+      'value' => 'wechat',
+    ];
+    $source4 = (object) [
+      'label' => 'Instagram',
+      'value' => 'instagram',
+    ];
+    $listSource = [$source1, $source2, $source3, $source4];
+
+
     $ticketType = (object) [
       'label' => 'Document',
       'value' => 'document',

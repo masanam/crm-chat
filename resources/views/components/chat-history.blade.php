@@ -29,21 +29,26 @@
                         @endforeach
                     </div>
                 </div>
-                <x-badge-priority type="{{ $type }}"></x-badge-priority>
+                <x-badge-priority type="{{ $priority }}"></x-badge-priority>
                 <small>{{ $typeTask }}</small>
                 @endif
             </div>
         </header>
         @endif
 
+        <!--
+        ketika buat ticket, sekaligus buat group, dan semua orang yang di group member itu yang bisa saling chat di chat-history
+        tambahkan add member dengan modal
+        -->
         <div class="chat-history-body bg-white ww">
             <ul class="list-unstyled chat-history">
                 test
             </ul>
         </div>
+
         <!-- Chat message form -->
         <div class="chat-history-footer">
-            <form class="form-send-message d-flex flex-column justify-content-between h-100" method="POST" ">
+            <form class="form-send-message d-flex flex-column justify-content-between h-100" method="POST">
                 <input class=" form-control message-input border-0 me-3 shadow-none bg-transparent" placeholder="Write message">
                 <div class="message-actions d-flex align-items-center justify-content-between ps-2 pe-3">
                     <div class="d-flex align-items-center">

@@ -25,7 +25,10 @@ class Task extends Model
     'title',
     'deadline',
     'description',
+    'team_id',
+    'member_id',
     'priority',
+    'internal_note',
     'code',
   ];
 
@@ -37,6 +40,21 @@ class Task extends Model
   public function status(): BelongsTo
   {
     return $this->belongsTo(TaskStatus::class);
+  }
+
+  public function team(): BelongsTo
+  {
+    return $this->belongsTo(Team::class);
+  }
+
+  public function lead(): BelongsTo
+  {
+    return $this->belongsTo(Lead::class);
+  }
+
+  public function member(): BelongsTo
+  {
+    return $this->belongsTo(TeamMember::class);
   }
 
   public function user(): BelongsTo

@@ -17,5 +17,15 @@ class Profile extends Model
    *
    * @var array<int, string>
    */
-  protected $fillable = ['id', 'first_name', 'last_name', 'role', 'dealer_id', 'team_id', 'email'];
+  protected $fillable = [
+    'id',
+    'first_name',
+    'last_name',
+    'role',
+    'dealer_id',
+    'team_id',
+    'email',
+    'client_id',
+    'job_title',
+  ];
 }

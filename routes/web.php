@@ -432,7 +432,7 @@ Route::resource('/user-list', UserManagement::class);
 // THE APP ROUTE
 Route::middleware(['auth'])->group(function () {
   Route::get('/', [Crm::class, 'index'])->name('dashboard-crm');
-  Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+  Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
   // Route::get('/lead/get-all-leads', [LeadController::class, 'getAllLeads'])->name('lead.getAllLeads');
   // Route::get('/lead/create', [LeadController::class, 'create'])->name('lead.create');
   // Route::get('/lead/edit/{lead}', [LeadController::class, 'edit'])->name('lead.edit');

@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
-use App\Models\Lead;
-
-use Yajra\DataTables\Facades\Datatables;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
+use Yajra\DataTables\Facades\Datatables;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
+use App\Models\Task;
+use App\Models\TaskChat;
+use App\Models\TaskStatus;
+use App\Models\Profile;
+use App\Models\Contact;
+use App\Models\InternalChat;
 
 class CustomerController extends Controller
 {
@@ -174,19 +179,28 @@ class CustomerController extends Controller
       ->where('task_chats.task_id', $model->id)
       ->get();
 
+    $members = [];
+    foreach ($model->team->members as $key => $value) {
+      $members[] = $value->profile->id;
+    }
+
+    $profiles = Profile::whereNotIn('id', $members)->get();
+
     if (empty($model->is_lead) || $model->is_lead == null || !$model->lead->id) {
       redirect('/tickets');
     }
 
     $statuses = TaskStatus::all();
-    $chats = InternalChat::where('from', '3dbcb102-3a16-484c-9332-b30de6ac1ef4')
-      ->orWhere('to', '3dbcb102-3a16-484c-9332-b30de6ac1ef4')
-      ->orderBy('id')
-      ->get()
-      ->toArray();
-    $chats = json_encode($chats);
+    $chats = TaskChat::with('profile')
+      ->select('created_by')
+      ->where('task_id', $model->id)
+      ->groupBy('created_by')
+      ->get();
 
-    return view('content.customer.detail-ticket', compact('model', 'statuses', 'chats', 'group_chats', 'contacts'));
+    return view(
+      'content.customer.detail-ticket',
+      compact('model', 'statuses', 'chats', 'group_chats', 'contacts', 'profiles')
+    );
   }
 
   public function addContact(Request $request)

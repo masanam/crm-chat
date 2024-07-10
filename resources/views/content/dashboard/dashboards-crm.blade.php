@@ -231,6 +231,12 @@ $tabsBilling[] = (object) [
     @include('content/dashboard/components/dashboard-tab-purchase')
     @include('content/dashboard/components/dashboard-tab-channel') --}}
     @include('content/dashboard/components/dashboard-user')
+    {{-- <div class="d-flex gap-2">
+      <p>Want to cancel subscription?</p>
+      <a href="#" data-bs-toggle="modal" data-bs-target="#cancel-subs">
+        <p style="color: #FF0202; border-bottom: 1px solid #FF0202;">Cancel here</p>
+      </a>
+    </div> --}}
   </section>
 </section>
 
@@ -244,5 +250,98 @@ $tabsBilling[] = (object) [
 @include('content/dashboard/components/dashboard-modal-payment-billing')
 {{-- modal checkout --}}
 @include('content/dashboard/components/dashboard-modal-checkout')
+
+{{-- modal cancel subs --}}
+<x-modal
+  isUsingHeaderTitle="{{ false }}"
+  name="cancel-subs"
+  isUsingBtnFooter="{{ false }}"
+  modalClass="modal-checkout"
+  buttonWrapperSubmitClass="d-flex justify-content-center align-items-center w-100"
+  buttonSubmitClass=""
+  isModalStack="{{ true }}"
+>
+  <div class="d-flex flex-column gap-3" id="cancel-subs-step1">
+    <div class="d-flex flex-column">
+      <h6 class="fw-bold" style="color: #FF0202;">Cancel Subscription</h6>
+      <h5 class="fw-bold text-dark" style="font-size: 24px;">We’re sorry to see you go</h5>
+      <span style="font-size: 14px; color: #000;">Are you sure you want to cancel? We’ve helped hundreds of businesses just like your succeed.</span>
+    </div>
+    <div class="d-flex flex-column gap-4">
+      <div class="d-flex flex-column gap-3">
+        <span style="color: #33B6B9;">Why are you cancelling your subscription?</span>
+        <x-input-floating
+          label="Reason"
+          placeholder="Select a reason"
+          type="select"
+          id="reason"
+          name="reason"
+          :options="$listDataState"
+        >
+        </x-input-floating>
+        <span>You don’t have to tell us, but it would help us make a better product for all of our users moving forward!</span>
+      </div>
+      <div class="d-flex flex-column gap-3">
+        <span style="color: #33B6B9;">Any final words? We won’t help them against you.</span>
+        <x-input-floating
+          label="Share you feedback here"
+          placeholder="Share you feedback here"
+          type="text"
+          id="feedback"
+          name="feedback"
+        >
+        </x-input-floating>
+      </div>
+    </div>
+  </div>
+  <div class="hidden" id="cancel-subs-step2">
+    <div class="d-flex flex-column">
+      <h6 class="fw-bold" style="color: #FF0202;">Cancel Subscription</h6>
+      <h5 class="fw-bold text-dark" style="font-size: 24px;">You’re about to cancel</h5>
+      <span style="font-size: 14px; color: #000;">You will have access to your subscription features until September 7th, 2024. After that, you will lose:</span>
+    </div>
+    <div class="d-flex flex-column gap-4 mt-3">
+      <div class="d-flex gap-2 items-center">
+        <img src="{{ asset('assets/svg/icons/icon-x-circle-red.svg') }}" alt="x circle">
+        <span>lorem ipsum</span>
+      </div>
+      <div class="d-flex gap-2 items-center">
+        <img src="{{ asset('assets/svg/icons/icon-x-circle-red.svg') }}" alt="x circle">
+        <span>lorem ipsum</span>
+      </div>
+      <div class="d-flex gap-2 items-center">
+        <img src="{{ asset('assets/svg/icons/icon-x-circle-red.svg') }}" alt="x circle">
+        <span>lorem ipsum</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer w-100 justify-content-center mt-3">
+    <button type="button" id="btn-cancel-subs" data-bs-dismiss="modal" class="btn fw-bold" style="background: #CCE8E8; color: #000;">Stay Subscribe</button>
+    <button type="button" class="btn btn-primary" id="btn-submit-cancel-subs">Yes, Cancel</button>
+  </div>
+</x-modal>
+
+{{-- modal confimation success cancel subs --}}
+<x-modal
+  isUsingHeaderTitle="{{ false }}"
+  name="success-cancel-subs"
+  isUsingBtnFooter="{{ false }}"
+  modalClass="modal-checkout"
+  buttonWrapperSubmitClass="d-flex justify-content-center align-items-center w-100"
+  buttonSubmitClass=""
+>
+  <div class="d-flex flex-column justify-content-center align-items-center gap-3" id="cancel-subs-step1">
+    <img class="mt-2" src="{{ asset('assets/svg/icons/icon-cancel-subs.svg') }}" alt="icon" width="98">
+    <h5 class="fw-bold" style="color: #33B6B9; font-size: 24px;">Sucessfully Unsubscribed</h5>
+    <span class="text-center">We’ve just cancelled your subscription and you will no longer to be charged.</span>
+  </div>
+  <div class="modal-footer w-100 justify-content-center mt-3">
+    <button type="button" id="btn-success-cancel-subs" data-bs-dismiss="modal" class="btn btn-primary px-5">Back to Homepage</button>
+    <div class="d-flex gap-1 align-items-center">
+      <span style="font-size: 14px;">Contact us is you want to</span>
+      <span style="font-size: 14px; color: #33B6B9;">re-subscribe</span>
+    </div>
+  </div>
+</x-modal>
 
 @endsection

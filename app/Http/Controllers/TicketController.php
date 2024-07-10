@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Task;
 use App\Models\TaskStatus;
+use App\Models\TaskChat;
 use App\Models\Team;
 use App\Models\Client;
+use App\Models\Profile;
+use App\Models\AssignedLead;
 
 class TicketController extends Controller
 {
@@ -24,14 +27,9 @@ class TicketController extends Controller
       ]);
 
       if ($validator->fails()) {
-        return response()->json(
-          [
-            'status' => 422,
-            'message' => $validator->errors(),
-            'results' => null,
-          ],
-          422
-        );
+        return redirect('index')
+          ->withErrors($validator)
+          ->withInput();
       }
 
       $params = $validator->validate();
@@ -67,6 +65,7 @@ class TicketController extends Controller
         'code' => ['string', 'required'],
         'deadline' => ['date', 'required'],
         'priority' => ['string', 'required'],
+        'client_id' => ['integer', 'required'],
         'status_id' => ['integer', 'required'],
         'team_id' => ['integer'],
         'member_id' => ['integer'],
@@ -74,6 +73,8 @@ class TicketController extends Controller
       ]);
 
       $params = $validator->validate();
+
+      $assignedLead = AssignedLead::where('profile_id', Auth::user()->profile_id)->first();
 
       $model = Task::updateOrCreate(
         [
@@ -84,17 +85,48 @@ class TicketController extends Controller
           'code' => $params['code'],
           'deadline' => $params['deadline'],
           'priority' => $params['priority'],
+          'client_id' => $params['client_id'],
           'status_id' => $params['status_id'],
           'team_id' => $params['team_id'],
           'member_id' => $params['member_id'],
+          'lead_id' => $assignedLead->lead_id ?? null,
           'internal_note' => $params['internal_note'],
           'user_id' => Auth::user()->profile_id,
         ]
       );
 
-      return redirect('/tickets');
+      return redirect('/customers/' . $model->id . '/ticket');
     } catch (\Exception $e) {
-      dd($e);
+      return redirect('/customers/' . $model->id . '/ticket');
+    }
+  }
+
+  public function addAssignee(Request $request)
+  {
+    try {
+      $validator = Validator::make($request->all(), [
+        'created_by' => ['required', 'string'],
+      ]);
+
+      if ($validator->fails()) {
+        return redirect('index')
+          ->withErrors($validator)
+          ->withInput();
+      }
+
+      $params = $validator->validate();
+
+      $profile = Profile::find($params['created_by']);
+      $name = $profile->first_name . ' ' . $profile->last_name;
+      $model = TaskChat::create([
+        'created_by' => $params['created_by'],
+        'task_id' => $request->task_id,
+        'message' => $name,
+      ]);
+
+      return redirect('customers/' . $request->task_id . '/ticket');
+    } catch (Exception $e) {
+      return redirect('customers/' . $request->task_id . '/ticket');
     }
   }
 }

@@ -224,7 +224,24 @@
       //     "<span class='avatar-initial rounded-circle bg-label-secondary'><i class='ti ti-plus ti-xs text-heading'></i></span>" +
       //     '</div>'
       //   );
-      window.location.href = baseUrl + 'customers/test';
+      const eid = el.getAttribute('data-eid').match(/\d+/g)[0]
+
+      // check if eid not lead
+      async function is_lead() {
+        await fetch(`${baseUrl}api/is_lead/${eid}`)
+          .then((res) => {
+            if (res.ok) {
+              window.location.href = baseUrl + `customers/${eid}/ticket`;
+              exit();
+            }
+
+            throw new Error('Your task is not in lead')
+          })
+          .then(text => console.log('text', text))
+          .catch(error => toastr.warning(error))
+      }
+
+      is_lead()
     },
 
     // buttonClick: function (el, boardId) {

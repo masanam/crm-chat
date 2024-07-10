@@ -62,7 +62,7 @@ $customizerHidden = 'customizer-hide';
                       <button class="btn-primary btn-submit w-100" type="submit">Log in</button>
                     </div>
                     <div class="text-center">
-                      <small>Don’t have an account? <a href="#" class="text-blue fw-bold">Sign up</a></small>
+                      <small>Don’t have an account? <a href="sign-up" class="text-blue fw-bold">Sign up</a></small>
                     </div>
                   </form>
               </div>

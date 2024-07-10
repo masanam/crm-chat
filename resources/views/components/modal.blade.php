@@ -1,4 +1,8 @@
 <div class="modal fade {{ $wrapperModalClass }}" id="{{ $name }}" aria-hidden="true">
+  @if($isPost)
+  <form method="post" action="{{ $url }}" {{ $isSendFile ? 'enctype="multipart/form-data"' : '' }}>
+    @csrf
+  @endif
     <div class="modal-dialog {{ $modalClass }}" role="document">
       <div class="modal-content">
         @if($isUsingHeaderTitle)
@@ -34,7 +38,7 @@
 
         @if($isUsingBtnFooter)
         <div class="modal-footer {{ $buttonWrapperSubmitClass }}">
-          <button type="button" data-bs-dismiss="modal" class="btn btn-primary {{ $buttonSubmitClass }}">{{ $submitText }}</button>
+          <button type="{{ $isPost ? 'submit' : 'button' }}" data-bs-dismiss="modal" class="btn btn-primary {{ $buttonSubmitClass }}">{{ $submitText }}</button>
           @if ($isUsingBtnFooterClose)
           <button type="button" data-bs-dismiss="modal" class="btn" style="background: #667085; color: #FFF;">Close</button>
           @endif
@@ -42,4 +46,7 @@
         @endif
       </div>
     </div>
+  @if($isPost)
+  </form>
+  @endif
 </div>

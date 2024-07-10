@@ -19,6 +19,8 @@ class InputFloating extends Component
     public $id;
     public $name;
     public $options;
+    public $value;
+
 
     public function __construct(
         $placeholder = 'placeholder',
@@ -28,6 +30,7 @@ class InputFloating extends Component
         $cols = 30,
         $id = 'id',
         $name = 'id',
+        $value = '',
         $options = []
     )
     {
@@ -39,6 +42,8 @@ class InputFloating extends Component
         $this->id = $id;
         $this->name = $name;
         $this->options = $options;
+        $this->value = $value;
+
     }
 
     /**

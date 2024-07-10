@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
 
 use App\Models\Task;
@@ -73,6 +74,33 @@ class TicketController extends Controller
         [
           'message' => 'Member retrieved successfully',
           'results' => $model,
+        ],
+        200
+      );
+    } catch (Exception $e) {
+      return response()->json(
+        [
+          'message' => $e->getMessage(),
+          'results' => [],
+        ],
+        500
+      );
+    }
+  }
+
+  public function isLead(Request $request, $id): JsonResponse
+  {
+    try {
+      $model = Task::where('id', $id)->first();
+
+      if (empty($model->lead_id)) {
+        throw new Exception('Ticket does not exist');
+      }
+
+      return response()->json(
+        [
+          'message' => 'Lead retrieved successfully',
+          'results' => $model->lead_id,
         ],
         200
       );

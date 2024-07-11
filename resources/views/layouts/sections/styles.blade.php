@@ -16,6 +16,41 @@
 <link rel="stylesheet" href="{{ asset(mix('assets/vendor/libs/typeahead-js/typeahead.css')) }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+<style>
+    .dropdown-account, .submenu {
+      position: relative;
+      display: inline-block;
+    }
+  
+    .dropdown-account-content, .submenu-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    .dropdown-account-content {
+      margin-top: 5rem;
+    }
+
+    .dropdown-account-content a, .submenu-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+  
+    .submenu-content {
+      left: 100%;
+      top: 0;
+    }
+
+    .dropdown-account:focus-within .dropdown-account-content,
+    .submenu:focus-within .submenu-content {
+      display: block;
+    }
+  </style>
 
 
 <!-- Vendor Styles -->

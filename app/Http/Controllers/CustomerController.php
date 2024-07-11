@@ -13,6 +13,8 @@ use App\Models\TaskStatus;
 use App\Models\Profile;
 use App\Models\Contact;
 use App\Models\InternalChat;
+use App\Models\Lead;
+
 
 class CustomerController extends Controller
 {
@@ -112,7 +114,12 @@ class CustomerController extends Controller
    */
   public function show(Task $task)
   {
-    return view('content.customer.show');
+
+    $lead = Lead::where('id','156')->first();
+        $labels = explode (",", $lead->label); 
+        $names = explode (",", $lead->name); 
+
+    return view('content.customer.show',compact('lead','labels', 'names'));
   }
 
   /**

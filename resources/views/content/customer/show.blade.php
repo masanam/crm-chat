@@ -18,6 +18,23 @@
     <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
     <script src="{{asset('assets/vendor/libs/quill/katex.js')}}"></script>
     <script src="{{asset('assets/vendor/libs/quill/quill.js')}}"></script>
+    <style>
+        .frmb-control li {
+            cursor: pointer;
+            list-style: none;
+            margin: 0 0 -1px 0;
+            padding: 10px;
+            text-align: left;
+            background: #fff;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            box-shadow: inset 0 0 0 1px #c5c5c5;
+        }
+        </style>
 @endsection
 
 @section('page-script')
@@ -47,7 +64,6 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           }
       });
-
 
       $('#add-submit').click(function(){            
            $.ajax({  
@@ -150,14 +166,7 @@
     $listMeetingMode = [$meetingModeOnline, $meetingModeOffline];
 
     [$stages, $alphabet, $quality, $status, $listChannels, $listTicketTypes, $listPrioritys, $listStatusProjects] = Helper::getConstants();
-
-$leads = App\Models\Lead::where('id','156')->get();
-foreach ($leads as $row){
-    $labels = explode (",", $row->label); 
-    $names = explode (",", $row->name); 
-}
-                                
-
+                            
 @endphp
 
 @section('content')
@@ -296,11 +305,11 @@ foreach ($leads as $row){
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="text-dark" style="font-weight: 600;">Revenue</span>
-                                    <span>Rp 2,000,000</span>
+                                    <span>{{ $lead->budget }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="text-dark" style="font-weight: 600;">Close Date</span>
-                                    <span>13 April 2024</span>
+                                    <span>{{ $lead->closed_date }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="text-dark" style="font-weight: 600;">Source</span>
@@ -308,10 +317,6 @@ foreach ($leads as $row){
                                         <option value="test-drive">Outboned</option>
                                     </select>
                                 </div>
-                                <!-- <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-dark" style="font-weight: 600;">Field</span>
-                                    <span>Options</span>
-                                </div> -->
                                 @foreach (array_combine($labels, $names) as $label => $name)
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="text-dark" style="font-weight: 600;">{{ $label }}</span>
@@ -602,7 +607,7 @@ foreach ($leads as $row){
     {{-- modal add/edit Deals Info --}}
 
     <div class="modal fade" id="add-deals-info" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="d-flex align-items-center justify-content-between border border-bottom-2">
           <div class="d-flex align-items-center p-3">
@@ -611,16 +616,19 @@ foreach ($leads as $row){
         </div>
         
         <div class="modal-body px-4 py-3">
+        <div class="row">
+            <div class="col-8">
             <div class="form-group">
-                <form name="add_name" id="add_name">  
-                    <div class="table-responsive">
-                        <table class="table table-borderless" id="dynamic_field">
+            <form name="add_name" id="add_name">  
+                @csrf
+                <div class="table-responsive">
+                    <table class="table table-borderless" id="dynamic_field">
                         <tr>  
                                 <td>
                                     Revenue
                                 </td>  
                                 <td>
-                                    <input type="text" name="revenue" placeholder="" class="form-control name_list" />
+                                    <input type="text" name="revenue" placeholder="" value="{{ $lead->budget }}" class="form-control name_list" />
                                 </td>  
                             </tr>  
                             <tr>  
@@ -628,7 +636,7 @@ foreach ($leads as $row){
                                     Close Date
                                 </td>  
                                 <td>
-                                    <input type="date" name="close-date" placeholder="" class="form-control name_list" />
+                                    <input type="text" name="close-date" placeholder="" value="{{ $lead->closed_date }}" class="form-control name_list" />
                                 </td>  
                             </tr>  
                             <tr>  
@@ -643,23 +651,63 @@ foreach ($leads as $row){
                                     </select>
                                 </td>  
                             </tr>  
+                            @foreach (array_combine($labels, $names) as $label => $name)
+                            @php 
+                            $i=0;
+                            $i++;
 
-                        </table>  
-                    </div>
-                    </div> 
-                    <button type="button" class="btn-link" id="add-more" >
+                            @endphp
+                            <tr id="row{{ $i }}" class="dynamic-added">
+                                <td><input type="text" name="label[]" placeholder="" class="form-control label_list" value="{{ $label }}" /></td>
+                                <td><input type="text" name="name[]" placeholder="" class="form-control name_list" value="{{ $name }}"/></td>
+                                <td width="5%"><button type="button" name="remove" id="{{$i}}" class="btn btn-danger btn_remove btn-sm">X</button></td>
+                            </tr>
+
+                            <!-- <tr>  
+                                <td>
+                                {{ $label }}
+                                </td>  
+                                <td>
+                                {{ $name }}                                
+                            </td>  
+                            </tr>   -->
+                                @endforeach
+
+                    </table>  
+                </div>
+                <button type="button" class="btn-link" id="add-more" >
                     + Add more fields
-                    </button>
-
-            </div>
+                </button>
 
                 <div class="modal-footer d-flex justify-content-center align-items-center w-100 p-4">
                     <button type="button" data-bs-dismiss="modal" id="add-submit" class="btn btn-primary" >Save Info</button>
                     <button type="button" data-bs-dismiss="modal" class="btn" style="background: #667085; color: #FFF;">Close</button>
                 </div>
-                </form>  
+            </form>  
+        </div>
 
-      </div>
+            </div>
+            <div class="col-4">
+            <ul id="frmb-1720708539167-control-box" class="frmb-control ui-sortable">
+                <li class="formbuilder-icon-checkbox-group input-control input-control-6 ui-sortable-handle" data-type="checkbox-group"><span>Checkbox Group</span>
+                </li>
+                <li class="formbuilder-icon-date input-control input-control-11 ui-sortable-handle" data-type="date"><span>Date Field</span>
+                </li>
+                <li class="formbuilder-icon-number input-control input-control-12 ui-sortable-handle" data-type="number"><span>Number</span>
+                </li>
+                <li class="formbuilder-icon-radio-group input-control input-control-7 ui-sortable-handle" data-type="radio-group"><span>Radio Group</span>
+                </li>
+                <li class="formbuilder-icon-select input-control input-control-5 ui-sortable-handle" data-type="select"><span>Select</span>
+                </li>
+                <li class="formbuilder-icon-text input-control input-control-9 ui-sortable-handle" data-type="text"><span>Text Field</span>
+                </li>
+                <li class="formbuilder-icon-textarea input-control input-control-13 ui-sortable-handle" data-type="textarea"><span>Text Area</span>
+                </li>
+            </ul>
+            </div>            
+        </div>
+        
+
     </div>
 </div>
 
@@ -675,24 +723,11 @@ foreach ($leads as $row){
             <div class="d-flex flex-column gap-3">
                 <div class="d-flex justify-content-between gap-5 w-100">
                 <span class="text-dark" style="font-weight: 600;">Revenue</span>
-                <x-input-floating
-                        label="Revenue"
-                        id="revenue"
-                        name="revenue"
-                        value="2000000"
-                    >
-                    </x-input-floating>
+                <span>{{ $lead->budget }}</span>
                 </div>
                 <div class="d-flex justify-content-between gap-5 w-100">
                 <span class="text-dark" style="font-weight: 600;">Close Date</span>
-                <x-input-floating
-                        label="Close Date"
-                        id="close-date"
-                        name="close-date"
-                        type="date"
-                        value="10/08/2024"
-                    >
-                    </x-input-floating>
+                <span>{{ $lead->closed_date }}</span>
                 </div>
 
                 <div class="d-flex justify-content-between gap-5 w-100">

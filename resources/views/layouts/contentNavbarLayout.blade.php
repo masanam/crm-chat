@@ -113,10 +113,16 @@ $currentRouteName = Route::currentRouteName();
                 <i class="ti ti-user-circle text-dark"></i>
                 My Profile
               </a>
+              <!-- <a href="#" role="menuitem" class="d-flex align-items-center gap-2" onclick="event.preventDefault();document.getElementById('frm-logout').submit();"> -->
+
               <a href="{{ route('logout') }}" role="menuitem" class="d-flex align-items-center gap-2">
                 <i class="ti ti-logout text-dark"></i>
                 Logout
               </a>
+              <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+              @csrf
+              </form>
+
               <div href="#" role="menuitem" class="" style="visibility: hidden">
               </div>
             </div>

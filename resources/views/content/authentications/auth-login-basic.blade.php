@@ -44,11 +44,11 @@ $customizerHidden = 'customizer-hide';
                   <form id="formAuthentication" class="mb-3" action="{{route('login')}}" method="POST">
                     @csrf
                       <div class="d-flex flex-column gap-3">
-                        <div class="d-flex flex-column gap-2 w-100">
+                        <div class="d-flex flex-column gap-2 w-100 mb-1">
                             <label class="sign-up-label" for="email">Your work email</label>
                             <input class="sign-up-input" type="text" name="email" id="email" placeholder="Email">
                         </div>
-                        <div class="d-flex flex-column gap-2 w-100">
+                        <div class="d-flex flex-column gap-2 w-100 mb-1">
                             <label class="sign-up-label" for="password">Password</label>
                             <input class="sign-up-input" type="password" name="password" id="password" placeholder="Password">
                         </div>

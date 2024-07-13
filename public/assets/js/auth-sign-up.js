@@ -7,7 +7,7 @@
  document.addEventListener('DOMContentLoaded', function () {
    (async function () {
     const getContainerFormStepper = document.querySelector('.container-form-stepper')
-    const getFormStepper = document.querySelector('#signup-form')
+    const getFormStepper = document.querySelector('#payment-form')
     const getStep1 = document.querySelector('#step1-validation')
     const getStep2 = document.querySelector('#step2-validation')
     const getStep3 = document.querySelector('#step3-validation')
@@ -150,7 +150,7 @@
                   e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
                 }
                 instance.on('core.form.valid', function() {
-                    step++
+                    step = 4
                     getStep3.setAttribute('class', 'hidden')
                     getStep4.setAttribute('class', '')
                   })
@@ -165,9 +165,6 @@
                   notEmpty: {
                     message: 'Please enter your password'
                   },
-                  emailAddress: {
-                    message: 'Please enter valid email address'
-                  }
                 }
               }
             },
@@ -187,9 +184,11 @@
                 }
               });
               instance.on('core.form.valid', function() {
-                step++
+                step = 5
                 getStep4.setAttribute('class', 'hidden')
                 getStep5.setAttribute('class', '')
+                const getBg = document.querySelector('.signup-bg')
+                getBg.style.width = '645.5px'
               })
             }
         });
@@ -327,6 +326,7 @@
                         fv4.validate()
                         break;
                 }
+                console.log(step)
             })
         })
     }

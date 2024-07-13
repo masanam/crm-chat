@@ -104,21 +104,27 @@ $currentRouteName = Route::currentRouteName();
             <div class="avatar avatar-online me-2">
               <img alt="Avatar" class="rounded-circle shadow" src="{{ asset('assets/img/avatars/7.png') }}">
             </div>
-            <div class="d-flex flex-column" style="width: 80%;">
+            <div class="d-flex flex-column align-items-start gap-1" style="width: 80%;">
               <span class="fw-bold text-dark" style="font-size: 14px">Randy Haris</span>
               <span style="font-size: 14px; color: #475467;">PT Jaya Makmur</span>
             </div>
             <div class="dropdown-account-content" role="menu">
-              <a href="#" role="menuitem" class="d-flex align-items-center gap-2">
-                <i class="ti ti-user-circle text-dark"></i>
-                My Profile
-              </a>
-              <a href="{{ route('logout') }}" role="menuitem" class="d-flex align-items-center gap-2">
-                <i class="ti ti-logout text-dark"></i>
-                Logout
-              </a>
-              <div href="#" role="menuitem" class="" style="visibility: hidden">
+              <div class="d-flex gap-2 align-items-center" style="padding: 14px 18px;">
+                <div class="avatar avatar-online">
+                  <img alt="Avatar" class="rounded-circle shadow" src="{{ asset('assets/img/avatars/7.png') }}">
+                </div>
+                <div class="d-flex flex-column align-items-start gap-1">
+                  <span class="fw-bold text-dark" style="font-size: 14px">Randy Haris</span>
+                  <span style="font-size: 14px; color: #616A75;">PT Jaya Makmur</span>
+                </div>
               </div>
+              <a href="#" role="menuitem" class="d-flex align-items-center menu-account" style="color: #616A75;">
+                Account
+              </a>
+              <a href="{{ route('logout') }}" role="menuitem" class="d-flex align-items-center gap-2 w-full justify-content-between menu-logout" style="color: #616A75;">
+                Logout
+                <img alt="logout" src="{{ asset('assets/svg/icons/icon-logout.svg') }}">
+              </a>
             </div>
           </button>
         </div>

@@ -112,7 +112,7 @@ $step = 6;
 @endphp
 
 @section('content')
-    <div class="d-flex justify-content-between" id="auth-signup">
+    <div class="d-flex justify-content-between" id="auth-signup" style="height: 100vh; overflow-y: hidden;">
         <div class="w-100 d-flex flex-column justify-content-between">
             <div>
                 <a href="/">

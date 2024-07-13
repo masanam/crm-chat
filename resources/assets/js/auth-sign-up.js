@@ -187,6 +187,7 @@
                 step = 5
                 getStep4.setAttribute('class', 'hidden')
                 getStep5.setAttribute('class', '')
+                getFooter.setAttribute('class', 'hidden')
                 const getBg = document.querySelector('.signup-bg')
                 getBg.style.width = '645.5px'
               })

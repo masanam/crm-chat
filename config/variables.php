@@ -8,7 +8,7 @@ return [
   'templateVersion' => '1.0.0',
   'templateFree' => false,
   'templateDescription' => 'Powerful Conversation-based Customer Engagement Platform designed for Productive Teams',
-  'templateKeyword' => 'dashboard, bootstrap 5 dashboard, bootstrap 5 design, bootstrap 5',
+  'templateKeyword' => 'pasima, whatsapp, crm, dashboard, conversation, chats, group-chat',
   'licenseUrl' => 'https://themeforest.net/licenses/standard',
   'livePreview' => 'https://demos.pixinvent.com/vuexy-html-admin-template/landing/',
   'productPage' => 'https://1.envato.market/vuexy_admin',

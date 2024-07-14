@@ -20,6 +20,7 @@
     .dropdown-account, .submenu {
       position: relative;
       display: inline-block;
+      z-index: 999;
     }
   
     .dropdown-account-content, .submenu-content {
@@ -31,7 +32,19 @@
     }
 
     .dropdown-account-content {
-      margin-top: 5rem;
+      margin-top: 13rem;
+      border-radius: 10px;
+      box-shadow: 2px 4px 8px 2px #00000040;
+    }
+
+    .menu-account {
+      padding: 8px 8px;
+      border-top: 1px solid #D0D5DD;
+    }
+
+    .menu-logout {
+      padding: 8px 8px;
+      border-top: 1px solid #D0D5DD;
     }
 
     .dropdown-account-content a, .submenu-content a {

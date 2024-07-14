@@ -159,7 +159,7 @@
                             <!-- /Customer info -->
                         </div>
 
-                        <div class="col-6 p2">
+                        <div class="col-6 p2" style="padding: 0px 0px 0px 80px;">
                             <div class="col app-chat-history bg-body" id="">
                                 <div class="chat-history-wrapper">
                                     <header>
@@ -192,19 +192,19 @@
                                     ketika buat ticket, sekaligus buat group, dan semua orang yang di group member itu yang bisa saling chat di chat-history
                                     tambahkan add member dengan modal
                                     -->
-                                    <!-- <div class="chat-history-body bg-white ww">
+                                    <div class="chat-history-body bg-white" style="height: calc(100vh - 18.5rem);">
                                         <ul class="list-unstyled chat-history">
                                             No chats here
                                         </ul>
-                                    </div> -->
-                                    <ul id="messages" class="mb-4"></ul>
+                                    </div>
+                                    {{-- <ul id="messages" class="mb-4"></ul>
                                     <div class="flex">
                                         <input type="text" id="message" class="border p-2 flex-grow" placeholder="Type your message">
                                         <button id="send" class="bg-blue-500 text-white p-2 ml-2">Send</button>
-                                    </div>
+                                    </div> --}}
 
                                     <!-- Chat message form -->
-                                    <!-- <div class="chat-history-footer">
+                                    <div class="chat-history-footer">
                                         <form class="form-send-message d-flex flex-column justify-content-between h-100" action="" method="POST" enctype="multipart/form-data">
                                             <input class=" form-control message-input border-0 me-3 shadow-none bg-transparent" placeholder="Write message">
                                             <div class="message-actions d-flex align-items-center justify-content-between ps-2 pe-3">
@@ -219,7 +219,7 @@
                                                 </button>
                                             </div>
                                         </form>
-                                    </div> -->
+                                    </div>
                                 </div>
                             </div>
                         </div>

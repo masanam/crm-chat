@@ -64,7 +64,9 @@
 
     $(document).ready(function(){      
       var postURL = "<?php echo url('customers/addmore'); ?>";
-      var i=0;  
+      var total = $('#totalData').val();
+
+      var i=total + 1;  
       
       $(document).on('click', "input[type='radio'][name='optRadio']", function() {
             switch(Number($(this).val())){
@@ -777,18 +779,20 @@
                                     </select>
                                 </td>  
                             </tr>  
-                            @foreach (array_combine($labels, $names) as $label => $name)
-                            @php 
+                            @php
                             $i=0;
+                            @endphp
+                            @foreach (array_combine($labels, $names) as $label => $name)
+                            @php
                             $i++;
-
                             @endphp
                             <tr id="row{{ $i }}" class="dynamic-added">
                                 <td><input type="text" name="label[]" placeholder="" class="form-control label_list" value="{{ $label }}" /></td>
                                 <td><input type="text" name="name[]" placeholder="" class="form-control name_list" value="{{ $name }}"/></td>
-                                <td width="5%"><button type="button" name="remove" id="{{$i}}" class="btn btn-danger btn-sm btn_remove">X</button></td>
+                                <td width="5%"><button type="button" name="remove" id="{{ $i }}" class="btn btn-danger btn-sm btn_remove">X</button></td>
                             </tr>
-                                @endforeach
+                            @endforeach
+                            <input type="hidden" name="totalData" id="totalData" class="form-control" value="{{ $i }}"/>
 
                     </table>  
                 </div>

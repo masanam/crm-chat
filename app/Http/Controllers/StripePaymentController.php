@@ -102,8 +102,8 @@ class StripePaymentController extends Controller
 // dd($lastInsertedId);
       // $user->sendEmailVerificationNotification();
 
-        // Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-        Stripe\Stripe::setApiKey(config('services.stripe.secret'));
+        Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+        // Stripe\Stripe::setApiKey(config('services.stripe.secret'));
         // Stripe\Customer::create();
         // Create a new Stripe customer.
         $customer = Stripe\Customer::create(array(

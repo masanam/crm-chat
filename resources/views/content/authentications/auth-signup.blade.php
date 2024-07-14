@@ -33,7 +33,10 @@ $customizerHidden = 'customizer-hide';
 <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
 <script src="https://js.stripe.com/v2/"></script>
 <script type="text/javascript">
-    var stripe = Stripe('pk_test_51OzD44P2jpJZ1J5syWQeAqIyfEta7xpLGwAAmuLtziPmFIJzxHDBG7WedNjUt6vobzP0AQspvVtIs9cGe39wLCcW00JlACclAC');
+    // var stripe = Stripe('pk_test_51OzD44P2jpJZ1J5syWQeAqIyfEta7xpLGwAAmuLtziPmFIJzxHDBG7WedNjUt6vobzP0AQspvVtIs9cGe39wLCcW00JlACclAC');
+
+    var stripeKey = "{{ env('STRIPE_KEY') }}";
+    var stripe = Stripe(stripeKey);
 
     $(function() {
         /*------------------------------------------
@@ -135,7 +138,7 @@ $step = 6;
                         ])
                         class="authentication-wrapper authentication-basic payment"
                     >
-                        <form role="form" action="{{ route('stripe.post') }}" method="post" class="require-validation w-100 py-4 px-5 d-flex flex-column gap-5" data-cc-on-file="false" data-stripe-publishable-key="pk_test_51OzD44P2jpJZ1J5syWQeAqIyfEta7xpLGwAAmuLtziPmFIJzxHDBG7WedNjUt6vobzP0AQspvVtIs9cGe39wLCcW00JlACclAC" id="payment-form">
+                        <form role="form" action="{{ route('stripe.post') }}" method="post" class="require-validation w-100 py-4 px-5 d-flex flex-column gap-5" data-cc-on-file="false" data-stripe-publishable-key="{{ env('STRIPE_KEY') }}" id="payment-form">
                             @csrf
                             <div id="step1-validation" class="">
                                 <div class="d-flex flex-column align-items-center">

@@ -25,7 +25,6 @@
             margin: 0 0 -1px 0;
             padding: 10px;
             text-align: left;
-            background: #fff;
             -webkit-user-select: none;
             -moz-user-select: none;
             user-select: none;
@@ -47,9 +46,73 @@
     $(document).ready(function(){      
       var postURL = "<?php echo url('customers/addmore'); ?>";
       var i=0;  
+      
+
       $('#add-more').click(function(){  
-           i++;  
-           $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td><input type="text" name="name[]" placeholder="" class="form-control name_list" /></td><td width="5%"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>');  
+        i++;  
+        var radioValue = $("input[type='radio'][name='optRadio']:checked").val();
+        switch(Number(radioValue)){
+            case 1:
+                console.log(radioValue);
+                $('#dynamic_field').append(`<tr id="row`+i+`" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td>
+                    <label class="form-check-label custom-option-content col-12" for="customCheck1">
+                        <input name="customCheck" class="form-check-input" type="checkbox" value="html" id="customCheck1">
+                        <span>HTML</span>
+                    </label>
+                    <label class="form-check-label custom-option-content col-12" for="customCheck2">
+                        <input name="customCheck" class="form-check-input" type="checkbox" value="css" id="customCheck2">
+                        <span>CSS</span>
+                    </label>
+                    <label class="form-check-label custom-option-content col-12" for="customCheck3">
+                        <input name="customCheck" class="form-check-input" type="checkbox" value="php" id="customCheck3">
+                        <span>PHP</span>
+                    </label>
+
+                </td><td width="5%"><button type="button" name="remove" id="`+i+`" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>`);  
+                break;
+            case 2:
+                console.log(radioValue);
+                $('#dynamic_field').append(`<tr id="row`+i+`" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td>    
+                    <label class="form-check-label custom-option-content col-12" for="customRadio1">
+                        <input name="customRadio" class="form-check-input" type="radio" value="html" id="customRadio1">
+                        <span>HTML</span>
+                    </label>
+                    <label class="form-check-label custom-option-content col-12" for="customRadio2">
+                        <input name="customRadio" class="form-check-input" type="radio" value="css" id="customRadio2">
+                        <span>CSS</span>
+                    </label>
+                    <label class="form-check-label custom-option-content col-12" for="customRadio3">
+                        <input name="customRadio" class="form-check-input" type="radio" value="php" id="customRadio3">
+                        <span>PHP</span>
+                    </label>
+
+                    </td><td width="5%"><button type="button" name="remove" id="`+i+`" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>`);  
+                break;
+            case 3: 
+                console.log(radioValue);
+                $('#dynamic_field').append(`<tr id="row`+i+`" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td>
+                <select name="name[]" id="name[]" class="form-control name_list">
+                    <option value="html">HTML</option>
+                    <option value="css">CSS</option>
+                    <option value="php">PHP</option>
+                </select>
+                </td><td width="5%"><button type="button" name="remove" id="`+i+`" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>`);  
+                break;
+            case 4: 
+                $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td><textarea id="name" name="name[]" rows="4" cols="50" class="form-control name_list"></textarea></td><td width="5%"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>');  
+                break;
+            case 5: 
+                $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td><input type="date" name="name[]" placeholder="" class="form-control name_list" /></td><td width="5%"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>');  
+                break;
+            case 6: 
+                $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td><input type="number" name="name[]" placeholder="" class="form-control name_list" /></td><td width="5%"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>');  
+                break;
+
+            default: 
+            console.log(radioValue);
+            $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td><input type="text" name="name[]" placeholder="" class="form-control name_list" /></td><td width="5%"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>');  
+        }
+
       });  
 
 
@@ -65,7 +128,8 @@
           }
       });
 
-      $('#add-submit').click(function(){            
+      $('#add-submit').click(function(e){      
+            e.preventDefault();      
            $.ajax({  
                 url:postURL,  
                 method:"POST",  
@@ -76,6 +140,7 @@
                     if(data.error){
                         printErrorMsg(data.error);
                     }else{
+                        window.location.reload();
                         i=1;
                         $('.dynamic-added').remove();
                         $('#add_name')[0].reset();
@@ -617,8 +682,11 @@
         
         <div class="modal-body px-4 py-3">
         <div class="row">
-            <div class="col-8">
-            <div class="form-group">
+            <div class="col-xl-8" style="padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #DDE0E4;
+    background: #FFF;">
+            <div class="form-group ">
             <form name="add_name" id="add_name">  
                 @csrf
                 <div class="table-responsive">
@@ -662,22 +730,10 @@
                                 <td><input type="text" name="name[]" placeholder="" class="form-control name_list" value="{{ $name }}"/></td>
                                 <td width="5%"><button type="button" name="remove" id="{{$i}}" class="btn btn-danger btn_remove btn-sm">X</button></td>
                             </tr>
-
-                            <!-- <tr>  
-                                <td>
-                                {{ $label }}
-                                </td>  
-                                <td>
-                                {{ $name }}                                
-                            </td>  
-                            </tr>   -->
                                 @endforeach
 
                     </table>  
                 </div>
-                <button type="button" class="btn-link" id="add-more" >
-                    + Add more fields
-                </button>
 
                 <div class="modal-footer d-flex justify-content-center align-items-center w-100 p-4">
                     <button type="button" data-bs-dismiss="modal" id="add-submit" class="btn btn-primary" >Save Info</button>
@@ -687,75 +743,64 @@
         </div>
 
             </div>
-            <div class="col-4">
-            <ul id="frmb-1720708539167-control-box" class="frmb-control ui-sortable">
-                <li class="formbuilder-icon-checkbox-group input-control input-control-6 ui-sortable-handle" data-type="checkbox-group"><span>Checkbox Group</span>
+            <div class="bg-lighter rounded col-xl-4" style="padding: 16px;border-radius: 12px;border: 1px solid #DDE0E4;background: #FFF;">
+
+<div class="row g-5 py-8">
+            <ul id="frmb-control-box" class="frmb-control">
+                <li class="input-control" data-type="checkbox-group">
+                <label class="form-check-label custom-option-content form-check-input-payment" for="customOptRadio1">
+                  <input name="optRadio" class="form-check-input" type="radio" value="1" id="customOptRadio1">
+                  <span>Checkbox Group</span>
+                </label>
                 </li>
-                <li class="formbuilder-icon-date input-control input-control-11 ui-sortable-handle" data-type="date"><span>Date Field</span>
+                <li class="input-control" data-type="radio-group">
+                <label class="form-check-label custom-option-content form-check-input-payment" for="customOptRadio2">
+                  <input name="optRadio" class="form-check-input" type="radio" value="2" id="customOptRadio2">
+                  <span>Radio Group</span>
+                  </label>
                 </li>
-                <li class="formbuilder-icon-number input-control input-control-12 ui-sortable-handle" data-type="number"><span>Number</span>
+                <li class="input-control" data-type="select">
+                <label class="form-check-label custom-option-content form-check-input-payment" for="customOptRadio3">
+                  <input name="optRadio" class="form-check-input" type="radio" value="3" id="customOptRadio3">
+                  <span>Select</span>
+                  </label>
                 </li>
-                <li class="formbuilder-icon-radio-group input-control input-control-7 ui-sortable-handle" data-type="radio-group"><span>Radio Group</span>
+                <li class="input-control" data-type="textarea">
+                <label class="form-check-label custom-option-content form-check-input-payment" for="customOptRadio4">
+                  <input name="optRadio" class="form-check-input" type="radio" value="4" id="customOptRadio4">
+                  <span>Text Area</span>
+                  </label>
                 </li>
-                <li class="formbuilder-icon-select input-control input-control-5 ui-sortable-handle" data-type="select"><span>Select</span>
+                <li class="input-control" data-type="date">
+                <label class="form-check-label custom-option-content form-check-input-payment" for="customOptRadio5">
+                  <input name="optRadio" class="form-check-input" type="radio" value="5" id="customOptRadio5">
+                  <span>Date Field</span>
+                </label>
                 </li>
-                <li class="formbuilder-icon-text input-control input-control-9 ui-sortable-handle" data-type="text"><span>Text Field</span>
+                <li class="input-control" data-type="number">
+                <label class="form-check-label custom-option-content form-check-input-payment" for="customOptRadio6">
+                  <input name="optRadio" class="form-check-input" type="radio" value="6" id="customOptRadio6">
+                  <span>Number</span>
+                </label>
                 </li>
-                <li class="formbuilder-icon-textarea input-control input-control-13 ui-sortable-handle" data-type="textarea"><span>Text Area</span>
+                <li class="input-control" data-type="text">
+                <label class="form-check-label custom-option-content form-check-input-payment" for="customOptRadio7">
+                  <input name="optRadio" class="form-check-input" type="radio" value="7" id="customOptRadio7">
+                  <span>Text Field</span>
+                  </label>
                 </li>
+                <button type="button" class="btn btn-primary mt-2" id="add-more" >
+                    + Add more fields
+                </button>
+
             </ul>
+
             </div>            
         </div>
         
 
     </div>
 </div>
-
-    {{-- modal add/edit Deals Info --}}
-    <x-modal
-        title="Add Deals Info"
-        name="add-deals-info1"
-        submitText="Save Info"
-        buttonSubmitClass=""
-        buttonWrapperSubmitClass="d-flex justify-content-center align-items-center w-100"
-    >
-        <div class="d-flex flex-column gap-2 border-bottom border-1 pb-3 align-items-start">
-            <div class="d-flex flex-column gap-3">
-                <div class="d-flex justify-content-between gap-5 w-100">
-                <span class="text-dark" style="font-weight: 600;">Revenue</span>
-                <span>{{ $lead->budget }}</span>
-                </div>
-                <div class="d-flex justify-content-between gap-5 w-100">
-                <span class="text-dark" style="font-weight: 600;">Close Date</span>
-                <span>{{ $lead->closed_date }}</span>
-                </div>
-
-                <div class="d-flex justify-content-between gap-5 w-100">
-                <span class="text-dark" style="font-weight: 600;">Source</span>
-                    <x-input-floating
-                        label="Source"
-                        placeholder="Please select source"
-                        id="source"
-                        name="source"
-                        type="select"
-                        :options="$listChannels"
-                    >
-                    </x-input-floating>
-                </div>
-                
-                {{-- !! Dont remove this tag --}}
-                <div class="hidden" id="wrapper-source"></div>
-                {{-- !! Dont remove this tag --}}
-
-            </div>
-            <button class="btn-link" id="btn-more">
-                + Add more fields
-            </button>
-        </div>
-        {{-- !! Dont remove this tag --}}
-        <div class="hidden" id="wrapper-dynamic-form"></div>
-        {{-- !! Dont remove this tag --}}
-    </x-modal>
 
 
 @endsection

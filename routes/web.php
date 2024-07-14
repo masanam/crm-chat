@@ -177,6 +177,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\FormBuilderController;
 use App\Http\Controllers\FormsController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Route::get('/test123', [Chat::class, 'test']);
 
@@ -184,6 +185,15 @@ Route::get('/clear', function () {
     $clearcache = Artisan::call('config:clear');
     echo "Cache cleared<br>";
 
+});
+
+Route::group(['middleware' => ['auth']], function() {
+  /**
+  * Verification Routes
+  */
+  Route::get('/email/verify', 'VerificationController@show')->name('verification.notice');
+  Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify')->middleware(['signed']);
+  Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
 });
 
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');

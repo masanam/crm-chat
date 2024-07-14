@@ -36,6 +36,7 @@ $customizerHidden = 'customizer-hide';
     // var stripe = Stripe('pk_test_51OzD44P2jpJZ1J5syWQeAqIyfEta7xpLGwAAmuLtziPmFIJzxHDBG7WedNjUt6vobzP0AQspvVtIs9cGe39wLCcW00JlACclAC');
 
     var stripeKey = "{{ env('STRIPE_KEY') }}";
+    console.log(stripeKey);
     var stripe = Stripe(stripeKey);
 
     $(function() {

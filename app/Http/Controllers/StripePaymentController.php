@@ -77,6 +77,8 @@ class StripePaymentController extends Controller
 
         Mail::to($email)->send(new RegisterEmail($userData));
 
+
+        // auth()->login($user);
         // $referrer = $data['by'];
 
     //   $profile = Profile::create([
@@ -94,6 +96,8 @@ class StripePaymentController extends Controller
         'email' => $email,
         'password' => Hash::make($data['new_password']),
     ]);
+    
+    $user->sendEmailVerificationNotification();
 
 // dd($lastInsertedId);
       // $user->sendEmailVerificationNotification();

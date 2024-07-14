@@ -33,6 +33,25 @@
             overflow: hidden;
             box-shadow: inset 0 0 0 1px #c5c5c5;
         }
+        .container-input input, .container-input select, .container-input textarea {
+            font-size: 0.9385rem;
+            outline: none;
+            border: 1px solid #c5c5c5;
+            border-radius: 5px;
+            padding: 0.5rem 0.7rem;
+            color: gray;
+            transition: 0.1s ease-out;
+            width: 100%;
+            }
+            .container-input {
+                height: 100%;
+                display: block;
+                -ms-flex-pack: center;
+                justify-content: center;
+                -ms-flex-align: center;
+                align-items: center;
+                width: 100%;
+                }
         </style>
 @endsection
 
@@ -47,25 +66,64 @@
       var postURL = "<?php echo url('customers/addmore'); ?>";
       var i=0;  
       
+      $(document).on('click', "input[type='radio'][name='optRadio']", function() {
+            switch(Number($(this).val())){
+            case 1:
+                document.getElementById('optionCheckBox').style.display = 'block';
+                document.getElementById('optionRadioBtn').style.display = 'none';
+                document.getElementById('optionSelect').style.display = 'none';
+                break;
+            case 2:
+                document.getElementById('optionCheckBox').style.display = 'none';
+                document.getElementById('optionRadioBtn').style.display = 'block';
+                document.getElementById('optionSelect').style.display = 'none';
+                break;
+            case 3:
+                document.getElementById('optionCheckBox').style.display = 'none';
+                document.getElementById('optionRadioBtn').style.display = 'none';
+                document.getElementById('optionSelect').style.display = 'block';
+                break;
+            default:
+            document.getElementById('optionCheckBox').style.display = 'none';
+                document.getElementById('optionRadioBtn').style.display = 'none';
+                document.getElementById('optionSelect').style.display = 'none';
+                break;
+        }
+
+        });
 
       $('#add-more').click(function(){  
         i++;  
         var radioValue = $("input[type='radio'][name='optRadio']:checked").val();
+
+        var checkBox1 = $("#checkBox1").val();
+        var checkBox2 = $("#checkBox2").val();
+        var checkBox3 = $("#checkBox3").val();
+
+        var radioBtn1 = $("#radioBtn1").val();
+        var radioBtn2 = $("#radioBtn2").val();
+        var radioBtn3 = $("#radioBtn3").val();
+
+        var optionVal1 = $("#option1").val();
+        var optionVal2 = $("#option2").val();
+        var optionVal3 = $("#option3").val();
+
+
         switch(Number(radioValue)){
             case 1:
                 console.log(radioValue);
                 $('#dynamic_field').append(`<tr id="row`+i+`" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td>
                     <label class="form-check-label custom-option-content col-12" for="customCheck1">
-                        <input name="customCheck" class="form-check-input" type="checkbox" value="html" id="customCheck1">
-                        <span>HTML</span>
+                        <input name="customCheck" class="form-check-input" type="checkbox" value="`+checkBox1+`" id="customCheck1">
+                        <span>`+checkBox1+`</span>
                     </label>
                     <label class="form-check-label custom-option-content col-12" for="customCheck2">
-                        <input name="customCheck" class="form-check-input" type="checkbox" value="css" id="customCheck2">
-                        <span>CSS</span>
+                        <input name="customCheck" class="form-check-input" type="checkbox" value="`+checkBox2+`" id="customCheck2">
+                        <span>`+checkBox2+`</span>
                     </label>
                     <label class="form-check-label custom-option-content col-12" for="customCheck3">
-                        <input name="customCheck" class="form-check-input" type="checkbox" value="php" id="customCheck3">
-                        <span>PHP</span>
+                        <input name="customCheck" class="form-check-input" type="checkbox" value="`+checkBox3+`" id="customCheck3">
+                        <span>`+checkBox3+`</span>
                     </label>
 
                 </td><td width="5%"><button type="button" name="remove" id="`+i+`" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>`);  
@@ -74,27 +132,27 @@
                 console.log(radioValue);
                 $('#dynamic_field').append(`<tr id="row`+i+`" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td>    
                     <label class="form-check-label custom-option-content col-12" for="customRadio1">
-                        <input name="customRadio" class="form-check-input" type="radio" value="html" id="customRadio1">
-                        <span>HTML</span>
+                        <input name="customRadio" class="form-check-input" type="radio" value="`+radioBtn1+`" id="customRadio1">
+                        <span>`+radioBtn1+`</span>
                     </label>
                     <label class="form-check-label custom-option-content col-12" for="customRadio2">
-                        <input name="customRadio" class="form-check-input" type="radio" value="css" id="customRadio2">
-                        <span>CSS</span>
+                        <input name="customRadio" class="form-check-input" type="radio" value="`+radioBtn2+`" id="customRadio2">
+                        <span>`+radioBtn2+`</span>
                     </label>
                     <label class="form-check-label custom-option-content col-12" for="customRadio3">
-                        <input name="customRadio" class="form-check-input" type="radio" value="php" id="customRadio3">
-                        <span>PHP</span>
+                        <input name="customRadio" class="form-check-input" type="radio" value="`+radioBtn3+`" id="customRadio3">
+                        <span>`+radioBtn3+`</span>
                     </label>
 
                     </td><td width="5%"><button type="button" name="remove" id="`+i+`" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>`);  
                 break;
             case 3: 
-                console.log(radioValue);
+                console.log(optionVal1);
                 $('#dynamic_field').append(`<tr id="row`+i+`" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td>
                 <select name="name[]" id="name[]" class="form-control name_list">
-                    <option value="html">HTML</option>
-                    <option value="css">CSS</option>
-                    <option value="php">PHP</option>
+                    <option value="`+optionVal1+`">`+optionVal1+`</option>
+                    <option value="`+optionVal2+`">`+optionVal2+`</option>
+                    <option value="`+optionVal3+`">`+optionVal3+`</option>
                 </select>
                 </td><td width="5%"><button type="button" name="remove" id="`+i+`" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>`);  
                 break;
@@ -690,12 +748,12 @@
             <form name="add_name" id="add_name">  
                 @csrf
                 <div class="table-responsive">
-                    <table class="table table-borderless" id="dynamic_field">
+                    <table class="table table-borderless table-condensed" id="dynamic_field">
                         <tr>  
-                                <td>
+                                <td style="width:1px; white-space:nowrap;">
                                     Revenue
                                 </td>  
-                                <td>
+                                <td style="width:1px; white-space:nowrap;">
                                     <input type="text" name="revenue" placeholder="" value="{{ $lead->budget }}" class="form-control name_list" />
                                 </td>  
                             </tr>  
@@ -728,7 +786,7 @@
                             <tr id="row{{ $i }}" class="dynamic-added">
                                 <td><input type="text" name="label[]" placeholder="" class="form-control label_list" value="{{ $label }}" /></td>
                                 <td><input type="text" name="name[]" placeholder="" class="form-control name_list" value="{{ $name }}"/></td>
-                                <td width="5%"><button type="button" name="remove" id="{{$i}}" class="btn btn-danger btn_remove btn-sm">X</button></td>
+                                <td width="5%"><button type="button" name="remove" id="{{$i}}" class="btn btn-danger btn-sm btn_remove">X</button></td>
                             </tr>
                                 @endforeach
 
@@ -744,8 +802,8 @@
 
             </div>
             <div class="bg-lighter rounded col-xl-4" style="padding: 16px;border-radius: 12px;border: 1px solid #DDE0E4;background: #FFF;">
+            <div class="row py-8">
 
-<div class="row g-5 py-8">
             <ul id="frmb-control-box" class="frmb-control">
                 <li class="input-control" data-type="checkbox-group">
                 <label class="form-check-label custom-option-content form-check-input-payment" for="customOptRadio1">
@@ -789,13 +847,69 @@
                   <span>Text Field</span>
                   </label>
                 </li>
-                <button type="button" class="btn btn-primary mt-2" id="add-more" >
-                    + Add more fields
-                </button>
-
             </ul>
 
-            </div>            
+            <div class="container-input" id="optionCheckBox" style="display:none;">
+                <div class="text-dark" style="font-size: 14px;">
+                Check Box :
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="checkBox1" id="checkBox1" value="" />
+                    <label for="checkBox1">Checkbox 1</label>
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="checkBox2" id="checkBox2" value="" />
+                    <label for="checkBox2">Checkbox 2</label>
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="checkBox3" id="checkBox3" value="" />
+                    <label for="checkBox3">Checkbox 3</label>
+                </div>
+            </div>     
+
+            <div class="container-input" id="optionRadioBtn" style="display:none;">
+                <div class="text-dark" style="font-size: 14px;">
+                Radio Button :
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="radioBtn1" id="radioBtn1" value="" />
+                    <label for="radioBtn1">radioBtn 1</label>
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="radioBtn2" id="radioBtn2" value="" />
+                    <label for="radioBtn2">radioBtn 2</label>
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="radioBtn3" id="radioBtn3" value="" />
+                    <label for="radioBtn3">radioBtn 3</label>
+                </div>
+            </div>     
+
+
+            <div class="container-input" id="optionSelect" style="display:none;">
+                <div class="text-dark" style="font-size: 14px;">
+                Select Option :
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="option1" id="option1" value="" />
+                    <label for="option1">Option 1</label>
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="option2" id="option2" value="" />
+                    <label for="option2">Option 2</label>
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="option3" id="option3" value="" />
+                    <label for="option3">Option 3</label>
+                </div>
+            </div>     
+
+
+
+                <button type="button" class="btn btn-primary btn-sm mx-auto mt-2" id="add-more" >
+                    + Add more fields
+                </button>
+       
         </div>
         
 

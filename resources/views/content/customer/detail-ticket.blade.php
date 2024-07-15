@@ -18,14 +18,14 @@
 @section('vendor-script')
     <script src="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
-    <!-- <script src="{{ asset('assets/js/components/app-chat.js') }}"></script> -->
+    <script src="{{ asset('assets/js/components/app-chat.js') }}"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 @endsection
 
 @section('page-script')
     <!-- <script src="{{ asset('assets/libs/bootstrap-editable/bootstrap-editable.min.js') }}"></script> -->
     <script src="{{ asset('assets/js/customer.js') }}"></script>
     <script src="{{ asset('assets/js/customer-detail-email.js') }}"></script>
-    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#ticket-created').text(moment("{{ date('Y-m-d H:i:s', strtotime($model->created_at)) }}").fromNow())
@@ -87,58 +87,6 @@
             });
         });
     </script>
-    <script>
-        socket = io('https://pasma-websocket-q13qeu2vg-elviskudo1s-projects.vercel.app/', {
-            auth: {
-                token: "{{ env('WS_AUTH_TOKEN') }}"
-            }
-        });
-
-        socket.on("connect", () => {
-            console.log("connected");
-        });
-
-        socket.on("disconnect", () => {
-            console.log("disconnected");
-        });
-
-        socket.on('chat message', (msg) => {
-            addMessage(msg);
-        });
-
-        function sendMessage() {
-            const messageInput = document.getElementById('message');
-            const message = {
-                user: user,
-                message: messageInput.value
-            };
-
-            socket.emit('chat message', message);
-            $.post('/messages', message);
-
-            messageInput.value = '';
-        }
-
-        function addMessage(message) {
-            const messages = document.getElementById('messages');
-            const messageElement = document.createElement('li');
-            messageElement.textContent = `${message.user}: ${message.message}`;
-            messages.appendChild(messageElement);
-        }
-
-        document.getElementById('send').addEventListener('click', sendMessage);
-        document.getElementById('message').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        user = 'User' + Math.floor((Math.random() * 100) + 1);
-
-        $.get('/messages').then(response => {
-            response.data.forEach(addMessage);
-        });
-    </script>
 @endsection
 
 @php
@@ -192,20 +140,21 @@
                                     ketika buat ticket, sekaligus buat group, dan semua orang yang di group member itu yang bisa saling chat di chat-history
                                     tambahkan add member dengan modal
                                     -->
-                                    <!-- <div class="chat-history-body bg-white ww">
+                                    <div class="chat-history-body bg-white ww">
                                         <ul class="list-unstyled chat-history">
                                             No chats here
                                         </ul>
-                                    </div> -->
-                                    <ul id="messages" class="mb-4"></ul>
+                                    </div>
+                                    <!-- <ul id="messages" class="mb-4"></ul>
                                     <div class="flex">
                                         <input type="text" id="message" class="border p-2 flex-grow" placeholder="Type your message">
                                         <button id="send" class="bg-blue-500 text-white p-2 ml-2">Send</button>
-                                    </div>
+                                    </div> -->
 
                                     <!-- Chat message form -->
-                                    <!-- <div class="chat-history-footer">
+                                    <div class="chat-history-footer">
                                         <form class="form-send-message d-flex flex-column justify-content-between h-100" action="" method="POST" enctype="multipart/form-data">
+                                            @csrf
                                             <input class=" form-control message-input border-0 me-3 shadow-none bg-transparent" placeholder="Write message">
                                             <div class="message-actions d-flex align-items-center justify-content-between ps-2 pe-3">
                                                 <div class="d-flex align-items-center">
@@ -219,7 +168,7 @@
                                                 </button>
                                             </div>
                                         </form>
-                                    </div> -->
+                                    </div>
                                 </div>
                             </div>
                         </div>

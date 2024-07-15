@@ -12,6 +12,7 @@ use App\Http\Controllers\API\CompanyController;
 use App\Http\Controllers\API\LeadController;
 use App\Http\Controllers\API\TaskController;
 use App\Http\Controllers\API\ClientController;
+use App\Http\Controllers\API\DealerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,6 +88,8 @@ Route::get('/get-members', [TicketController::class, 'getMembers']);
 Route::get('/is_lead/{id}', [TicketController::class, 'isLead']);
 Route::get('/clients', [ClientController::class, 'get']);
 
+Route::get('/is_dealer/{id}', [DealerController::class, 'isDealer']);
+
 Route::post('/companies/{id}/change', [CompanyController::class, 'change']);
 Route::post('/leads/{id}/change', [LeadController::class, 'change']);
 Route::post('/tasks/{id}/change', [TaskController::class, 'change']);
@@ -94,6 +97,11 @@ Route::post('/tasks/{id}/change', [TaskController::class, 'change']);
 Route::post('/send-whatsapp', [Chat::class, 'sendWhatsAppMessage']);
 Route::post('/receive-chat', [Chat::class, 'receiveWhatsAppMessage']);
 Route::post('/add-contact', [Chat::class, 'addContact']);
+Route::get('/get-chats/{phone}', function ($phone) {
+  return \App\Models\Chat::where('from', $phone)
+    ->orWhere('to', $phone)
+    ->get();
+});
 
 Route::get('/internal-notes/{lead}', 'App\Http\Controllers\InternalNoteController@getInternalNotesByLead')->name(
   'getInternalNotesByLead'

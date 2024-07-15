@@ -28,4 +28,19 @@ class Profile extends Model
     'client_id',
     'job_title',
   ];
+
+  public function assignedLead()
+  {
+    return $this->hasOne(AssignedLead::class, 'profile_id', 'id');
+  }
+
+  public function dealer()
+  {
+    return $this->belongsTo(Dealer::class, 'dealer_id', 'id');
+  }
+
+  public function client()
+  {
+    return $this->belongsTo(Client::class, 'client_id', 'id');
+  }
 }

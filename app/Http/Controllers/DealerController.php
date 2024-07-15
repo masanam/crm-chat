@@ -18,8 +18,13 @@ class DealerController extends Controller
       return DataTables::of($data)
         ->addIndexColumn()
         ->addColumn('action', function ($row) {
-          $actionBtn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="editRecord btn btn-primary btn-sm">Edit</a> 
-              <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="deleteRecord btn btn-danger btn-sm">Delete</a>';
+          $actionBtn =
+            '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' .
+            $row->id .
+            '" data-original-title="Edit" class="editRecord btn btn-primary btn-sm">Edit</a> 
+              <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' .
+            $row->id .
+            '" data-original-title="Delete" class="deleteRecord btn btn-danger btn-sm">Delete</a>';
           return $actionBtn;
         })
         ->rawColumns(['action'])
@@ -52,11 +57,11 @@ class DealerController extends Controller
   {
     Dealer::updateOrCreate(
       [
-        'id' => $request->product_id
+        'id' => $request->product_id,
       ],
       [
         'name' => $request->name,
-        'detail' => $request->detail
+        'detail' => $request->detail,
       ]
     );
     return response()->json(['success' => 'Data saved successfully.']);
@@ -65,9 +70,16 @@ class DealerController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show(Dealer $dealer)
+  public function show(Response $request, $id)
   {
-    //
+    $model = DB::table('profiles')
+      ->join('assigned_leads', 'assigned_leads.profile_id', 'profiles.id')
+      ->join('leads', 'leads.id', 'assigned_leads.lead_id')
+      ->join('dealers', 'dealers.id', 'profiles.dealer_id')
+      ->where('profiles.id', $id)
+      ->get();
+
+    return response()->json($model);
   }
 
   /**

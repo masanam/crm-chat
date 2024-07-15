@@ -1,3 +1,6 @@
+@if($model->lead == null || empty($model->lead))
+    @php redirect('/tickets') @endphp
+@endif
 <div class="sidebar-card d-flex flex-column">
     <div class="d-flex flex-column gap-3">
         <div class="d-flex flex-column justify-content-center align-items-center gap-2">

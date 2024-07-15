@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
         validate: true,
         threshold: 120
       });
-    }    
+    }
 
     // flow open/close picker date
     var flatpickrDate = document.querySelector("#flatpickr-date");
@@ -196,10 +196,67 @@ document.addEventListener('DOMContentLoaded', function () {
       const minutes = now.getMinutes().toString().padStart(2, '0');
       return `${hours}:${minutes}`;
     }
+
+    const sendMessage = async (type, id, message) => {
+      console.log('message', message)
+
+      const response = await axios.get(`${baseUrl}api/is_dealer/${id}`)
+      console.log('response', response.data)
+      const data = response.data
+
+      const url = baseUrl + 'api/send-whatsapp'
+      console.log('url', url)
+
+      const body = JSON.stringify({
+        phone: '+628567638156', // replace with the actual phone number
+        // phone: '+6281217071702', // replace with the actual phone number
+        message: message,
+        user_id: id,
+        type: type,
+        lead_id: data.assigned_lead?.lead_id,
+        dealer_id: data.dealer_id
+      })
+
+      console.log('body', body)
+
+      await axios.post(url, body, {
+        // fetch('https://crm.pasima.co/api/send-whatsapp', {
+        // method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+        .then(response => {
+          if (!response.status) {
+            throw new Error('Network response was not ok');
+          }
+
+          console.log('response', response.data)
+          return response.data;
+        })
+        .then(data => {
+          // Handle the response data as needed
+          console.log(data);
+        })
+        .catch(error => {
+          // Handle errors
+          console.error('There was a problem with the fetch operation:', error);
+        });
+    }
+
     // Send Message
     formSendMessage?.addEventListener('submit', e => {
       e.preventDefault();
-      var userId = getQueryParam('user_id');
+      var userId = user.id;
+      console.log('user di submit', user)
+
+      const user_chat = JSON.parse(user)
+      console.log('user', user_chat)
+      console.log('user.id', user_chat.profile_id)
+
+      // var userId = getQueryParam('user_id');
+      // console.log('userId', userId)
+
       if (messageInput.value) {
         // Create a div and add a class
         // let renderMsg = document.createElement('div');
@@ -227,32 +284,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Append the new message to the .chat-history
         document.querySelector('.chat-history').appendChild(newMessage);
+
         // Make a POST request to the API
-        fetch('https://crm.pasima.co/api/send-whatsapp', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            phone: '+6281217071702', // replace with the actual phone number
-            message: messageInput.value,
-            user_id: userID.value
-          })
-        })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then(data => {
-            // Handle the response data as needed
-            console.log(data);
-          })
-          .catch(error => {
-            // Handle errors
-            console.error('There was a problem with the fetch operation:', error);
-          });
+        sendMessage('template', user_chat.profile_id, messageInput.value)
+
         messageInput.value = '';
         scrollToBottom();
       }
@@ -355,7 +390,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 message: internalMessageInput.value // Replace with the desired message
               })
             });
-  
+
             if (response.ok) {
               console.log('Data posted successfully!');
               const responseData = await response.json();
@@ -363,7 +398,7 @@ document.addEventListener('DOMContentLoaded', function () {
               const message = responseData.message;
               var newLi = document.createElement('li');
               newLi.className = 'timeline-item pb-4 timeline-item-info border-left-dashed';
-  
+
               // Populate the li element with data from the API response
               newLi.innerHTML = `
                         <span class="timeline-indicator-advanced timeline-indicator-info">
@@ -409,11 +444,13 @@ document.addEventListener('DOMContentLoaded', function () {
         minute: 'numeric'
       };
       // Ganti dengan endpoint yang sesuai
-      const endpoint = 'https://crm.pasima.co/api/get-chats/+6281217071702';
+
+      const endpoint = baseUrl + 'api/get-chats/62811309299';
+      // const endpoint = 'https://crm.pasima.co/api/get-chats/+6281217071702';
 
       // Lakukan request ke endpoint
-      fetch(endpoint)
-        .then(response => response.json())
+      await axios.get(endpoint)
+        .then(response => response.data)
         .then(data => {
           document.querySelector('.chat-history').innerHTML = '';
           // Loop melalui setiap pesan
@@ -474,6 +511,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             </div>
           `;
+              console.log('newMessage', newMessage)
             }
 
             document.querySelector('.chat-history').append(newMessage);

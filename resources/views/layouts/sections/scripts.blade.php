@@ -5,7 +5,7 @@
   console.log(appUrl);
   var waFrom = "{{env('TWILIO_WHATSAPP_FROM')}}";
   console.log(waFrom);
-  var user = @json(auth()->user());
+  var user = '@json(auth()->user())';
   console.log('user data:', user);
 </script>
 <script src="{{ asset(mix('assets/vendor/libs/popper/popper.js')) }}"></script>
@@ -26,8 +26,8 @@
   }
 </script>
 
+@if(Auth::check())
 <script>
-  @if (Auth::check())
   var subscription = true;
   var quota = true;
   if(window.location.pathname.indexOf('app/chat') != -1){
@@ -46,8 +46,8 @@
       </div>
     `);
   }
-  @endif
 </script>
+@endif
 
 <script>
   var waTo = '';
@@ -337,7 +337,11 @@
 
 <script>
   // let socket = new WebSocket('ws://api-crm.pasima.co:8899'); // Ganti dengan alamat WebSocket Anda
-  let socket = new WebSocket('{{env('WEB_SOCKET')}}');
+  const socket_url = '{{ env("WEB_SOCKET") }}'
+  console.log('socket_url', socket_url)
+
+  let socket = new WebSocket('{{env("WEB_SOCKET")}}');
+  console.log('socket', socket)
 
   socket.onopen = function(event) {
       console.log('WebSocket connected');

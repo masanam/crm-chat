@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Stripe;
+use Session;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Mail;
@@ -77,16 +78,11 @@ class StripePaymentController extends Controller
 
         Mail::to($email)->send(new RegisterEmail($userData));
 
-
-        // auth()->login($user);
-        // $referrer = $data['by'];
-
     //   $profile = Profile::create([
     //     'first_name' => strtolower($data['first_name']),
     //     'last_name' => ucwords(strtolower($data['last_name'])),
     //     'email' => $email,
     //     'job_title' => $data['job'],
-
     // ]);
 
     //   $lastInsertedId= $profile ->id;
@@ -99,12 +95,7 @@ class StripePaymentController extends Controller
     
     $user->sendEmailVerificationNotification();
 
-// dd($lastInsertedId);
-      // $user->sendEmailVerificationNotification();
-
         Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-        // Stripe\Stripe::setApiKey(config('services.stripe.secret'));
-        // Stripe\Customer::create();
         // Create a new Stripe customer.
         $customer = Stripe\Customer::create(array(
             "address" => [
@@ -119,11 +110,12 @@ class StripePaymentController extends Controller
             "source" => $request->stripeToken
         ));
 
-        Stripe\Charge::create([
-            "amount" => 10 * 100,
+        $amount = 1 * 100;
+        $charge = Stripe\Charge::create([
+            "amount" => $amount,
             "currency" => "usd",
             "customer" => $customer->id,
-            "description" => "Test payment from Masanam.",
+            "description" => "Test payment from Pasima.",
             "shipping" => [
                 "name" => $request->firstName.' '.$request->lastName,
                 "address" => [
@@ -136,7 +128,15 @@ class StripePaymentController extends Controller
             ]
         ]);
 
-        return back()
+        $refund = Stripe\Refund::create([
+            "charge" => $charge->id,
+            "amount" => $amount,
+            'reason' => 'requested_by_customer'
+        ]);
+               
+       $balanceTransaction = Stripe\BalanceTransaction::retrieve($refund->balance_transaction);
+
+       return back()
             ->with('success', 'Payment successful!');
     }
 

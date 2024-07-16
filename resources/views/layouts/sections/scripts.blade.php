@@ -1,13 +1,5 @@
 <!-- BEGIN: Vendor JS-->
 <script src="{{ asset(mix('assets/vendor/libs/jquery/jquery.js')) }}"></script>
-<script>
-  var appUrl = "{{env('APP_URL')}}";
-  console.log(appUrl);
-  var waFrom = "{{env('TWILIO_WHATSAPP_FROM')}}";
-  console.log(waFrom);
-  var user = '@json(auth()->user())';
-  console.log('user data:', user);
-</script>
 <script src="{{ asset(mix('assets/vendor/libs/popper/popper.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/js/bootstrap.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/libs/node-waves/node-waves.js')) }}"></script>
@@ -15,6 +7,39 @@
 <script src="{{ asset(mix('assets/vendor/libs/hammer/hammer.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/libs/typeahead-js/typeahead.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/js/menu.js')) }}"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  var appUrl = "{{env('APP_URL')}}";
+  console.log(appUrl);
+  var waFrom = "{{env('TWILIO_WHATSAPP_FROM')}}";
+  console.log(waFrom);
+  var user = '@json(auth()->user())';
+  console.log('user data:', user);
+
+  // get profile
+  const getProfile = async (user) => {
+    try {
+      // Parse user object (assuming it's a string)
+      const trueUser = JSON.parse(user);
+      console.log('user.profile_id:', trueUser.profile_id);
+
+      // Build API URL with profile ID
+      const response = await axios.get(`${baseUrl}api/is_dealer/${trueUser.profile_id}`)
+      console.log('response', response.data)
+      const data = response.data
+      console.log('data', data)
+
+      return data
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+      return null; // Return null in case of errors
+    }
+  }
+
+  // Assuming you have the user data in a variable named 'user'
+  const profileData = getProfile(user)
+  console.log('profileData', profileData.dealer)
+</script>
 @yield('vendor-script')
 <!-- END: Page Vendor JS-->
 <!-- BEGIN: Theme JS-->
@@ -88,13 +113,13 @@
 <script>
   // Konfigurasi Firebase Anda
   var firebaseConfig = {
-    apiKey: "AIzaSyDKk_rtTZuxflUvW-3IHyns6piV6imqgm4",
-    authDomain: "pasima-crm-d1979.firebaseapp.com",
-    databaseURL: "https://pasima-crm-d1979-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "pasima-crm-d1979",
-    storageBucket: "pasima-crm-d1979.appspot.com",
-    messagingSenderId: "669364208033",
-    appId: "1:669364208033:web:7276c825080f3089234be0"
+    apiKey: '{{ env("FIREBASE_API_KEY") }}',
+    authDomain: '{{ env("FIREBASE_AUTH_DOMAIN") }}',
+    databaseURL: '{{ env("FIREBASE_DB_URL") }}',
+    projectId: '{{ env("FIREBASE_PROJECT_ID") }}',
+    storageBucket: '{{ env("FIREBASE_STORAGE_BUCKET") }}',
+    messagingSenderId: '{{ env("FIREBASE_MESSAGING_SENDER_ID") }}',
+    appId: '{{ env("FIREBASE_APP_ID") }}',
   };
 
   // Inisialisasi Firebase
@@ -363,7 +388,7 @@
             <div class="d-flex">
                 <div class="flex-shrink-0 me-3">
                     <div class="avatar">
-                        <img src="http://localhost/pasima-crm/public/assets/img/avatars/1.png" alt="" class="h-auto rounded-circle">
+                        <img src="${'baseUrl'}assets/img/avatars/1.png" alt="" class="h-auto rounded-circle">
                     </div>
                 </div>
                 <div class="flex-grow-1">

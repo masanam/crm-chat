@@ -4,6 +4,8 @@
 
 'use strict';
 
+// const moment = require("moment/moment");
+
 document.addEventListener('DOMContentLoaded', function () {
   (async function () {
     await fetchChatData();
@@ -189,6 +191,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var formattedTime = new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
       return formattedTime;
     }
+
     // Function to get the current time in the desired format
     function getCurrentTime() {
       const now = new Date();
@@ -208,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('url', url)
 
       const body = JSON.stringify({
-        phone: '+628567638156', // replace with the actual phone number
+        phone: data.dealer?.business_phone, // replace with the actual phone number
         // phone: '+6281217071702', // replace with the actual phone number
         message: message,
         user_id: id,
@@ -247,6 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Send Message
     formSendMessage?.addEventListener('submit', e => {
       e.preventDefault();
+
       var userId = user.id;
       console.log('user di submit', user)
 
@@ -434,6 +438,24 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
 
+    function getUriSegment(segmentIndex) {
+      // Get the URL pathname (excluding query string)
+      const pathname = window.location.pathname.split('?')[0];
+      console.log('pathname', pathname)
+
+      // Split the pathname into segments using a forward slash (/) delimiter
+      const segments = pathname.split('/');
+      console.log('segments', segments)
+
+      // Check if the requested segment index is within bounds
+      if (segmentIndex < 0 || segmentIndex >= segments.length) {
+        return null; // Return null if the segment doesn't exist
+      }
+
+      // Return the requested URI segment
+      return segments[segmentIndex];
+    }
+
     async function fetchChatData() {
       console.log('GET CHAT');
       const dateFormat = {
@@ -443,9 +465,14 @@ document.addEventListener('DOMContentLoaded', function () {
         hour: 'numeric',
         minute: 'numeric'
       };
-      // Ganti dengan endpoint yang sesuai
 
-      const endpoint = baseUrl + 'api/get-chats/62811309299';
+      // Ganti dengan endpoint yang sesuai
+      console.log('profileData', profileData)
+      console.log('profileData', profileData.dealer)
+      console.log('profileData', profileData.dealer?.business_phone)
+      console.log('user', user)
+      const ticketId = parseInt(getUriSegment(2));
+      const endpoint = baseUrl + `api/get-chats-ticket/${profile.dealer.business_phone}/${ticketId}`; // to sebelah kanan
       // const endpoint = 'https://crm.pasima.co/api/get-chats/+6281217071702';
 
       // Lakukan request ke endpoint
@@ -453,6 +480,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.data)
         .then(data => {
           document.querySelector('.chat-history').innerHTML = '';
+          console.log('data endpoint', data)
           // Loop melalui setiap pesan
           data.forEach(message => {
             // fungsi temporary
@@ -473,7 +501,8 @@ document.addEventListener('DOMContentLoaded', function () {
             // Buat elemen li baru
             const newMessage = document.createElement('li');
             // Check the 'from' value to determine the message position
-            if (message.from === '+14155238886') {
+            if (message.from === '6285218056736') {
+              // if (message.from === '+14155238886') {
               newMessage.className = 'chat-message chat-message-right';
               newMessage.innerHTML = `
             <div class="d-flex align-items-end overflow-hidden">
@@ -482,7 +511,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <p class="mb-0">${message.message}</p>
                     </div>
                     <div class="text-end text-muted mt-1">
-                      <small>${formatDate(message.created_at, timeFormat)}</small>
+                      <small>${moment(message.created_at).fromNow()}</small>
                       <i class='ti ti-checks ti-xs me-1'></i>
                     </div>
                     <div class="text-end text-muted mt-1">
@@ -506,7 +535,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <p class="mb-0">${message.message}</p>
                     </div>
                     <div class="text-muted mt-1">
-                        <small>${formatDate(message.created_at, timeFormat)}</small>
+                        <small>${moment(message.created_at).fromNow()}</small>
                     </div>
                 </div>
             </div>

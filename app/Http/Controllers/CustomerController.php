@@ -196,6 +196,10 @@ class CustomerController extends Controller
       ->groupBy('created_by')
       ->get();
 
+    // return view(
+    //   'content.customer.vue-detail-ticket',
+    //   compact('model', 'statuses', 'chats', 'group_chats', 'contacts', 'profiles')
+    // );
     return view(
       'content.customer.detail-ticket',
       compact('model', 'statuses', 'chats', 'group_chats', 'contacts', 'profiles')

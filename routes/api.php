@@ -102,6 +102,12 @@ Route::get('/get-chats/{phone}', function ($phone) {
     ->orWhere('to', $phone)
     ->get();
 });
+Route::get('/get-chats-ticket/{phone}/{id}', function ($phone) {
+  return \App\Models\Chat::where('ticket_id')
+    ->where('from', $phone)
+    ->orWhere('to', $phone)
+    ->get();
+});
 
 Route::get('/internal-notes/{lead}', 'App\Http\Controllers\InternalNoteController@getInternalNotesByLead')->name(
   'getInternalNotesByLead'

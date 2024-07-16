@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
 
 use App\Models\Task;
+use App\Models\Profile;
 use App\Models\TeamMember;
+use App\Models\Chat;
 
 class TicketController extends Controller
 {

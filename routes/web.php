@@ -182,7 +182,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 Route::get('/test123', [Chat::class, 'test']);
 
 Route::get('/clear', function () {
-    $clearcache = Artisan::call('config:clear');
+    $clearcache = Artisan::call('optimize:clear');
     echo "Cache cleared<br>";
 
 });

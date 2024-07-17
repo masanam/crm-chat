@@ -33,7 +33,6 @@ package-lock.log
 /public/mix-manifest.json
 # But not these files...
 !/public/assets/*
-/public/assets/vendor
 
 # Package Lock files
 /package-lock.json

@@ -216,19 +216,12 @@
 
 
       function printErrorMsg (msg) {
-
          $(".print-error-msg").find("ul").html('');
-
          $(".print-error-msg").css('display','block');
-
          $(".print-success-msg").css('display','none');
-
          $.each( msg, function( key, value ) {
-
             $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
-
          });
-
       }
 
     });  
@@ -787,8 +780,13 @@
                             $i++;
                             @endphp
                             <tr id="row{{ $i }}" class="dynamic-added">
-                                <td><input type="text" name="label[]" placeholder="" class="form-control label_list" value="{{ $label }}" /></td>
-                                <td><input type="text" name="name[]" placeholder="" class="form-control name_list" value="{{ $name }}"/></td>
+                                <td>
+                                <div class="container-input">
+                                    <input type="text" name="label[]" placeholder="" id="label{{ $i }}" class="form-control label_list" value="{{ $label }}" />
+                                </td>
+                                <td>
+                                    <input type="text" name="name[]" placeholder="" id="name{{ $i }}" class="form-control name_list" value="{{ $name }}"/>
+                                </td>
                                 <td width="5%"><button type="button" name="remove" id="{{ $i }}" class="btn btn-danger btn-sm btn_remove">X</button></td>
                             </tr>
                             @endforeach

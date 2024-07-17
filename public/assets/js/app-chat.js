@@ -5,12 +5,7 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', function () {
-  (async function () {
-    await fetchChatData();
-    fetchInternalNotes();
-
-    // Panggil fungsi fetchChatData setiap 7 detik
-    setInterval(fetchChatData, 7000);
+  (function () {
     const chatContactsBody = document.querySelector('.app-chat-contacts .sidebar-body'),
       chatContactListItems = [].slice.call(
         document.querySelectorAll('.chat-contact-list-item:not(.chat-contact-list-item-title)')
@@ -21,11 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
       chatUserStatus = [].slice.call(document.querySelectorAll(".form-check-input[name='chat-user-status']")),
       chatSidebarLeftUserAbout = $('.chat-sidebar-left-user-about'),
       formSendMessage = document.querySelector('.form-send-message'),
-      formSendInternalMessage = document.querySelector('.form-send-internal-message'),
-      internalNoteHistory = document.querySelector('.internal-notes-history'),
       messageInput = document.querySelector('.message-input'),
-      userID = document.querySelector('#USERID'),
-      internalMessageInput = document.querySelector('.internal-message-input'),
       searchInput = document.querySelector('.chat-search-input'),
       speechToText = $('.speech-to-text'), // ! jQuery dependency for speech to text
       userStatusObj = {
@@ -34,18 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
         away: 'avatar-away',
         busy: 'avatar-busy'
       };
-
-    scrollToBottom();
-    const dateFormat = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    };
-    const timeFormat = {
-      hour: 'numeric',
-      minute: 'numeric'
-    };
 
     // Initialize PerfectScrollbar
     // ------------------------------
@@ -67,24 +46,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Sidebar left scrollbar
-    // if (chatSidebarLeftBody) {
-    //   new PerfectScrollbar(chatSidebarLeftBody, {
-    //     wheelPropagation: false,
-    //     suppressScrollX: true
-    //   });
-    // }
+    if (chatSidebarLeftBody) {
+      new PerfectScrollbar(chatSidebarLeftBody, {
+        wheelPropagation: false,
+        suppressScrollX: true
+      });
+    }
 
-    // // Sidebar right scrollbar
-    // if (chatSidebarRightBody) {
-    //   new PerfectScrollbar(chatSidebarRightBody, {
-    //     wheelPropagation: false,
-    //     suppressScrollX: true
-    //   });
-    // }
+    // Sidebar right scrollbar
+    if (chatSidebarRightBody) {
+      new PerfectScrollbar(chatSidebarRightBody, {
+        wheelPropagation: false,
+        suppressScrollX: true
+      });
+    }
 
     // Scroll to bottom function
     function scrollToBottom() {
-      chatHistoryBody?.scrollTo(0, chatHistoryBody.scrollHeight);
+      chatHistoryBody.scrollTo(0, chatHistoryBody.scrollHeight);
     }
     scrollToBottom();
 
@@ -97,14 +76,6 @@ document.addEventListener('DOMContentLoaded', function () {
         separator: '/',
         validate: true,
         threshold: 120
-      });
-    }    
-
-    // flow open/close picker date
-    var flatpickrDate = document.querySelector("#flatpickr-date");
-    if (flatpickrDate) {
-      flatpickrDate.flatpickr({
-        monthSelectorType: 'static'
       });
     }
 
@@ -129,10 +100,10 @@ document.addEventListener('DOMContentLoaded', function () {
       chatContactListItem.addEventListener('click', e => {
         // Remove active class from chat contact list item
         chatContactListItems.forEach(chatContactListItem => {
-          chatContactListItem.classList.remove('highlight');
+          chatContactListItem.classList.remove('active');
         });
         // Add active class to current chat contact list item
-        e.currentTarget.classList.add('highlight');
+        e.currentTarget.classList.add('active');
       });
     });
 
@@ -184,86 +155,26 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    function formatDate(dateString, timeOptions) {
-      var options = timeOptions;
-      var formattedTime = new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
-      return formattedTime;
-    }
-    // Function to get the current time in the desired format
-    function getCurrentTime() {
-      const now = new Date();
-      const hours = now.getHours().toString().padStart(2, '0');
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      return `${hours}:${minutes}`;
-    }
     // Send Message
-    formSendMessage?.addEventListener('submit', e => {
+    formSendMessage.addEventListener('submit', e => {
       e.preventDefault();
-      var userId = getQueryParam('user_id');
       if (messageInput.value) {
         // Create a div and add a class
-        // let renderMsg = document.createElement('div');
-        // renderMsg.className = 'chat-message-text mt-2';
-        // renderMsg.innerHTML = '<p class="mb-0 text-break">' + messageInput.value + '</p>';
-        // document.querySelector('li:last-child .chat-message-wrapper').appendChild(renderMsg);
-        let newMessage = document.createElement('li');
-        newMessage.className = 'chat-message chat-message-right';
-        newMessage.innerHTML = `
-          <div class="d-flex overflow-hidden">
-              <div class="chat-message-wrapper flex-grow-1">
-                  <div class="chat-message-text">
-                      <p class="mb-0">${messageInput.value}</p>
-                  </div>
-                  <div class="text-end text-muted mt-1">
-                      <i class='ti ti-checks ti-xs me-1 text-muted'></i>
-                      <small>${getCurrentTime()}</small>
-                  </div>
-              </div>
-              <div class="user-avatar flex-shrink-0 ">
-                    <div class="avatar"><span class="avatar-initial rounded-8 text-dark fw-bolder sender-avatar">D</span></div>
-                </div>
-          </div>
-        `;
-
-        // Append the new message to the .chat-history
-        document.querySelector('.chat-history').appendChild(newMessage);
-        // Make a POST request to the API
-        fetch('https://crm.pasima.co/api/send-whatsapp', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            phone: '+6281217071702', // replace with the actual phone number
-            message: messageInput.value,
-            user_id: userID.value
-          })
-        })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then(data => {
-            // Handle the response data as needed
-            console.log(data);
-          })
-          .catch(error => {
-            // Handle errors
-            console.error('There was a problem with the fetch operation:', error);
-          });
+        let renderMsg = document.createElement('div');
+        renderMsg.className = 'chat-message-text mt-2';
+        renderMsg.innerHTML = '<p class="mb-0 text-break">' + messageInput.value + '</p>';
+        document.querySelector('li:last-child .chat-message-wrapper').appendChild(renderMsg);
         messageInput.value = '';
         scrollToBottom();
       }
     });
 
     // on click of chatHistoryHeaderMenu, Remove data-overlay attribute from chatSidebarLeftClose to resolve overlay overlapping issue for two sidebar
-    // let chatHistoryHeaderMenu = document.querySelector(".chat-history-header [data-target='#app-chat-contacts']"),
-    //   chatSidebarLeftClose = document.querySelector('.app-chat-sidebar-left .close-sidebar');
-    // chatHistoryHeaderMenu.addEventListener('click', e => {
-    //   chatSidebarLeftClose.removeAttribute('data-overlay');
-    // });
+    let chatHistoryHeaderMenu = document.querySelector(".chat-history-header [data-target='#app-chat-contacts']"),
+      chatSidebarLeftClose = document.querySelector('.app-chat-sidebar-left .close-sidebar');
+    chatHistoryHeaderMenu.addEventListener('click', e => {
+      chatSidebarLeftClose.removeAttribute('data-overlay');
+    });
     // }
 
     // Speech To Text
@@ -292,201 +203,6 @@ document.addEventListener('DOMContentLoaded', function () {
           };
         });
       }
-    }
-
-    async function fetchInternalNotes() {
-      try {
-        // Fetch data from the API
-        const response = await fetch('https://crm.pasima.co/api/internal-notes/1');
-        const apiResponse = await response.json();
-
-        // Iterate over each item in the API response and append a timeline item
-        apiResponse.forEach(item => {
-          // Create a new li element
-          var newLi = document.createElement('li');
-          newLi.className = 'timeline-item pb-4 timeline-item-info border-left-dashed';
-
-          // Populate the li element with data from the API response
-          newLi.innerHTML = `
-                  <span class="timeline-indicator-advanced timeline-indicator-info">
-                      <i class="ti ti-user-circle rounded-circle"></i>
-                  </span>
-                  <div class="timeline-event pb-3">
-                      <div class="timeline-header">
-                          <span class="text-muted">${formatDate(item.created_at, dateFormat)}</span>
-                      </div>
-                      <div class="timeline-header">
-                          <span class="text-muted">${formatDate(item.created_at, timeFormat)}</span>
-                      </div>
-                      <p>${item.message}</p>
-                      <hr />
-                      <div class="d-flex justify-content-between flex-wrap gap-2">
-                          <div class="d-flex flex-wrap">
-                              <div>
-                                  <p class="mb-0">Dandi</p>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              `;
-
-          // Append the new li element to the element with class internalNoteHistory
-          internalNoteHistory?.appendChild(newLi);
-        });
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
-
-    // Send Message
-    if (formSendInternalMessage) {
-      formSendInternalMessage.addEventListener('submit', async e => {
-        e.preventDefault();
-        if (internalMessageInput.value) {
-          try {
-            const response = await fetch('https://crm.pasima.co/api/internal-notes', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                user_id: 1, // Replace with the desired user_id
-                lead_id: 1, // Replace with the desired lead_id
-                message: internalMessageInput.value // Replace with the desired message
-              })
-            });
-  
-            if (response.ok) {
-              console.log('Data posted successfully!');
-              const responseData = await response.json();
-              const created_at = responseData.created_at;
-              const message = responseData.message;
-              var newLi = document.createElement('li');
-              newLi.className = 'timeline-item pb-4 timeline-item-info border-left-dashed';
-  
-              // Populate the li element with data from the API response
-              newLi.innerHTML = `
-                        <span class="timeline-indicator-advanced timeline-indicator-info">
-                            <i class="ti ti-user-circle rounded-circle"></i>
-                        </span>
-                        <div class="timeline-event pb-3">
-                            <div class="timeline-header">
-                                <span class="text-muted">${formatDate(created_at, dateFormat)}</span>
-                            </div>
-                            <div class="timeline-header">
-                                <span class="text-muted">${formatDate(created_at, timeFormat)}</span>
-                            </div>
-                            <p>${message}</p>
-                            <hr />
-                            <div class="d-flex justify-content-between flex-wrap gap-2">
-                                <div class="d-flex flex-wrap">
-                                    <div>
-                                        <p class="mb-0">Dandi</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-              internalNoteHistory?.appendChild(newLi);
-              internalMessageInput.value = '';
-            } else {
-              console.error('Failed to post data:', response.statusText);
-            }
-          } catch (error) {
-            console.error('Error posting data:', error);
-          }
-        }
-      });
-    }
-
-    async function fetchChatData() {
-      console.log('GET CHAT');
-      const dateFormat = {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric'
-      };
-      // Ganti dengan endpoint yang sesuai
-      const endpoint = 'https://crm.pasima.co/api/get-chats/+6281217071702';
-
-      // Lakukan request ke endpoint
-      fetch(endpoint)
-        .then(response => response.json())
-        .then(data => {
-          document.querySelector('.chat-history').innerHTML = '';
-          // Loop melalui setiap pesan
-          data.forEach(message => {
-            // fungsi temporary
-            var sender_id = message.user_id;
-            var sender_name = '';
-            switch (sender_id) {
-              case 1:
-                sender_name = 'Admin';
-                break;
-              case 2:
-                sender_name = 'Dandi';
-                break;
-              default:
-                break;
-            }
-            var initials = sender_name.match(/\b\w/g) || [];
-            initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
-            // Buat elemen li baru
-            const newMessage = document.createElement('li');
-            // Check the 'from' value to determine the message position
-            if (message.from === '+14155238886') {
-              newMessage.className = 'chat-message chat-message-right';
-              newMessage.innerHTML = `
-            <div class="d-flex align-items-end overflow-hidden">
-                <div class="chat-message-wrapper flex-grow-1 w-50">
-                    <div class="chat-message-text">
-                        <p class="mb-0">${message.message}</p>
-                    </div>
-                    <div class="text-end text-muted mt-1">
-                      <small>${formatDate(message.created_at, timeFormat)}</small>
-                      <i class='ti ti-checks ti-xs me-1'></i>
-                    </div>
-                    <div class="text-end text-muted mt-1">
-                      <small class="sender-message">${sender_name}</small>
-                    </div>
-                </div>
-                <div class="user-avatar flex-shrink-0 ">
-                    <div class="avatar"><span class="avatar-initial rounded-8 text-dark fw-bolder sender-avatar">${initials}</span></div>
-                </div>
-            </div>
-          `;
-            } else {
-              newMessage.className = 'chat-message';
-              newMessage.innerHTML = `
-            <div class="d-flex align-items-end overflow-hidden">
-                <div class="user-avatar flex-shrink-0 me-2">
-                    <div class="avatar"><span class="avatar-initial rounded-8 bg-label-success text-dark fw-bolder">AR</span></div>
-                </div>
-                <div class="chat-message-wrapper flex-grow-1">
-                    <div class="chat-message-text">
-                        <p class="mb-0">${message.message}</p>
-                    </div>
-                    <div class="text-muted mt-1">
-                        <small>${formatDate(message.created_at, timeFormat)}</small>
-                    </div>
-                </div>
-            </div>
-          `;
-            }
-
-            document.querySelector('.chat-history').append(newMessage);
-            // Tambahkan pesan ke dalam chat room
-          });
-        })
-        .catch(error => console.error('Error fetching data:', error));
-    }
-
-    //this is temporary function this will be deleted after using
-    function getQueryParam(user_id) {
-      var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
-      return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
     }
   })();
 });

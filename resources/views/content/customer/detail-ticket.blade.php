@@ -149,9 +149,9 @@
     <div class="row">
         <div class="">
             <div class="app-chat customer-detail-email overflow-hidden">
-                <div class="row g-0">
+                <div class="row">
                     <div class="d-flex row justify-content-between">
-                        <div class="col-3 p2">
+                        <div class="col-3">
                             <!-- Customer info -->
                             <x-sidebar-right-info-chat isUsingHeader="{{ false }}" sidebarClass="show sidebar-customer-info" sidebarBodyClass="mt-2">
                                 <x-client-ticket :taskId="$model->id"></x-client-ticket>
@@ -192,11 +192,55 @@
                                     ketika buat ticket, sekaligus buat group, dan semua orang yang di group member itu yang bisa saling chat di chat-history
                                     tambahkan add member dengan modal
                                     -->
-                                    <div class="chat-history-body bg-white" style="height: calc(100vh - 18.5rem);">
+                                    <!-- <div class="chat-history-body bg-white" style="height: calc(100vh - 18.5rem);">
                                         <ul class="list-unstyled chat-history">
                                             No chats here
                                         </ul>
-                                    </div>
+                                    </div> -->
+                                            <!-- Chats -->
+        <ul class="list-unstyled chat-contact-list" id="chat-list">
+          <li class="chat-contact-list-item chat-list-item-0 d-none">
+            <h6 class="text-muted mb-0">No Chats Found</h6>
+          </li>
+          <li class="chat-contact-list-item">
+            <a class="d-flex align-items-center">
+              <div class="flex-shrink-0 avatar avatar-online">
+                <img src="{{asset('assets/img/avatars/13.png')}}" alt="Avatar" class="rounded-circle">
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="chat-contact-name text-truncate m-0">Waldemar Mannering</h6>
+                <p class="chat-contact-status text-muted text-truncate mb-0">Refer friends. Get rewards.</p>
+              </div>
+              <small class="text-muted mb-auto">5 Minutes</small>
+            </a>
+          </li>
+          <li class="chat-contact-list-item active">
+            <a class="d-flex align-items-center">
+              <div class="flex-shrink-0 avatar avatar-offline">
+                <img src="{{asset('assets/img/avatars/2.png')}}" alt="Avatar" class="rounded-circle">
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="chat-contact-name text-truncate m-0">Felecia Rower</h6>
+                <p class="chat-contact-status text-muted text-truncate mb-0">I will purchase it for sure. 👍</p>
+              </div>
+              <small class="text-muted mb-auto">30 Minutes</small>
+            </a>
+          </li>
+          <li class="chat-contact-list-item">
+            <a class="d-flex align-items-center">
+              <div class="flex-shrink-0 avatar avatar-busy">
+                <span class="avatar-initial rounded-circle bg-label-success">CM</span>
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="chat-contact-name text-truncate m-0">Calvin Moore</h6>
+                <p class="chat-contact-status text-muted text-truncate mb-0">If it takes long you can mail inbox user</p>
+              </div>
+              <small class="text-muted mb-auto">1 Day</small>
+            </a>
+          </li>
+        </ul>
+        <!-- Contacts -->
+
                                     {{-- <ul id="messages" class="mb-4"></ul>
                                     <div class="flex">
                                         <input type="text" id="message" class="border p-2 flex-grow" placeholder="Type your message">
@@ -224,7 +268,7 @@
                             </div>
                         </div>
 
-                        <div class="col-3 p-2">
+                        <div class="col-3">
                             <!-- Client info -->
                             <x-sidebar-right-info-chat isUsingHeader="{{ false }}" sidebarClass="show sidebar-client-info" sidebarBodyClass="mt-2">
                                 <x-ticket-progress :taskId="$model->id"></x-ticket-progress>

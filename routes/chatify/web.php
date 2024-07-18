@@ -19,10 +19,7 @@ Route::get('/', 'MessagesController@index')->name(config('chatify.routes.prefix'
  *  Fetch info for specific id [user/group]
  */
 Route::post('/idInfo', 'MessagesController@idFetchData');
-<<<<<<< HEAD
 Route::post('/groupInfo', 'MessagesController@groupFetchData');
-=======
->>>>>>> 91f12b69d6144756543c0bdac8cc4215ef86ad9b
 
 /**
  * Send message route
@@ -100,7 +97,6 @@ Route::post('/updateSettings', 'MessagesController@updateSettings')->name('avata
  */
 Route::post('/setActiveStatus', 'MessagesController@setActiveStatus')->name('activeStatus.set');
 
-<<<<<<< HEAD
 /*
 * [Group] view by id
 */
@@ -115,18 +111,6 @@ Route::name('group-chat.')->prefix('group-chat')->group(function () {
     Route::post('/leave', 'MessagesController@leaveGroupChat')->name('delete');
   });
   
-=======
-
-
-
-
-
-/*
-* [Group] view by id
-*/
-Route::get('/group/{id}', 'MessagesController@index')->name('group');
-
->>>>>>> 91f12b69d6144756543c0bdac8cc4215ef86ad9b
 /*
 * user view by id.
 * Note : If you added routes after the [User] which is the below one,

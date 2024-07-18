@@ -30,11 +30,8 @@ $lastMessageBody = strlen($lastMessageBody) > 30 ? mb_substr($lastMessageBody, 0
             @if($user->active_status)
                 <span class="activeStatus"></span>
             @endif
-<<<<<<< HEAD
             <span class="activeStatus"></span>
 
-=======
->>>>>>> 91f12b69d6144756543c0bdac8cc4215ef86ad9b
         <div class="avatar av-m"
         style="background-image: url('{{ $user->avatar }}');">
         </div>
@@ -87,7 +84,6 @@ $lastMessageBody = strlen($lastMessageBody) > 30 ? mb_substr($lastMessageBody, 0
 </table>
 @endif
 
-<<<<<<< HEAD
 {{-- -------------------- Modal Search Item -------------------- --}}
 @if($get == 'user_search_item')
     <table class="user-list-item" data-user="{{ $user->id }}">
@@ -106,8 +102,6 @@ $lastMessageBody = strlen($lastMessageBody) > 30 ? mb_substr($lastMessageBody, 0
     </table>
 @endif
 
-=======
->>>>>>> 91f12b69d6144756543c0bdac8cc4215ef86ad9b
 {{-- -------------------- Shared photos Item -------------------- --}}
 @if($get == 'sharedPhoto')
 <div class="shared-photo chat-image" style="background-image: url('{{ $image }}')"></div>

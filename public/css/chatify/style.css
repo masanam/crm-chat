@@ -228,6 +228,7 @@ body {
 .hide {
   display: none;
 }
+<<<<<<< HEAD
 .group-list-item {
   margin: 0;
   width: 100%;
@@ -235,6 +236,8 @@ body {
   transition: background 0.1s;
 }
 
+=======
+>>>>>>> 91f12b69d6144756543c0bdac8cc4215ef86ad9b
 .messenger-list-item {
   margin: 0;
   width: 100%;
@@ -258,6 +261,7 @@ body {
 .m-list-active .activeStatus {
   border-color: var(--primary-color) !important;
 }
+<<<<<<< HEAD
 
 .group-list-item td {
   padding: 10px;
@@ -291,6 +295,8 @@ body {
 }
 
 
+=======
+>>>>>>> 91f12b69d6144756543c0bdac8cc4215ef86ad9b
 .messenger-list-item td {
   padding: 10px;
 }
@@ -1222,6 +1228,7 @@ div.loadingPlaceholder-date {
   border-radius: 4px;
   background: transparent;
 }
+<<<<<<< HEAD
 
 
 /*
@@ -1299,3 +1306,5 @@ div.loadingPlaceholder-date {
   height: auto;
   text-align: center;
 }
+=======
+>>>>>>> 91f12b69d6144756543c0bdac8cc4215ef86ad9b

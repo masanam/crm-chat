@@ -11,7 +11,10 @@ Route::post('/chat/auth', 'MessagesController@pusherAuth')->name('api.pusher.aut
  *  Fetch info for specific id [user/group]
  */
 Route::post('/idInfo', 'MessagesController@idFetchData')->name('api.idInfo');
+<<<<<<< HEAD
 Route::post('/groupInfo', 'MessagesController@groupFetchData')->name('api.groupInfo');
+=======
+>>>>>>> 91f12b69d6144756543c0bdac8cc4215ef86ad9b
 
 /**
  * Send message route

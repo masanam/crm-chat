@@ -18,6 +18,41 @@
     <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
     <script src="{{asset('assets/vendor/libs/quill/katex.js')}}"></script>
     <script src="{{asset('assets/vendor/libs/quill/quill.js')}}"></script>
+    <style>
+        .frmb-control li {
+            cursor: pointer;
+            list-style: none;
+            margin: 0 0 -1px 0;
+            padding: 10px;
+            text-align: left;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            box-shadow: inset 0 0 0 1px #c5c5c5;
+        }
+        .container-input input, .container-input select, .container-input textarea {
+            font-size: 0.9385rem;
+            outline: none;
+            border: 1px solid #c5c5c5;
+            border-radius: 5px;
+            padding: 0.5rem 0.7rem;
+            color: gray;
+            transition: 0.1s ease-out;
+            width: 100%;
+            }
+            .container-input {
+                height: 100%;
+                display: block;
+                -ms-flex-pack: center;
+                justify-content: center;
+                -ms-flex-align: center;
+                align-items: center;
+                width: 100%;
+                }
+        </style>
 @endsection
 
 @section('page-script')
@@ -25,6 +60,173 @@
     <script src="{{ asset('assets/js/components/chat-history.js') }}"></script>
     <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
     <script src="{{ asset('assets/js/customer.js') }}"></script>
+    <script type="text/javascript">
+
+    $(document).ready(function(){      
+      var postURL = "<?php echo url('customers/addmore'); ?>";
+      var total = $('#totalData').val();
+
+      var i=total + 1;  
+      
+      $(document).on('click', "input[type='radio'][name='optRadio']", function() {
+            switch(Number($(this).val())){
+            case 1:
+                document.getElementById('optionCheckBox').style.display = 'block';
+                document.getElementById('optionRadioBtn').style.display = 'none';
+                document.getElementById('optionSelect').style.display = 'none';
+                break;
+            case 2:
+                document.getElementById('optionCheckBox').style.display = 'none';
+                document.getElementById('optionRadioBtn').style.display = 'block';
+                document.getElementById('optionSelect').style.display = 'none';
+                break;
+            case 3:
+                document.getElementById('optionCheckBox').style.display = 'none';
+                document.getElementById('optionRadioBtn').style.display = 'none';
+                document.getElementById('optionSelect').style.display = 'block';
+                break;
+            default:
+            document.getElementById('optionCheckBox').style.display = 'none';
+                document.getElementById('optionRadioBtn').style.display = 'none';
+                document.getElementById('optionSelect').style.display = 'none';
+                break;
+        }
+
+        });
+
+      $('#add-more').click(function(){  
+        i++;  
+        var radioValue = $("input[type='radio'][name='optRadio']:checked").val();
+
+        var checkBox1 = $("#checkBox1").val();
+        var checkBox2 = $("#checkBox2").val();
+        var checkBox3 = $("#checkBox3").val();
+
+        var radioBtn1 = $("#radioBtn1").val();
+        var radioBtn2 = $("#radioBtn2").val();
+        var radioBtn3 = $("#radioBtn3").val();
+
+        var optionVal1 = $("#option1").val();
+        var optionVal2 = $("#option2").val();
+        var optionVal3 = $("#option3").val();
+
+
+        switch(Number(radioValue)){
+            case 1:
+                console.log(radioValue);
+                $('#dynamic_field').append(`<tr id="row`+i+`" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td>
+                    <label class="form-check-label custom-option-content col-12" for="customCheck1">
+                        <input name="customCheck" class="form-check-input" type="checkbox" value="`+checkBox1+`" id="customCheck1">
+                        <span>`+checkBox1+`</span>
+                    </label>
+                    <label class="form-check-label custom-option-content col-12" for="customCheck2">
+                        <input name="customCheck" class="form-check-input" type="checkbox" value="`+checkBox2+`" id="customCheck2">
+                        <span>`+checkBox2+`</span>
+                    </label>
+                    <label class="form-check-label custom-option-content col-12" for="customCheck3">
+                        <input name="customCheck" class="form-check-input" type="checkbox" value="`+checkBox3+`" id="customCheck3">
+                        <span>`+checkBox3+`</span>
+                    </label>
+
+                </td><td width="5%"><button type="button" name="remove" id="`+i+`" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>`);  
+                break;
+            case 2:
+                console.log(radioValue);
+                $('#dynamic_field').append(`<tr id="row`+i+`" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td>    
+                    <label class="form-check-label custom-option-content col-12" for="customRadio1">
+                        <input name="customRadio" class="form-check-input" type="radio" value="`+radioBtn1+`" id="customRadio1">
+                        <span>`+radioBtn1+`</span>
+                    </label>
+                    <label class="form-check-label custom-option-content col-12" for="customRadio2">
+                        <input name="customRadio" class="form-check-input" type="radio" value="`+radioBtn2+`" id="customRadio2">
+                        <span>`+radioBtn2+`</span>
+                    </label>
+                    <label class="form-check-label custom-option-content col-12" for="customRadio3">
+                        <input name="customRadio" class="form-check-input" type="radio" value="`+radioBtn3+`" id="customRadio3">
+                        <span>`+radioBtn3+`</span>
+                    </label>
+
+                    </td><td width="5%"><button type="button" name="remove" id="`+i+`" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>`);  
+                break;
+            case 3: 
+                console.log(optionVal1);
+                $('#dynamic_field').append(`<tr id="row`+i+`" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td>
+                <select name="name[]" id="name[]" class="form-control name_list">
+                    <option value="`+optionVal1+`">`+optionVal1+`</option>
+                    <option value="`+optionVal2+`">`+optionVal2+`</option>
+                    <option value="`+optionVal3+`">`+optionVal3+`</option>
+                </select>
+                </td><td width="5%"><button type="button" name="remove" id="`+i+`" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>`);  
+                break;
+            case 4: 
+                $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td><textarea id="name" name="name[]" rows="4" cols="50" class="form-control name_list"></textarea></td><td width="5%"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>');  
+                break;
+            case 5: 
+                $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td><input type="date" name="name[]" placeholder="" class="form-control name_list" /></td><td width="5%"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>');  
+                break;
+            case 6: 
+                $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td><input type="number" name="name[]" placeholder="" class="form-control name_list" /></td><td width="5%"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>');  
+                break;
+
+            default: 
+            console.log(radioValue);
+            $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td><input type="text" name="name[]" placeholder="" class="form-control name_list" /></td><td width="5%"><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>');  
+        }
+
+      });  
+
+
+      $(document).on('click', '.btn_remove', function(){  
+           var button_id = $(this).attr("id");   
+           $('#row'+button_id+'').remove();  
+      });  
+
+
+      $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+
+      $('#add-submit').click(function(e){      
+            e.preventDefault();      
+           $.ajax({  
+                url:postURL,  
+                method:"POST",  
+                data:$('#add_name').serialize(),
+                type:'json',
+                success:function(data)  
+                {
+                    if(data.error){
+                        printErrorMsg(data.error);
+                    }else{
+                        window.location.reload();
+                        i=1;
+                        $('.dynamic-added').remove();
+                        $('#add_name')[0].reset();
+                        $(".print-success-msg").find("ul").html('');
+                        $(".print-success-msg").css('display','block');
+                        $(".print-error-msg").css('display','none');
+                        $(".print-success-msg").find("ul").append('<li>Record Inserted Successfully.</li>');
+                    }
+                }  
+           });  
+
+      });  
+
+
+      function printErrorMsg (msg) {
+         $(".print-error-msg").find("ul").html('');
+         $(".print-error-msg").css('display','block');
+         $(".print-success-msg").css('display','none');
+         $.each( msg, function( key, value ) {
+            $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+         });
+      }
+
+    });  
+
+</script>
 @endsection
 
 @php
@@ -82,6 +284,7 @@
     $listMeetingMode = [$meetingModeOnline, $meetingModeOffline];
 
     [$stages, $alphabet, $quality, $status, $listChannels, $listTicketTypes, $listPrioritys, $listStatusProjects] = Helper::getConstants();
+                            
 @endphp
 
 @section('content')
@@ -206,6 +409,10 @@
 
                             <div class="sidebar-card d-flex flex-column gap-3">
                                 <div class="d-flex justify-content-between align-items-center">
+                                <img src="{{ asset('assets/svg/icons/edit.svg') }}" alt="edit"
+                                                width="15" data-bs-toggle="modal" data-bs-target="#add-deals-info"
+                                                class="cursor-pointer">
+
                                     <span class="text-dark fw-bold" style="font-size: 18px">Deals Information</span>
                                     <i class="ti ti-chevron-down text-dark"></i>
                                 </div>
@@ -216,11 +423,11 @@
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="text-dark" style="font-weight: 600;">Revenue</span>
-                                    <span>Rp 2,000,000</span>
+                                    <span>{{ $lead->budget }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="text-dark" style="font-weight: 600;">Close Date</span>
-                                    <span>13 April 2024</span>
+                                    <span>{{ $lead->closed_date }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="text-dark" style="font-weight: 600;">Source</span>
@@ -228,10 +435,13 @@
                                         <option value="test-drive">Outboned</option>
                                     </select>
                                 </div>
+                                @foreach (array_combine($labels, $names) as $label => $name)
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-dark" style="font-weight: 600;">Field</span>
-                                    <span>Options</span>
-                                </div>
+                                    <span class="text-dark" style="font-weight: 600;">{{ $label }}</span>
+                                    <span>{{ $name }}</span>
+                                </div>    
+                                @endforeach
+
                                 <div class="d-flex flex-column">
                                     <span class="text-dark" style="font-weight: 600;">Next Step</span>
                                     <span style="font-size: 13px; color: #616A75;">Follow up after 2 days by sending
@@ -512,4 +722,201 @@
         </div>
     </x-modal> 
     
+    {{-- modal add/edit Deals Info --}}
+
+    <div class="modal fade" id="add-deals-info" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="d-flex align-items-center justify-content-between border border-bottom-2">
+          <div class="d-flex align-items-center p-3">
+            <h4 class="modal-title text-dark fw-bold" id="exampleModalLabel2">Add Deals Info</h5>
+          </div>
+        </div>
+        
+        <div class="modal-body px-4 py-3">
+        <div class="row">
+            <div class="col-xl-8" style="padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #DDE0E4;
+    background: #FFF;">
+            <div class="form-group ">
+            <form name="add_name" id="add_name">  
+                @csrf
+                <div class="table-responsive">
+                    <table class="table table-borderless table-condensed" id="dynamic_field">
+                        <tr>  
+                                <td style="width:1px; white-space:nowrap;">
+                                    Revenue
+                                </td>  
+                                <td style="width:1px; white-space:nowrap;">
+                                    <input type="text" name="revenue" placeholder="" value="{{ $lead->budget }}" class="form-control name_list" />
+                                </td>  
+                            </tr>  
+                            <tr>  
+                                <td>
+                                    Close Date
+                                </td>  
+                                <td>
+                                    <input type="text" name="close-date" placeholder="" value="{{ $lead->closed_date }}" class="form-control name_list" />
+                                </td>  
+                            </tr>  
+                            <tr>  
+                                <td>
+                                    Source
+                                </td>  
+                                <td>
+                                    <select name="close-date" class="form-select name_list">
+                                        <option>Web</option>
+                                        <option>Chat</option>
+                                        <option>Call</option>
+                                    </select>
+                                </td>  
+                            </tr>  
+                            @php
+                            $i=0;
+                            @endphp
+                            @foreach (array_combine($labels, $names) as $label => $name)
+                            @php
+                            $i++;
+                            @endphp
+                            <tr id="row{{ $i }}" class="dynamic-added">
+                                <td>
+                                <div class="container-input">
+                                    <input type="text" name="label[]" placeholder="" id="label{{ $i }}" class="form-control label_list" value="{{ $label }}" />
+                                </td>
+                                <td>
+                                    <input type="text" name="name[]" placeholder="" id="name{{ $i }}" class="form-control name_list" value="{{ $name }}"/>
+                                </td>
+                                <td width="5%"><button type="button" name="remove" id="{{ $i }}" class="btn btn-danger btn-sm btn_remove">X</button></td>
+                            </tr>
+                            @endforeach
+                            <input type="hidden" name="totalData" id="totalData" class="form-control" value="{{ $i }}"/>
+
+                    </table>  
+                </div>
+
+                <div class="modal-footer d-flex justify-content-center align-items-center w-100 p-4">
+                    <button type="button" data-bs-dismiss="modal" id="add-submit" class="btn btn-primary" >Save Info</button>
+                    <button type="button" data-bs-dismiss="modal" class="btn" style="background: #667085; color: #FFF;">Close</button>
+                </div>
+            </form>  
+        </div>
+
+            </div>
+            <div class="bg-lighter rounded col-xl-4" style="padding: 16px;border-radius: 12px;border: 1px solid #DDE0E4;background: #FFF;">
+            <div class="row py-8">
+
+            <ul id="frmb-control-box" class="frmb-control">
+                <li class="input-control" data-type="checkbox-group">
+                <label class="form-check-label custom-option-content form-check-input-payment" for="customOptRadio1">
+                  <input name="optRadio" class="form-check-input" type="radio" value="1" id="customOptRadio1">
+                  <span>Checkbox Group</span>
+                </label>
+                </li>
+                <li class="input-control" data-type="radio-group">
+                <label class="form-check-label custom-option-content form-check-input-payment" for="customOptRadio2">
+                  <input name="optRadio" class="form-check-input" type="radio" value="2" id="customOptRadio2">
+                  <span>Radio Group</span>
+                  </label>
+                </li>
+                <li class="input-control" data-type="select">
+                <label class="form-check-label custom-option-content form-check-input-payment" for="customOptRadio3">
+                  <input name="optRadio" class="form-check-input" type="radio" value="3" id="customOptRadio3">
+                  <span>Select</span>
+                  </label>
+                </li>
+                <li class="input-control" data-type="textarea">
+                <label class="form-check-label custom-option-content form-check-input-payment" for="customOptRadio4">
+                  <input name="optRadio" class="form-check-input" type="radio" value="4" id="customOptRadio4">
+                  <span>Text Area</span>
+                  </label>
+                </li>
+                <li class="input-control" data-type="date">
+                <label class="form-check-label custom-option-content form-check-input-payment" for="customOptRadio5">
+                  <input name="optRadio" class="form-check-input" type="radio" value="5" id="customOptRadio5">
+                  <span>Date Field</span>
+                </label>
+                </li>
+                <li class="input-control" data-type="number">
+                <label class="form-check-label custom-option-content form-check-input-payment" for="customOptRadio6">
+                  <input name="optRadio" class="form-check-input" type="radio" value="6" id="customOptRadio6">
+                  <span>Number</span>
+                </label>
+                </li>
+                <li class="input-control" data-type="text">
+                <label class="form-check-label custom-option-content form-check-input-payment" for="customOptRadio7">
+                  <input name="optRadio" class="form-check-input" type="radio" value="7" id="customOptRadio7">
+                  <span>Text Field</span>
+                  </label>
+                </li>
+            </ul>
+
+            <div class="container-input" id="optionCheckBox" style="display:none;">
+                <div class="text-dark" style="font-size: 14px;">
+                Check Box :
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="checkBox1" id="checkBox1" value="" />
+                    <label for="checkBox1">Checkbox 1</label>
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="checkBox2" id="checkBox2" value="" />
+                    <label for="checkBox2">Checkbox 2</label>
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="checkBox3" id="checkBox3" value="" />
+                    <label for="checkBox3">Checkbox 3</label>
+                </div>
+            </div>     
+
+            <div class="container-input" id="optionRadioBtn" style="display:none;">
+                <div class="text-dark" style="font-size: 14px;">
+                Radio Button :
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="radioBtn1" id="radioBtn1" value="" />
+                    <label for="radioBtn1">radioBtn 1</label>
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="radioBtn2" id="radioBtn2" value="" />
+                    <label for="radioBtn2">radioBtn 2</label>
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="radioBtn3" id="radioBtn3" value="" />
+                    <label for="radioBtn3">radioBtn 3</label>
+                </div>
+            </div>     
+
+
+            <div class="container-input" id="optionSelect" style="display:none;">
+                <div class="text-dark" style="font-size: 14px;">
+                Select Option :
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="option1" id="option1" value="" />
+                    <label for="option1">Option 1</label>
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="option2" id="option2" value="" />
+                    <label for="option2">Option 2</label>
+                </div>
+                <div class="material-textfield mt-3">
+                    <input type="text" name="option3" id="option3" value="" />
+                    <label for="option3">Option 3</label>
+                </div>
+            </div>     
+
+
+
+                <button type="button" class="btn btn-primary btn-sm mx-auto mt-2" id="add-more" >
+                    + Add more fields
+                </button>
+       
+        </div>
+        
+
+    </div>
+</div>
+
+
 @endsection

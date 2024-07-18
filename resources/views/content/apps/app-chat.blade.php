@@ -3,578 +3,594 @@
 @section('title', 'Chat - Apps')
 
 @section('vendor-style')
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css') }}" />
-    <link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css')}}" />
 @endsection
 
 @section('page-style')
-    <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/app-chat.css') }}" />
+<link rel="stylesheet" href="{{asset('assets/vendor/css/pages/app-chat.css')}}" />
 @endsection
 
 @section('vendor-script')
-    <script src="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
-    <script src="{{asset('assets/vendor/libs/flatpickr/flatpickr.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js')}}"></script>
 @endsection
 
 @section('page-script')
-    <script src="{{ asset('assets/js/app-chat.js') }}"></script>
-    <script src="{{ asset('assets/js/components/chat-history.js') }}"></script>
-    <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
+<script src="{{asset('assets/js/app-chat.js')}}"></script>
 @endsection
 
-@php
-    $obj1 = (object) [
-        'name' => 'Aditya Rahardi',
-        'cars' => 'Toyota Avanza',
-        'time' => '12:48 PM',
-        'chat' => 'I will purchase it for sure. 👍',
-        'tag' => 'cold'
-    ];
- 
-$myArray = [];
-
-$alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-
-$productDummy = (object) [
-  'label' => 'BMW',
-  'value' => 'BMW',
-];
-
-$productDummy2 = (object) [
-  'label' => 'Porche',
-  'value' => 'Porche',
-];
-
-$listProduct = [$productDummy, $productDummy2];
-
-$leadSourceDummy = (object) [
-  'label' => 'OLX',
-  'value' => 'OLX',
-];
-
-$leadSourceDummy2 = (object) [
-  'label' => 'Tokopedia',
-  'value' => 'Tokopedia',
-];
-
-$listLeadSource = [$leadSourceDummy, $leadSourceDummy2];
-
-$paymentMethodDummy = (object) [
-  'label' => 'Cash',
-  'value' => 'Cash',
-];
-
-$paymentMethodDummy2 = (object) [
-  'label' => 'Transfer',
-  'value' => 'Transfer',
-];
-
-$listPaymentMethod = [$paymentMethodDummy, $paymentMethodDummy];
-
-$tab = (object) [
-    'name' => 'New',
-    'lengthData' => 5
-];
-$tab2 = (object) [
-    'name' => 'Active',
-    'lengthData' => 5
-];
-$tab3 = (object) [
-    'name' => 'Success',
-    'lengthData' => 5
-];
-$tab4 = (object) [
-    'name' => 'Failed',
-    'lengthData' => 5
-];
-
-$listTabs = [$tab, $tab2, $tab3, $tab4];
-@endphp
-
 @section('content')
-    <input type="hidden" id="USERID" value="{{$userId}}">
-    <div class="row">
-        <div class="">
-            <div class="app-chat card overflow-hidden">
-                <div class="row g-0">
-
-                    <!-- Chat & Contacts -->
-                    <x-sidebar-chat-contacts
-                        :tabs="$listTabs"
-                        placeholderSearchText="Search leads"
-                        targetOpenModal="#contacts"
-                        targetOpenModalFilter="#filter"
-                        title="Leads"
-                    >
-                        <x-slot name="body">
-                            <div class="tab-content p-0">
-                            <div class="tab-pane active" id="open" role="tabpanel" aria-labelledby="open-tab">
-                                @if(count($myArray) > 0)
-                                <ul class="list-unstyled chat-contact-list p-0 mt-2" id="chat-list">
-                                    @foreach($myArray as $key => $value)
-                                    <li class="chat-contact-list-item">
-                                        <a class="d-flex align-items-center">
-                                            <div class="flex-shrink-0 avatar">
-                                                <span class="avatar-initial rounded-8 bg-label-success text-dark fw-bolder">AR</span>
-                                            </div>
-
-                                            <div class="d-flex flex-column chat-contact-info flex-grow-1 ms-2 gap-2">
-                                                <div class="d-flex flex-column gap-1">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder">{{ $value->name }}</h6>
-                                                        <small>{{ $value->time }}</small>
-                                                    </div>
-                                                    <small>{{ $value->cars }}</small>
-                                                </div>
-                                                <div>
-                                                    <p class="chat-contact-status text-chat text-truncate mb-0">{{ $value->chat }}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <div class="d-flex align-items-center badge badge-sm rounded-pill badge-user text-dark gap-1">
-                                                            <i class="ti ti-user user-icon text-dark"></i>
-                                                            <div class="d-flex align-items-center gap-1">
-                                                                <small>Sally,</small>
-                                                                <small>Princess,</small>
-                                                                <small>+1</small>
-                                                            </div>
-                                                        </div>
-                                                        <span class="badge badge-sm rounded-pill text-dark" style="background: #B8E9EF;">
-                                                            {{ $value->tag }}
-                                                        </span>
-                                                    </div>
-                                                    <img src="{{asset('assets/svg/icons/info.svg')}}" alt="info" width="20">
-                                                </div>
-                                            </div>
-
-                                        </a>
-                                    </li>
-                                    @endforeach
-                                
-                                </ul>
-                                @endif
-                            </div>
-                            <div class="tab-pane" id="closed" role="tabpanel" aria-labelledby="closed-tab">
-                                <ul class="list-unstyled chat-contact-list p-0 mt-2" id="chat-list">
-                                    <li class="chat-contact-list-item chat-list-item-0">
-                                        <h6 class="text-muted mb-0">No Chats Found</h6>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        </x-slot>
-                    </x-sidebar-chat-contacts>
-                    <!-- /Chat contacts -->
-
-                    <!-- Chat History -->
-                    @if(count($myArray) > 0)
-                    <x-chat-history
-                        title="Aditya Rahardi"
-                        typeTask="Toyota Avanza"
-                        :people="['Me']"
-                        type="cold"
-                    ></x-chat-history>
-                    @else
-                    <x-chat-blank></x-chat-blank>
-                    @endif
-                    <!-- /Chat History -->
-
-                    <!-- Sidebar Right -->
-                    <x-sidebar-right-info-chat
-                        title="Profile"
-                        time="Last modified 24 Feb 2024, 00:00 PM"
-                        name="Aditya Rahardi"
-                        subtitle="+62 811-818-256"
-                    >
-                        <div class="sidebar-card d-flex flex-column">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="text-dark">Status</h6>
-                                <select id="status" class="form-select custom-select" data-allow-clear="true">
-                                    <option value="active">Active</option>
-                                    <option value="offline">Offline</option>
-                                    <option value="away">Away</option>
-                                    <option value="busy">Busy</option>
-                                </select>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="text-dark">Quality</h6>
-                                <select id="status" class="form-select custom-select" data-allow-clear="true">
-                                    <option value="warm">Warm</option>
-                                </select>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="text-dark">Stage</h6>
-                                <select id="status" class="form-select custom-select" data-allow-clear="true">
-                                    <option value="test-drive">Test drive</option>
-                                </select>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="text-dark">Assigned staff</h6>
-                                <i class="ti ti-chevron-right text-dark"></i>
-                            </div>
-                            <div class="d-flex flex-wrap align-items-center gap-2">
-                                <div class="d-flex align-items-center tag gap-1">
-                                    <span class="text-dark">Sally</span>
-                                    <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay data-target="#tag"></i>
-                                </div>
-                                <div class="d-flex align-items-center tag gap-1">
-                                    <span class="text-dark">Princess</span>
-                                    <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay data-target="#tag"></i>
-                                </div>
-                            </div>
-                           </div>
-                           
-                           {{-- product --}}
-                           <div class="sidebar-card d-flex flex-column">
-                            <div class="d-flex justify-content-between">
-                                <h6 class="text-dark">Assigned staff</h6>
-                                <i class="ti ti-chevron-right text-dark"></i>
-                            </div>
-                            <div class="d-flex flex-wrap gap-2">
-                                <div class="d-flex align-items-center tag gap-1">
-                                    <span class="text-dark">Mercedes EQE 350+</span>
-                                    <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay data-target="#tag"></i>
-                                </div>
-                                <div class="d-flex align-items-center tag gap-1">
-                                    <span class="text-dark">Toyota Corolla</span>
-                                    <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay data-target="#tag"></i>
-                                </div>
-                                <div class="d-flex align-items-center tag gap-1">
-                                    <span class="text-dark">Honda Jazz</span>
-                                    <i class="ti ti-x text-dark" data-bs-toggle="tag" data-overlay data-target="#tag"></i>
-                                </div>
-                            </div>
-                           </div>
-                    
-                           {{-- internal memo --}}
-                           <div class="sidebar-card d-flex flex-column">
-                            <div class="d-flex justify-content-between">
-                                <h6 class="text-dark">Internal memo</h6>
-                                <i class="ti ti-chevron-right text-dark"></i>
-                            </div>
-                            <div class="d-flex flex-wrap gap-2">
-                                <p class="text-muted">Firstly, let's talk about Steve's towering height.
-                                    While it's impressive, let's try not to make too big a deal out of it.
-                                    After all, he's still the same old Steve we know and love.</p>
-                            </div>
-                           </div>
-                    
-                           {{-- payment detail --}}
-                           <div class="sidebar-card d-flex flex-column">
-                            <div class="d-flex justify-content-between">
-                                <h6 class="text-dark">Payment details</h6>
-                            </div>
-                            <div class="d-flex flex-wrap gap-2">
-                                <p class="text-muted">Cash</p>
-                            </div>
-                           </div>
-                    </x-sidebar-right-info-chat>
-                    <!-- /Sidebar Right -->
-
-                    <div class="app-overlay"></div>
-                </div>
-            </div>
+<div class="app-chat card overflow-hidden">
+  <div class="row g-0">
+    <!-- Sidebar Left -->
+    <div class="col app-chat-sidebar-left app-sidebar overflow-hidden" id="app-chat-sidebar-left">
+      <div class="chat-sidebar-left-user sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-4 pt-5">
+        <div class="avatar avatar-xl avatar-online">
+          <img src="{{asset('assets/img/avatars/1.png')}}" alt="Avatar" class="rounded-circle">
         </div>
-        {{-- <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Internal Notes</h5>
-                    <ul class="timeline mt-5 internal-notes-history">
-                    </ul>
-                    <form class="form-send-internal-message d-flex justify-content-between align-items-center" type="submit">
-                        <input class="form-control internal-message-input border-0 me-3 shadow-none"
-                            placeholder="Type your internal notes here">
-                        <div class="message-actions d-flex align-items-center">
-                            <button class="btn btn-primary d-flex send-msg-btn">
-                                <i class="ti ti-send me-md-1 me-0"></i>
-                                <span class="align-middle d-md-inline-block d-none">Send</span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div> --}}
-    </div>
-
-    {{-- modal edit profile --}}
-    <x-modal title="Edit profile" name="modal">
-      <div class="d-flex flex-column gap-4">
-        <div class="d-flex flex-column gap-2">
-            <h6 class="text-dark">Lead details</h6>
-            <div class="d-flex flex-column gap-3">
-                <x-input-floating
-                    label="Name"
-                    placeholder="Please input name"
-                    id="name"
-                    name="name"
-                ></x-input-floating>
-                <x-input-floating
-                    label="Phone number"
-                    placeholder="Please phone number"
-                    id="phone number"
-                    name="phone number"
-                    type="number"
-                ></x-input-floating>
-                <x-input-floating
-                    label="Email address"
-                    placeholder="Please email address"
-                    id="email address"
-                    name="email address"
-                    type="email"
-                ></x-input-floating>
-            </div>
-          </div>
-          <div class="d-flex flex-column gap-2">
-            <h6 class="text-dark">Payment details</h6>
-            <div class="d-flex flex-column gap-3">
-                <x-input-floating
-                    label="Payment method"
-                    placeholder="Please payment method"
-                    type="select"
-                    id="payment method"
-                    name="payment method"
-                    :options="$listPaymentMethod"
-                >
-                </x-input-floating>
-                <x-input-floating
-                    id="downpayment"
-                    name="downpayment"
-                    label="Downpayment preference"
-                    placeholder="Please downpayment preference"
-                    type="textarea"
-                    cols="33"
-                    rows="5"
-                ></x-input-floating>
-            </div>
-          </div>
+        <h5 class="mt-2 mb-0">John Doe</h5>
+        <span>Admin</span>
+        <i class="ti ti-x ti-sm cursor-pointer close-sidebar" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-left"></i>
       </div>
-    </x-modal>
-
-    {{-- modal create task --}}
-    <x-modal title="Create Task" submitText="Submit" name="create-task">
-        <div class="d-flex flex-column gap-3">
-            <x-input-floating
-                label="Task name"
-                placeholder="Please input task name"
-                id="task name"
-                name="task name"
-            ></x-input-floating>
-            <div class="d-flex flex-column">
-                <h6 class="text-dark fw-bold">Assign to</h6>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="assign" id="assign" value="option1" />
-                    <label class="form-check-label text-dark" for="assign">John</label>
-                </div>
-                <div class="form-check form-check-inline mt-3">
-                    <input class="form-check-input" type="radio" name="assign" id="assign" value="option1" />
-                    <label class="form-check-label text-dark" for="assign">Ricky</label>
-                </div>
-                <div class="form-check form-check-inline mt-3">
-                    <input class="form-check-input" type="radio" name="assign" id="assign" value="option1" />
-                    <label class="form-check-label text-dark" for="assign">Purchasing Department</label>
-                </div>
-            </div>
-            <div class="d-flex flex-column">
-                <h6 class="text-dark fw-bold">Priority</h6>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="priority" id="priority" value="option1" />
-                    <label class="form-check-label text-dark" for="priority">Low</label>
-                </div>
-                <div class="form-check form-check-inline mt-3">
-                    <input class="form-check-input" type="radio" name="priority" id="priority" value="option1" />
-                    <label class="form-check-label text-dark" for="priority">Medium</label>
-                </div>
-                <div class="form-check form-check-inline mt-3">
-                    <input class="form-check-input" type="radio" name="priority" id="priority" value="option1" />
-                    <label class="form-check-label text-dark" for="priority">High</label>
-                </div>
-            </div> 
-            <div class="">
-                <label for="flatpickr-date" class="form-label">Due Date</label>
-                <input type="text" class="form-control" placeholder="YYYY-MM-DD" id="flatpickr-date" />
-            </div>
+      <div class="sidebar-body px-4 pb-4">
+        <div class="my-4">
+          <small class="text-muted text-uppercase">About</small>
+          <textarea id="chat-sidebar-left-user-about" class="form-control chat-sidebar-left-user-about mt-3" rows="4" maxlength="120">Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw brownie brownie marshmallow.</textarea>
         </div>
-    </x-modal>
-
-    {{-- modal add/select contact --}}
-    <x-modal title="Contacts" name="contacts" isUsingBtnFooter="{{ false }}">
-        <div class="d-flex flex-column gap-3 modal-add-contact">
-            <div class="d-flex flex-column gap-2 border-bottom">
-                <div class="flex-grow-1 input-group input-group-merge rounded-pill">
-                    <span class="input-group-text form-search-custom" id="basic-addon-search31"><i
-                            class="ti ti-search"></i></span>
-                    <input type="text" class="form-control chat-search-input form-search-custom" placeholder="Search contacts"
-                            aria-label="Search contacts" aria-describedby="basic-addon-search31">
-                </div>
-                <div class="d-flex gap-2 align-items-center">
-                    <x-button-add-contact target="#add-lead" name="Add New Lead"></x-button-add-contact>
-                </div>
+        <div class="my-4">
+          <small class="text-muted text-uppercase">Status</small>
+          <div class="d-grid gap-2 mt-3">
+            <div class="form-check form-check-success">
+              <input name="chat-user-status" class="form-check-input" type="radio" value="active" id="user-active" checked>
+              <label class="form-check-label" for="user-active">Active</label>
             </div>
-            <div class="d-flex justify-content-between">
-                <div class="d-flex flex-column modal-contact">
-                    <div class="d-flex flex-column">
-                        <h6 class="text-dark fw-bold">R</h6>
-                        <div class="d-flex align-items-center gap-2 modal-contact-body">
-                            <div class="flex-shrink-0 avatar">
-                                <span class="avatar-initial rounded-8 bg-label-success text-dark fw-bolder">AR</span>
-                            </div>
-                            <div class="">
-                                <h6 class="text-dark fw-bold modal-contact-title">Ricky Jonathan</h6>
-                                <div class="d-flex align-items-center gap-1">
-                                    <span class="badge badge-sm badge-status rounded-pill text-dark">
-                                    Status
-                                </span>
-                                <span class="badge badge-sm rounded-pill badge-quality text-dark">
-                                    Quality
-                                </span>
-                                <small class="text-muted">Product name</small>    
-                                </div>
-                            </div> 
-                        </div>
-                    </div>
-                </div>
-                <div class="alphabet">
-                    @foreach($alphabet as $alpha)
-                    <small>{{ $alpha }}</small>
-                    @endforeach
-                </div>   
+            <div class="form-check form-check-danger">
+              <input name="chat-user-status" class="form-check-input" type="radio" value="busy" id="user-busy">
+              <label class="form-check-label" for="user-busy">Busy</label>
             </div>
+            <div class="form-check form-check-warning">
+              <input name="chat-user-status" class="form-check-input" type="radio" value="away" id="user-away">
+              <label class="form-check-label" for="user-away">Away</label>
+            </div>
+            <div class="form-check form-check-secondary">
+              <input name="chat-user-status" class="form-check-input" type="radio" value="offline" id="user-offline">
+              <label class="form-check-label" for="user-offline">Offline</label>
+            </div>
+          </div>
         </div>
-    </x-modal>
-
-    {{-- modal add new lead --}}
-    <x-modal
-        title="Add New Lead"
-        name="add-lead"
-        submitText="Add Contact"
-        isModalStack="{{ true }}"
-        targetNameModalStack="contacts"
-    >
-        <div class="d-flex flex-column gap-3">
-            <div class="d-flex flex-column gap-2">
-                <h6 class="text-dark">Lead details</h6>
-                <div class="d-flex flex-column gap-3">
-                    <x-input-floating
-                        label="Name"
-                        placeholder="Please input name"
-                        id="name"
-                        name="name"
-                    ></x-input-floating>
-                    <x-input-floating
-                        label="Phone number"
-                        placeholder="Please input phone number"
-                        id="phone number"
-                        name="phone number"
-                        type="number"
-                    ></x-input-floating>
-                    <x-input-floating
-                        label="Email address"
-                        placeholder="Please input email address"
-                        id="email address"
-                        name="email address"
-                        type="email"
-                    ></x-input-floating>
-                </div>
-            </div>
-            <div class="d-flex flex-column gap-2">
-                <h6 class="text-dark">Product details</h6>
-                <div class="d-flex flex-column gap-3">
-                    <x-input-floating
-                        label="Lead source"
-                        placeholder="Please input lead source"
-                        id="lead source"
-                        name="lead source"
-                        type="select"
-                        :options="$listLeadSource"
-                    >
-                    </x-input-floating>
-                    <x-input-floating
-                        label="Product"
-                        placeholder="Please input product"
-                        id="product"
-                        name="product"
-                        type="select"
-                        :options="$listProduct"
-                    >
-                    </x-input-floating>
-                </div>
-            </div>
+        <div class="my-4">
+          <small class="text-muted text-uppercase">Settings</small>
+          <ul class="list-unstyled d-grid gap-2 me-3 mt-3">
+            <li class="d-flex justify-content-between align-items-center">
+              <div>
+                <i class='ti ti-message me-1 ti-sm'></i>
+                <span class="align-middle">Two-step Verification</span>
+              </div>
+              <label class="switch switch-primary me-4 switch-sm">
+                <input type="checkbox" class="switch-input" checked="" />
+                <span class="switch-toggle-slider">
+                  <span class="switch-on"></span>
+                  <span class="switch-off"></span>
+                </span>
+              </label>
+            </li>
+            <li class="d-flex justify-content-between align-items-center">
+              <div>
+                <i class='ti ti-bell me-1 ti-sm'></i>
+                <span class="align-middle">Notification</span>
+              </div>
+              <label class="switch switch-primary me-4 switch-sm">
+                <input type="checkbox" class="switch-input" />
+                <span class="switch-toggle-slider">
+                  <span class="switch-on"></span>
+                  <span class="switch-off"></span>
+                </span>
+              </label>
+            </li>
+            <li>
+              <i class="ti ti-user-plus me-1 ti-sm"></i>
+              <span class="align-middle">Invite Friends</span>
+            </li>
+            <li>
+              <i class="ti ti-trash me-1 ti-sm"></i>
+              <span class="align-middle">Delete Account</span>
+            </li>
+          </ul>
         </div>
-    </x-modal>
-
-    {{-- modal filter --}}
-    <x-modal title="Filter By" submitText="Apply Filter" name="filter" wrapperModalClass="modal-left">
-        <x-slot name="sideRightHeader">
-            <button class="btn">Reset</button>    
-        </x-slot>
-        <div class="d-flex flex-column gap-3">
-            <div class="d-flex flex-column">
-                <h6 class="text-dark fw-bold">Lead quality</h6>
-                <div class="ps-3">
-                  <div class="form-check form-check-inline d-flex gap-3">
-                    <input class="form-check-input" type="checkbox" id="cold" value="cold" />
-                    <label class="form-check-label text-dark" for="cold">Cold</label>
-                  </div>
-                  <div class="form-check form-check-inline mt-3 d-flex gap-3">
-                    <input class="form-check-input" type="checkbox" id="warm" value="warm" />
-                    <label class="form-check-label text-dark" for="warm">Warm</label>
-                  </div>
-                  <div class="form-check form-check-inline mt-3 d-flex gap-3">
-                    <input class="form-check-input" type="checkbox" id="hot" value="hot" />
-                    <label class="form-check-label text-dark" for="hot">Hot</label>
-                  </div>    
-                </div>
-            </div>
-            <div class="d-flex justify-content-between mt-2">
-                <h6 class="text-dark fw-bold">Assigned staff</h6>
-                <i class="ti ti-chevron-right text-dark"></i>
-            </div>
-            <div class="d-flex flex-column">
-                <h6 class="text-dark fw-bold">Products</h6>
-                <div class="ps-3">
-                  <div class="form-check form-check-inline d-flex gap-3">
-                    <input class="form-check-input" type="checkbox" id="toyota" value="toyota" />
-                    <label class="form-check-label text-dark" for="toyota">Toyota</label>
-                  </div>
-                  <div class="form-check form-check-inline mt-3 d-flex gap-3">
-                    <input class="form-check-input" type="checkbox" id="bmw" value="bmw" />
-                    <label class="form-check-label text-dark" for="bmw">BMW</label>
-                  </div>  
-                </div>
-            </div>
-            <div class="d-flex flex-column">
-                <h6 class="text-dark fw-bold">Location / Branch</h6>
-                <div class="ps-3 d-flex flex-column gap-4">
-                  <div class="d-flex flex-column gap-3">
-                    <div class="form-check form-check-inline d-flex gap-3">
-                        <input class="form-check-input" type="checkbox" id="toyota" value="toyota" />
-                        <label class="form-check-label text-dark" for="toyota">Toyota Woodlands</label>
-                    </div>
-                    <div class="form-check form-check-inline d-flex gap-3 ps-5">
-                        <input class="form-check-input" type="checkbox" id="alpha" value="alpha" />
-                        <label class="form-check-label text-dark" for="alpha">Alpha Team</label>
-                    </div>
-                    <div class="form-check form-check-inline d-flex gap-3 ps-5">
-                        <input class="form-check-input" type="checkbox" id="beta" value="beta" />
-                        <label class="form-check-label text-dark" for="beta">Beta Team</label>
-                    </div>
-                  </div>
-                  <div class="d-flex flex-column gap-3">
-                    <div class="form-check form-check-inline d-flex gap-3">
-                        <input class="form-check-input" type="checkbox" id="toyota2" value="toyota2" />
-                        <label class="form-check-label text-dark" for="toyota2">Toyota Sentosa Island</label>
-                    </div>
-                    <div class="form-check form-check-inline d-flex gap-3 ps-5">
-                        <input class="form-check-input" type="checkbox" id="dream" value="dream" />
-                        <label class="form-check-label text-dark" for="dream">Dream Team</label>
-                    </div>
-                    <div class="form-check form-check-inline d-flex gap-3 ps-5">
-                        <input class="form-check-input" type="checkbox" id="huang" value="huang" />
-                        <label class="form-check-label text-dark" for="huang">Huang Team</label>
-                    </div>
-                  </div> 
-                </div>
-            </div>
+        <div class="d-flex mt-4">
+          <button class="btn btn-primary" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-left">Logout</button>
         </div>
-    </x-modal>
+      </div>
+    </div>
+    <!-- /Sidebar Left-->
+
+    <!-- Chat & Contacts -->
+    <div class="col app-chat-contacts app-sidebar flex-grow-0 overflow-hidden border-end" id="app-chat-contacts">
+      <div class="sidebar-header">
+        <div class="d-flex align-items-center me-3 me-lg-0">
+          <div class="flex-shrink-0 avatar avatar-online me-3" data-bs-toggle="sidebar" data-overlay="app-overlay-ex" data-target="#app-chat-sidebar-left">
+            <img class="user-avatar rounded-circle cursor-pointer" src="{{asset('assets/img/avatars/1.png')}}" alt="Avatar">
+          </div>
+          <div class="flex-grow-1 input-group input-group-merge rounded-pill">
+            <span class="input-group-text" id="basic-addon-search31"><i class="ti ti-search"></i></span>
+            <input type="text" class="form-control chat-search-input" placeholder="Search..." aria-label="Search..." aria-describedby="basic-addon-search31">
+          </div>
+        </div>
+        <i class="ti ti-x cursor-pointer d-lg-none d-block position-absolute mt-2 me-1 top-0 end-0" data-overlay data-bs-toggle="sidebar" data-target="#app-chat-contacts"></i>
+      </div>
+      <hr class="container-m-nx m-0">
+      <div class="sidebar-body">
+
+        <div class="chat-contact-list-item-title">
+          <h5 class="text-primary mb-0 px-4 pt-3 pb-2">Chats</h5>
+        </div>
+        <!-- Chats -->
+        <ul class="list-unstyled chat-contact-list" id="chat-list">
+          <li class="chat-contact-list-item chat-list-item-0 d-none">
+            <h6 class="text-muted mb-0">No Chats Found</h6>
+          </li>
+          <li class="chat-contact-list-item">
+            <a class="d-flex align-items-center">
+              <div class="flex-shrink-0 avatar avatar-online">
+                <img src="{{asset('assets/img/avatars/13.png')}}" alt="Avatar" class="rounded-circle">
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="chat-contact-name text-truncate m-0">Waldemar Mannering</h6>
+                <p class="chat-contact-status text-muted text-truncate mb-0">Refer friends. Get rewards.</p>
+              </div>
+              <small class="text-muted mb-auto">5 Minutes</small>
+            </a>
+          </li>
+          <li class="chat-contact-list-item active">
+            <a class="d-flex align-items-center">
+              <div class="flex-shrink-0 avatar avatar-offline">
+                <img src="{{asset('assets/img/avatars/2.png')}}" alt="Avatar" class="rounded-circle">
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="chat-contact-name text-truncate m-0">Felecia Rower</h6>
+                <p class="chat-contact-status text-muted text-truncate mb-0">I will purchase it for sure. 👍</p>
+              </div>
+              <small class="text-muted mb-auto">30 Minutes</small>
+            </a>
+          </li>
+          <li class="chat-contact-list-item">
+            <a class="d-flex align-items-center">
+              <div class="flex-shrink-0 avatar avatar-busy">
+                <span class="avatar-initial rounded-circle bg-label-success">CM</span>
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="chat-contact-name text-truncate m-0">Calvin Moore</h6>
+                <p class="chat-contact-status text-muted text-truncate mb-0">If it takes long you can mail inbox user</p>
+              </div>
+              <small class="text-muted mb-auto">1 Day</small>
+            </a>
+          </li>
+        </ul>
+        <!-- Contacts -->
+        <ul class="list-unstyled chat-contact-list mb-0" id="contact-list">
+          <li class="chat-contact-list-item chat-contact-list-item-title">
+            <h5 class="text-primary mb-0">Contacts</h5>
+          </li>
+          <li class="chat-contact-list-item contact-list-item-0 d-none">
+            <h6 class="text-muted mb-0">No Contacts Found</h6>
+          </li>
+          <li class="chat-contact-list-item">
+            <a class="d-flex align-items-center">
+              <div class="flex-shrink-0 avatar avatar-offline">
+                <img src="{{asset('assets/img/avatars/4.png')}}" alt="Avatar" class="rounded-circle">
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="chat-contact-name text-truncate m-0">Natalie Maxwell</h6>
+                <p class="chat-contact-status text-muted text-truncate mb-0">UI/UX Designer</p>
+              </div>
+            </a>
+          </li>
+          <li class="chat-contact-list-item">
+            <a class="d-flex align-items-center">
+              <div class="flex-shrink-0 avatar avatar-busy">
+                <img src="{{asset('assets/img/avatars/5.png')}}" alt="Avatar" class="rounded-circle">
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="chat-contact-name text-truncate m-0">Jess Cook</h6>
+                <p class="chat-contact-status text-muted text-truncate mb-0">Business Analyst</p>
+              </div>
+            </a>
+          </li>
+          <li class="chat-contact-list-item">
+            <a class="d-flex align-items-center">
+              <div class="avatar d-block flex-shrink-0">
+                <span class="avatar-initial rounded-circle bg-label-primary">LM</span>
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="chat-contact-name text-truncate m-0">Louie Mason</h6>
+                <p class="chat-contact-status text-muted text-truncate mb-0">Resource Manager</p>
+              </div>
+            </a>
+          </li>
+          <li class="chat-contact-list-item">
+            <a class="d-flex align-items-center">
+              <div class="flex-shrink-0 avatar avatar-busy">
+                <img src="{{asset('assets/img/avatars/7.png')}}" alt="Avatar" class="rounded-circle">
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="chat-contact-name text-truncate m-0">Krystal Norton</h6>
+                <p class="chat-contact-status text-muted text-truncate mb-0">Business Executive</p>
+              </div>
+            </a>
+          </li>
+          <li class="chat-contact-list-item">
+            <a class="d-flex align-items-center">
+              <div class="flex-shrink-0 avatar avatar-offline">
+                <img src="{{asset('assets/img/avatars/8.png')}}" alt="Avatar" class="rounded-circle">
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="chat-contact-name text-truncate m-0">Stacy Garrison</h6>
+                <p class="chat-contact-status text-muted text-truncate mb-0">Marketing Ninja</p>
+              </div>
+            </a>
+          </li>
+          <li class="chat-contact-list-item">
+            <a class="d-flex align-items-center">
+              <div class="avatar d-block flex-shrink-0">
+                <span class="avatar-initial rounded-circle bg-label-success">CM</span>
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="chat-contact-name text-truncate m-0">Calvin Moore</h6>
+                <p class="chat-contact-status text-muted text-truncate mb-0">UX Engineer</p>
+              </div>
+            </a>
+          </li>
+          <li class="chat-contact-list-item">
+            <a class="d-flex align-items-center">
+              <div class="flex-shrink-0 avatar avatar-busy">
+                <img src="{{asset('assets/img/avatars/10.png')}}" alt="Avatar" class="rounded-circle">
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="chat-contact-name text-truncate m-0">Mary Giles</h6>
+                <p class="chat-contact-status text-muted text-truncate mb-0">Account Department</p>
+              </div>
+            </a>
+          </li>
+          <li class="chat-contact-list-item">
+            <a class="d-flex align-items-center">
+              <div class="flex-shrink-0 avatar avatar-offline">
+                <img src="{{asset('assets/img/avatars/13.png')}}" alt="Avatar" class="rounded-circle">
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="chat-contact-name text-truncate m-0">Waldemar Mannering</h6>
+                <p class="chat-contact-status text-muted text-truncate mb-0">AWS Support</p>
+              </div>
+            </a>
+          </li>
+          <li class="chat-contact-list-item">
+            <a class="d-flex align-items-center">
+              <div class="avatar d-block flex-shrink-0">
+                <span class="avatar-initial rounded-circle bg-label-danger">AJ</span>
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="chat-contact-name text-truncate m-0">Amy Johnson</h6>
+                <p class="chat-contact-status text-muted text-truncate mb-0">Frontend Developer</p>
+              </div>
+            </a>
+          </li>
+          <li class="chat-contact-list-item">
+            <a class="d-flex align-items-center">
+              <div class="flex-shrink-0 avatar avatar-offline">
+                <img src="{{asset('assets/img/avatars/2.png')}}" alt="Avatar" class="rounded-circle">
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="chat-contact-name text-truncate m-0">Felecia Rower</h6>
+                <p class="chat-contact-status text-muted text-truncate mb-0">Cloud Engineer</p>
+              </div>
+            </a>
+          </li>
+          <li class="chat-contact-list-item">
+            <a class="d-flex align-items-center">
+              <div class="flex-shrink-0 avatar avatar-busy">
+                <img src="{{asset('assets/img/avatars/11.png')}}" alt="Avatar" class="rounded-circle">
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="chat-contact-name text-truncate m-0">William Stephens</h6>
+                <p class="chat-contact-status text-muted text-truncate mb-0">Backend Developer</p>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- /Chat contacts -->
+
+    <!-- Chat History -->
+    <div class="col app-chat-history bg-body">
+      <div class="chat-history-wrapper">
+        <div class="chat-history-header border-bottom">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex overflow-hidden align-items-center">
+              <i class="ti ti-menu-2 ti-sm cursor-pointer d-lg-none d-block me-2" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-contacts"></i>
+              <div class="flex-shrink-0 avatar">
+                <img src="{{asset('assets/img/avatars/2.png')}}" alt="Avatar" class="rounded-circle" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right">
+              </div>
+              <div class="chat-contact-info flex-grow-1 ms-2">
+                <h6 class="m-0">Felecia Rower</h6>
+                <small class="user-status text-muted">NextJS developer</small>
+              </div>
+            </div>
+            <div class="d-flex align-items-center">
+              <i class="ti ti-phone-call cursor-pointer d-sm-block d-none me-3"></i>
+              <i class="ti ti-video cursor-pointer d-sm-block d-none me-3"></i>
+              <i class="ti ti-search cursor-pointer d-sm-block d-none me-3"></i>
+              <div class="dropdown d-flex align-self-center">
+                <button class="btn p-0" type="button" id="chat-header-actions" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="ti ti-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="chat-header-actions">
+                  <a class="dropdown-item" href="javascript:void(0);">View Contact</a>
+                  <a class="dropdown-item" href="javascript:void(0);">Mute Notifications</a>
+                  <a class="dropdown-item" href="javascript:void(0);">Block Contact</a>
+                  <a class="dropdown-item" href="javascript:void(0);">Clear Chat</a>
+                  <a class="dropdown-item" href="javascript:void(0);">Report</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-history-body bg-body">
+          <ul class="list-unstyled chat-history">
+            <li class="chat-message chat-message-right">
+              <div class="d-flex overflow-hidden">
+                <div class="chat-message-wrapper flex-grow-1">
+                  <div class="chat-message-text">
+                    <p class="mb-0">How can we help? We're here for you! 😄</p>
+                  </div>
+                  <div class="text-end text-muted mt-1">
+                    <i class='ti ti-checks ti-xs me-1 text-success'></i>
+                    <small>10:00 AM</small>
+                  </div>
+                </div>
+                <div class="user-avatar flex-shrink-0 ms-3">
+                  <div class="avatar avatar-sm">
+                    <img src="{{asset('assets/img/avatars/1.png')}}" alt="Avatar" class="rounded-circle">
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="chat-message">
+              <div class="d-flex overflow-hidden">
+                <div class="user-avatar flex-shrink-0 me-3">
+                  <div class="avatar avatar-sm">
+                    <img src="{{asset('assets/img/avatars/2.png')}}" alt="Avatar" class="rounded-circle">
+                  </div>
+                </div>
+                <div class="chat-message-wrapper flex-grow-1">
+                  <div class="chat-message-text">
+                    <p class="mb-0">Hey John, I am looking for the best admin template.</p>
+                    <p class="mb-0">Could you please help me to find it out? 🤔</p>
+                  </div>
+                  <div class="chat-message-text mt-2">
+                    <p class="mb-0">It should be Bootstrap 5 compatible.</p>
+                  </div>
+                  <div class="text-muted mt-1">
+                    <small>10:02 AM</small>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="chat-message chat-message-right">
+              <div class="d-flex overflow-hidden">
+                <div class="chat-message-wrapper flex-grow-1">
+                  <div class="chat-message-text">
+                    <p class="mb-0">{{ config('variables.templateName') ? config('variables.templateName') : 'TemplateName' }} has all the components you'll ever need in a app.</p>
+                  </div>
+                  <div class="text-end text-muted mt-1">
+                    <i class='ti ti-checks ti-xs me-1 text-success'></i>
+                    <small>10:03 AM</small>
+                  </div>
+                </div>
+                <div class="user-avatar flex-shrink-0 ms-3">
+                  <div class="avatar avatar-sm">
+                    <img src="{{asset('assets/img/avatars/1.png')}}" alt="Avatar" class="rounded-circle">
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="chat-message">
+              <div class="d-flex overflow-hidden">
+                <div class="user-avatar flex-shrink-0 me-3">
+                  <div class="avatar avatar-sm">
+                    <img src="{{asset('assets/img/avatars/2.png')}}" alt="Avatar" class="rounded-circle">
+                  </div>
+                </div>
+                <div class="chat-message-wrapper flex-grow-1">
+                  <div class="chat-message-text">
+                    <p class="mb-0">Looks clean and fresh UI. 😃</p>
+                  </div>
+                  <div class="chat-message-text mt-2">
+                    <p class="mb-0">It's perfect for my next project.</p>
+                  </div>
+                  <div class="chat-message-text mt-2">
+                    <p class="mb-0">How can I purchase it?</p>
+                  </div>
+                  <div class="text-muted mt-1">
+                    <small>10:05 AM</small>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="chat-message chat-message-right">
+              <div class="d-flex overflow-hidden">
+                <div class="chat-message-wrapper flex-grow-1">
+                  <div class="chat-message-text">
+                    <p class="mb-0">Thanks, you can purchase it.</p>
+                  </div>
+                  <div class="text-end text-muted mt-1">
+                    <i class='ti ti-checks ti-xs me-1 text-success'></i>
+                    <small>10:06 AM</small>
+                  </div>
+                </div>
+                <div class="user-avatar flex-shrink-0 ms-3">
+                  <div class="avatar avatar-sm">
+                    <img src="{{asset('assets/img/avatars/1.png')}}" alt="Avatar" class="rounded-circle">
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="chat-message">
+              <div class="d-flex overflow-hidden">
+                <div class="user-avatar flex-shrink-0 me-3">
+                  <div class="avatar avatar-sm">
+                    <img src="{{asset('assets/img/avatars/2.png')}}" alt="Avatar" class="rounded-circle">
+                  </div>
+                </div>
+                <div class="chat-message-wrapper flex-grow-1">
+                  <div class="chat-message-text">
+                    <p class="mb-0">I will purchase it for sure. 👍</p>
+                  </div>
+                  <div class="chat-message-text mt-2">
+                    <p class="mb-0">Thanks.</p>
+                  </div>
+                  <div class="text-muted mt-1">
+                    <small>10:08 AM</small>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="chat-message chat-message-right">
+              <div class="d-flex overflow-hidden">
+                <div class="chat-message-wrapper flex-grow-1">
+                  <div class="chat-message-text">
+                    <p class="mb-0">Great, Feel free to get in touch.</p>
+                  </div>
+                  <div class="text-end text-muted mt-1">
+                    <i class='ti ti-checks ti-xs me-1 text-success'></i>
+                    <small>10:10 AM</small>
+                  </div>
+                </div>
+                <div class="user-avatar flex-shrink-0 ms-3">
+                  <div class="avatar avatar-sm">
+                    <img src="{{asset('assets/img/avatars/1.png')}}" alt="Avatar" class="rounded-circle">
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="chat-message">
+              <div class="d-flex overflow-hidden">
+                <div class="user-avatar flex-shrink-0 me-3">
+                  <div class="avatar avatar-sm">
+                    <img src="{{asset('assets/img/avatars/2.png')}}" alt="Avatar" class="rounded-circle">
+                  </div>
+                </div>
+                <div class="chat-message-wrapper flex-grow-1">
+                  <div class="chat-message-text">
+                    <p class="mb-0">Do you have design files for {{ config('variables.templateName') ? config('variables.templateName') : 'TemplateName' }}?</p>
+                  </div>
+                  <div class="text-muted mt-1">
+                    <small>10:15 AM</small>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="chat-message chat-message-right">
+              <div class="d-flex overflow-hidden">
+                <div class="chat-message-wrapper flex-grow-1 w-50">
+                  <div class="chat-message-text">
+                    <p class="mb-0">Yes that's correct documentation file, Design files are included with the template.</p>
+                  </div>
+                  <div class="text-end text-muted mt-1">
+                    <i class='ti ti-checks ti-xs me-1'></i>
+                    <small>10:15 AM</small>
+                  </div>
+                </div>
+                <div class="user-avatar flex-shrink-0 ms-3">
+                  <div class="avatar avatar-sm">
+                    <img src="{{asset('assets/img/avatars/1.png')}}" alt="Avatar" class="rounded-circle">
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <!-- Chat message form -->
+        <div class="chat-history-footer shadow-sm">
+          <form class="form-send-message d-flex justify-content-between align-items-center ">
+            <input class="form-control message-input border-0 me-3 shadow-none" placeholder="Type your message here">
+            <div class="message-actions d-flex align-items-center">
+              <i class="speech-to-text ti ti-microphone ti-sm cursor-pointer"></i>
+              <label for="attach-doc" class="form-label mb-0">
+                <i class="ti ti-photo ti-sm cursor-pointer mx-3"></i>
+                <input type="file" id="attach-doc" hidden>
+              </label>
+              <button class="btn btn-primary d-flex send-msg-btn">
+                <i class="ti ti-send me-md-1 me-0"></i>
+                <span class="align-middle d-md-inline-block d-none">Send</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- /Chat History -->
+
+    <!-- Sidebar Right -->
+    <div class="col app-chat-sidebar-right app-sidebar overflow-hidden" id="app-chat-sidebar-right">
+      <div class="sidebar-header d-flex flex-column justify-content-center align-items-center flex-wrap px-4 pt-5">
+        <div class="avatar avatar-xl avatar-online">
+          <img src="{{asset('assets/img/avatars/2.png')}}" alt="Avatar" class="rounded-circle">
+        </div>
+        <h6 class="mt-2 mb-0">Felecia Rower</h6>
+        <span>NextJS Developer</span>
+        <i class="ti ti-x ti-sm cursor-pointer close-sidebar d-block" data-bs-toggle="sidebar" data-overlay data-target="#app-chat-sidebar-right"></i>
+      </div>
+      <div class="sidebar-body px-4 pb-4">
+        <div class="my-4">
+          <small class="text-muted text-uppercase">About</small>
+          <p class="mb-0 mt-3">A Next. js developer is a software developer who uses the Next. js framework alongside ReactJS to build web applications.</p>
+        </div>
+        <div class="my-4">
+          <small class="text-muted text-uppercase">Personal Information</small>
+          <ul class="list-unstyled d-grid gap-2 mt-3">
+            <li class="d-flex align-items-center">
+              <i class='ti ti-mail ti-sm'></i>
+              <span class="align-middle ms-2">josephGreen@email.com</span>
+            </li>
+            <li class="d-flex align-items-center">
+              <i class='ti ti-phone-call ti-sm'></i>
+              <span class="align-middle ms-2">+1(123) 456 - 7890</span>
+            </li>
+            <li class="d-flex align-items-center">
+              <i class='ti ti-clock ti-sm'></i>
+              <span class="align-middle ms-2">Mon - Fri 10AM - 8PM</span>
+            </li>
+          </ul>
+        </div>
+        <div class="mt-4">
+          <small class="text-muted text-uppercase">Options</small>
+          <ul class="list-unstyled d-grid gap-2 mt-3">
+            <li class="cursor-pointer d-flex align-items-center">
+              <i class='ti ti-badge ti-sm'></i>
+              <span class="align-middle ms-2">Add Tag</span>
+            </li>
+            <li class="cursor-pointer d-flex align-items-center">
+              <i class='ti ti-star ti-sm'></i>
+              <span class="align-middle ms-2">Important Contact</span>
+            </li>
+            <li class="cursor-pointer d-flex align-items-center">
+              <i class='ti ti-photo ti-sm'></i>
+              <span class="align-middle ms-2">Shared Media</span>
+            </li>
+            <li class="cursor-pointer d-flex align-items-center">
+              <i class='ti ti-trash ti-sm'></i>
+              <span class="align-middle ms-2">Delete Contact</span>
+            </li>
+            <li class="cursor-pointer d-flex align-items-center">
+              <i class='ti ti-ban ti-sm'></i>
+              <span class="align-middle ms-2">Block Contact</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Sidebar Right -->
+
+    <div class="app-overlay"></div>
+  </div>
+</div>
 @endsection

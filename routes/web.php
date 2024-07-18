@@ -177,6 +177,24 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\FormBuilderController;
 use App\Http\Controllers\FormsController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
+Route::get('/test123', [Chat::class, 'test']);
+
+Route::get('/clear', function () {
+    $clearcache = Artisan::call('optimize:clear');
+    echo "Cache cleared<br>";
+
+});
+
+Route::group(['middleware' => ['auth']], function() {
+  /**
+  * Verification Routes
+  */
+  Route::get('/email/verify', 'VerificationController@show')->name('verification.notice');
+  Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify')->middleware(['signed']);
+  Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
+});
 
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');
 // Route::get('/dashboard/crm', [Crm::class, 'index'])->name('dashboard-crm');
@@ -424,7 +442,8 @@ Route::resource('/user-list', UserManagement::class);
 // THE APP ROUTE
 Route::middleware(['auth'])->group(function () {
   Route::get('/', [Crm::class, 'index'])->name('dashboard-crm');
-  Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+  Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
   // Route::get('/lead/get-all-leads', [LeadController::class, 'getAllLeads'])->name('lead.getAllLeads');
   // Route::get('/lead/create', [LeadController::class, 'create'])->name('lead.create');
   // Route::get('/lead/edit/{lead}', [LeadController::class, 'edit'])->name('lead.edit');
@@ -489,7 +508,11 @@ Route::middleware(['auth'])->group(function () {
   Route::delete('customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
   Route::get('customers/{id}/email', [CustomerController::class, 'detailEmail'])->name('customers.detailEmail');
   Route::get('customers/{id}/ticket', [CustomerController::class, 'detailTicket'])->name('customers.detailTicket');
+  Route::post('customers/add-contact', [CustomerController::class, 'addContact'])->name('customers.add-contact');
+  Route::post('customers/addmore', [CustomerController::class, 'addMorePost'])->name('customers.addMorePost');
 
+  
+  // Route::post("addmore","HomeController@addMorePost");
   // Route::resource('dealer', DealerController::class);
   Route::get('clients', [ClientController::class, 'index'])->name('clients.index');
   Route::get('clients/create', [ClientController::class, 'create'])->name('clients.create');
@@ -540,6 +563,7 @@ Route::middleware(['auth'])->group(function () {
   // TICKETS
   Route::get('tickets', [TicketController::class, 'index'])->name('tickets.index');
   Route::post('tickets/upsert', [TicketController::class, 'upsert'])->name('tickets.upsert');
+  Route::post('tickets/add-assignee', [TicketController::class, 'addAssignee'])->name('tickets.add-assignee');
 
   // Route::get('/kanban', function () {
   //   return view('content.apps.app-kanban'); // Your Blade template name

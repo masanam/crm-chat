@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{-- ---------------------- Group Channel Modal ---------------------- --}}
 <div class="app-modal group-modal" data-name="addGroup">
     <div class="app-modal-container">
@@ -73,6 +74,8 @@
     </div>
 </div>
 
+=======
+>>>>>>> 91f12b69d6144756543c0bdac8cc4215ef86ad9b
 {{-- ---------------------- Image modal box ---------------------- --}}
 <div id="imageModalBox" class="imageModal">
     <span class="imageModal-close">&times;</span>

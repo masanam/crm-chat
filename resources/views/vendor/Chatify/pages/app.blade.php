@@ -1,7 +1,10 @@
 @include('Chatify::layouts.headLinks')
+<<<<<<< HEAD
 @php
 $groupList = App\Models\ChChannel::get();
 @endphp
+=======
+>>>>>>> 91f12b69d6144756543c0bdac8cc4215ef86ad9b
 <div class="messenger">
     {{-- ----------------------Users/Groups lists side---------------------- --}}
     <div class="messenger-listView {{ !!$id ? 'conversation-active' : '' }}">
@@ -11,7 +14,10 @@ $groupList = App\Models\ChChannel::get();
                 <a href="#"><i class="fas fa-inbox"></i> <span class="messenger-headTitle">MESSAGES</span> </a>
                 {{-- header buttons --}}
                 <nav class="m-header-right">
+<<<<<<< HEAD
                     <a href="#"><i class="fas fa-users group-btn"></i></a>
+=======
+>>>>>>> 91f12b69d6144756543c0bdac8cc4215ef86ad9b
                     <a href="#"><i class="fas fa-cog settings-btn"></i></a>
                     <a href="#" class="listView-x"><i class="fas fa-times"></i></a>
                 </nav>
@@ -39,6 +45,7 @@ $groupList = App\Models\ChChannel::get();
                {!! view('Chatify::layouts.listItem', ['get' => 'saved']) !!}
                {{-- Contact --}}
                <p class="messenger-title"><span>All Messages</span></p>
+<<<<<<< HEAD
                <p class="messenger-title"><span>Groups</span></p>
                <div class="listOfgroups">
                 @foreach ($groupList as $group)
@@ -65,6 +72,9 @@ $groupList = App\Models\ChChannel::get();
 
                <p class="messenger-title"><span>1 on 1</span></p>
                <div class="listOfContacts"></div>
+=======
+               <div class="listOfContacts" style="width: 100%;height: calc(100% - 272px);position: relative;"></div>
+>>>>>>> 91f12b69d6144756543c0bdac8cc4215ef86ad9b
            </div>
              {{-- ---------------- [ Search Tab ] ---------------- --}}
            <div class="messenger-tab search-tab app-scroll" data-view="search">
@@ -129,9 +139,18 @@ $groupList = App\Models\ChChannel::get();
     {{-- ---------------------- Info side ---------------------- --}}
     <div class="messenger-infoView app-scroll">
         {{-- nav actions --}}
+<<<<<<< HEAD
         {!! view('Chatify::layouts.info-group')->render() !!}
     </div>
 
+=======
+        <nav>
+            <p>User Details</p>
+            <a href="#"><i class="fas fa-times"></i></a>
+        </nav>
+        {!! view('Chatify::layouts.info')->render() !!}
+    </div>
+>>>>>>> 91f12b69d6144756543c0bdac8cc4215ef86ad9b
 </div>
 
 @include('Chatify::layouts.modals')

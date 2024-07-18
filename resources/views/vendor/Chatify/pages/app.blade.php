@@ -1,4 +1,7 @@
 @include('Chatify::layouts.headLinks')
+@php
+$groupList = App\Models\ChChannel::get();
+@endphp
 <div class="messenger">
     {{-- ----------------------Users/Groups lists side---------------------- --}}
     <div class="messenger-listView {{ !!$id ? 'conversation-active' : '' }}">
@@ -8,6 +11,7 @@
                 <a href="#"><i class="fas fa-inbox"></i> <span class="messenger-headTitle">MESSAGES</span> </a>
                 {{-- header buttons --}}
                 <nav class="m-header-right">
+                    <a href="#"><i class="fas fa-users group-btn"></i></a>
                     <a href="#"><i class="fas fa-cog settings-btn"></i></a>
                     <a href="#" class="listView-x"><i class="fas fa-times"></i></a>
                 </nav>
@@ -35,7 +39,32 @@
                {!! view('Chatify::layouts.listItem', ['get' => 'saved']) !!}
                {{-- Contact --}}
                <p class="messenger-title"><span>All Messages</span></p>
-               <div class="listOfContacts" style="width: 100%;height: calc(100% - 272px);position: relative;"></div>
+               <p class="messenger-title"><span>Groups</span></p>
+               <div class="listOfgroups">
+                @foreach ($groupList as $group)
+                <table class="group-list-item" data-contact="{{ $group->id }}">
+                <tr data-action="0">
+                        {{-- Avatar side --}}
+                        <td style="position: relative">
+                                <div class="avatar av-m"
+        style="background-image: url('{{ $group->avatar }}');">
+        </div>
+                        </td>
+                        {{-- center side --}}
+                        <td>
+                        <p data-id="{{ $group->id }}" data-type="group">
+                        {{ $group->name }}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                @endforeach
+
+
+               </div>
+
+               <p class="messenger-title"><span>1 on 1</span></p>
+               <div class="listOfContacts"></div>
            </div>
              {{-- ---------------- [ Search Tab ] ---------------- --}}
            <div class="messenger-tab search-tab app-scroll" data-view="search">
@@ -100,12 +129,9 @@
     {{-- ---------------------- Info side ---------------------- --}}
     <div class="messenger-infoView app-scroll">
         {{-- nav actions --}}
-        <nav>
-            <p>User Details</p>
-            <a href="#"><i class="fas fa-times"></i></a>
-        </nav>
-        {!! view('Chatify::layouts.info')->render() !!}
+        {!! view('Chatify::layouts.info-group')->render() !!}
     </div>
+
 </div>
 
 @include('Chatify::layouts.modals')

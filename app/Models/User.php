@@ -40,10 +40,10 @@ class User extends Authenticatable implements MustVerifyEmail
     'phone_verified_at' => 'datetime',
   ];
   
-  public function profile(): BelongsTo
-    {
-        return $this->belongsTo(Profile::class);
-    }
+  public function profile()
+  {
+    return $this->belongsTo(\App\Models\Profile::class, 'user_id', 'id');
+  }
 
         /**
      * Send the password reset notification.

@@ -12,7 +12,7 @@
 <div class="avatar avatar-channel av-l chatify-d-flex"></div>
 <p class="info-name">{{ config('chatify.name') }}</p>
 @if($isGroup)
-    <div style="max-width: 250px; margin: auto">
+    <div style="max-width: 250px; margin: auto" class="userlist">
         <h4 style="text-align: center; margin-bottom: 10px; margin-top: 30px; font-weight: normal; font-size: 14px">Users in this group</h4>
         <div class="app-scroll users-list">
             @foreach($channel->users as $user)

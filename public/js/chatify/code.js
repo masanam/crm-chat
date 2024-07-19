@@ -409,6 +409,7 @@ function IDinfo(id) {
        $(".messenger-infoView-shared").show();
        $(".messenger-infoView .userGroup").hide();
        $(".messenger-infoView .delete-group").hide();
+       $(".messenger-infoView .userList").hide();
 
        // fetch messages
        fetchMessages(id, true);
@@ -489,6 +490,8 @@ function groupIDinfo(channel_id) {
        $(".messenger-infoView-shared").show();
        $(".messenger-infoView .userGroup").show();
        $(".messenger-infoView .delete-group").show();
+       $(".messenger-infoView .userList").show();
+
 
        // fetch messages
        fetchMessages(channel_id, true);

@@ -638,7 +638,6 @@ function fetchMessages(id, channel_id, newFetch = false) {
    messagesPage = 1;
    noMoreMessages = false;
  }
- console.log('test : '+channel_id);
  if (messenger != 0 && !noMoreMessages && !messagesLoading) {
    const messagesElement = messagesContainer.find(".messages");
    setMessagesLoading(true);
@@ -653,7 +652,8 @@ function fetchMessages(id, channel_id, newFetch = false) {
      },
      dataType: "JSON",
      success: (data) => {
-       setMessagesLoading(false);
+      console.log('test : '+data.messages);
+      setMessagesLoading(false);
        if (messagesPage == 1) {
          messagesElement.html(data.messages);
          scrollToBottom(messagesContainer);

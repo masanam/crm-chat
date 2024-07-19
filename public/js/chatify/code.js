@@ -412,13 +412,15 @@ function IDinfo(id) {
        $(".messenger-infoView .userList").hide();
 
        // fetch messages
-       fetchMessages(id, true);
+       channel_id = '';
+       fetchMessages(id, channel_id, true);
        // focus on messaging input
        messageInput.focus();
        // update info in view
        $(".messenger-infoView .header-name").text('User Details');
        $(".messenger-infoView .info-name").text(data.fetch.name);
        $(".m-header-messaging .user-name").text(data.fetch.name);
+
        // Star status
        data.favorite > 0
          ? $(".add-to-favorite").addClass("favorite")
@@ -492,9 +494,9 @@ function groupIDinfo(channel_id) {
        $(".messenger-infoView .delete-group").show();
        $(".messenger-infoView .userList").show();
 
-
        // fetch messages
-       fetchMessages(channel_id, true);
+       id='';
+       fetchMessages(id, channel_id, true);
 
        // focus on messaging input
        messageInput.focus();
@@ -630,11 +632,13 @@ function setMessagesLoading(loading = false) {
  }
  messagesLoading = loading;
 }
-function fetchMessages(id, newFetch = false) {
+
+function fetchMessages(id, channel_id, newFetch = false) {
  if (newFetch) {
    messagesPage = 1;
    noMoreMessages = false;
  }
+ console.log('test : '+channel_id);
  if (messenger != 0 && !noMoreMessages && !messagesLoading) {
    const messagesElement = messagesContainer.find(".messages");
    setMessagesLoading(true);
@@ -644,6 +648,7 @@ function fetchMessages(id, newFetch = false) {
      data: {
        _token: csrfToken,
        id: id,
+       channel_id: channel_id,
        page: messagesPage,
      },
      dataType: "JSON",
@@ -1422,6 +1427,7 @@ $(document).ready(function () {
      }
      const dataId = $(this).find("p[data-id]").attr("data-id");
      setMessengerId(dataId);
+     $('.channelID').val("groupChat");
      groupIDinfo(dataId);
    });
  
@@ -1432,6 +1438,7 @@ $(document).ready(function () {
    }
    const dataId = $(this).find("p[data-id]").attr("data-id");
    setMessengerId(dataId);
+   $('.channelID').val("userChat");
    IDinfo(dataId);
  });
 

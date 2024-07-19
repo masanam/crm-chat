@@ -151,7 +151,6 @@
               </div>
               <div class="p2 ms-auto">
                 <!-- <label class="form-label" for="status_id">Status</label> -->
-                {{ Auth::user()->profile->first_name }} {{ Auth::user()->profile->last_name }}
               </div>
             </div>
             <div class="mb-3">

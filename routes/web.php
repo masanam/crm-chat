@@ -471,13 +471,13 @@ Route::middleware(['auth'])->group(function () {
   Route::delete('leads/{id}', [LeadController::class, 'destroy'])->name('leads.destroy');
 
   // Route::resource('dealer', DealerController::class);
-  // Route::get('groups', [GroupController::class, 'index'])->name('group-list');
-  // Route::get('groups/create', [GroupController::class, 'create'])->name('groups.create');
-  // Route::post('groups', [GroupController::class, 'store'])->name('groups.store');
-  // Route::get('groups/{id}', [GroupController::class, 'show'])->name('groups.show');
-  // Route::get('groups/{id}/edit', [GroupController::class, 'edit'])->name('groups.edit');
-  // Route::put('groups/{id}', [GroupController::class, 'update'])->name('groups.update');
-  // Route::delete('groups/{id}', [GroupController::class, 'destroy'])->name('groups.destroy');
+  Route::get('groups', [GroupController::class, 'index'])->name('group-list');
+  Route::get('groups/create', [GroupController::class, 'create'])->name('groups.create');
+  Route::post('groups', [GroupController::class, 'store'])->name('groups.store');
+  Route::get('groups/{id}', [GroupController::class, 'show'])->name('groups.show');
+  Route::get('groups/{id}/edit', [GroupController::class, 'edit'])->name('groups.edit');
+  Route::put('groups/{id}', [GroupController::class, 'update'])->name('groups.update');
+  Route::delete('groups/{id}', [GroupController::class, 'destroy'])->name('groups.destroy');
 
 
   // Route::resource('dealer', DealerController::class);

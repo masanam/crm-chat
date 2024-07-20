@@ -2,22 +2,25 @@
 @php
 $groupList = App\Models\ChChannel::get();
 @endphp
-<div class="messenger">
+<div class="messenger app-chat">
     {{-- ----------------------Users/Groups lists side---------------------- --}}
     <div class="messenger-listView {{ !!$id ? 'conversation-active' : '' }}">
         {{-- Header and search bar --}}
         <div class="m-header">
-            <nav>
-                <a href="#"><i class="fas fa-inbox"></i> <span class="messenger-headTitle">MESSAGES</span> </a>
+            <nav style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; column-gap: 10px;">
+                    <img src="{{asset('assets/svg/icons/corporate_fare.svg')}}" />
+                    Internal
+                </div>
                 {{-- header buttons --}}
-                <nav class="m-header-right">
-                    <a href="#"><i class="fas fa-users group-btn"></i></a>
-                    <a href="#"><i class="fas fa-cog settings-btn"></i></a>
-                    <a href="#" class="listView-x"><i class="fas fa-times"></i></a>
-                </nav>
+                <div class="m-header-right">
+                    <button class="button-none group-btn" style="background: transparent;border: none;padding: 0px;">
+                        <i class="fas fa-plus" style="color: #000"></i>
+                    </button>
+                </div>
             </nav>
             {{-- Search input --}}
-            <input type="text" class="messenger-search" placeholder="Search" />
+            <input type="text" class="messenger-search" placeholder="Search groups/conversations" />
             {{-- Tabs --}}
             {{-- <div class="messenger-listView-tabs">
                 <a href="#" class="active-tab" data-view="users">
@@ -30,25 +33,29 @@ $groupList = App\Models\ChChannel::get();
            {{-- ---------------- [ User Tab ] ---------------- --}}
            <div class="show messenger-tab users-tab app-scroll" data-view="users">
                {{-- Favorites --}}
-               <div class="favorites-section">
+               <div class="favorites-section" style="display: none;">
                 <p class="messenger-title"><span>Favorites</span></p>
                 <div class="messenger-favorites app-scroll-hidden"></div>
                </div>
                {{-- Saved Messages --}}
-               <p class="messenger-title"><span>Your Space</span></p>
-               {!! view('Chatify::layouts.listItem', ['get' => 'saved']) !!}
+               
                {{-- Contact --}}
-               <p class="messenger-title"><span>All Messages</span></p>
-               <p class="messenger-title"><span>Groups</span></p>
+               <div class="messenger-title border-top">
+                <span>Groups</span>
+                <div style="display: flex; align-items: center; column-gap: 10px;">
+                    <p class="badge">10</p>
+                    <i class="fas fa-chevron-down" style="color: #000"></i>
+                </div>
+               </div>
                <div class="listOfgroups">
                 @foreach ($groupList as $group)
                 <table class="group-list-item" data-contact="{{ $group->id }}">
                 <tr data-action="0">
                         {{-- Avatar side --}}
-                        <td style="position: relative">
-                                <div class="avatar av-m"
-        style="background-image: url('{{ $group->avatar }}');">
-        </div>
+                        <td>
+                            <div class="avatar-initial">
+                                <span style="color: #000; font-weight: 600;">{{ Helper::getInitial($group->name); }}</span>
+                            </div>
                         </td>
                         {{-- center side --}}
                         <td>
@@ -63,7 +70,13 @@ $groupList = App\Models\ChChannel::get();
 
                </div>
 
-               <p class="messenger-title"><span>1 on 1</span></p>
+               <div class="messenger-title">
+                <span>1 on 1</span>
+                <div style="display: flex; align-items: center; column-gap: 10px;">
+                    <p class="badge">10</p>
+                    <i class="fas fa-chevron-down" style="color: #000"></i>
+                </div>
+               </div>
                <div class="listOfContacts"></div>
            </div>
              {{-- ---------------- [ Search Tab ] ---------------- --}}
@@ -85,15 +98,17 @@ $groupList = App\Models\ChChannel::get();
                 {{-- header back button, avatar and user name --}}
                 <div class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
                     <a href="#" class="show-listView"><i class="fas fa-arrow-left"></i></a>
-                    <div class="avatar av-s header-avatar" style="margin: 0px 10px; margin-top: -5px; margin-bottom: -5px;">
-                    </div>
                     <a href="#" class="user-name">{{ config('chatify.name') }}</a>
+                    <div class="badge-status">
+                        <div class="status-online"></div>
+                        <span>Online</span>
+                    </div>
                 </div>
                 {{-- header buttons --}}
                 <nav class="m-header-right">
-                    <a href="#" class="add-to-favorite"><i class="fas fa-star"></i></a>
-                    <a href="/"><i class="fas fa-home"></i></a>
-                    <a href="#" class="show-infoSide"><i class="fas fa-info-circle"></i></a>
+                    <a href="#" class="show-infoSide">
+                        <img src="{{ asset('assets/svg/icons/info.svg') }}" alt="info" width="20">
+                    </a>
                 </nav>
             </nav>
             {{-- Internet connection --}}

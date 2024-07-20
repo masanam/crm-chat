@@ -1,7 +1,7 @@
 <?php
 $seenIcon = (!!$seen ? 'check-double' : 'check');
 $timeAndSeen = "<span data-time='$created_at' class='message-time'>
-        ".($isSender ? "<span class='fas fa-$seenIcon' seen'></span>" : '' )." <span class='time'>$timeAgo</span>
+     <span class='time'>$timeAgo</span> ".($isSender ? "<span class='fas fa-$seenIcon' seen'></span>" : '' )."
     </span>";
 ?>
 
@@ -14,8 +14,13 @@ $timeAndSeen = "<span data-time='$created_at' class='message-time'>
     @endif
     {{-- Card --}}
     <div class="message-card-content">
+        @if (!$isSender)
+        <div class="avatar-initial" style="width: 24px; height: 24px; font-size: 10px; padding: 4px;">
+            <span style="color: #000; font-weight: 600;">{{ Helper::getInitial('R'); }}</span>
+        </div>
+        @endif
         @if (@$attachment->type != 'image' || $message)
-            <div class="message">
+            <div class="message" style="display: flex; flex-direction: column; border-radius: 12px;">
                 {!! ($message == null && $attachment != null && @$attachment->type != 'file') ? $attachment->title : nl2br($message) !!}
                 {!! $timeAndSeen !!}
                 {{-- If attachment is a file --}}
@@ -33,6 +38,11 @@ $timeAndSeen = "<span data-time='$created_at' class='message-time'>
             <div style="margin-bottom:5px">
                 {!! $timeAndSeen !!}
             </div>
+        </div>
+        @endif
+        @if ($isSender)
+        <div class="avatar-initial" style="width: 24px; height: 24px; font-size: 10px; padding: 4px;">
+            <span style="color: #000; font-weight: 600;">{{ Helper::getInitial('D'); }}</span>
         </div>
         @endif
     </div>

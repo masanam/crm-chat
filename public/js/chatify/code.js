@@ -270,6 +270,19 @@ let app_modal = function ({
 };
 
 /**
+ * get initial name
+ */
+const getInitials = function (string) {
+  var names = string.split(' '),
+      initials = names[0].substring(0, 1).toUpperCase();
+  
+  if (names.length > 1) {
+      initials += names[names.length - 1].substring(0, 1).toUpperCase();
+  }
+  return initials;
+};
+
+/**
 *-------------------------------------------------------------
 * Slide to bottom on [action] - e.g. [message received, sent, loaded]
 *-------------------------------------------------------------
@@ -502,9 +515,10 @@ function groupIDinfo(channel_id) {
        messageInput.focus();
 
        // update info in view
-       $(".messenger-infoView .header-name").text('Group Details');
+       $(".messenger-infoView .header-name").text('Abount Group');
        $(".messenger-infoView .info-name").text(data.fetch.name);
        $(".m-header-messaging .user-name").text(data.fetch.name);
+       $(".messenger-infoView .initial").text(getInitials(data.fetch.name));
 
        // Star status
        data.favorite > 0

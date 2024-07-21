@@ -6,7 +6,7 @@
 ?>
 <nav>
     <a href="#"><i class="fas fa-times" style="color: #000;"></i></a>
-    <p class="header-name">{{isset($channel->owner_id) ? 'Abount Group' : 'Profile'}}</p>
+    <p class="header-name">{{isset($channel->owner_id) ? 'About Group' : 'Profile'}}</p>
 </nav>
 
 <div class="avatar-initial" style="padding: 6px;">
@@ -15,7 +15,7 @@
 <p class="info-name">{{ config('chatify.name') }}</p>
 @if($isGroup)
     <div style="padding: 12px 14px;">
-        <div style="
+        <div class="group-info" style="
             border-radius: 12px;
             border: 1px solid #DDE0E4;
             background: #FFF; display: flex; flex-direction: column; padding: 12px 10px; row-gap: 12px;">
@@ -37,7 +37,51 @@
                 @endforeach
             </div>
         </div>
+        
+        <div class="group-common" style="
+            border-radius: 12px;
+            background: #FFF; display: flex; flex-direction: column; padding: 12px 10px; row-gap: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 16px; font-weight: 600;">Groups in common</span>
+            </div>
+            <div class="app-scroll users-list">
+                <div class="user-list-item" style="display: flex; justify-content: space-between; margin-top: 12px;">
+                    <div style="display: flex; column-gap: 8px;">
+                        <div class="avatar-initial">
+                            <span style="color: #000; font-weight: 600;">{{ Helper::getInitial('Group 1'); }}</span>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: start;">
+                            <span style="font-size: 16px; font-weight: 600;">Group 1</span>
+                            <span style="font-size: 14px; color: #616A75;">30 Members</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+@else
+<div style="padding: 12px 14px;">
+    <div style="
+        border-radius: 12px;
+        background: #FFF; display: flex; flex-direction: column; padding: 12px 10px; row-gap: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 16px; font-weight: 600;">Groups in common</span>
+        </div>
+        <div class="app-scroll users-list">
+            <div class="user-list-item" style="display: flex; justify-content: space-between; margin-top: 12px;">
+                <div style="display: flex; column-gap: 8px;">
+                    <div class="avatar-initial">
+                        <span style="color: #000; font-weight: 600;">{{ Helper::getInitial('Group 1'); }}</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: start;">
+                        <span style="font-size: 16px; font-weight: 600;">Group 1</span>
+                        <span style="font-size: 14px; color: #616A75;">30 Members</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endif
 
 <div class="messenger-infoView-btns">

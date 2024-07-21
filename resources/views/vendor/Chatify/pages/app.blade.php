@@ -6,7 +6,7 @@ $groupList = App\Models\ChChannel::get();
     {{-- ----------------------Users/Groups lists side---------------------- --}}
     <div class="messenger-listView {{ !!$id ? 'conversation-active' : '' }}">
         {{-- Header and search bar --}}
-        <div class="m-header">
+        <div class="m-header" style="background: #F7FAFA;">
             <nav style="display: flex; justify-content: space-between; align-items: center;">
                 <div style="display: flex; align-items: center; column-gap: 10px;">
                     <img src="{{asset('assets/svg/icons/corporate_fare.svg')}}" />
@@ -20,7 +20,7 @@ $groupList = App\Models\ChChannel::get();
                 </div>
             </nav>
             {{-- Search input --}}
-            <input type="text" class="messenger-search" placeholder="Search groups/conversations" />
+            <input type="text" class="messenger-search" placeholder="Search groups/conversations" style="background: #EFF1F8;" />
             {{-- Tabs --}}
             {{-- <div class="messenger-listView-tabs">
                 <a href="#" class="active-tab" data-view="users">
@@ -28,7 +28,7 @@ $groupList = App\Models\ChChannel::get();
             </div> --}}
         </div>
         {{-- tabs and lists --}}
-        <div class="m-body contacts-container">
+        <div class="m-body contacts-container" style="background: #F7FAFA;">
            {{-- Lists [Users/Group] --}}
            {{-- ---------------- [ User Tab ] ---------------- --}}
            <div class="show messenger-tab users-tab app-scroll" data-view="users">
@@ -41,11 +41,13 @@ $groupList = App\Models\ChChannel::get();
                
                {{-- Contact --}}
                <div class="messenger-title border-top">
-                <span>Groups</span>
-                <div style="display: flex; align-items: center; column-gap: 10px;">
-                    <p class="badge">10</p>
-                    <i class="fas fa-chevron-down" style="color: #000"></i>
-                </div>
+                <span style="background: transparent;">Groups</span>
+                <button class="dropdown-toggle-group" style="border: none; background: none; cursor: pointer;">
+                    <div style="display: flex; align-items: center; column-gap: 10px;">
+                        <p class="badge">10</p>
+                        <i class="fas fa-chevron-down" style="color: #000"></i>
+                    </div>
+                </button>
                </div>
                <div class="listOfgroups">
                 @foreach ($groupList as $group)
@@ -71,18 +73,20 @@ $groupList = App\Models\ChChannel::get();
                </div>
 
                <div class="messenger-title">
-                <span>1 on 1</span>
-                <div style="display: flex; align-items: center; column-gap: 10px;">
-                    <p class="badge">10</p>
-                    <i class="fas fa-chevron-down" style="color: #000"></i>
-                </div>
+                <span style="background: transparent;">1 on 1</span>
+                <button class="dropdown-toggle-one" style="border: none; background: none; cursor: pointer;">
+                    <div style="display: flex; align-items: center; column-gap: 10px;">
+                        <p class="badge">10</p>
+                        <i class="fas fa-chevron-down" style="color: #000"></i>
+                    </div>
+                </button>
                </div>
                <div class="listOfContacts"></div>
            </div>
              {{-- ---------------- [ Search Tab ] ---------------- --}}
            <div class="messenger-tab search-tab app-scroll" data-view="search">
                 {{-- items --}}
-                <p class="messenger-title"><span>Search</span></p>
+                <p class="messenger-title"><span style="background: transparent;">Search</span></p>
                 <div class="search-records">
                     <p class="message-hint center-el"><span>Type to search..</span></p>
                 </div>
@@ -120,7 +124,7 @@ $groupList = App\Models\ChChannel::get();
         </div>
 
         {{-- Messaging area --}}
-        <div class="m-body messages-container app-scroll">
+        <div class="m-body messages-container app-scroll" style="background: #FFFFFF;">
             <div class="messages">
                 <p class="message-hint center-el"><span>Please select a chat to start messaging</span></p>
             </div>
@@ -142,7 +146,7 @@ $groupList = App\Models\ChChannel::get();
         @include('Chatify::layouts.sendForm')
     </div>
     {{-- ---------------------- Info side ---------------------- --}}
-    <div class="messenger-infoView app-scroll">
+    <div class="messenger-infoView app-scroll" style="background: #F7FAFA;">
         {{-- nav actions --}}
         {!! view('Chatify::layouts.info-group')->render() !!}
     </div>

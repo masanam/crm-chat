@@ -20,7 +20,7 @@ $timeAndSeen = "<span data-time='$created_at' class='message-time'>
         </div>
         @endif
         @if (@$attachment->type != 'image' || $message)
-            <div class="message" style="display: flex; flex-direction: column; border-radius: 12px;">
+            <div class="message" style="display: flex; flex-direction: column; border-radius: 12px; background: #EBECEF; color: #000;">
                 {!! ($message == null && $attachment != null && @$attachment->type != 'file') ? $attachment->title : nl2br($message) !!}
                 {!! $timeAndSeen !!}
                 {{-- If attachment is a file --}}

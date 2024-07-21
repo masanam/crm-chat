@@ -1,4 +1,4 @@
-<div class="messenger-sendCard">
+<div class="messenger-sendCard" style="background: #F1F2F4;">
     <form id="message-form" method="POST" action="{{ route('send.message') }}" enctype="multipart/form-data" style="display: flex; flex-direction: column;">
         @csrf
 

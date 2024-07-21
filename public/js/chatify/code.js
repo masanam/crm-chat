@@ -423,6 +423,8 @@ function IDinfo(id) {
        $(".messenger-infoView .userGroup").hide();
        $(".messenger-infoView .delete-group").hide();
        $(".messenger-infoView .userList").hide();
+       $(".messenger-infoView .group-info").hide();
+       $(".messenger-infoView .group-common").show();
 
        // fetch messages
        channel_id = '';
@@ -430,9 +432,10 @@ function IDinfo(id) {
        // focus on messaging input
        messageInput.focus();
        // update info in view
-       $(".messenger-infoView .header-name").text('User Details');
+       $(".messenger-infoView .header-name").text('Profile');
        $(".messenger-infoView .info-name").text(data.fetch.name);
        $(".m-header-messaging .user-name").text(data.fetch.name);
+       $(".messenger-infoView .initial").text(getInitials(data.fetch.name));
 
        // Star status
        data.favorite > 0
@@ -506,6 +509,7 @@ function groupIDinfo(channel_id) {
        $(".messenger-infoView .userGroup").show();
        $(".messenger-infoView .delete-group").show();
        $(".messenger-infoView .userList").show();
+       $(".messenger-infoView .group-common").hide();
 
        // fetch messages
        id='';
@@ -515,7 +519,7 @@ function groupIDinfo(channel_id) {
        messageInput.focus();
 
        // update info in view
-       $(".messenger-infoView .header-name").text('Abount Group');
+       $(".messenger-infoView .header-name").text('About Group');
        $(".messenger-infoView .info-name").text(data.fetch.name);
        $(".m-header-messaging .user-name").text(data.fetch.name);
        $(".messenger-infoView .initial").text(getInitials(data.fetch.name));
@@ -1785,32 +1789,32 @@ window.visualViewport.addEventListener("resize", (e) => {
 * Emoji Picker
 *-------------------------------------------------------------
 */
-const emojiButton = document.querySelector(".emoji-button");
+// const emojiButton = document.querySelector(".emoji-button");
 
-const emojiPicker = new EmojiButton({
- theme: messengerTheme,
- autoHide: false,
- position: "top-start",
-});
+// const emojiPicker = new EmojiButton({
+//  theme: messengerTheme,
+//  autoHide: false,
+//  position: "top-start",
+// });
 
-emojiButton.addEventListener("click", (e) => {
- e.preventDefault();
- emojiPicker.togglePicker(emojiButton);
-});
+// emojiButton.addEventListener("click", (e) => {
+//  e.preventDefault();
+//  emojiPicker.togglePicker(emojiButton);
+// });
 
-emojiPicker.on("emoji", (emoji) => {
- const el = messageInput[0];
- const startPos = el.selectionStart;
- const endPos = el.selectionEnd;
- const value = messageInput.val();
- const newValue =
-   value.substring(0, startPos) +
-   emoji +
-   value.substring(endPos, value.length);
- messageInput.val(newValue);
- el.selectionStart = el.selectionEnd = startPos + emoji.length;
- el.focus();
-});
+// emojiPicker.on("emoji", (emoji) => {
+//  const el = messageInput[0];
+//  const startPos = el.selectionStart;
+//  const endPos = el.selectionEnd;
+//  const value = messageInput.val();
+//  const newValue =
+//    value.substring(0, startPos) +
+//    emoji +
+//    value.substring(endPos, value.length);
+//  messageInput.val(newValue);
+//  el.selectionStart = el.selectionEnd = startPos + emoji.length;
+//  el.focus();
+// });
 
 /**
 *-------------------------------------------------------------
@@ -2067,3 +2071,14 @@ function updateElementsDateToTimeAgo() {
 setInterval(() => {
  updateElementsDateToTimeAgo();
 }, 60000);
+
+
+/**
+ * watch event click dropdown toggle chat group and one on one
+ */
+$('.messenger-listView .m-body .dropdown-toggle-group').on('click', () => {
+  $(".messenger-listView .m-body .listOfgroups").toggle();
+})
+$('.messenger-listView .m-body .dropdown-toggle-one').on('click', () => {
+  $(".messenger-listView .m-body .listOfContacts").toggle();
+})

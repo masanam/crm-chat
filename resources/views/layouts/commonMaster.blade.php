@@ -24,6 +24,9 @@ $contentLayout = (isset($container) ? (($container === 'container-xxl') ? "layou
   <link rel="canonical" href="{{ config('variables.productPage') ? config('variables.productPage') : '' }}">
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
+  <meta name="id" content="{{ Auth::user()->id }}">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="url" content="{{ url('').'/'.config('chatify.routes.prefix') }}" data-user="{{ Auth::user()->id }}">
 
 
 

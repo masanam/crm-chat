@@ -6,11 +6,11 @@
 
 document.addEventListener('DOMContentLoaded', function () {
   (async function () {
-    await fetchChatData();
-    fetchInternalNotes();
+    // await fetchChatData();
+    // fetchInternalNotes();
 
     // Panggil fungsi fetchChatData setiap 7 detik
-    setInterval(fetchChatData, 7000);
+    // setInterval(fetchChatData, 7000);
     const chatContactsBody = document.querySelector('.app-chat-contacts .sidebar-body'),
       chatContactListItems = [].slice.call(
         document.querySelectorAll('.chat-contact-list-item:not(.chat-contact-list-item-title)')

@@ -20,8 +20,9 @@
     ];
 
     $listTabs = [$tab, $tab2, $tab3];
-    $customers = \App\Models\Chat::with('dealer')->distinct('from')->orderby('from')->get();
 
+    $customers = \App\Models\Chat::with('dealer')->distinct('from')->orderby('from')->get();
+    //dd($customers); 
 @endphp
 
 <section class="d-flex tab-pane fade active show" id="chat-view" role="tabpanel">
@@ -36,16 +37,16 @@
                                     <a class="d-flex align-items-center">
                                         <div class="flex-shrink-0 avatar">
                                             <span
-                                                class="avatar-initial rounded-8 bg-label-success text-dark fw-bolder">AR</span>
+                                                class="avatar-initial rounded-8 bg-label-success text-dark fw-bolder">{{ Helper::getInitial($value->dealer?->name); }}</span>
                                         </div>
 
                                         <div class="d-flex flex-column chat-contact-info flex-grow-1 ms-2 gap-2">
                                             <div class="d-flex flex-column gap-1">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value->id }}" data-type="contact">
-                                                {{ $value->to }}</h6>
-                                                        <small>{{ $value->updated_at->diffForHumans() }}</small>
-                                                        </div>
+                                                    <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value->id }}" data-type="contact">
+                                                        {{ $value->to }}</h6>
+                                                    <small>{{ $value->updated_at->diffForHumans() }}</small>
+                                                </div>
                                                 <small>{{ $value->dealer?->name }}</small>
                                             </div>
                                             <div>

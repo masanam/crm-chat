@@ -3,7 +3,7 @@
 @section('title', 'Customers - Apps')
 
 @section('vendor-style')
-<link rel='stylesheet' href='https://unpkg.com/nprogress@0.2.0/nprogress.css'/>
+    <link rel='stylesheet' href='https://unpkg.com/nprogress@0.2.0/nprogress.css'/>
     <link rel="stylesheet" href="{{asset('assets/vendor/libs/jkanban/jkanban.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/vendor/libs/toastr/toastr.css')}}" />
@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/app-chat.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/customer.css') }}" />
     <link rel="stylesheet" href="{{asset('css/components/ticket-kanban.css')}}" />
+    <link rel="stylesheet" href="{{asset('assets/css/box-chat.css')}}" />
+
 @endsection
 
 @section('vendor-script')
@@ -25,11 +27,10 @@
 @endsection
 
 @section('page-script')
-    <script src="{{ asset('assets/js/app-chat.js') }}"></script>
-    <script src="{{ asset('assets/js/components/chat-history.js') }}"></script>
+    <!-- <script src="{{ asset('assets/js/app-chat.js') }}"></script>
+    <script src="{{ asset('assets/js/components/chat-history.js') }}"></script> -->
     <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
-    <script src="{{ asset('assets/js/customer.js') }}"></script>
-    <script src="{{asset('js/components/ticket-kanban.js')}}"></script>
+    <!-- <script src="{{ asset('assets/js/customer.js') }}"></script> -->
     <script src="{{ asset('js/chatify/autosize.js') }}"></script>
     <script src='https://unpkg.com/nprogress@0.2.0/nprogress.js'></script>
     <script src="{{asset('js/components/ticket-kanban.js')}}"></script>
@@ -93,7 +94,6 @@
     <div class="row">
         <div class="">
         <div class="messenger-favorites app-scroll-hidden"></div>
-
             <div class="app-chat customer overflow-hidden">
                 <x-page-title title="Customers" placeholderSearchText="Search leads" targetOpenModal="#customers"></x-page-title>
                 <div class="row g-0">

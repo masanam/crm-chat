@@ -423,10 +423,12 @@ function IDinfo(type, id) {
 
      dataType: "JSON",
      success: (data) => {
-      console.log(id);
+      // console.log(id);
 
        // fetch messages
        fetchMessages(type, id, true);
+       fetchWhatsapMessages(id, true);
+
        // focus on messaging input
        messageInput.focus();
        // update info in view
@@ -585,6 +587,7 @@ function sendMessage() {
        messageInput.focus();
      },
      success: (data) => {
+      // console.log('formSend '+data);
        if (data.error > 0) {
          // message card error status
          errorMessageCard(tempID);
@@ -659,7 +662,7 @@ function fetchMessages(type, id, newFetch = false) {
      },
      dataType: "JSON",
      success: (data) => {
-      console.log('pesan : '+data.messages);
+      // console.log('pesan : '+data.messages);
       setMessagesLoading(false);
        if (messagesPage == 1) {
          messagesElement.html(data.messages);
@@ -691,6 +694,56 @@ function fetchMessages(type, id, newFetch = false) {
  }
 }
 
+function fetchWhatsapMessages(id, newFetch = false) {
+  if (newFetch) {
+    messagesPage = 1;
+    noMoreMessages = false;
+  }
+  if (messenger != 0 && !noMoreMessages && !messagesLoading) {
+    const messagesElement = messagesContainer.find(".messages");
+    setMessagesLoading(true);
+    $.ajax({
+      url: url + "/receive-chat",
+      method: "POST",
+      data: {
+        _token: csrfToken,
+        id: id,
+        page: messagesPage,
+      },
+      dataType: "JSON",
+      success: (data) => {
+       // console.log('pesan : '+data.messages);
+       setMessagesLoading(false);
+        if (messagesPage == 1) {
+          messagesElement.html(data.messages);
+          scrollToBottom(messagesContainer);
+        } else {
+          const lastMsg = messagesElement.find(
+            messagesElement.find(".message-card")[0]
+          );
+          const curOffset =
+            lastMsg.offset().top - messagesContainer.scrollTop();
+          messagesElement.prepend(data.messages);
+          messagesContainer.scrollTop(lastMsg.offset().top - curOffset);
+        }
+        // trigger seen event
+        // makeSeen(true);
+        // Pagination lock & messages page
+        noMoreMessages = messagesPage >= data?.last_page;
+        if (!noMoreMessages) messagesPage += 1;
+        // Enable message form if messenger not = 0; means if data is valid
+        if (messenger != 0) {
+          disableOnLoad(false);
+        }
+      },
+      error: (error) => {
+        setMessagesLoading(false);
+        console.error(error);
+      },
+    });
+  }
+ }
+ 
 /**
 *-------------------------------------------------------------
 * Cancel file attached in the message.

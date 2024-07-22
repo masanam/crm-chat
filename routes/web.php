@@ -198,10 +198,15 @@ Route::group(['middleware' => ['auth']], function() {
   Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
 });
 
+/** chat */
 Route::post('/idInfo', [MessagesController::class,'idFetchData']);
 Route::get('/customers/{id}', [MessagesController::class,'index']);
 Route::post('/fetchMessages', [MessagesController::class,'fetch'])->name('fetch.messages');
 Route::post('/shared',  [MessagesController::class,'sharedPhotos'])->name('shared');
+Route::post('/makeSeen', [MessagesController::class,'seen'])->name('messages.seen');
+Route::post('/receive-chat', [Chat::class, 'receiveWhatsAppMessage']);
+
+Route::post('/sendMessage', [MessagesController::class,'send'])->name('send.message');
 
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');
 // Route::get('/dashboard/crm', [Crm::class, 'index'])->name('dashboard-crm');

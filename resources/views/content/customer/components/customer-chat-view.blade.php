@@ -81,7 +81,7 @@
                                                         {{ $value->type }}
                                                     </span>
                                                 </div>
-                                                <button class="btn-route-customer">
+                                                <button class="btn-route-customer" data-id="{{ $value->id }}">
                                                     <img src="{{ asset('assets/svg/icons/info.svg') }}" alt="info"
                                                     width="20">
                                                 </button>
@@ -116,7 +116,7 @@
                 {{-- header back button, avatar and user name --}}
                 <div class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
                     <a href="#" class="show-listView"><i class="fas fa-arrow-left"></i></a>
-                    <a href="#" class="user-name">{{ config('chatify.name') }}</a>
+                    <a href="#" class="user-name">{{ 'Chat Box' }}</a>
                     <div class="badge-status">
                         <div class="status-online"></div>
                         <span>Online</span>

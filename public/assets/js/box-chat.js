@@ -1392,6 +1392,17 @@ $(document).ready(function () {
  });
 
  // tabs on click, show/hide...
+ const btnInfo = document.querySelector('.btn-route-customer');
+ if (btnInfo) {
+  btnInfo.addEventListener('click', (e) => {
+    e.stopPropagation()
+    // window.location.href = '/customers/test'
+    // const uid = $(this).find("div.avatar").attr("data-id");
+    const uid = $(this).find("button[data-id]").attr("data-id");
+    routerPush(document.title, `${url}/customers/${uid}`); 
+  })
+ }
+
  $(".messenger-listView-tabs a").on("click", function () {
    var dataView = $(this).attr("data-view");
    $(".messenger-listView-tabs a").removeClass("active-tab");

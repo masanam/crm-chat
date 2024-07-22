@@ -104,6 +104,15 @@ $chat-list-margin: 1rem;
     border-radius: 8px;
   }
 
+  .chat-search-input {
+    border: none !important;
+    background: transparent;
+  }
+
+  .chat-search-input:focus {
+    border: 1px solid transparent;
+  }
+
   .app-chat-contacts {
     position: absolute;
     left: calc(-#{$chat-contact-width} - 1rem);

@@ -140,7 +140,7 @@ body {
   padding-top: 15px;
   overflow-x: hidden;
   overflow-y: auto;
-  height: 60%;
+  height: 100%;
 }
 .m-header {
   font-weight: 600;
@@ -243,7 +243,7 @@ body {
 }
 .m-list-active span,
 .m-list-active p {
-  color: #fff !important;
+  color: #000 !important;
 }
 
 .m-list-active,
@@ -252,7 +252,7 @@ body {
   background: #33B6B9 !important;
 }
 .m-list-active b {
-  background: #fff !important;
+  background: #000 !important;
   color: #33B6B9 !important;
 }
 .m-list-active .activeStatus {

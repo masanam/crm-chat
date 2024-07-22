@@ -25,7 +25,8 @@
     $customers = \App\Models\Chat::with('lead')
       ->distinct('from')
       ->where('to', env('TWILIO_WHATSAPP_FROM'))
-      ->orderby('from')
+      ->orderBy('from', 'ASC')
+      ->orderBy('created_at','DESC')
       ->get();
 
       //dd($customers);
@@ -169,7 +170,7 @@
                                 <img src="{{ asset('assets/svg/icons/icon-upload.svg') }}" alt="upload" width="24" style="cursor: pointer;">
                                 <input disabled='disabled' type="file" class="upload-attachment" name="file" accept=".{{implode(', .',config('chatify.attachments.allowed_images'))}}, .{{implode(', .',config('chatify.attachments.allowed_files'))}}" />
                             </label>
-                            <input type="hidden" name="channelId" id="channelId" class="channelId" value="">
+                            <input type="hidden" name="type" id="type" value="contactChat">
                             <img src="{{ asset('assets/svg/icons/icon-bolt.svg') }}" alt="template" width="24" style="cursor: pointer;">
                             <img src="{{ asset('assets/svg/icons/icon-note-alt.svg') }}" alt="internal-note" width="24" style="cursor: pointer;">
                         </div>

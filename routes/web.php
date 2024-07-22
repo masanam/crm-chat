@@ -203,6 +203,8 @@ Route::get('/customers/{id}', [MessagesController::class,'index']);
 Route::post('/fetchMessages', [MessagesController::class,'fetch'])->name('fetch.messages');
 Route::post('/shared',  [MessagesController::class,'sharedPhotos'])->name('shared');
 
+Route::get('/customers/details/{id}', [MessagesController::class,'index']);
+
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');
 // Route::get('/dashboard/crm', [Crm::class, 'index'])->name('dashboard-crm');
 // locale

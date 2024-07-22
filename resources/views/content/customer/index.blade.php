@@ -14,7 +14,9 @@
 @section('page-style')
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/app-chat.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/customer.css') }}" />
-    <link rel="stylesheet" href="{{asset('css/components/ticket-kanban.css')}}" />
+    <link rel="stylesheet" href="{{ asset('css/components/ticket-kanban.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/box-chat.css')}}" />
+
 @endsection
 
 @section('vendor-script')

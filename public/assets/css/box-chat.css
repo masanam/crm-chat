@@ -140,7 +140,7 @@ body {
   padding-top: 15px;
   overflow-x: hidden;
   overflow-y: auto;
-  height: 100%;
+  height: 60%;
 }
 .m-header {
   font-weight: 600;
@@ -249,14 +249,14 @@ body {
 .m-list-active,
 .m-list-active:hover,
 .m-list-active:focus {
-  background: var(--primary-color) !important;
+  background: #33B6B9 !important;
 }
 .m-list-active b {
   background: #fff !important;
-  color: var(--primary-color) !important;
+  color: #33B6B9 !important;
 }
 .m-list-active .activeStatus {
-  border-color: var(--primary-color) !important;
+  border-color: #33B6B9 !important;
 }
 
 .group-list-item td {

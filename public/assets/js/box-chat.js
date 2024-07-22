@@ -73,6 +73,7 @@ function routerPush(title, url) {
  $("meta[name=url]").attr("content", url);
  return window.history.pushState({}, title || document.title, url);
 }
+
 function updateSelectedContact(user_id) {
  $(document).find(".messenger-list-item").removeClass("m-list-active");
  $(document)
@@ -81,6 +82,16 @@ function updateSelectedContact(user_id) {
    )
    .addClass("m-list-active");
 }
+
+function updateSelectedContactChat(contact_id) {
+  $(document).find(".chat-contact-list-item").removeClass("m-list-active");
+  $(document)
+    .find(
+      ".chat-contact-list-item[data-contact=" + (contact_id || getMessengerId()) + "]"
+    )
+    .addClass("m-list-active");
+ }
+ 
 /**
 *-------------------------------------------------------------
 * Global Templates
@@ -387,7 +398,7 @@ function errorMessageCard(id) {
 * Fetch id data (user/group) and update the view
 *-------------------------------------------------------------
 */
-function IDinfo(id) {
+function IDinfo(type, id) {
  // clear temporary message id
  temporaryMsgId = 0;
  // clear typing now
@@ -403,46 +414,22 @@ function IDinfo(id) {
    $.ajax({
      url: url + "/idInfo",
      method: "POST",
-     data: { _token: csrfToken, id },
+     data: {
+      _token: csrfToken,
+      type: type,
+      id: id,
+      page: messagesPage,
+    },
+
      dataType: "JSON",
      success: (data) => {
-       if (!data?.fetch) {
-         NProgress.done();
-         NProgress.remove();
-         return;
-       }
-       // avatar photo
-       $(".messenger-infoView")
-         .find(".avatar")
-         .css("background-image", 'url("' + data.user_avatar + '")');
-       $(".header-avatar").css(
-         "background-image",
-         'url("' + data.user_avatar + '")'
-       );
-       // Show shared and actions
-       $(".messenger-infoView .delete-conversation").show();
-       $(".messenger-infoView-shared").show();
-       $(".messenger-infoView .userGroup").hide();
-       $(".messenger-infoView .delete-group").hide();
-       $(".messenger-infoView .userList").hide();
-       $(".messenger-infoView .group-info").hide();
-       $(".messenger-infoView .group-common").show();
+      console.log(id);
 
        // fetch messages
-       channel_id = '';
-       fetchMessages(id, channel_id, true);
+       fetchMessages(type, id, true);
        // focus on messaging input
        messageInput.focus();
        // update info in view
-       $(".messenger-infoView .header-name").text('Profile');
-       $(".messenger-infoView .info-name").text(data.fetch.name);
-       $(".m-header-messaging .user-name").text(data.fetch.name);
-       $(".messenger-infoView .initial").text(getInitials(data.fetch.name));
-
-       // Star status
-       data.favorite > 0
-         ? $(".add-to-favorite").addClass("favorite")
-         : $(".add-to-favorite").removeClass("favorite");
        // form reset and focus
        $("#message-form").trigger("reset");
        cancelAttachment();
@@ -653,7 +640,7 @@ function setMessagesLoading(loading = false) {
  messagesLoading = loading;
 }
 
-function fetchMessages(id, channel_id, newFetch = false) {
+function fetchMessages(type, id, newFetch = false) {
  if (newFetch) {
    messagesPage = 1;
    noMoreMessages = false;
@@ -667,12 +654,12 @@ function fetchMessages(id, channel_id, newFetch = false) {
      data: {
        _token: csrfToken,
        id: id,
-       channel_id: channel_id,
+       type: type,
        page: messagesPage,
      },
      dataType: "JSON",
      success: (data) => {
-      console.log('test : '+data.messages);
+      console.log('pesan : '+data.messages);
       setMessagesLoading(false);
        if (messagesPage == 1) {
          messagesElement.html(data.messages);
@@ -1367,13 +1354,13 @@ function setActiveStatus(status) {
 */
 $(document).ready(function () {
  // get contacts list
- getContacts();
+//  getContacts();
 
  // get contacts list
- getFavoritesList();
+//  getFavoritesList();
 
    // group chat modal event
-   groupChatAddingModalInit();
+  //  groupChatAddingModalInit();
 
  // Clear typing timeout
  clearTimeout(typingTimeout);
@@ -1432,6 +1419,14 @@ $(document).ready(function () {
    // updateSelectedContact(groupId);
  });
 
+ $("body").on("click", ".chat-contact-list-item", function () {
+  $(".chat-contact-list-item").removeClass("m-list-active");
+  $(this).addClass("m-list-active");
+  const contact_id = $(this).attr("data-contact");
+  routerPush(document.title, `${url}/customers/${contact_id}`);
+  updateSelectedContactChat(contact_id);
+});
+
  // show info side button
  $(".messenger-infoView nav a , .show-infoSide").on("click", function () {
    $(".messenger-infoView").toggle();
@@ -1454,10 +1449,9 @@ $(document).ready(function () {
  // click action for list item [user/group]
  $("body").on("click", ".chat-contact-list-item", function () {
    const dataId = $(this).find("h6[data-id]").attr("data-id");
-   console.log(dataId);
-  //  setMessengerId(dataId);
-  //  $('.channelID').val("userChat");
-  //  IDinfo(dataId);
+   setMessengerId(dataId);
+   $('.channelID').val("contactChat");
+   IDinfo("contactChat", dataId);
  });
 
  // click action for favorite button

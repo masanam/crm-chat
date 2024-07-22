@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client as GuzzleHttp;
 use Stripe;
 use Session;
 use Illuminate\View\View;
@@ -65,6 +67,71 @@ class StripePaymentController extends Controller
     //   "phone" => "09876554321"
     //   "stripeToken" => "tok_1PbH4VP2jpJZ1J5slt7Tedf2"
 
+    $organization = \App\Models\Organization::create([
+        'name' => $request->company,
+        'industry' => $request->industry,
+        'number_of_team_members' => $request->team_number,
+      ]);
+      $dealer = \App\Models\Dealer::create([
+        'name' => $request->company,
+        'business_phone' => $request->phone_number,
+        'meta_business' => $request->phone_number,
+        'wa_business' => $request->phone_number,
+      ]);
+    
+      if ($organization) {
+        $client = \App\Models\Client::create([
+          'organization_id' => $organization->id,
+          'name' => $request->company,
+          'email' => $request->email,
+          'phone' => $request->phone_number,
+          // 'status' => $request->name,
+          // 'quota' => $request->name,
+          // 'expired_at' => $request->name,
+          'meta_business' => $request->phone_number,
+          'wa_business' => $request->phone_number,
+        ]);
+    
+        $response = Http::withHeaders([
+          'apikey' => env('SUPABASE_KEY'),
+          'Content-Type' => 'application/json',
+        ])->post(env('SUPABASE_URL') . '/auth/v1/signup', [
+          'email' => $request->email,
+          'password' => $request->new_password,
+        ]);
+
+        $r = json_decode($response, true);
+        
+        if (empty($r['id'])) {
+            return redirect('/sign-up');
+        } else {
+          $profile = \App\Models\Profile::create([
+            'id' => $r['id'],
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'role' => 'manager',
+            'dealer_id' => $dealer->id,
+            'client_id' => $client->id,
+            'job_title' => $request->job,
+          ]);
+    
+          if ($profile) {
+            $user = \App\Models\User::create([
+              'profile_id' => $r['id'],
+              'name' => $request->first_name.' '.$request->last_name,
+              'email' => $request->email,
+              'password' => \Illuminate\Support\Facades\Hash::make($request->new_password),
+            ]);
+    
+            // return redirect('/');
+          } else {
+            return redirect('/sign-up');
+          }
+        }
+      } else {
+        return redirect('/sign-up');
+      }
+    
       $data = $request;
       $email = strtolower($data['email']);
       $name = $data['first_name'].' '.$data['last_name'];
@@ -86,12 +153,12 @@ class StripePaymentController extends Controller
     // ]);
 
     //   $lastInsertedId= $profile ->id;
-      $user = User::create([
-        // 'profile_id' => $lastInsertedId,
-        'name' => ucwords(strtolower($name)),
-        'email' => $email,
-        'password' => Hash::make($data['new_password']),
-    ]);
+    //   $user = User::create([
+    //     // 'profile_id' => $lastInsertedId,
+    //     'name' => ucwords(strtolower($name)),
+    //     'email' => $email,
+    //     'password' => Hash::make($data['new_password']),
+    // ]);
     
     $user->sendEmailVerificationNotification();
 

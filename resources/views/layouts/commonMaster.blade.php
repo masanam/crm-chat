@@ -24,6 +24,8 @@ $contentLayout = (isset($container) ? (($container === 'container-xxl') ? "layou
   <link rel="canonical" href="{{ config('variables.productPage') ? config('variables.productPage') : '' }}">
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
+  <meta name="id" content="{{ Auth::user()?->id  }}">
+  <meta name="url" content="{{ url('/') }}" data-user="{{ Auth::user()?->id }}">
 
 
 

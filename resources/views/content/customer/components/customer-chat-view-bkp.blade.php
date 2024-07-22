@@ -20,21 +20,9 @@
     ];
 
     $listTabs = [$tab, $tab2, $tab3];
-    //$customers = \App\Models\Chat::with('dealer')->distinct('from')->orderby('from')->get();
 
-    $customers = \App\Models\Chat::with('lead')
-      ->distinct('from')
-      ->where('to', env('TWILIO_WHATSAPP_FROM'))
-      ->orderby('from')
-      ->get();
-
-      //dd($customers);
-    //$chatPhones = $chats->pluck('from')->toArray();
-
-    //$leadNotChats = \App\Models\Lead::where('dealer_id', $user->dealer_id)
-    //  ->whereNotIn('phone_number', $chatPhones)
-    //  ->get();
-
+    $customers = \App\Models\Chat::with('dealer')->distinct('from')->orderby('from')->get();
+    //dd($customers); 
 @endphp
 
 <section class="d-flex tab-pane fade active show" id="chat-view" role="tabpanel">
@@ -45,21 +33,21 @@
                     @if (count($myArray) > 0)
                         <ul class="list-unstyled chat-contact-list p-0 mt-2" id="chat-list">
                             @foreach ($customers as $key => $value)
-                                <li class="chat-contact-list-item" data-contact="{{ $value->from }}">
+                                <li class="chat-contact-list-item">
                                     <a class="d-flex align-items-center">
                                         <div class="flex-shrink-0 avatar">
                                             <span
-                                                class="avatar-initial rounded-8 bg-label-success text-dark fw-bolder">{{ Helper::getInitial($value->lead?->client_name); }}</span>
+                                                class="avatar-initial rounded-8 bg-label-success text-dark fw-bolder">{{ Helper::getInitial($value->dealer?->name); }}</span>
                                         </div>
 
                                         <div class="d-flex flex-column chat-contact-info flex-grow-1 ms-2 gap-2">
                                             <div class="d-flex flex-column gap-1">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value->from }}" data-type="contact">
-                                                {{ $value->from }}</h6>
-                                                        <small>{{ $value->updated_at->diffForHumans() }}</small>
-                                                        </div>
-                                                <small>{{ $value->lead?->client_name }}</small>
+                                                    <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value->id }}" data-type="contact">
+                                                        {{ $value->to }}</h6>
+                                                    <small>{{ $value->updated_at->diffForHumans() }}</small>
+                                                </div>
+                                                <small>{{ $value->dealer?->name }}</small>
                                             </div>
                                             <div>
                                                 <p class="chat-contact-status text-chat text-truncate mb-0">
@@ -107,80 +95,39 @@
     </x-sidebar-chat-contacts>
 
     <!-- Chat History -->
-    <div class="d-flex flex-column" style="width: 50%">
-    {{-- ----------------------Messaging side---------------------- --}}
-    <div class="messenger-messagingView">
-        {{-- header title [conversation name] amd buttons --}}
-        <div class="m-header m-header-messaging">
-            <nav class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
-                {{-- header back button, avatar and user name --}}
-                <div class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
-                    <a href="#" class="show-listView"><i class="fas fa-arrow-left"></i></a>
-                    <a href="#" class="user-name">{{ config('chatify.name') }}</a>
-                    <div class="badge-status">
-                        <div class="status-online"></div>
-                        <span>Online</span>
-                    </div>
-                </div>
-                {{-- header buttons --}}
-                <nav class="m-header-right">
-                    <a href="#" class="show-infoSide">
-                        <img src="{{ asset('assets/svg/icons/info.svg') }}" alt="info" width="20">
-                    </a>
-                </nav>
-            </nav>
-            {{-- Internet connection --}}
-            <div class="internet-connection">
-                <span class="ic-connected">Connected</span>
-                <span class="ic-connecting">Connecting...</span>
-                <span class="ic-noInternet">No internet access</span>
+    <div class="d-flex flex-column chat-history-wrapper" style="width: 50%">
+        <ul class="nav nav-tabs nav-tab-chat" role="tablist">
+            <li class="nav-item">
+              <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#wa" aria-controls="wa" aria-selected="true">WhatsApp</button>
+            </li>
+            <li class="nav-item">
+              <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#email" aria-controls="email" aria-selected="false">Email</button>
+            </li>
+            <li class="nav-item">
+              <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#we-chat" aria-controls="we-chat" aria-selected="false">WeChat</button>
+            </li>
+            <li class="nav-item">
+              <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#call" aria-controls="call" aria-selected="false">Calls</button>
+            </li>
+        </ul>
+        <div class="tab-content tab-content-chat">
+            <div class="tab-pane fade show active" id="wa" role="tabpanel">
+                <x-chat-history title="ww" typeTask="Toyota Avanza" :people="['Me']"
+                    type="cold"></x-chat-history>
+            </div>
+            <div class="tab-pane fade" id="email" role="tabpanel">
+                <x-chat-history title="xx" typeTask="Toyota Avanza" :people="['Me']"
+                    type="cold"></x-chat-history>
+            </div>
+            <div class="tab-pane fade" id="we-chat" role="tabpanel">
+                <x-chat-history title="Aditya Rahardi" typeTask="Toyota Avanza" :people="['Me']"
+                    type="cold"></x-chat-history>
+            </div>
+            <div class="tab-pane fade" id="call" role="tabpanel">
+                <x-chat-history title="Aditya Rahardi" typeTask="Toyota Avanza" :people="['Me']"
+                    type="cold"></x-chat-history>
             </div>
         </div>
-
-        {{-- Messaging area --}}
-        <div class="m-body messages-container app-scroll" style="background: #FFFFFF;">
-            <div class="messages">
-                <p class="message-hint center-el"><span>Please select a chat to start messaging</span></p>
-            </div>
-            {{-- Typing indicator --}}
-            <div class="typing-indicator">
-                <div class="message-card typing">
-                    <div class="message">
-                        <span class="typing-dots">
-                            <span class="dot dot-1"></span>
-                            <span class="dot dot-2"></span>
-                            <span class="dot dot-3"></span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        {{-- Send Message Form --}}
-        <div class="messenger-sendCard" style="background: #F1F2F4;">
-                <form id="message-form" method="POST" action="{{ route('send.message') }}" enctype="multipart/form-data" style="display: flex; flex-direction: column;">
-                    @csrf
-
-                    {{-- <button class="emoji-button"></span><span class="fas fa-smile"></button> --}}
-                    <textarea readonly='readonly' name="message" class="m-send app-scroll" placeholder="Write message"></textarea>
-                    <div class="wrapper-btn-action">
-                        <div style="display: flex; align-items: center; column-gap: 12px; margin-left: 8px;">
-                            <label>
-                                <img src="{{ asset('assets/svg/icons/icon-upload.svg') }}" alt="upload" width="24" style="cursor: pointer;">
-                                <input disabled='disabled' type="file" class="upload-attachment" name="file" accept=".{{implode(', .',config('chatify.attachments.allowed_images'))}}, .{{implode(', .',config('chatify.attachments.allowed_files'))}}" />
-                            </label>
-                            <input type="hidden" name="channelId" id="channelId" class="channelId" value="">
-                            <img src="{{ asset('assets/svg/icons/icon-bolt.svg') }}" alt="template" width="24" style="cursor: pointer;">
-                            <img src="{{ asset('assets/svg/icons/icon-note-alt.svg') }}" alt="internal-note" width="24" style="cursor: pointer;">
-                        </div>
-                        <button disabled='disabled' class="send-button">
-                            <img src="{{ asset('assets/svg/icons/send.svg') }}" alt="send" width="24">
-                        </button>
-                    </div>
-                </form>
-        </div>
-    </div>
-        
     </div>
     <!-- /Chat History -->
     <!-- Sidebar Right -->

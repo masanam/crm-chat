@@ -177,6 +177,8 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\FormBuilderController;
 use App\Http\Controllers\FormsController;
+use App\Http\Controllers\MessagesController;
+
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Route::get('/test123', [Chat::class, 'test']);
@@ -195,6 +197,11 @@ Route::group(['middleware' => ['auth']], function() {
   Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify')->middleware(['signed']);
   Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
 });
+
+Route::post('/idInfo', [MessagesController::class,'idFetchData']);
+Route::get('/customers/{id}', [MessagesController::class,'index']);
+Route::post('/fetchMessages', [MessagesController::class,'fetch'])->name('fetch.messages');
+Route::post('/shared',  [MessagesController::class,'sharedPhotos'])->name('shared');
 
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');
 // Route::get('/dashboard/crm', [Crm::class, 'index'])->name('dashboard-crm');
@@ -614,3 +621,5 @@ Route::get('get-form-builder', [FormsController::class, 'read']);
 Route::post('save-form-transaction', [FormsController::class, 'create']);
 
 // End Form Builder===============================================================
+
+

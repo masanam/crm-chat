@@ -1513,8 +1513,12 @@ $(document).ready(function () {
  // click action for list item [user/group]
  $("body").on("click", ".chat-contact-list-item", function () {
    const dataId = $(this).find("h6[data-id]").attr("data-id");
+   const dataName = $(this).find("h6[data-contact]").attr("data-contact");
+
    setMessengerId(dataId);
    $('.channelID').val("contactChat");
+   $('.client-name').html(dataName);
+
    IDinfo("contactChat", dataId);
  });
 

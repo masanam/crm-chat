@@ -477,7 +477,7 @@ class MessagesController extends Controller
         switch($type){
             case 'contactChat':
                 $query = \App\Models\Chat::with('lead')->where('to', $user_id)->where('from', env('TWILIO_WHATSAPP_FROM'))
-                ->orWhere('from',$user_id)->where('to', env('TWILIO_WHATSAPP_FROM'));
+                ->orWhere('from',$user_id)->where('to', env('TWILIO_WHATSAPP_FROM'))->orderBy('created_at','DESC');
                 break;
             case 'groupChat':
                 $query = Chatify::fetchMessagesQuery($request['id'])->latest();
@@ -488,6 +488,7 @@ class MessagesController extends Controller
         }
 
         $messages = $query->paginate($request->per_page ?? $this->perPage);
+        // $messages = $customers->sortByDesc('created_at');
         $totalMessages = $messages->total();
         $lastPage = $messages->lastPage();
         $response = [

@@ -270,6 +270,8 @@
         title="Add Contact"
         name="add-edit-contact"
         submitText="Save contact"
+        isPost="true"
+        url="{{ route('leads.change') }}"
         buttonSubmitClass=""
         buttonWrapperSubmitClass="d-flex justify-content-center align-items-center w-100"
     >
@@ -278,21 +280,22 @@
                 <div class="d-flex justify-content-between gap-5 w-100">
                     <x-input-floating
                         label="First Name"
-                        id="first name"
-                        name="first name"
+                        id="first_name"
+                        name="first_name"
+                        class="client-name"
                     >
                     </x-input-floating>
                     <x-input-floating
                         label="Last Name"
-                        id="last name"
-                        name="last name"
+                        id="last_name"
+                        name="last_name"
                     >
                     </x-input-floating>
                 </div>
                 <x-input-floating
                     label="Job Title"
-                    id="job title"
-                    name="job title"
+                    id="client-job"
+                    name="job_title"
                 >
                 </x-input-floating>
                 <div class="d-flex justify-content-between gap-5 w-100">
@@ -305,12 +308,13 @@
                         :options="$listChannels"
                     >
                     </x-input-floating>
-                    <x-input-floating
-                        label="Contact"
-                        id="contact"
-                        name="contact"
-                    >
-                    </x-input-floating>
+                    <div class="container-input">
+                    <div class="material-textfield">
+
+                    <input placeholder="" type="text" id="client-whatsapp" name="contact" value="" readonly/>
+                    <label for="client-whatsapp">Contact</label>
+                    </div>
+                    </div>
                 </div>
                 
                 {{-- !! Dont remove this tag --}}

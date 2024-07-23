@@ -1514,10 +1514,21 @@ $(document).ready(function () {
  $("body").on("click", ".chat-contact-list-item", function () {
    const dataId = $(this).find("h6[data-id]").attr("data-id");
    const dataName = $(this).find("h6[data-contact]").attr("data-contact");
+   const dataCompany = $(this).find("h6[data-company]").attr("data-company");
+   const dataJob = $(this).find("h6[data-job]").attr("data-job");
+
 
    setMessengerId(dataId);
    $('.channelID').val("contactChat");
-   $('.client-name').html(dataName);
+   dataName != "" ? $('.client-name').html(dataName) : $('.client-name').html(dataId); 
+   $('.client-whatsapp').html(dataId);
+   $('.client-company').html(dataCompany);
+   $('.client-job').html(dataJob);
+
+   $('#first_name').val(dataName);
+   $('#client-job').val(dataJob);
+   $('#client-whatsapp').val(dataId);
+
 
    IDinfo("contactChat", dataId);
  });

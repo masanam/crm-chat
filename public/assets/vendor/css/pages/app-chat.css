@@ -296,7 +296,7 @@
   opacity: 0;
   z-index: 5;
   transition: all 0.25s ease;
-  padding: 0px 16px 28px 16px;
+  padding: 12px 16px;
 }
 .layout-navbar-hidden .app-chat .app-chat-sidebar-right {
   height: calc(100vh - 7.5rem);

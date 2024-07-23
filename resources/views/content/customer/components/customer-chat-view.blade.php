@@ -151,11 +151,12 @@
     {{-- ----------------------Messaging side---------------------- --}}
     <div class="messenger-messagingView">
         {{-- header title [conversation name] amd buttons --}}
-        <div class="m-header m-header-messaging">
+        <div class="m-header m-header-messaging" style="padding: 8px 14px;">
             <nav class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
                 {{-- header back button, avatar and user name --}}
-                <p class="client-name">Whatsapp</p>
+                <span class="client-name">Whatsapp</span>
             </nav>
+            
             {{-- Internet connection --}}
             <div class="internet-connection">
                 <span class="ic-connected">Connected</span>
@@ -163,6 +164,12 @@
                 <span class="ic-noInternet">No internet access</span>
             </div>
         </div>
+        <span
+            id="countdown-session"
+            class="w-100"
+            style="font-size: 14px; background: #616A75; padding: 2px 0px; color: #fff; text-align: center;"
+        >
+        </span>
 
         {{-- Messaging area --}}
         <div class="m-body messages-container app-scroll" style="background: #FFFFFF;">
@@ -181,8 +188,17 @@
                     </div>
                 </div>
             </div>
-
         </div>
+
+        {{-- Confirmation internal chat --}}
+        <button
+            id="confirmation-internal-chat"
+            class="w-100"
+            style="font-size: 14px; background: #616A75; padding: 2px 0px; color: #fff; display: none;"
+        >
+            You are chatting internally. Click to close
+        </button>
+
         {{-- Send Message Form --}}
         <div class="messenger-sendCard" style="background: #F1F2F4;">
                 <form id="message-form" method="POST" action="{{ route('send.message') }}" enctype="multipart/form-data" style="display: flex; flex-direction: column;">
@@ -190,17 +206,24 @@
 
                     {{-- <button class="emoji-button"></span><span class="fas fa-smile"></button> --}}
                     <textarea readonly='readonly' name="message" class="m-send app-scroll" placeholder="Write message"></textarea>
+                    <div id="confirmation-session-expired" style="font-size: 14px; display: none;">
+                        <span style="color: #000; font-weight: 600;">Can’t send message</span>
+                        <span style="font-style: italic; color: #616A75;">This session time for this chat has ended. The chat can be reconvened only if the user  sends template.</span>
+                    </div>
                     <div class="wrapper-btn-action">
                         <div style="display: flex; align-items: center; column-gap: 12px; margin-left: 8px;">
                             <label>
-                                <img src="{{ asset('assets/svg/icons/icon-upload.svg') }}" alt="upload" width="24" style="cursor: pointer;">
+                                <img id="btn-upload" src="{{ asset('assets/svg/icons/icon-upload.svg') }}" alt="upload" width="24" style="cursor: pointer;">
                                 <input disabled='disabled' type="file" class="upload-attachment" name="file" accept=".{{implode(', .',config('chatify.attachments.allowed_images'))}}, .{{implode(', .',config('chatify.attachments.allowed_files'))}}" />
                             </label>
                             <input type="hidden" name="type" id="type" value="contactChat">
-                            <button data-bs-toggle="modal" data-bs-target="#template">
-                                <img src="{{ asset('assets/svg/icons/icon-bolt.svg') }}" alt="template" width="24" style="cursor: pointer;">
+                            <button id="btn-template" data-bs-toggle="modal" data-bs-target="#template">
+                                <img id="icon-bolt" src="{{ asset('assets/svg/icons/icon-bolt.svg') }}" alt="template" width="24" style="cursor: pointer;">
+                                <img id="icon-bolt-active" style="display: none;" src="{{ asset('assets/svg/icons/icon-bolt-color.svg') }}" alt="template" width="32" style="cursor: pointer;">
                             </button>
-                            <img src="{{ asset('assets/svg/icons/icon-note-alt.svg') }}" alt="internal-note" width="24" style="cursor: pointer;">
+                            <button id="btn-internal-chat">
+                                <img src="{{ asset('assets/svg/icons/icon-note-alt.svg') }}" alt="internal-note" width="24">
+                            </button>
                         </div>
                         <button disabled='disabled' class="send-button" style="background: #EBECEF; padding: 8px 10px; border-radius: 50%;">
                             <img src="{{ asset('assets/svg/icons/send.svg') }}" alt="send" width="24">

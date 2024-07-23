@@ -35,7 +35,7 @@ $groupList = App\Models\ChChannel::get();
                {{-- Favorites --}}
                <div class="favorites-section" style="display: none;">
                 <p class="messenger-title"><span>Favorites</span></p>
-                <div class="messenger-favorites app-scroll-hidden"></div>
+                <div class="messenger-favorites app-scroll-hidden" style="display: none;"></div>
                </div>
                {{-- Saved Messages --}}
                

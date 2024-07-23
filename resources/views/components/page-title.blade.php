@@ -24,10 +24,9 @@
         </div>
         <div class="d-flex align-items-center flex-grow-1 me-3 me-lg-0">
 
-            <div class="flex-grow-1 input-group input-group-merge rounded-pill">
-                <span class="input-group-text form-search-custom" id="basic-addon-search31"><i
-                        class="ti ti-search"></i></span>
-                <input type="text" class="form-control chat-search-input form-search-custom" placeholder="{{ $placeholderSearchText }}"
+            <div class="flex-grow-1 rounded-pill" style="background: #EFF1F8; padding: 8px 12px;">
+                <i class="ti ti-search"></i>
+                <input type="text" class="chat-search-input" placeholder="{{ $placeholderSearchText }}"
                     aria-label="{{ $placeholderSearchText }}" aria-describedby="basic-addon-search31">
             </div>
         </div>

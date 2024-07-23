@@ -9,9 +9,6 @@
 
     $myArray = [$obj1];
 
-    $tab = (object) [
-        'name' => 'New',
-    ];
     $tab2 = (object) [
         'name' => 'Active',
     ];
@@ -19,7 +16,7 @@
         'name' => 'Closed',
     ];
 
-    $listTabs = [$tab, $tab2, $tab3];
+    $listTabs = [$tab2, $tab3];
     //$customers = \App\Models\Chat::with('dealer')->distinct('from')->orderby('from')->get();
 
     $customers = \App\Models\Chat::with('lead')
@@ -48,9 +45,8 @@
                             @foreach ($customers as $key => $value)
                                 <li class="chat-contact-list-item" data-contact="{{ $value->from }}">
                                     <a class="d-flex align-items-center">
-                                        <div class="flex-shrink-0 avatar">
-                                            <span
-                                                class="avatar-initial rounded-8 bg-label-success text-dark fw-bolder">{{ Helper::getInitial($value->lead?->client_name); }}</span>
+                                        <div class="avatar-initial" style="padding: 12px;">
+                                            <span class="text-dark fw-bolder">{{ Helper::getInitial($value->lead?->client_name); }}</span>
                                         </div>
 
                                         <div class="d-flex flex-column chat-contact-info flex-grow-1 ms-2 gap-2">
@@ -108,27 +104,14 @@
     </x-sidebar-chat-contacts>
 
     <!-- Chat History -->
-    <div class="d-flex flex-column" style="width: 50%">
+    <div class="d-flex flex-column" style="width: 50%; height: 584px;">
     {{-- ----------------------Messaging side---------------------- --}}
     <div class="messenger-messagingView">
         {{-- header title [conversation name] amd buttons --}}
         <div class="m-header m-header-messaging">
             <nav class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
                 {{-- header back button, avatar and user name --}}
-                <div class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
-                    <a href="#" class="show-listView"><i class="fas fa-arrow-left"></i></a>
-                    <a href="#" class="user-name">{{ 'Chat Box' }}</a>
-                    <div class="badge-status">
-                        <div class="status-online"></div>
-                        <span>Online</span>
-                    </div>
-                </div>
-                {{-- header buttons --}}
-                <nav class="m-header-right">
-                    <a href="#" class="show-infoSide">
-                        <img src="{{ asset('assets/svg/icons/info.svg') }}" alt="info" width="20">
-                    </a>
-                </nav>
+                <span>Whatsapp</span>
             </nav>
             {{-- Internet connection --}}
             <div class="internet-connection">
@@ -171,10 +154,12 @@
                                 <input disabled='disabled' type="file" class="upload-attachment" name="file" accept=".{{implode(', .',config('chatify.attachments.allowed_images'))}}, .{{implode(', .',config('chatify.attachments.allowed_files'))}}" />
                             </label>
                             <input type="hidden" name="type" id="type" value="contactChat">
-                            <img src="{{ asset('assets/svg/icons/icon-bolt.svg') }}" alt="template" width="24" style="cursor: pointer;">
+                            <button data-bs-toggle="modal" data-bs-target="#template">
+                                <img src="{{ asset('assets/svg/icons/icon-bolt.svg') }}" alt="template" width="24" style="cursor: pointer;">
+                            </button>
                             <img src="{{ asset('assets/svg/icons/icon-note-alt.svg') }}" alt="internal-note" width="24" style="cursor: pointer;">
                         </div>
-                        <button disabled='disabled' class="send-button">
+                        <button disabled='disabled' class="send-button" style="background: #EBECEF; padding: 8px 10px; border-radius: 50%;">
                             <img src="{{ asset('assets/svg/icons/send.svg') }}" alt="send" width="24">
                         </button>
                     </div>
@@ -189,8 +174,8 @@
         <div class="sidebar-card d-flex flex-column">
             <div class="d-flex flex-column gap-3">
                 <div class="d-flex flex-column justify-content-center align-items-center gap-2">
-                    <div class="flex-shrink-0 avatar">
-                        <span class="avatar-initial border-12 bg-avatar-call text-dark fw-bolder">{{ Helper::getInitial('Acme Inc') }}</span>
+                    <div class="avatar-initial" style="padding: 12px;">
+                        <span class="text-dark fw-bolder">{{ Helper::getInitial('Acme Inc'); }}</span>
                     </div>
                     <span class="text-dark fw-bold" style="font-size: 22px">Acme Inc</span>
                     <x-badge-stage type="Lead"></x-badge-stage>

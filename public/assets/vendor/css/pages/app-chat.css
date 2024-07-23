@@ -50,6 +50,13 @@
 .app-chat .rounded-8 {
   border-radius: 8px;
 }
+.app-chat .chat-search-input {
+  border: none !important;
+  background: transparent;
+}
+.app-chat .chat-search-input:focus {
+  border: 1px solid transparent;
+}
 .app-chat .app-chat-contacts {
   position: absolute;
   left: calc(-19.5rem - 1rem);
@@ -289,7 +296,7 @@
   opacity: 0;
   z-index: 5;
   transition: all 0.25s ease;
-  padding: 12px 16px;
+  padding: 0px 16px 28px 16px;
 }
 .layout-navbar-hidden .app-chat .app-chat-sidebar-right {
   height: calc(100vh - 7.5rem);

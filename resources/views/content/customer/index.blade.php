@@ -94,7 +94,7 @@
 @section('content')
     <div class="row">
         <div class="">
-        <div class="messenger-favorites app-scroll-hidden"></div>
+        <div class="messenger-favorites app-scroll-hidden" style="display: none;"></div>
 
             <div class="app-chat customer overflow-hidden">
                 <x-page-title title="Customers" placeholderSearchText="Search leads" targetOpenModal="#customers"></x-page-title>
@@ -384,4 +384,66 @@
             </x-input-floating>
         </div>
     </x-modal>
+
+    {{-- modal template --}}
+    <x-modal
+        title="Template"
+        name="template"
+        buttonSubmitClass=""
+        modalClass=""
+        isUsingBtnFooter="{{ false }}"
+        buttonWrapperSubmitClass="d-flex justify-content-center align-items-center w-100"
+    >
+        <div class="d-flex flex-column gap-5">
+            <div class="d-flex flex-column gap-2 w-100 py-2 px-3" style="border: 1px solid #DDE0E4; border-radius: 12px;">
+                <span style="color: #000; font-weight: 600; font-size: 16px;">Introduction</span>
+                <span style="color: #616A75; font-size: 14px;">👋 Hello! My name is [staff name] from [company name]. I hear you are interested in purchasing a car. Before we proceed, I need some information from you.</span>
+            </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mt-5">
+            <button type="button" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#create-new-template" style="border: none; background: transparent; color: #33B6B9;">+ create new template</button>
+            <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Send</button>
+        </div>
+    </x-modal>
+
+    {{-- modal create new template --}}
+    <x-modal
+        title="Create New Template"
+        name="create-new-template"
+        buttonSubmitClass=""
+        modalClass=""
+        buttonWrapperSubmitClass="d-flex justify-content-center align-items-center w-100"
+        isUsingBtnFooter="{{ false }}"
+    >
+        <div class="d-flex flex-column gap-3">
+            <div class="d-flex flex-column gap-4 w-100">
+                <x-input-floating
+                    label="Title"
+                    id="title"
+                    name="title"
+                >
+                </x-input-floating>
+                <x-input-floating
+                    label="Write template here"
+                    placeholder=""
+                    id="template"
+                    name="template"
+                    type="textarea"
+                >
+                </x-input-floating>
+            </div>
+            <div class="d-flex gap-2">
+                <span style="font-size: 14px; width: 30%;">Add placeholder</span>
+                <select name="placeholder" id="placeholder" style="width: 100%; border-radius: 5px; padding: 10px;">
+                    <option value="">-Select-</option>
+                    <option value="staff_name">staff name</option>
+                    <option value="company_name">company name</option>
+                </select>
+            </div>
+            <div class="d-flex justify-content-end w-100 mt-2">
+                <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </x-modal>
+
 @endsection

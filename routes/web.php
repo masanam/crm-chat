@@ -481,6 +481,7 @@ Route::middleware(['auth'])->group(function () {
   Route::get('leads/{id}/edit', [LeadController::class, 'edit'])->name('leads.edit');
   Route::put('leads/{id}', [LeadController::class, 'update'])->name('leads.update');
   Route::delete('leads/{id}', [LeadController::class, 'destroy'])->name('leads.destroy');
+  Route::post('change-lead', [LeadController::class, 'updateLead'])->name('leads.change');
 
   // Route::resource('dealer', DealerController::class);
   Route::get('groups', [GroupController::class, 'index'])->name('group-list');

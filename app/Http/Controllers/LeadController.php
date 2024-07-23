@@ -153,6 +153,20 @@ class LeadController extends Controller
     return redirect()->back();
   }
 
+    /**
+   * Update the specified resource in storage.
+   */
+  public function updateLead(Request $request, Lead $lead)
+  {
+    $lead->where('phone_number',$request->contact)->update([
+      'client_name' => $request->first_name.' '.$request->last_name,
+      'title' => $request->job_title,
+    ]);
+    $request->session()->flash('success', 'Ubah Data Berhasil');
+    return redirect()->back();
+  }
+
+
   /**
    * Remove the specified resource from storage.
    */

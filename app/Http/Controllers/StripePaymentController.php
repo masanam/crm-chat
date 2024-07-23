@@ -78,7 +78,17 @@ class StripePaymentController extends Controller
         'meta_business' => $request->phone_number,
         'wa_business' => $request->phone_number,
       ]);
+      
+      $lead = \App\Models\Lead::create([
+        'dealer_id' => $dealer->id,
+        'client_name' => $request->first_name,
+        'phone_number' => $request->phone_number,
+        'company_name' => $request->company,
+        'title' => $request->job,
+      ]);
     
+
+
       if ($organization) {
         $client = \App\Models\Client::create([
           'organization_id' => $organization->id,

@@ -156,6 +156,8 @@ class MessagesController extends Controller
      */
     public function send(Request $request)
     {
+
+        // dd($request);
        /**
      * "_token" => "oIiRjzjbZBNOStEoq3KGiXDBjyfXt2TRrHIqhBAa"
       *"message" => "test"
@@ -202,7 +204,13 @@ class MessagesController extends Controller
                     'from' => env('TWILIO_WHATSAPP_FROM'),
                     'to' => $request['id'],
                     'message' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
+                    'attachment' => ($attachment) ? json_encode((object)[
+                        'new_name' => $attachment,
+                        'old_name' => htmlentities(trim($attachment_title), ENT_QUOTES, 'UTF-8'),
+                    ]) : null,
+
                 ]);
+
                 $messageData = Chatify::parseMessageContact($message);
                 if (Auth::user()->id != $request['id']) {
                     Chatify::push("private-chatify.".$request['id'], 'messaging', [
@@ -509,7 +517,6 @@ class MessagesController extends Controller
         }
         $allMessages = null;
 
-        // dd($messages);
         foreach ($messages->reverse() as $message) {
             $allMessages .= Chatify::messageCard(
                 Chatify::parseMessageContact($message)

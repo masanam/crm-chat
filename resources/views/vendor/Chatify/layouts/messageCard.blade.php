@@ -23,6 +23,8 @@ $timeAndSeen = "<span data-time='$created_at' class='message-time'>
             <div class="message" style="display: flex; flex-direction: column; border-radius: 12px; background: #EBECEF; color: #000;">
                 {!! ($message == null && $attachment != null && @$attachment->type != 'file') ? $attachment->title : nl2br($message) !!}
                 {!! $timeAndSeen !!}
+                <span class='message-time'>{!! $client_name !!}</span>
+
                 {{-- If attachment is a file --}}
                 @if(@$attachment->type == 'file')
                 <a href="{{ route(config('chatify.attachments.download_route_name'), ['fileName'=>$attachment->file]) }}" class="file-download">

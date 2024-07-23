@@ -19,19 +19,19 @@
     $listTabs = [$tab2, $tab3];
     //$customers = \App\Models\Chat::with('dealer')->distinct('from')->orderby('from')->get();
 
-    $customers = \App\Models\Chat::with('lead')
+    $customerActive = \App\Models\Chat::with('lead')
       ->distinct('from')
       ->where('to', env('TWILIO_WHATSAPP_FROM'))
-      ->orderBy('from', 'ASC')
-      ->orderBy('created_at','DESC')
+      ->whereRelation('lead', 'status', '=', 'Active')
       ->get();
+    $sortedActive = $customerActive->sortByDesc('created_at');
 
-      //dd($customers);
-    //$chatPhones = $chats->pluck('from')->toArray();
-
-    //$leadNotChats = \App\Models\Lead::where('dealer_id', $user->dealer_id)
-    //  ->whereNotIn('phone_number', $chatPhones)
-    //  ->get();
+    $customerClosed = \App\Models\Chat::with('lead')
+      ->distinct('from')
+      ->where('to', env('TWILIO_WHATSAPP_FROM'))
+      ->whereRelation('lead', 'status', '!=', 'Active')
+      ->get();
+    $sortedClosed = $customerClosed->sortByDesc('created_at');
 
 @endphp
 
@@ -39,10 +39,10 @@
     <x-sidebar-chat-contacts :tabs="$listTabs" isUsingSearch="{{ false }}">
         <x-slot name="body">
             <div class="tab-content p-0">
-                <div class="tab-pane active" id="open" role="tabpanel" aria-labelledby="open-tab">
+                <div class="tab-pane active" id="active" role="tabpanel" aria-labelledby="open-tab">
                     @if (count($myArray) > 0)
                         <ul class="list-unstyled chat-contact-list p-0 mt-2" id="chat-list">
-                            @foreach ($customers as $key => $value)
+                            @foreach ($sortedActive as $key => $value)
                                 <li class="chat-contact-list-item" data-contact="{{ $value->from }}">
                                     <a class="d-flex align-items-center">
                                         <div class="avatar-initial" style="padding: 12px;">
@@ -52,10 +52,10 @@
                                         <div class="d-flex flex-column chat-contact-info flex-grow-1 ms-2 gap-2">
                                             <div class="d-flex flex-column gap-1">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value->from }}" data-type="contact">
+                                                <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value->from }}" data-contact="{{ $value->lead?->client_name }}" data-type="contact">
                                                 {{ $value->from }}</h6>
-                                                        <small>{{ $value->updated_at->diffForHumans() }}</small>
-                                                        </div>
+                                                <small>{{ $value->created_at->diffForHumans() }}</small>
+                                                </div>
                                                 <small>{{ $value->lead?->client_name }}</small>
                                             </div>
                                             <div>
@@ -88,17 +88,60 @@
                                     </a>
                                 </li>
                             @endforeach
-
                         </ul>
                     @endif
                 </div>
+
                 <div class="tab-pane" id="closed" role="tabpanel" aria-labelledby="closed-tab">
-                    <ul class="list-unstyled chat-contact-list p-0 mt-2" id="chat-list">
-                        <li class="chat-contact-list-item chat-list-item-0">
-                            <h6 class="text-muted mb-0">No Chats Found</h6>
-                        </li>
-                    </ul>
-                </div>
+                <ul class="list-unstyled chat-contact-list p-0 mt-2" id="chat-list">
+                            @foreach ($sortedClosed as $key => $value)
+                                <li class="chat-contact-list-item" data-contact="{{ $value->from }}">
+                                    <a class="d-flex align-items-center">
+                                        <div class="avatar-initial" style="padding: 12px;">
+                                            <span class="text-dark fw-bolder">{{ Helper::getInitial($value->lead?->client_name); }}</span>
+                                        </div>
+
+                                        <div class="d-flex flex-column chat-contact-info flex-grow-1 ms-2 gap-2">
+                                            <div class="d-flex flex-column gap-1">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value->from }}" data-contact="{{ $value->lead?->client_name }}" data-type="contact">
+                                                {{ $value->from }}</h6>
+                                                <small>{{ $value->created_at->diffForHumans() }}</small>
+                                                </div>
+                                                <small>{{ $value->lead?->client_name }}</small>
+                                            </div>
+                                            <div>
+                                                <p class="chat-contact-status text-chat text-truncate mb-0">
+                                                    {{ $value->message }}</p>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <div
+                                                        class="d-flex align-items-center badge badge-sm rounded-pill badge-user text-dark gap-1">
+                                                        <i class="ti ti-user user-icon text-dark"></i>
+                                                        <div class="d-flex align-items-center gap-1">
+                                                            <small>Sally,</small>
+                                                            <small>Princess,</small>
+                                                            <small>+1</small>
+                                                        </div>
+                                                    </div>
+                                                    <span class="badge badge-sm rounded-pill text-dark"
+                                                        style="background: #B8E9EF;">
+                                                        {{ $value->type }}
+                                                    </span>
+                                                </div>
+                                                <button class="btn-route-customer" data-id="{{ $value->id }}">
+                                                    <img src="{{ asset('assets/svg/icons/info.svg') }}" alt="info"
+                                                    width="20">
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>               
+                     </div>
             </div>
         </x-slot>
     </x-sidebar-chat-contacts>
@@ -111,7 +154,7 @@
         <div class="m-header m-header-messaging">
             <nav class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
                 {{-- header back button, avatar and user name --}}
-                <span>Whatsapp</span>
+                <p class="client-name">Whatsapp</p>
             </nav>
             {{-- Internet connection --}}
             <div class="internet-connection">
@@ -177,7 +220,7 @@
                     <div class="avatar-initial" style="padding: 12px;">
                         <span class="text-dark fw-bolder">{{ Helper::getInitial('Acme Inc'); }}</span>
                     </div>
-                    <span class="text-dark fw-bold" style="font-size: 22px">Acme Inc</span>
+                    <span class="text-dark fw-bold client-name" style="font-size: 22px">Acme Inc</span>
                     <x-badge-stage type="Lead"></x-badge-stage>
                 </div>
                 <div class="d-flex justify-content-between align-items-center px-2">

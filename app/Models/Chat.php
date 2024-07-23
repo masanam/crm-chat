@@ -52,6 +52,15 @@ class Chat extends Model
     return $this->belongsTo(\App\Models\Lead::class, 'from', 'phone_number');
   }
 
+public function lead_active() {
+    return $this->lead()->where('status', 'Active');
+}
+
+public function lead_closed() {
+  return $this->lead()->where('status','!=','Active');
+}
+
+
   public function dealer()
   {
     return $this->belongsTo(\App\Models\Dealer::class, 'dealer_id');

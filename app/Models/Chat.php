@@ -26,31 +26,18 @@ class Chat extends Model
   ];
 
   /**
-   * The attributes that should be cast.
-   *
-   * @var array<string, string>
-   */
-  protected $casts = [
-    'from' => 'string',
-    'to' => 'string',
-    'message' => 'string',
-    'conversation_id' => 'integer',
-    'user_id' => 'integer',
-    'participant_id' => 'integer',
-    'dealer_id' => 'integer',
-    'lead_id' => 'integer',
-    'lead_is_verified' => 'string',
-    'status' => 'string',
-    'request_body' => 'string',
-  ];
-
-  /**
    * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
    **/
   public function lead()
   {
     return $this->belongsTo(\App\Models\Lead::class, 'from', 'phone_number');
   }
+
+  public function profile()
+  {
+    return $this->belongsTo(\App\Models\Profile::class, 'user_id');
+  }
+
 
   public function dealer()
   {

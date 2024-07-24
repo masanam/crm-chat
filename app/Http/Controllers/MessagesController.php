@@ -201,8 +201,31 @@ class MessagesController extends Controller
         if (!$error->status) {
             if ($request['type'] == 'contactChat'){
                 $message = Chatify::newContactMessage([
-                    'from' => $request['id'],
-                    'to' => env('TWILIO_WHATSAPP_FROM'),
+                    'to' => $request['id'],
+                    'from' => env('TWILIO_WHATSAPP_FROM'),
+                    'message' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
+                    'attachment' => ($attachment) ? json_encode((object)[
+                        'new_name' => $attachment,
+                        'old_name' => htmlentities(trim($attachment_title), ENT_QUOTES, 'UTF-8'),
+                    ]) : null,
+
+                ]);
+
+                $messageData = Chatify::parseMessageContact($message);
+                if (Auth::user()->id != $request['id']) {
+                    Chatify::push("private-chatify.".$request['id'], 'messaging', [
+                        'from_id' => Auth::user()->id,
+                        'to_id' => $request['id'],
+                        'message' => Chatify::messageCard($messageData, true)
+                    ]);
+                }
+            }
+
+            if ($request['type'] == 'internalChat'){
+                $message = Chatify::newInternalMessage([
+                    'to' => $request['id'],
+                    'from' => env('TWILIO_WHATSAPP_FROM'),
+                    'type' => 'internal_notes',
                     'message' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
                     'attachment' => ($attachment) ? json_encode((object)[
                         'new_name' => $attachment,
@@ -541,8 +564,8 @@ class MessagesController extends Controller
 
                 $templateMsg='Hello! My name is [staff name] from [company name]. I hear you are interested in purchasing a car. Before we proceed, I need some information from you.';
                 $message = Chatify::newContactMessage([
-                    'from' => $request['id'],
-                    'to' => env('TWILIO_WHATSAPP_FROM'),
+                    'to' => $request['id'],
+                    'from' => env('TWILIO_WHATSAPP_FROM'),
                     'message' => htmlentities(trim($templateMsg), ENT_QUOTES, 'UTF-8'),
                     // 'message' => htmlentities(trim($body), ENT_QUOTES, 'UTF-8'),
                     'attachment' => ($attachment) ? json_encode((object)[

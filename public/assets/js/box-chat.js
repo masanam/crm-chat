@@ -1524,10 +1524,15 @@ $(document).ready(function () {
    $('.client-whatsapp').html(dataId);
    $('.client-company').html(dataCompany);
    $('.client-job').html(dataJob);
+   $('.first_name').html(dataName);
 
-   $('#first_name').val(dataName);
+
+   $('#first-name').val(dataName);
    $('#client-job').val(dataJob);
    $('#client-whatsapp').val(dataId);
+   $('#client-phone').val(dataId);
+
+   $('#client-company').val(dataCompany);
 
 
    IDinfo("contactChat", dataId);

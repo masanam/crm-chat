@@ -280,7 +280,7 @@
                 <div class="d-flex justify-content-between gap-5 w-100">
                     <x-input-floating
                         label="First Name"
-                        id="first_name"
+                        id="first-name"
                         name="first_name"
                         class="client-name"
                     >
@@ -392,21 +392,26 @@
     {{-- modal template --}}
     <x-modal
         title="Template"
-        name="template"
+        name="template-chat"
+        submitText="Send Template"
+        isPost="true"
+        url="{{ route('send.template') }}"
         buttonSubmitClass=""
-        modalClass=""
-        isUsingBtnFooter="{{ false }}"
         buttonWrapperSubmitClass="d-flex justify-content-center align-items-center w-100"
     >
         <div class="d-flex flex-column gap-5">
             <div class="d-flex flex-column gap-2 w-100 py-2 px-3" style="border: 1px solid #DDE0E4; border-radius: 12px;">
                 <span style="color: #000; font-weight: 600; font-size: 16px;">Introduction</span>
-                <span style="color: #616A75; font-size: 14px;">👋 Hello! My name is [staff name] from [company name]. I hear you are interested in purchasing a car. Before we proceed, I need some information from you.</span>
+                <span style="color: #616A75; font-size: 14px;">👋 Hello! My name is <span class="first_name"></span> from <span class="client-company"></span>. I hear you are interested in purchasing a car. Before we proceed, I need some information from you.</span>
             </div>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-5">
+            <input type="hidden" name="type" id="type" value="templateChat">
+            <input type="text" id="client-phone" name="id"/>
+
+
             <button type="button" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#create-new-template" style="border: none; background: transparent; color: #33B6B9;">+ create new template</button>
-            <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Send</button>
+            <!-- <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Send</button> -->
         </div>
     </x-modal>
 

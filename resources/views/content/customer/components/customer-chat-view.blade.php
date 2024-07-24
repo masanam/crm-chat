@@ -20,6 +20,7 @@
     //$customers = \App\Models\Chat::with('dealer')->distinct('from')->orderby('from')->get();
 
     $customerActive = \App\Models\Chat::with('lead')
+    ->with('profile')
       ->distinct('from')
       ->where('to', env('TWILIO_WHATSAPP_FROM'))
       ->whereRelation('lead', 'status', '=', 'Active')
@@ -27,6 +28,7 @@
     $sortedActive = $customerActive->sortByDesc('created_at');
 
     $customerClosed = \App\Models\Chat::with('lead')
+    ->with('profile')
       ->distinct('from')
       ->where('to', env('TWILIO_WHATSAPP_FROM'))
       ->whereRelation('lead', 'status', '!=', 'Active')
@@ -219,7 +221,7 @@
                                 <input disabled='disabled' type="file" class="upload-attachment" name="file" accept=".{{implode(', .',config('chatify.attachments.allowed_images'))}}, .{{implode(', .',config('chatify.attachments.allowed_files'))}}" />
                             </label>
                             <input type="hidden" name="type" id="type" value="contactChat">
-                            <button id="btn-template" data-bs-toggle="modal" data-bs-target="#template">
+                            <button id="btn-template" data-bs-toggle="modal" data-bs-target="#template-chat">
                                 <img id="icon-bolt" src="{{ asset('assets/svg/icons/icon-bolt.svg') }}" alt="template" width="24" style="cursor: pointer;">
                                 <img id="icon-bolt-active" style="display: none;" src="{{ asset('assets/svg/icons/icon-bolt-color.svg') }}" alt="template" width="32" style="cursor: pointer;">
                             </button>

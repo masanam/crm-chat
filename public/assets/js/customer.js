@@ -588,7 +588,12 @@
      * @description handle flow internal chat
      */
     const btnInternalChat = document.querySelector('#btn-internal-chat')
+    const btntemplate = document.querySelector('#btn-template')
     const getTextChat = document.querySelector('.messenger-sendCard')
+    btntemplate.addEventListener('click', (e) => {
+      e.preventDefault()
+      $('#type').val('templateChat')
+    })
     if (btnInternalChat) {
       btnInternalChat.addEventListener('click', (e) => {
         e.preventDefault()
@@ -596,12 +601,14 @@
         $('#confirmation-internal-chat').toggle()
         $('#btn-upload').hide()
         $('#btn-template').hide()
+        $('#type').val('internalChat')
       })
       $('#confirmation-internal-chat').on('click', (e) => {
         e.preventDefault()
         $('#btn-upload').show()
         $('#btn-template').show()
         $('#confirmation-internal-chat').hide()
+        $('#type').val('contactChat')
         getTextChat.style.background = 'rgb(241, 242, 244)'
       })
     }
@@ -611,36 +618,69 @@
      */
     const getCountdownSession = document.querySelector('#countdown-session')
     if (getCountdownSession) {
-      const countdownSession = (duration) => {
-          var timer = duration, hours;
+      // const countdownSession = (duration) => {
+      //     var timer = duration, hours;
 
-          // Update the count down every 1 second
-          var x = setInterval(function() {
+      //     // Update the count down every 1 second
+      //     var x = setInterval(function() {
           
-          // Time calculations for hours
-          hours = parseInt((timer / 3600) % 24, 10)
-          hours = hours < 10 ? "0" + hours : hours;
+      //     // Time calculations for hours
+      //     hours = parseInt((timer / 3600) % 24, 10)
+      //     hours = hours < 10 ? "0" + hours : hours;
           
-          // Output the result in an element with id="demo"
-          getCountdownSession.innerHTML = hours + "h "
-          + "until session ends";
+      //     // Output the result in an element with id="demo"
+      //     getCountdownSession.innerHTML = hours + "h "
+      //     + "until session ends";
           
-          // If the count down is over, write some text 
-          if (hours < 10) {
-            clearInterval(x);
-            getCountdownSession.innerHTML = "Session expired";
-            getCountdownSession.style.background = '#BA1A1A';
-            $('#confirmation-session-expired').show()
-            $('#confirmation-session-expired').css({ 'display': 'flex', 'flex-direction': 'column' })
-            $('.m-send').hide()
-            $('#icon-bolt').hide()
-            $('#icon-bolt-active').show()
-          }
-        }, 1000);
-      }
+      //     // If the count down is over, write some text 
+      //     if (hours < 10) {
+      //       clearInterval(x);
+      //       getCountdownSession.innerHTML = "Session expired";
+      //       getCountdownSession.style.background = '#BA1A1A';
+      //       $('#confirmation-session-expired').show()
+      //       $('#confirmation-session-expired').css({ 'display': 'flex', 'flex-direction': 'column' })
+      //       $('.m-send').hide()
+      //       $('#icon-bolt').hide()
+      //       $('#icon-bolt-active').show()
+      //     }
+      //   }, 1000);
+      // }
 
-      var twentyFourHours = new Date("July 26, 2024 22:37:25").getTime();
-      countdownSession(twentyFourHours);
+      // var twentyFourHours = new Date("July 26, 2024 22:37:25").getTime();
+      // countdownSession(twentyFourHours);
+
+      // Set the date we're counting down to
+var countDownDate = new Date("July 25, 2024 22:37:25").getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Display the result in the element with id="demo"
+  // document.getElementById("countdown-session").innerHTML = days + "d " + hours + "h "
+  // + minutes + "m " + seconds + "s ";
+
+  document.getElementById("countdown-session").innerHTML = hours + " hours "
+  + minutes + " mins " + seconds + " secs until session ends ";
+
+
+  // If the count down is finished, write some text
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("countdown-session").innerHTML = "EXPIRED";
+  }
+}, 1000);
     }
    })();
  });

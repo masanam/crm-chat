@@ -207,6 +207,8 @@ Route::post('/makeSeen', [MessagesController::class,'seen'])->name('messages.see
 Route::post('/receive-chat', [Chat::class, 'receiveWhatsAppMessage']);
 
 Route::post('/sendMessage', [MessagesController::class,'send'])->name('send.message');
+Route::post('/sendTemplate', [MessagesController::class,'sendTemplate'])->name('send.template');
+
 
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');
 // Route::get('/dashboard/crm', [Crm::class, 'index'])->name('dashboard-crm');

@@ -407,8 +407,7 @@
         </div>
         <div class="d-flex align-items-center justify-content-between mt-5">
             <input type="hidden" name="type" id="type" value="templateChat">
-            <input type="text" id="client-phone" name="id"/>
-
+            <input type="hidden" id="client-phone" name="id"/>
 
             <button type="button" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#create-new-template" style="border: none; background: transparent; color: #33B6B9;">+ create new template</button>
             <!-- <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Send</button> -->

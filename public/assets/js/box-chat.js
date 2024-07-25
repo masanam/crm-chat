@@ -1489,6 +1489,7 @@ $(document).ready(function () {
   const contact_id = $(this).attr("data-contact");
   routerPush(document.title, `${url}/customers/${contact_id}`);
   updateSelectedContactChat(contact_id);
+  $('#countdown-session').show();
 });
 
  // show info side button

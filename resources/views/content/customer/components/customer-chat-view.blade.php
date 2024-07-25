@@ -45,6 +45,12 @@
                     @if (count($myArray) > 0)
                         <ul class="list-unstyled chat-contact-list p-0 mt-2" id="chat-list">
                             @foreach ($sortedActive as $key => $value)
+                            <?php
+                            if ( $value->type="template"){
+                                $templateDate = $value->created_at;
+                            }
+
+                            ?>
                                 <li class="chat-contact-list-item" data-contact="{{ $value->from }}">
                                     <a class="d-flex align-items-center">
                                         <div class="avatar-initial" style="padding: 12px;">
@@ -60,9 +66,10 @@
                                                 </div>
                                                 <small>{{ $value->from }}</small>
                                             </div>
+
                                             <div>
                                                 <p class="chat-contact-status text-chat text-truncate mb-0">
-                                                    <!-- {{ $value->message }} -->
+                                                    <input type="hidden" id="template-date" value="{{ $templateDate}}"/>
                                                 </p>
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center">
@@ -71,8 +78,8 @@
                                                         class="d-flex align-items-center badge badge-sm rounded-pill badge-user text-dark gap-1">
                                                         <i class="ti ti-user user-icon text-dark"></i>
                                                         <div class="d-flex align-items-center gap-1">
-                                                            <small>Sally,</small>
-                                                            <small>Princess,</small>
+                                                            <small>A,</small>
+                                                            <small>b,</small>
                                                             <small>+1</small>
                                                         </div>
                                                     </div>
@@ -171,7 +178,7 @@
         <span
             id="countdown-session"
             class="w-100"
-            style="font-size: 14px; background: #616A75; padding: 2px 0px; color: #fff; text-align: center;"
+            style="display:none; font-size: 14px; background: #616A75; padding: 2px 0px; color: #fff; text-align: center;"
         >
         </span>
 

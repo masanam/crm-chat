@@ -201,8 +201,9 @@ class MessagesController extends Controller
         if (!$error->status) {
             if ($request['type'] == 'contactChat'){
                 $message = Chatify::newContactMessage([
-                    'from' => $request['id'],
-                    'to' => env('TWILIO_WHATSAPP_FROM'),
+                    'to' => $request['id'],
+                    'from' => env('TWILIO_WHATSAPP_FROM'),
+                    'type' => 'text',
                     'message' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
                     'attachment' => ($attachment) ? json_encode((object)[
                         'new_name' => $attachment,
@@ -220,7 +221,6 @@ class MessagesController extends Controller
                     ]);
                 }
             }
-
         }
 
         // PRICES
@@ -472,7 +472,7 @@ class MessagesController extends Controller
     }
 
 
-        /**
+    /**
      * Send a message to database
      *
      * @param Request $request
@@ -525,24 +525,11 @@ class MessagesController extends Controller
         if (!$error->status) {
             if ($request['type'] == 'templateChat'){
 
-                // $template = 'hello_pasima';
-                // $languageCode = 'id';
-                // $body = [
-                //   'messaging_product' => 'whatsapp',
-                //   'to' => str_replace('+', '', $request['id']),
-                //   'type' => 'template',
-                //   'template' => [
-                //     'name' => $request['template_name'] ?: $template,
-                //     'language' => [
-                //       'code' => $request['language_code'] ?: $languageCode,
-                //     ],
-                //   ],
-                // ];
-
                 $templateMsg='Hello! My name is [staff name] from [company name]. I hear you are interested in purchasing a car. Before we proceed, I need some information from you.';
                 $message = Chatify::newContactMessage([
-                    'from' => $request['id'],
-                    'to' => env('TWILIO_WHATSAPP_FROM'),
+                    'to' => $request['id'],
+                    'from' => env('TWILIO_WHATSAPP_FROM'),
+                    'type' => 'template',
                     'message' => htmlentities(trim($templateMsg), ENT_QUOTES, 'UTF-8'),
                     // 'message' => htmlentities(trim($body), ENT_QUOTES, 'UTF-8'),
                     'attachment' => ($attachment) ? json_encode((object)[
@@ -579,10 +566,10 @@ class MessagesController extends Controller
     //     'request' => $request->all(),
     //   ]);
   
-      $sid = env('TWILIO_SID');
-      $token = env('TWILIO_AUTH_TOKEN');
-      // $twilio = new Client($sid, $token);
-      $from = env('TWILIO_WHATSAPP_FROM');
+    //   $sid = env('TWILIO_SID');
+    //   $token = env('TWILIO_AUTH_TOKEN');
+    //   // $twilio = new Client($sid, $token);
+    //   $from = env('TWILIO_WHATSAPP_FROM');
   
     //   $service = new \PHPSupabase\Service(env('SUPABASE_KEY'), env('SUPABASE_URL'));
     //   $auth = $service->createAuth();
@@ -636,10 +623,10 @@ class MessagesController extends Controller
     //   $chat = \App\Models\Chat::create($chatData);
       
   
-      if (isset($dataAuth->access_token)) {
-        $db = $service->setBearerToken($dataAuth->access_token)->initializeDatabase('chats', 'id');
-        $data = $db->insert($chatData);
-      }
+    //   if (isset($dataAuth->access_token)) {
+    //     $db = $service->setBearerToken($dataAuth->access_token)->initializeDatabase('chats', 'id');
+    //     $data = $db->insert($chatData);
+    //   }
   
       // $message = $twilio->messages->create(
       //   'whatsapp:' . $request->phone, // to
@@ -649,77 +636,77 @@ class MessagesController extends Controller
       //   ]
       // );
   
-      $phone_number_id = $sid;
-      if ($request['type'] == 'template') {
-        $template = 'hello_pasima';
-        $languageCode = 'id';
-        $body = [
-          'messaging_product' => 'whatsapp',
-          'to' => str_replace('+', '', $request['id']),
-          'type' => 'template',
-          'template' => [
-            'name' => $request['template_name'] ?: $template,
-            'language' => [
-              'code' => $request['language_code'] ?: $languageCode,
-            ],
-          ],
-        ];
-        $response = Http::withHeaders([
-          'Authorization' => 'Bearer ' . $token,
-          'Content-Type' => 'application/json',
-        ])->post('https://graph.facebook.com/v18.0/' . $phone_number_id . '/messages', $body);
+    //   $phone_number_id = $sid;
+    //   if ($request['type'] == 'template') {
+    //     $template = 'hello_pasima';
+    //     $languageCode = 'id';
+    //     $body = [
+    //       'messaging_product' => 'whatsapp',
+    //       'to' => str_replace('+', '', $request['id']),
+    //       'type' => 'template',
+    //       'template' => [
+    //         'name' => $request['template_name'] ?: $template,
+    //         'language' => [
+    //           'code' => $request['language_code'] ?: $languageCode,
+    //         ],
+    //       ],
+    //     ];
+    //     $response = Http::withHeaders([
+    //       'Authorization' => 'Bearer ' . $token,
+    //       'Content-Type' => 'application/json',
+    //     ])->post('https://graph.facebook.com/v18.0/' . $phone_number_id . '/messages', $body);
         
-        if (isset($dataAuth->access_token)) {
-              $clientDb = $service->setBearerToken($dataAuth->access_token)->initializeDatabase('clients', 'id');
-              $clients = $clientDb->findBy('phone', $from)->getResult();
-              if ($clients) {
-                $client = $clients[0];
+        // if (isset($dataAuth->access_token)) {
+        //       $clientDb = $service->setBearerToken($dataAuth->access_token)->initializeDatabase('clients', 'id');
+        //       $clients = $clientDb->findBy('phone', $from)->getResult();
+        //       if ($clients) {
+        //         $client = $clients[0];
                 
-                  $fee = 0.0411;
-                  $tmpDb = $service->setBearerToken($dataAuth->access_token)->initializeDatabase('templates', 'id');
-                  $tmps = $tmpDb->findBy('template_name', $request['template_name'])->getResult();
-                  if ($tmps) {
-                      $tmp = $tmps[0];
+        //           $fee = 0.0411;
+        //           $tmpDb = $service->setBearerToken($dataAuth->access_token)->initializeDatabase('templates', 'id');
+        //           $tmps = $tmpDb->findBy('template_name', $request['template_name'])->getResult();
+        //           if ($tmps) {
+        //               $tmp = $tmps[0];
                       
-                      if($tmp->type == 'utility') {
-                          $fee = 0.0200;
-                      }
-                      if($tmp->type == 'authentication') {
-                          $fee = 0.0300;
-                      }
-                      if($tmp->type == 'authentication international') {
-                          $fee = 0.1360;
-                      }
-                  }
+        //               if($tmp->type == 'utility') {
+        //                   $fee = 0.0200;
+        //               }
+        //               if($tmp->type == 'authentication') {
+        //                   $fee = 0.0300;
+        //               }
+        //               if($tmp->type == 'authentication international') {
+        //                   $fee = 0.1360;
+        //               }
+        //           }
                   
-                  $waConDb = $service->setBearerToken($dataAuth->access_token)->initializeDatabase('wa_conversations', 'id');
-                  $query = [
-                      'select' => 'id,client_id,to,session,type,template_name',
-                      'from'   => 'wa_conversations',
-                      'where' => 
-                      [
-                          'client_id' => 'eq.' . $client->id,
-                          'to' => 'eq.' . $request['id'],
-                          'template_name' => 'eq.' . $request['template_name'],
-                          'session' => 'gt.' . \Carbon\Carbon::now()->subDay()->format('Y-m-d h:i:s'),
-                      ]
-                  ];
-                  $waCons = $waConDb->createCustomQuery($query)->getResult();
-                  if(!empty($waCons->session)) {
-                      $fee = 0;
-                  } else {
-                      $data = $waConDb->insert([
-                          'client_id' => $client->id,
-                          'to' => $request['id'],
-                          'template_name' => $request['template_name'],
-                          'type' => $tmp->type,
-                          'session' => \Carbon\Carbon::now()->format('Y-m-d h:i:s'),
-                          ]);
-                  }
+        //           $waConDb = $service->setBearerToken($dataAuth->access_token)->initializeDatabase('wa_conversations', 'id');
+        //           $query = [
+        //               'select' => 'id,client_id,to,session,type,template_name',
+        //               'from'   => 'wa_conversations',
+        //               'where' => 
+        //               [
+        //                   'client_id' => 'eq.' . $client->id,
+        //                   'to' => 'eq.' . $request['id'],
+        //                   'template_name' => 'eq.' . $request['template_name'],
+        //                   'session' => 'gt.' . \Carbon\Carbon::now()->subDay()->format('Y-m-d h:i:s'),
+        //               ]
+        //           ];
+        //           $waCons = $waConDb->createCustomQuery($query)->getResult();
+        //           if(!empty($waCons->session)) {
+        //               $fee = 0;
+        //           } else {
+        //               $data = $waConDb->insert([
+        //                   'client_id' => $client->id,
+        //                   'to' => $request['id'],
+        //                   'template_name' => $request['template_name'],
+        //                   'type' => $tmp->type,
+        //                   'session' => \Carbon\Carbon::now()->format('Y-m-d h:i:s'),
+        //                   ]);
+        //           }
                   
-                $updateDate = $clientDb->update($client->id, ['quota' => (float)$client->quota - ($fee * 0.2)]);
-              }
-          }
+        //         $updateDate = $clientDb->update($client->id, ['quota' => (float)$client->quota - ($fee * 0.2)]);
+        //       }
+        //   }
   
         // Log::info('ChatController - sendWhatsAppMessage To Facebook API', [
         //   'headers' => [
@@ -730,67 +717,67 @@ class MessagesController extends Controller
         //   'body' => $body,
         //   'response' => json_encode($response),
         // ]);
-      } else {
-        if ($request['media'] && $request['media_link']) {
-          $bodyText = [
-            'messaging_product' => 'whatsapp',
-            'recipient_type' => 'individual',
-            'to' => str_replace('+', '', $request['id']),
-            'type' => $request['media'],
-            $request['media'] => [
-              'link' => $request['media_link'],
-            ],
-          ];
-        } else {
-          $bodyText = [
-            'messaging_product' => 'whatsapp',
-            'recipient_type' => 'individual',
-            'to' => str_replace('+', '', $request['id']),
-            'type' => 'text',
-            'text' => [
-              'preview_url' => true,
-              'body' => $request['message'],
-            ],
-          ];
-        }
+
+        // if ($request['media'] && $request['media_link']) {
+        //   $bodyText = [
+        //     'messaging_product' => 'whatsapp',
+        //     'recipient_type' => 'individual',
+        //     'to' => str_replace('+', '', $request['id']),
+        //     'type' => $request['media'],
+        //     $request['media'] => [
+        //       'link' => $request['media_link'],
+        //     ],
+        //   ];
+        // } else {
+        //   $bodyText = [
+        //     'messaging_product' => 'whatsapp',
+        //     'recipient_type' => 'individual',
+        //     'to' => str_replace('+', '', $request['id']),
+        //     'type' => 'text',
+        //     'text' => [
+        //       'preview_url' => true,
+        //       'body' => $request['message'],
+        //     ],
+        //   ];
+        // }
   
-        $response = Http::withHeaders([
-          'Authorization' => 'Bearer ' . $token,
-          'Content-Type' => 'application/json',
-        ])->post('https://graph.facebook.com/v18.0/' . $phone_number_id . '/messages', $bodyText);
+        // $response = Http::withHeaders([
+        //   'Authorization' => 'Bearer ' . $token,
+        //   'Content-Type' => 'application/json',
+        // ])->post('https://graph.facebook.com/v18.0/' . $phone_number_id . '/messages', $bodyText);
         
-        if (isset($dataAuth->access_token)) {
-              $clientDb = $service->setBearerToken($dataAuth->access_token)->initializeDatabase('clients', 'id');
-              $clients = $clientDb->findBy('phone', $from)->getResult();
+        // if (isset($dataAuth->access_token)) {
+        //       $clientDb = $service->setBearerToken($dataAuth->access_token)->initializeDatabase('clients', 'id');
+        //       $clients = $clientDb->findBy('phone', $from)->getResult();
               
-              if ($clients) {
-                $client = $clients[0];
+        //       if ($clients) {
+        //         $client = $clients[0];
                 
-                  $fee = 0;
-                  if(!$client->counter_service) {
-                    $updateData = $clientDb->update($client->id, [
-                        'session_service' => \Carbon\Carbon::now()->fromat('Y-m-d h:i:s'),
-                          'counter_service' => 0
-                        ]);
-                  } else {
-                      if(\Carbon\Carbon::createFromFormat('Y-m-d h:i:s', $client->session_service)->format('Y-m') <= \Carbon\Carbon::now()->fromat('Y-m-d h:i:s')->subMonth()->format('Y-m')) {
-                          $updateData = $clientDb->update($client->id, [
-                              'session_service' => \Carbon\Carbon::now()->fromat('Y-m-d h:i:s'),
-                              'counter_service' => 0
-                          ]);
-                      } else {
-                          if($client->counter_service > 1000) {
-                              $fee = 0.0190;
-                          }
-                      }
-                  }
+        //           $fee = 0;
+        //           if(!$client->counter_service) {
+        //             $updateData = $clientDb->update($client->id, [
+        //                 'session_service' => \Carbon\Carbon::now()->fromat('Y-m-d h:i:s'),
+        //                   'counter_service' => 0
+        //                 ]);
+        //           } else {
+        //               if(\Carbon\Carbon::createFromFormat('Y-m-d h:i:s', $client->session_service)->format('Y-m') <= \Carbon\Carbon::now()->fromat('Y-m-d h:i:s')->subMonth()->format('Y-m')) {
+        //                   $updateData = $clientDb->update($client->id, [
+        //                       'session_service' => \Carbon\Carbon::now()->fromat('Y-m-d h:i:s'),
+        //                       'counter_service' => 0
+        //                   ]);
+        //               } else {
+        //                   if($client->counter_service > 1000) {
+        //                       $fee = 0.0190;
+        //                   }
+        //               }
+        //           }
                   
-                $updateData = $db->update($client->id, [
-                    'quota' => (float)$client->quota - ($fee * 0.2),
-                    'counter_service' => (int)$client->counter_service + 1
-                    ]);
-              }
-          }
+        //         $updateData = $db->update($client->id, [
+        //             'quota' => (float)$client->quota - ($fee * 0.2),
+        //             'counter_service' => (int)$client->counter_service + 1
+        //             ]);
+        //       }
+        //   }
   
         // Log::info('ChatController - sendWhatsAppMessage', [
         //   'headers' => [
@@ -801,7 +788,7 @@ class MessagesController extends Controller
         //   'body' => $bodyText,
         //   'response' => json_encode($response),
         // ]);
-      }
+    //   }
   
     //   return 'Message sent: ' . json_encode($response);
         // send the response

@@ -43,6 +43,9 @@
                     @if (count($myArray) > 0)
                         <ul class="list-unstyled chat-contact-list p-0 mt-2" id="chat-list">
                             @foreach ($sortedActive as $key => $value)
+                            <?php 
+                            var_dump($value->created_at) ;
+                            ?>
                                 <li class="chat-contact-list-item m-2" data-contact="{{ $value->from }}">
                                     <a class="d-flex align-items-center">
                                         <div class="avatar-initial" style="padding: 12px;">
@@ -54,7 +57,7 @@
                                                 <div class="d-flex justify-content-between align-items-center">
                                                 <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value->from }}" data-contact="{{ $value->lead?->client_name }}" data-type="contact" data-job="{{ $value->lead?->title }}" data-company="{{ $value->lead?->company_name }}">
                                                 {{ isset($value->lead->client_name) ? $value->lead->client_name : $value->from }}</h6>
-                                                <small>{{ $value->created_at->diffForHumans() }}</small>
+                                                <small>{{ $value->created_at }}</small>
                                                 </div>
                                                 <small>{{ $value->from }}</small>
                                             </div>

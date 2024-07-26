@@ -19,21 +19,18 @@
     $listTabs = [$tab2, $tab3];
     //$customers = \App\Models\Chat::with('dealer')->distinct('from')->orderby('from')->get();
 
+    
     $customerActive = \App\Models\Chat::with('lead')
-    ->with('profile')
-      ->distinct('from')
-      ->where('to', env('TWILIO_WHATSAPP_FROM'))
       ->whereRelation('lead', 'status', '=', 'Active')
+      ->orderBy('id','DESC')
       ->get();
-    $sortedActive = $customerActive->sortByDesc('created_at');
+    $sortedActive = $customerActive->groupBy('from');
 
-    $customerClosed = \App\Models\Chat::with('lead')
-    ->with('profile')
-      ->distinct('from')
-      ->where('to', env('TWILIO_WHATSAPP_FROM'))
+    $customerClosed =  \App\Models\Chat::with('lead')
       ->whereRelation('lead', 'status', '!=', 'Active')
+      ->orderBy('id','DESC')
       ->get();
-    $sortedClosed = $customerClosed->sortByDesc('created_at');
+    $sortedClosed = $customerClosed->groupBy('from');
 
 @endphp
 
@@ -42,34 +39,32 @@
         <x-slot name="body">
             <div class="tab-content p-0">
             <div class="tab-pane active" id="active" role="tabpanel" aria-labelledby="open-tab">
-                    @if (count($myArray) > 0)
+                    @if (count($sortedActive) > 0)
                         <ul class="list-unstyled chat-contact-list p-0 mt-2" id="chat-list">
                             @foreach ($sortedActive as $key => $value)
-                            <?php
-                            if ( $value->type="template"){
-                                $templateDate = $value->created_at;
-                            }
-
-                            ?>
-                                <li class="chat-contact-list-item" data-contact="{{ $value->from }}">
+                                <li class="chat-contact-list-item" data-contact="{{ $value[0]->from }}">
                                     <a class="d-flex align-items-center">
                                         <div class="avatar-initial" style="padding: 12px;">
-                                            <span class="text-dark fw-bolder">{{ Helper::getInitial($value->lead?->client_name); }}</span>
+                                            <span class="text-dark fw-bolder">{{ Helper::getInitial($value[0]->lead?->client_name); }}</span>
                                         </div>
 
                                         <div class="d-flex flex-column chat-contact-info flex-grow-1 ms-2 gap-2">
                                             <div class="d-flex flex-column gap-1">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value->from }}" data-contact="{{ $value->lead?->client_name }}" data-type="contact" data-job="{{ $value->lead?->title }}" data-company="{{ $value->lead?->company_name }}">
-                                                {{ isset($value->lead->client_name) ? $value->lead->client_name : $value->from }}</h6>
-                                                <small>{{ $value->created_at->diffForHumans() }}</small>
+                                                <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value[0]->from }}" data-contact="{{ $value[0]->lead?->client_name }}" data-type="contact" data-job="{{ $value[0]->lead?->title }}" data-company="{{ $value[0]->lead?->company_name }}">
+                                                {{ isset($value[0]->lead->client_name) ? $value[0]->lead->client_name : $value[0]->from }}</h6>
+                                                @if ($value[0]->created_at->isToday())
+                                                <small>{{ $value[0]->created_at->format('H:i'); }}</small>
+                                                @else
+                                                <small>{{ $value[0]->created_at->diffForHumans() }}</small>
+                                                @endif
                                                 </div>
-                                                <small>{{ $value->from }}</small>
+                                                <small>{{ $value[0]->from }}</small>
                                             </div>
 
                                             <div>
                                                 <p class="chat-contact-status text-chat text-truncate mb-0">
-                                                    <input type="hidden" id="template-date" value="{{ $templateDate}}"/>
+                                                    <input type="hidden" id="template-date" value="{{ $value[0]->created_at }}"/>
                                                 </p>
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center">
@@ -85,10 +80,10 @@
                                                     </div>
                                                     <span class="badge badge-sm rounded-pill text-dark"
                                                         style="background: #B8E9EF;">
-                                                        {{ $value->type }}
+                                                        {{ $value[0]->lead?->status }}
                                                     </span>
                                                 </div>
-                                                <button class="btn-route-customer" data-id="{{ $value->id }}">
+                                                <button class="btn-route-customer" data-id="{{ $value[0]->id }}">
                                                     <img src="{{ asset('assets/svg/icons/info.svg') }}" alt="info"
                                                     width="20">
                                                 </button>
@@ -105,24 +100,24 @@
                 <div class="tab-pane" id="closed" role="tabpanel" aria-labelledby="closed-tab">
                 <ul class="list-unstyled chat-contact-list p-0 mt-2" id="chat-list">
                             @foreach ($sortedClosed as $key => $value)
-                                <li class="chat-contact-list-item" data-contact="{{ $value->from }}">
+                                <li class="chat-contact-list-item" data-contact="{{ $value[0]->from }}">
                                     <a class="d-flex align-items-center">
                                         <div class="avatar-initial" style="padding: 12px;">
-                                            <span class="text-dark fw-bolder">{{ Helper::getInitial($value->lead?->client_name); }}</span>
+                                            <span class="text-dark fw-bolder">{{ Helper::getInitial($value[0]->lead?->client_name); }}</span>
                                         </div>
 
                                         <div class="d-flex flex-column chat-contact-info flex-grow-1 ms-2 gap-2">
                                             <div class="d-flex flex-column gap-1">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value->from }}" data-contact="{{ $value->lead?->client_name }}" data-type="contact" data-job="{{ $value->lead?->title }}" data-company="{{ $value->lead?->company_name }}">
-                                                {{ isset($value->lead->client_name) ? $value->lead->client_name : $value->from }}</h6>
-                                                <small>{{ $value->created_at->diffForHumans() }}</small>
+                                                <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value[0]->from }}" data-contact="{{ $value[0]->lead?->client_name }}" data-type="contact" data-job="{{ $value[0]->lead?->title }}" data-company="{{ $value[0]->lead?->company_name }}">
+                                                {{ isset($value[0]->lead->client_name) ? $value[0]->lead->client_name : $value[0]->from }}</h6>
+                                                <small>{{ $value[0]->created_at->diffForHumans() }}</small>
                                                 </div>
-                                                <small>{{ $value->from }}</small>
+                                                <small>{{ $value[0]->from }}</small>
                                             </div>
                                             <div>
                                                 <p class="chat-contact-status text-chat text-truncate mb-0">
-                                                    <!-- {{ $value->message }} -->
+                                                    <!-- {{ $value[0]->message }} -->
                                                 </p>
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center">
@@ -138,10 +133,10 @@
                                                     </div>
                                                     <span class="badge badge-sm rounded-pill text-dark"
                                                         style="background: #B8E9EF;">
-                                                        {{ $value->type }}
+                                                        {{ $value[0]->lead?->status }}
                                                     </span>
                                                 </div>
-                                                <button class="btn-route-customer" data-id="{{ $value->id }}">
+                                                <button class="btn-route-customer" data-id="{{ $value[0]->id }}">
                                                     <img src="{{ asset('assets/svg/icons/info.svg') }}" alt="info"
                                                     width="20">
                                                 </button>

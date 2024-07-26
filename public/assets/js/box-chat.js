@@ -1444,6 +1444,66 @@ $(document).ready(function () {
    });
  });
 
+ const checkDiffDate = (date1, date2) => {
+  // Calculating the time difference
+  // of two dates
+  let diffTime = date2.getTime() - date1.getTime();
+
+  // Calculating the no. of days between
+  // two dates
+  let diffDate = Math.round(diffTime / (1000 * 3600 * 24));
+
+  // To display the final no. of days (result)
+  return diffDate
+ }
+
+  /**
+    * @description handle countdown timer
+    */
+   const getCountdownSession = document.querySelector('#countdown-session')
+   const countdownSessionExpired = () => {
+    getCountdownSession.innerHTML = "Session expired";
+    getCountdownSession.style.background = '#BA1A1A';
+    $('#confirmation-session-expired').show()
+    $('#confirmation-session-expired').css({ 'display': 'flex', 'flex-direction': 'column' })
+    $('.m-send').hide()
+    $('#icon-bolt').hide()
+    $('#icon-bolt-active').show()
+   }
+   const countdownSession = (date) => {
+    // check last date
+    // if greater than 1
+    // then is expired session
+    const lastTimeDate = new Date(date)
+    const diff = checkDiffDate(lastTimeDate, new Date())
+
+    if (diff >= 1) {
+      countdownSessionExpired()
+      return
+    }
+
+    const duration = lastTimeDate.getTime()
+    var timer = duration, hours;
+
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+    
+    // Time calculations for hours
+    hours = parseInt((timer / 3600) % 24, 10)
+    hours = hours < 10 ? "0" + hours : hours;
+    
+    // Output the result in an element with id="demo"
+    getCountdownSession.innerHTML = hours + "h "
+    + "until session ends";
+    
+    // If the count down is over, write some text 
+    if (hours < 10) {
+      clearInterval(x);
+      countdownSessionExpired()
+    }
+  }, 1000);
+}
+
  // tabs on click, show/hide...
  const btnInfo = document.querySelector('.btn-route-customer');
  if (btnInfo) {
@@ -1484,11 +1544,15 @@ $(document).ready(function () {
  });
 
  $("body").on("click", ".chat-contact-list-item", function () {
+  getCountdownSession.innerHTML = ''
   $(".chat-contact-list-item").removeClass("m-list-active");
   $(this).addClass("m-list-active");
   const contact_id = $(this).attr("data-contact");
   routerPush(document.title, `${url}/customers/${contact_id}`);
   updateSelectedContactChat(contact_id);
+
+  const getLastChatTime = $(this).find('#chat-contact-time')[0].innerText
+  countdownSession(getLastChatTime)
   $('#countdown-session').show();
 });
 

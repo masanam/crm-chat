@@ -442,9 +442,6 @@ class Chat extends Controller
       ]);
     } else {
       if ($request->media && $request->media_link) {
-          Log::info('MEDIA LINK', [
-              'media_link' => $request->media_link,
-            ]);
         $bodyText = [
           'messaging_product' => 'whatsapp',
           'recipient_type' => 'individual',
@@ -546,16 +543,11 @@ class Chat extends Controller
   public function receiveWhatsAppMessage(Request $request)
   {
     Log::info('ChatController - receiveWhatsAppMessage', [
-      'RECEIVE_MID' => $request->input('entry.0.changes.0.value.messages.0.text.body'),
-      'RECEIVE_MESSAGE' => $request->input('entry.0.changes.0.value.messages.0.text.body'),
+      'request' => $request->entry,
     ]);
-    
-    // Log::info('ChatController - receiveWhatsAppMessage', [
-    //   'request' => $request->entry,
-    // ]);
-    //         Log::info('ChatController - receiveWhatsAppMessage - entry0', [
-    //           'request' => $request->input('entry.0'),
-    //         ]);
+            Log::info('ChatController - receiveWhatsAppMessage - entry0', [
+              'request' => $request->input('entry.0'),
+            ]);
 
     // //   return response()->json("Message Saved", 200);
     // $sid = env('TWILIO_SID');
@@ -615,12 +607,12 @@ class Chat extends Controller
             'https://graph.facebook.com/v17.0/' .
               $request->input('entry.0.changes.0.value.messages.0.' . $mediaType . '.id')
           );
-            // Log::info('ChatController - receiveWhatsAppMessage - getMediaData', [
-            //   'token' => $token,
-            //   'type' => $mediaType,
-            //   'request' => $request->input('entry.0.changes.0.value.messages.0.' . $mediaType . '.id'),
-            //   'data' => json_decode($mediaData),
-            // ]);
+            Log::info('ChatController - receiveWhatsAppMessage - getMediaData', [
+              'token' => $token,
+              'type' => $mediaType,
+              'request' => $request->input('entry.0.changes.0.value.messages.0.' . $mediaType . '.id'),
+              'data' => json_decode($mediaData),
+            ]);
           $media = $mediaType;
           $mediaUrl = (json_decode($mediaData))->url;
           
@@ -737,10 +729,9 @@ class Chat extends Controller
           'client_phone' => $display_phone_number,
           'status' => null
         ];
-        
-        // Log::info('ChatController - receiveWhatsAppMessage - requestData', [
-        //       'data' => $requestData,
-        //     ]);
+        Log::info('ChatController - receiveWhatsAppMessage - requestData', [
+              'data' => $requestData,
+            ]);
 
         \App\Models\Chat::create($requestData);
         // $chat = new \App\Models\Chat();

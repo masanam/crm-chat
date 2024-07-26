@@ -651,10 +651,10 @@
 
       // Set the date we're counting down to
 
-// var templateDate = document.getElementById('template-date').value;
-// var countDownDate = new Date(templateDate).getTime();
+var templateDate = document.getElementById('template-date').value;
+var countDownDate = new Date(templateDate).getTime();
 
-var countDownDate = new Date("July 25, 2024 18:37:25").getTime();
+// var countDownDate = new Date("2024-07-25 14:46:25").getTime();
 
 // Update the count down every 1 second
 var x = setInterval(function() {
@@ -663,7 +663,7 @@ var x = setInterval(function() {
   var now = new Date().getTime();
 
   // Find the distance between now and the count down date
-  var distance = countDownDate - now;
+  var distance =  now - countDownDate ;
 
   // Time calculations for days, hours, minutes and seconds
   var days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -683,6 +683,14 @@ var x = setInterval(function() {
   if (distance < 0) {
           clearInterval(x);
           document.getElementById("countdown-session").innerHTML = "EXPIRED";
+            $('#confirmation-session-expired').show()
+            $('#confirmation-session-expired').css({ 'display': 'flex', 'flex-direction': 'column' })
+            $('.m-send').hide()
+            $('#icon-bolt').hide();
+            $('#btn-upload').hide();
+            $('#btn-internal-chat').hide();
+            $('.send-button').hide();
+            $('#icon-bolt-active').show()
         }
       }, 1000);
     }

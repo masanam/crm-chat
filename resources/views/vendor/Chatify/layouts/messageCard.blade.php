@@ -16,7 +16,7 @@ $timeAndSeen = "<span data-time='$created_at' class='message-time'>
     <div class="message-card-content">
         @if (!$isSender)
         <div class="avatar-initial" style="width: 24px; height: 24px; font-size: 10px; padding: 4px;">
-            <span style="color: #000; font-weight: 600;">{{ Helper::getInitial(($client_name != '') ? $client_name : $profile_name); }}</span>
+            <span style="color: #000; font-weight: 600;">{{ Helper::getInitial(($client_name != '') ? $client_name : 'Manager'); }}</span>
         </div>
         @endif
         @if (@$attachment->type != 'image' || $message)
@@ -24,7 +24,7 @@ $timeAndSeen = "<span data-time='$created_at' class='message-time'>
             <div class="message" style="display: flex; flex-direction: column; border-radius: 12px; background: #fcf0d4 !important; color: #000;">
                     {!! ($message == null && $attachment != null && @$attachment->type != 'file') ? $attachment->title : nl2br($message) !!}
                     {!! $timeAndSeen !!}
-                    <span class='message-time'>{!! ($client_name != '') ? $client_name : $profile_name  !!}</span>
+                    <span class='message-time'>{!! ($client_name != '') ? $client_name : 'Manager'  !!}</span>
 
                     {{-- If attachment is a file --}}
                     @if(@$attachment->type == 'file')
@@ -37,7 +37,7 @@ $timeAndSeen = "<span data-time='$created_at' class='message-time'>
             <div class="message" style="display: flex; flex-direction: column; border-radius: 12px; background: #EBECEF; color: #000;">
                     {!! ($message == null && $attachment != null && @$attachment->type != 'file') ? $attachment->title : nl2br($message) !!}
                     {!! $timeAndSeen !!}
-                    <span class='message-time'>{!! ($client_name != '') ? $client_name : $profile_name  !!}</span>
+                    <span class='message-time'>{!! ($client_name != '') ? $client_name : 'Manager'  !!}</span>
 
                     {{-- If attachment is a file --}}
                     @if(@$attachment->type == 'file')
@@ -55,13 +55,13 @@ $timeAndSeen = "<span data-time='$created_at' class='message-time'>
             </div>
             <div style="margin-bottom:5px">
                 {!! $timeAndSeen !!}
-                <span class='message-time'>{!! ($client_name != '') ? $client_name : $profile_name !!}</span>
-            </div>
+                <span class='message-time'>{!! ($client_name != '') ? $client_name : 'Manager'  !!}</span>
+                </div>
         </div>
         @endif
         @if ($isSender)
         <div class="avatar-initial" style="width: 24px; height: 24px; font-size: 10px; padding: 4px;">
-            <span style="color: #000; font-weight: 600;">{{ Helper::getInitial(($client_name != '') ? $client_name : $profile_name); }}</span>
+            <span style="color: #000; font-weight: 600;">{{ Helper::getInitial(($client_name != '') ? $client_name : 'Manager'); }}</span>
         </div>
         @endif
     </div>

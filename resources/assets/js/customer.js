@@ -596,6 +596,7 @@
         $('#confirmation-internal-chat').toggle()
         $('#btn-upload').hide()
         $('#btn-template').hide()
+        $('#type').val('internalChat')
       })
       $('#confirmation-internal-chat').on('click', (e) => {
         e.preventDefault()
@@ -603,45 +604,15 @@
         $('#btn-template').show()
         $('#confirmation-internal-chat').hide()
         getTextChat.style.background = 'rgb(241, 242, 244)'
+        $('#type').val('internalChat')
       })
     }
 
-    /**
-     * @description handle countdown timer
-     */
-    const getCountdownSession = document.querySelector('#countdown-session')
-    if (getCountdownSession) {
-      const countdownSession = (duration) => {
-          var timer = duration, hours;
-
-          // Update the count down every 1 second
-          var x = setInterval(function() {
-          
-          // Time calculations for hours
-          hours = parseInt((timer / 3600) % 24, 10)
-          hours = hours < 10 ? "0" + hours : hours;
-          
-          // Output the result in an element with id="demo"
-          getCountdownSession.innerHTML = hours + "h "
-          + "until session ends";
-          
-          // If the count down is over, write some text 
-          if (hours < 10) {
-            clearInterval(x);
-            getCountdownSession.innerHTML = "Session expired";
-            getCountdownSession.style.background = '#BA1A1A';
-            $('#confirmation-session-expired').show()
-            $('#confirmation-session-expired').css({ 'display': 'flex', 'flex-direction': 'column' })
-            $('.m-send').hide()
-            $('#icon-bolt').hide()
-            $('#icon-bolt-active').show()
-          }
-        }, 1000);
-      }
-
-      var twentyFourHours = new Date("July 26, 2024 22:37:25").getTime();
-      countdownSession(twentyFourHours);
-    }
+    const btntemplate = document.querySelector('#btn-template')
+    btntemplate.addEventListener('click', (e) => {
+     e.preventDefault()
+     $('#type').val('templateChat')
+   })
    })();
  });
  

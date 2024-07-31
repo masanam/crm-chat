@@ -436,6 +436,7 @@ function IDinfo(type, id) {
        $("#message-form").trigger("reset");
        cancelAttachment();
        messageInput.focus();
+
      },
      error: () => {
        console.error("Couldn't fetch user data!");
@@ -456,6 +457,55 @@ function IDinfo(type, id) {
 * Fetch id data (user/group) and update the view
 *-------------------------------------------------------------
 */
+
+let interval = null;
+
+function updateCounter(dataCounter) {
+  var minutes, seconds;
+
+  if (interval !== null) {
+      clearInterval(interval);
+  }
+
+  interval = setInterval(function() {
+
+    // Get today's date and time
+    var now = new Date().getTime();
+    var countDownDate = new Date(dataCounter).getTime();
+    var distance =  now - countDownDate ;
+  
+    // Find the distance between now and the count down date
+    
+    // Time calculations for days, hours, minutes and seconds
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    // Display the result in the element with id="demo"
+    // document.getElementById("countdown-session").innerHTML = days + "d " + hours + "h "
+    // + minutes + "m " + seconds + "s ";
+    
+    document.getElementById("countdown-session").innerHTML = hours + " hours "
+    + minutes + " mins " + seconds + " secs until session ends ";
+    
+    
+    // If the count down is finished, write some text
+    if (distance < 0) {
+      clearInterval(interval);
+            document.getElementById("countdown-session").innerHTML = "EXPIRED";
+              $('#confirmation-session-expired').show()
+              $('#confirmation-session-expired').css({ 'display': 'flex', 'flex-direction': 'column' })
+              $('.m-send').hide()
+              $('#icon-bolt').hide();
+              $('#btn-upload').hide();
+              $('#btn-internal-chat').hide();
+              $('.send-button').hide();
+              $('#icon-bolt-active').show()
+          }
+        }, 1000);
+    }
+
 function groupIDinfo(channel_id) {
  // clear temporary message id
  temporaryMsgId = 0;
@@ -1489,7 +1539,6 @@ $(document).ready(function () {
   const contact_id = $(this).attr("data-contact");
   routerPush(document.title, `${url}/customers/${contact_id}`);
   updateSelectedContactChat(contact_id);
-  $('#countdown-session').show();
 });
 
  // show info side button
@@ -1517,7 +1566,9 @@ $(document).ready(function () {
    const dataName = $(this).find("h6[data-contact]").attr("data-contact");
    const dataCompany = $(this).find("h6[data-company]").attr("data-company");
    const dataJob = $(this).find("h6[data-job]").attr("data-job");
+   const dataCounter = $(this).find("h6[data-counter]").attr("data-counter");
 
+   const initialName = dataName.match(/(\b\S)?/g).join("").toUpperCase();
 
    setMessengerId(dataId);
    $('.channelID').val("contactChat");
@@ -1526,7 +1577,7 @@ $(document).ready(function () {
    $('.client-company').html(dataCompany);
    $('.client-job').html(dataJob);
    $('.first_name').html(dataName);
-
+   $('.client-initial').html(initialName);
 
    $('#first-name').val(dataName);
    $('#client-job').val(dataJob);
@@ -1535,9 +1586,23 @@ $(document).ready(function () {
 
    $('#client-company').val(dataCompany);
 
-
    IDinfo("contactChat", dataId);
+
+   $('#counter-date').val(dataCounter);
+
+//    document.getElementById("countdown-session").innerHTML = hours + " hours "
+// + minutes + " mins " + seconds + " secs until session ends ";
+
+    //    fiveMinutes = 60 * 5,
+    //     display = document.getElementById("countdown-session");
+    // startTimer(fiveMinutes, display);
+    updateCounter(dataCounter);
+   $('#countdown-session').show();
+
+  //  const getCountdownSession = document.querySelector('#counter-date');
+
  });
+
 
  // click action for favorite button
  $("body").on("click", ".favorite-list-item", function () {

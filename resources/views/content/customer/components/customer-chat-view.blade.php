@@ -17,24 +17,22 @@
     ];
 
     $listTabs = [$tab2, $tab3];
-
-    $customerActive = \App\Models\Chat::with('lead')
-    ->whereRelation('lead', 'status', 'Active')
-    ->latest('created_at')
-    ->get();
     
+    $sortedActive = \App\Models\Chat::with('lead')
+    ->whereRelation('lead', 'status','Active')
+    ->orderBy('id','DESC')
+    ->get()
+    ->unique('from');
+    
+   //foreach($customerActive as $item){
+   //     echo $item->id.' - '.$item->created_at.' - '. $item->lead->status.'</br/>';
+   //   }
 
-//      foreach($customerActive as $item){
-//        echo $item->id.' - '.$item->created_at.' - '. $item->from.'</br/>';
-//      }
-
-   $sortedActive = $customerActive->groupBy('from');
-
-    $customerClosed =  \App\Models\Chat::with('lead')
-      ->whereRelation('lead', 'status', '!=', 'Active')
-      ->orderBy('id','DESC')
-      ->get();
-    $sortedClosed = $customerClosed->groupBy('from');
+    $sortedClosed = \App\Models\Chat::with('lead')
+    ->whereRelation('lead', 'status','!=' ,'Active')
+    ->orderBy('id','DESC')
+    ->get()
+    ->unique('from');
 
 @endphp
 
@@ -46,29 +44,51 @@
                     @if (count($sortedActive) > 0)
                         <ul class="list-unstyled chat-contact-list p-0 mt-2" id="chat-list">
                             @foreach ($sortedActive as $key => $value)
-                                <li class="chat-contact-list-item" data-contact="{{ $value[0]->from }}">
+                                <li class="chat-contact-list-item" data-contact="{{ $value->from }}">
                                     <a class="d-flex align-items-center">
                                         <div class="avatar-initial" style="padding: 12px;">
-                                            <span class="text-dark fw-bolder">{{ Helper::getInitial($value[0]->lead?->client_name); }}</span>
+                                            <span class="text-dark fw-bolder">{{ Helper::getInitial($value->lead?->client_name); }}</span>
                                         </div>
 
                                         <div class="d-flex flex-column chat-contact-info flex-grow-1 ms-2 gap-2">
                                             <div class="d-flex flex-column gap-1">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value[0]->from }}" data-counter="{{ $value[0]->created_at }}" data-contact="{{ $value[0]->lead?->client_name }}" data-type="contact" data-job="{{ $value[0]->lead?->title }}" data-company="{{ $value[0]->lead?->company_name }}">
-                                                {{ isset($value[0]->lead->client_name) ? $value[0]->lead->client_name : $value[0]->from }}</h6>
-                                                @if ($value[0]->created_at->isToday())
-                                                <small>{{ $value[0]->created_at->format('H:i'); }}</small>
+                                                <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" 
+                                                data-id="{{ $value->from }}" 
+                                                data-counter="{{ $value->created_at }}" 
+                                                data-contact="{{ $value->lead?->client_name }}" 
+                                                data-type="contact" 
+                                                data-job="{{ $value->lead?->title }}" 
+                                                data-company="{{ $value->lead?->company_name }}"
+                                                data-closed="{{ $value->lead?->closed_date }}" 
+                                                data-budget="{{ $value->lead?->budget }}"
+                                                >
+                                                {{ isset($value->lead->client_name) ? $value->lead->client_name : $value->from }}</h6>
+                                                @if ($value->created_at->isToday())
+                                                <small>{{ $value->created_at->format('H:i'); }}</small>
                                                 @else
-                                                <small>{{ $value[0]->created_at->diffForHumans() }}</small>
+                                                <small>{{ $value->created_at->diffForHumans() }}</small>
                                                 @endif
                                                 </div>
-                                                <small>{{ $value[0]->from }}</small>
+                                                <small>{{ $value->from }}</small>
                                             </div>
 
                                             <div>
                                                 <p class="chat-contact-status text-chat text-truncate mb-0">
-                                                    <input type="text" id="template-date" value="{{ $value[0]->id }}"/>
+                                                    <input type="hidden" id="id" value="{{ $value->id }}"/>
+                                                    <span class="badge badge-sm rounded-pill text-dark"
+                                                        style="background: #B8E9EF;">
+                                                        {{ $value->lead?->status }}
+                                                    </span>
+                                                    <span class="badge badge-sm rounded-pill text-dark"
+                                                        style="background: #B8E9EF;">
+                                                        {{ $value->lead?->quality }}
+                                                    </span>
+                                                    <span class="badge badge-sm rounded-pill text-dark"
+                                                        style="background: #B8E9EF;">
+                                                        {{ $value->lead?->stage }}
+                                                    </span>
+
                                                 </p>
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center">
@@ -82,12 +102,10 @@
                                                             <small>+1</small>
                                                         </div>
                                                     </div>
-                                                    <span class="badge badge-sm rounded-pill text-dark"
-                                                        style="background: #B8E9EF;">
-                                                        {{ $value[0]->lead?->status }}
-                                                    </span>
+
+
                                                 </div>
-                                                <button class="btn-route-customer" data-id="{{ $value[0]->id }}">
+                                                <button class="btn-route-customer" data-id="{{ $value->id }}">
                                                     <img src="{{ asset('assets/svg/icons/info.svg') }}" alt="info"
                                                     width="20">
                                                 </button>
@@ -104,24 +122,24 @@
                 <div class="tab-pane" id="closed" role="tabpanel" aria-labelledby="closed-tab">
                 <ul class="list-unstyled chat-contact-list p-0 mt-2" id="chat-list">
                             @foreach ($sortedClosed as $key => $value)
-                                <li class="chat-contact-list-item" data-contact="{{ $value[0]->from }}">
+                                <li class="chat-contact-list-item" data-contact="{{ $value->from }}">
                                     <a class="d-flex align-items-center">
                                         <div class="avatar-initial" style="padding: 12px;">
-                                            <span class="text-dark fw-bolder">{{ Helper::getInitial($value[0]->lead?->client_name); }}</span>
+                                            <span class="text-dark fw-bolder">{{ Helper::getInitial($value->lead?->client_name); }}</span>
                                         </div>
 
                                         <div class="d-flex flex-column chat-contact-info flex-grow-1 ms-2 gap-2">
                                             <div class="d-flex flex-column gap-1">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value[0]->from }}" data-contact="{{ $value[0]->lead?->client_name }}" data-type="contact" data-job="{{ $value[0]->lead?->title }}" data-company="{{ $value[0]->lead?->company_name }}">
-                                                {{ isset($value[0]->lead->client_name) ? $value[0]->lead->client_name : $value[0]->from }}</h6>
-                                                <small>{{ $value[0]->created_at->diffForHumans() }}</small>
+                                                <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value->from }}" data-contact="{{ $value->lead?->client_name }}" data-type="contact" data-job="{{ $value->lead?->title }}" data-company="{{ $value->lead?->company_name }}">
+                                                {{ isset($value->lead->client_name) ? $value->lead->client_name : $value->from }}</h6>
+                                                <small>{{ $value->created_at->diffForHumans() }}</small>
                                                 </div>
-                                                <small>{{ $value[0]->from }}</small>
+                                                <small>{{ $value->from }}</small>
                                             </div>
                                             <div>
                                                 <p class="chat-contact-status text-chat text-truncate mb-0">
-                                                    <!-- {{ $value[0]->message }} -->
+                                                    <!-- {{ $value->message }} -->
                                                 </p>
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center">
@@ -137,10 +155,10 @@
                                                     </div>
                                                     <span class="badge badge-sm rounded-pill text-dark"
                                                         style="background: #B8E9EF;">
-                                                        {{ $value[0]->lead?->status }}
+                                                        {{ $value->lead?->status }}
                                                     </span>
                                                 </div>
-                                                <button class="btn-route-customer" data-id="{{ $value[0]->id }}">
+                                                <button class="btn-route-customer" data-id="{{ $value->id }}">
                                                     <img src="{{ asset('assets/svg/icons/info.svg') }}" alt="info"
                                                     width="20">
                                                 </button>
@@ -165,7 +183,7 @@
             <nav class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
                 {{-- header back button, avatar and user name --}}
                 <span class="client-name">Whatsapp</span>
-                <input type="text" id="counter-date" value=""/>
+                <input type="hidden" id="counter-date" value=""/>
 
             </nav>
             
@@ -262,11 +280,11 @@
                 <div class="d-flex justify-content-between align-items-center px-2">
                     <div>
                         <img src="{{asset('assets/svg/icons/icon-calendar.svg')}}" alt="calendar" width="15">
-                        <span style="font-size: 12px">April 22, 2024</span>
+                        <span style="font-size: 12px" class="client-closed">April 22, 2024</span>
                     </div>
                     <div>
                         <img src="{{asset('assets/svg/icons/icon-dolar.svg')}}" alt="dolar" width="15">
-                        <span style="font-size: 12px">Rp. 2,000,000</span>
+                        <span style="font-size: 12px" class="client-budget"client-job>Rp. 2,000,000</span>
                     </div>
                 </div>
             </div>

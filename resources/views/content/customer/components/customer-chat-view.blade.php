@@ -17,14 +17,18 @@
     ];
 
     $listTabs = [$tab2, $tab3];
-    //$customers = \App\Models\Chat::with('dealer')->distinct('from')->orderby('from')->get();
 
-    
     $customerActive = \App\Models\Chat::with('lead')
-      ->whereRelation('lead', 'status', '=', 'Active')
-      ->orderBy('id','DESC')
-      ->get();
-    $sortedActive = $customerActive->groupBy('from');
+    ->whereRelation('lead', 'status', 'Active')
+    ->latest('created_at')
+    ->get();
+    
+
+//      foreach($customerActive as $item){
+//        echo $item->id.' - '.$item->created_at.' - '. $item->from.'</br/>';
+//      }
+
+   $sortedActive = $customerActive->groupBy('from');
 
     $customerClosed =  \App\Models\Chat::with('lead')
       ->whereRelation('lead', 'status', '!=', 'Active')
@@ -51,7 +55,7 @@
                                         <div class="d-flex flex-column chat-contact-info flex-grow-1 ms-2 gap-2">
                                             <div class="d-flex flex-column gap-1">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value[0]->from }}" data-contact="{{ $value[0]->lead?->client_name }}" data-type="contact" data-job="{{ $value[0]->lead?->title }}" data-company="{{ $value[0]->lead?->company_name }}">
+                                                <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value[0]->from }}" data-counter="{{ $value[0]->created_at }}" data-contact="{{ $value[0]->lead?->client_name }}" data-type="contact" data-job="{{ $value[0]->lead?->title }}" data-company="{{ $value[0]->lead?->company_name }}">
                                                 {{ isset($value[0]->lead->client_name) ? $value[0]->lead->client_name : $value[0]->from }}</h6>
                                                 @if ($value[0]->created_at->isToday())
                                                 <small>{{ $value[0]->created_at->format('H:i'); }}</small>
@@ -64,7 +68,7 @@
 
                                             <div>
                                                 <p class="chat-contact-status text-chat text-truncate mb-0">
-                                                    <input type="hidden" id="template-date" value="{{ $value[0]->created_at }}"/>
+                                                    <input type="text" id="template-date" value="{{ $value[0]->id }}"/>
                                                 </p>
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center">
@@ -161,6 +165,8 @@
             <nav class="chatify-d-flex chatify-justify-content-between chatify-align-items-center">
                 {{-- header back button, avatar and user name --}}
                 <span class="client-name">Whatsapp</span>
+                <input type="text" id="counter-date" value=""/>
+
             </nav>
             
             {{-- Internet connection --}}
@@ -247,7 +253,7 @@
             <div class="d-flex flex-column gap-3">
                 <div class="d-flex flex-column justify-content-center align-items-center gap-2">
                     <div class="avatar-initial" style="padding: 12px;">
-                        <span class="text-dark fw-bolder">{{ Helper::getInitial('Acme Inc'); }}</span>
+                        <span class="text-dark fw-bolder client-initial">{{ Helper::getInitial('Acme Inc'); }}</span>
                     </div>
                     <span class="text-dark fw-bold client-name" style="font-size: 22px">Acme Inc</span>
                     <span class="badge badge-sm rounded-pill text-dark client-job" style="background: #CCE8E8;">

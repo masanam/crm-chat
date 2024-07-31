@@ -1567,8 +1567,16 @@ $(document).ready(function () {
    const dataCompany = $(this).find("h6[data-company]").attr("data-company");
    const dataJob = $(this).find("h6[data-job]").attr("data-job");
    const dataCounter = $(this).find("h6[data-counter]").attr("data-counter");
+   const dataClosed = $(this).find("h6[data-closed]").attr("data-closed");
+   const dataBudget = $(this).find("h6[data-budget]").attr("data-budget");
 
    const initialName = dataName.match(/(\b\S)?/g).join("").toUpperCase();
+
+   const numberFormatter = new Intl.NumberFormat('en-US', {
+    style: 'decimal',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  });
 
    setMessengerId(dataId);
    $('.channelID').val("contactChat");
@@ -1576,6 +1584,10 @@ $(document).ready(function () {
    $('.client-whatsapp').html(dataId);
    $('.client-company').html(dataCompany);
    $('.client-job').html(dataJob);
+   var closedDate = new Date(dataClosed).toLocaleDateString('en-us', {  day:"numeric",  month:"long", year:"numeric"}) 
+   $('.client-closed').html(closedDate);
+   $('.client-budget').html(numberFormatter.format(dataBudget));
+
    $('.first_name').html(dataName);
    $('.client-initial').html(initialName);
 

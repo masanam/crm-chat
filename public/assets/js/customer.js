@@ -588,7 +588,12 @@
      * @description handle flow internal chat
      */
     const btnInternalChat = document.querySelector('#btn-internal-chat')
+    const btntemplate = document.querySelector('#btn-template')
     const getTextChat = document.querySelector('.messenger-sendCard')
+    btntemplate.addEventListener('click', (e) => {
+      e.preventDefault()
+      $('#type').val('templateChat')
+    })
     if (btnInternalChat) {
       btnInternalChat.addEventListener('click', (e) => {
         e.preventDefault()
@@ -603,16 +608,12 @@
         $('#btn-upload').show()
         $('#btn-template').show()
         $('#confirmation-internal-chat').hide()
+        $('#type').val('contactChat')
         getTextChat.style.background = 'rgb(241, 242, 244)'
-        $('#type').val('internalChat')
       })
     }
 
-    const btntemplate = document.querySelector('#btn-template')
-    btntemplate.addEventListener('click', (e) => {
-     e.preventDefault()
-     $('#type').val('templateChat')
-   })
+
    })();
  });
  

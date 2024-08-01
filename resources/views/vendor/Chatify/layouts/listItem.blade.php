@@ -32,9 +32,8 @@ $lastMessageBody = strlen($lastMessageBody) > 30 ? mb_substr($lastMessageBody, 0
             @endif
             <span class="activeStatus"></span>
 
-            <div class="avatar-initial">
-                <span style="color: #000; font-weight: 600;">{{ Helper::getInitial($user->name); }}</span>
-            </div>
+        <div class="avatar av-m"
+        style="background-image: url('{{ $user->avatar }}');">
         </div>
         </td>
         {{-- center side --}}
@@ -87,15 +86,20 @@ $lastMessageBody = strlen($lastMessageBody) > 30 ? mb_substr($lastMessageBody, 0
 
 {{-- -------------------- Modal Search Item -------------------- --}}
 @if($get == 'user_search_item')
-    <div class="user-list-item" data-user="{{ $user->id }}" style="display: flex; justify-content: space-between; margin-top: 12px;">
-        <div style="display: flex; column-gap: 8px;">
-            <div class="avatar-initial">
-                <span style="color: #000; font-weight: 600;">{{ Helper::getInitial($user->name); }}</span>
-            </div>
-            <p>{{ strlen($user->name) > 12 ? trim(substr($user->name,0,12)).'..' : $user->name }}</p>
-        </div>
-        <img src="{{ asset('assets/svg/icons/icon-dots-vertical.svg') }}" width="4">
-    </div>
+    <table class="user-list-item" data-user="{{ $user->id }}">
+        <tr data-action="0">
+            {{-- Avatar side --}}
+            <td>
+                <div class="avatar av-s"
+                     style="background-image: url('{{ $user->avatar }}');">
+                </div>
+            </td>
+            {{-- center side --}}
+            <td>
+                <p>{{ strlen($user->name) > 12 ? trim(substr($user->name,0,12)).'..' : $user->name }}</p>
+            </td>
+        </tr>
+    </table>
 @endif
 
 {{-- -------------------- Shared photos Item -------------------- --}}

@@ -182,17 +182,18 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 Route::get('/test123', [Chat::class, 'test']);
 
 Route::get('/clear', function () {
-    $clearcache = Artisan::call('optimize:clear');
-    echo "Cache cleared<br>";
-
+  $clearcache = Artisan::call('optimize:clear');
+  echo 'Cache cleared<br>';
 });
 
-Route::group(['middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth']], function () {
   /**
-  * Verification Routes
-  */
+   * Verification Routes
+   */
   Route::get('/email/verify', 'VerificationController@show')->name('verification.notice');
-  Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify')->middleware(['signed']);
+  Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify')
+    ->name('verification.verify')
+    ->middleware(['signed']);
   Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
 });
 
@@ -450,6 +451,7 @@ Route::middleware(['auth'])->group(function () {
   // Route::put('/lead/edit/{lead}', [LeadController::class, 'update'])->name('lead.update');
   // Route::post('/lead/store', [LeadController::class, 'store'])->name('lead.store');
   Route::get('app/chat', [Chat::class, 'index'])->name('lead-list');
+  Route::get('group-chat/create', [Chat::class, 'groupCreate'])->name('group-chat.create');
 
   //DEALER
   // Route::resource('dealer', DealerController::class);
@@ -478,7 +480,6 @@ Route::middleware(['auth'])->group(function () {
   Route::get('groups/{id}/edit', [GroupController::class, 'edit'])->name('groups.edit');
   Route::put('groups/{id}', [GroupController::class, 'update'])->name('groups.update');
   Route::delete('groups/{id}', [GroupController::class, 'destroy'])->name('groups.destroy');
-
 
   // Route::resource('dealer', DealerController::class);
   Route::get('profiles', [ProfileController::class, 'index'])->name('profiles.index');
@@ -511,7 +512,6 @@ Route::middleware(['auth'])->group(function () {
   Route::post('customers/add-contact', [CustomerController::class, 'addContact'])->name('customers.add-contact');
   Route::post('customers/addmore', [CustomerController::class, 'addMorePost'])->name('customers.addMorePost');
 
-  
   // Route::post("addmore","HomeController@addMorePost");
   // Route::resource('dealer', DealerController::class);
   Route::get('clients', [ClientController::class, 'index'])->name('clients.index');
@@ -574,8 +574,6 @@ Route::middleware(['auth'])->group(function () {
   });
 });
 
-
-
 //AUTH ROUTES
 
 Route::middleware(['guest'])->group(function () {
@@ -590,7 +588,7 @@ Route::controller(StripePaymentController::class)->group(function () {
   Route::get('stripe', 'stripe');
   Route::get('subscribe', 'subscribe');
   Route::post('stripe', 'stripePost')->name('stripe.post');
-  Route::post('payment', 'processPayment')->name('stripe.payment');;
+  Route::post('payment', 'processPayment')->name('stripe.payment');
 });
 
 // Start Form Builder===============================================================

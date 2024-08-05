@@ -460,51 +460,81 @@ function IDinfo(type, id) {
 
 let interval = null;
 
+const checkDiffDate = (date1, date2) => {
+  date1 = moment(date1)
+  date2 = moment(date2)
+  // To display the final no. of days (result)
+  return date2.diff(date1, 'days')
+}
+
+const countdownSessionExpired = () => {
+  document.getElementById("countdown-session").innerHTML = "EXPIRED";
+  document.getElementById("countdown-session").style.background = '#BA1A1A';
+  $('#confirmation-session-expired').show()
+  $('#confirmation-session-expired').css({ 'display': 'flex', 'flex-direction': 'column' })
+  $('.m-send').hide()
+  $('#icon-bolt').hide();
+  $('#btn-upload').hide();
+  $('#btn-internal-chat').show();
+  $('.send-button').hide();
+  $('#icon-bolt-active').show()
+}
+
+const countdownSessionNotExpired = () => {
+  document.getElementById("countdown-session").style.background = 'rgb(97, 106, 117)';
+  $('#confirmation-session-expired').hide()
+  $('.m-send').show()
+  $('#icon-bolt').show();
+  $('#btn-upload').show();
+  $('#btn-internal-chat').show();
+  $('.send-button').show();
+  $('#icon-bolt-active').hide()
+}
+
 function updateCounter(dataCounter) {
   var minutes, seconds;
+  const customerDate = new Date(dataCounter)
+  // clear interval
+  clearInterval(interval);
+  // Get today's date and time
+  const now = new Date()
+  // add a day
+  const newCustomerDate = new Date(now.setDate(now.getDate() + 1)).setHours(customerDate.getHours())
+  // check last date
+  // if greater than 1
+  // then is expired session
+  const diff = checkDiffDate(customerDate, new Date())
+  if (diff === 0) {
+    countdownSessionNotExpired()
+    interval = setInterval(function() {
 
-  if (interval !== null) {
-      clearInterval(interval);
+      var distance = newCustomerDate - new Date().getTime();
+    
+      // Find the distance between now and the count down date
+      
+      // Time calculations for days, hours, minutes and seconds
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+      // Display the result in the element with id="demo"
+      // document.getElementById("countdown-session").innerHTML = days + "d " + hours + "h "
+      // + minutes + "m " + seconds + "s ";
+      
+      document.getElementById("countdown-session").innerHTML = hours + " hours "
+      + minutes + " mins " + seconds + " secs until session ends ";
+      
+      // If the count down is finished, write some text
+      if (distance < 0) {
+        clearInterval(interval);
+        countdownSessionExpired()
+       }
+      }, 1000);
+  } else {
+    countdownSessionExpired()
   }
-
-  interval = setInterval(function() {
-
-    // Get today's date and time
-    var now = new Date().getTime();
-    var countDownDate = new Date(dataCounter).getTime();
-    var distance =  now - countDownDate ;
-  
-    // Find the distance between now and the count down date
-    
-    // Time calculations for days, hours, minutes and seconds
-    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    
-    // Display the result in the element with id="demo"
-    // document.getElementById("countdown-session").innerHTML = days + "d " + hours + "h "
-    // + minutes + "m " + seconds + "s ";
-    
-    document.getElementById("countdown-session").innerHTML = hours + " hours "
-    + minutes + " mins " + seconds + " secs until session ends ";
-    
-    
-    // If the count down is finished, write some text
-    if (distance < 0) {
-      clearInterval(interval);
-            document.getElementById("countdown-session").innerHTML = "EXPIRED";
-              $('#confirmation-session-expired').show()
-              $('#confirmation-session-expired').css({ 'display': 'flex', 'flex-direction': 'column' })
-              $('.m-send').hide()
-              $('#icon-bolt').hide();
-              $('#btn-upload').hide();
-              $('#btn-internal-chat').hide();
-              $('.send-button').hide();
-              $('#icon-bolt-active').show()
-          }
-        }, 1000);
-    }
+}
 
 function groupIDinfo(channel_id) {
  // clear temporary message id
@@ -735,6 +765,12 @@ function fetchMessages(type, id, newFetch = false) {
        if (messenger != 0) {
          disableOnLoad(false);
        }
+
+       // update countdown session
+       const getAllChatCustomer = document.querySelectorAll('.mc-receiver #wrapper-time')
+       const getLastChatCustomer = getAllChatCustomer[getAllChatCustomer.length - 1].getAttribute('data-time')
+       updateCounter(getLastChatCustomer);
+       $('#countdown-session').show();
      },
      error: (error) => {
        setMessagesLoading(false);
@@ -1608,9 +1644,6 @@ $(document).ready(function () {
     //    fiveMinutes = 60 * 5,
     //     display = document.getElementById("countdown-session");
     // startTimer(fiveMinutes, display);
-    updateCounter(dataCounter);
-   $('#countdown-session').show();
-
   //  const getCountdownSession = document.querySelector('#counter-date');
 
  });

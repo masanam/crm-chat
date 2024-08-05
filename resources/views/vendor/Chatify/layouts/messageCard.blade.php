@@ -1,11 +1,11 @@
 <?php
 $seenIcon = (!!$seen ? 'check-double' : 'check');
-$timeAndSeen = "<span data-time='$created_at' class='message-time'>
+$timeAndSeen = "<span id='wrapper-time' data-time='$created_at' class='message-time'>
      <span class='time'>$timeAgo</span> ".($isSender ? "<span class='fas fa-$seenIcon' seen'></span>" : '' )."
     </span>";
 ?>
 
-<div class="message-card @if($isSender) mc-sender @endif" data-id="{{ $id }}">
+<div class="message-card @if($isSender) mc-sender @else mc-receiver @endif" data-id="{{ $id }}">
     {{-- Delete Message Button --}}
     @if ($isSender)
         <!-- <div class="actions">

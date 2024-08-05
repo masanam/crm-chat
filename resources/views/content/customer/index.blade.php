@@ -24,6 +24,7 @@
     <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/jkanban/jkanban.js') }}"></script>
     <script src="{{asset('assets/vendor//libs/select2/select2.js')}}"></script>
+    <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
 @endsection
 
 @section('page-script')
@@ -223,12 +224,10 @@
     <x-modal title="Customers" name="customers" wrapperModalClass="modal-right" isUsingBtnFooter="{{ false }}">
         <div class="d-flex flex-column gap-3 modal-add-contact">
             <div class="d-flex flex-column gap-2 border-bottom">
-                <div class="flex-grow-1 input-group input-group-merge rounded-pill">
-                    <span class="input-group-text form-search-custom" id="basic-addon-search31"><i
-                            class="ti ti-search"></i></span>
-                    <input type="text" class="form-control chat-search-input form-search-custom" placeholder="Search contacts"
-                            aria-label="Search contacts" aria-describedby="basic-addon-search31">
-                </div>
+                <div class="">
+                    <span style="position: absolute; margin-top: 18px; margin-left: 12px;" id="basic-addon-search31"><i class="ti ti-search"></i></span>
+                    <input style="padding: 0.422rem 2.2rem; border-radius: 20px;" type="text" class="form-control" placeholder="Search contacts" aria-label="Search contacts" aria-describedby="basic-addon-search31" />
+                  </div>
                 <div class="d-flex gap-2 align-items-center">
                     <x-button-add-contact target="#add-customer" name="Add New Customer"></x-button-add-contact>
                 </div>

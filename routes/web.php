@@ -208,6 +208,7 @@ Route::post('/receive-chat', [Chat::class, 'receiveWhatsAppMessage']);
 
 Route::post('/sendMessage', [MessagesController::class,'send'])->name('send.message');
 Route::post('/sendTemplate', [MessagesController::class,'sendTemplate'])->name('send.template');
+Route::post('/updateContacts', [MessagesController::class,'updateContactItem'])->name('contacts.update');
 
 
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');

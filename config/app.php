@@ -69,8 +69,7 @@ return [
     |
     */
 
-  'timezone' => 'UTC',
-
+'timezone' => 'Asia/Jakarta',
   /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
@@ -82,8 +81,7 @@ return [
     |
     */
 
-  'locale' => 'en',
-
+'locale' => 'id',
   /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -108,8 +106,7 @@ return [
     |
     */
 
-  'faker_locale' => 'en_US',
-
+  'faker_locale' => 'id_ID',
   /*
     |--------------------------------------------------------------------------
     | Encryption Key

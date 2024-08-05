@@ -258,7 +258,7 @@
             <div class="d-flex justify-content-between">
                 <div class="d-flex flex-column modal-contact">
                     <div class="d-flex flex-column">
-                        <div class="d-flex align-items-center gap-2 modal-contact-body">
+                        <div data-bs-dismiss="modal" class="d-flex align-items-center gap-2 modal-contact-body">
                             <div class="">
 
                             @foreach ($alphabets as $alphabet)

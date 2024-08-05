@@ -768,9 +768,11 @@ function fetchMessages(type, id, newFetch = false) {
 
        // update countdown session
        const getAllChatCustomer = document.querySelectorAll('.mc-receiver #wrapper-time')
-       const getLastChatCustomer = getAllChatCustomer[getAllChatCustomer.length - 1].getAttribute('data-time')
-       updateCounter(getLastChatCustomer);
-       $('#countdown-session').show();
+       if (getAllChatCustomer.length > 0) {
+        const getLastChatCustomer = getAllChatCustomer[getAllChatCustomer.length - 1].getAttribute('data-time')
+        updateCounter(getLastChatCustomer);
+        $('#countdown-session').show();
+       }
      },
      error: (error) => {
        setMessagesLoading(false);

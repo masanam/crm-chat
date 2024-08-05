@@ -18,21 +18,160 @@
 
     $listTabs = [$tab2, $tab3];
     
-    $sortedActive = \App\Models\Chat::with('lead')
-    ->whereRelation('lead', 'status','Active')
-    ->orderBy('id','DESC')
-    ->get()
-    ->unique('from');
+    // $sortedActive = \App\Models\Chat::with(['lead' => function ($query) {
+    //     $query->where('status', '=', 'Active');
+    // }])
+    // ->orderBy('created_at','DESC')
+    // ->get()
+    // ->unique('from');
+    $sortedActive = \DB::select('
+        WITH ranked_chats AS (
+            SELECT 
+                CASE 
+                    WHEN chats.from < chats.to THEN chats.from 
+                    ELSE chats.to 
+                END AS participant1,
+                CASE 
+                    WHEN chats.from < chats.to THEN chats.to 
+                    ELSE chats.from 
+                END AS participant2,
+                chats.id as id,
+                chats.from,
+                chats.to,
+                chats.status as sts,
+                chats.message,
+                chats.created_at,
+                chats.lead_id,
+                leads.client_name,
+                leads.title,
+                leads.company_name,
+                leads.closed_date,
+                leads.budget,
+                leads.status as status,
+                leads.stage,
+                leads.quality,
+                ROW_NUMBER() OVER (
+                PARTITION BY 
+                    CASE 
+                        WHEN chats.from < chats.to THEN chats.from 
+                        ELSE chats.to 
+                    END,
+                    CASE 
+                        WHEN chats.from < chats.to THEN chats.to 
+                        ELSE chats.from 
+                    END
+                ORDER BY chats.created_at DESC
+                ) AS rn
+            FROM chats
+            INNER JOIN leads ON chats.lead_id = leads.id
+            WHERE 
+                leads.status = ?
+                AND chats.from IS NOT NULL
+                AND chats.to IS NOT NULL
+            )
+            SELECT 
+                participant1,
+                participant2,
+                ranked_chats.id as id,
+                ranked_chats.from,
+                ranked_chats.to,
+                ranked_chats.message,
+                ranked_chats.created_at,
+                ranked_chats.lead_id,
+                id,
+                client_name,
+                title,
+                company_name,
+                closed_date,
+                budget,
+                status,
+                stage,
+                quality
+            FROM ranked_chats
+            WHERE rn = ?
+            ORDER BY created_at DESC;
+    ', ['Active', 1]);
+    // dd($sortedActive);
     
    //foreach($customerActive as $item){
    //     echo $item->id.' - '.$item->created_at.' - '. $item->lead->status.'</br/>';
    //   }
 
-    $sortedClosed = \App\Models\Chat::with('lead')
-    ->whereRelation('lead', 'status','!=' ,'Active')
-    ->orderBy('id','DESC')
-    ->get()
-    ->unique('from');
+    // $sortedClosed = \App\Models\Chat::with(['lead' => function ($query) {
+    //    $query->where('status', '!=', 'Active');
+    // }])
+    // ->whereRelation('lead', 'status','!=' ,'Active')
+    // ->orderBy('created_at','DESC')
+    // ->get()
+    // ->unique('from');
+
+        $sortedClosed = \DB::select('
+        WITH ranked_chats AS (
+            SELECT 
+                CASE 
+                    WHEN chats.from < chats.to THEN chats.from 
+                    ELSE chats.to 
+                END AS participant1,
+                CASE 
+                    WHEN chats.from < chats.to THEN chats.to 
+                    ELSE chats.from 
+                END AS participant2,
+                chats.id as id,
+                chats.from,
+                chats.to,
+                chats.status as sts,
+                chats.message,
+                chats.created_at,
+                chats.lead_id,
+                leads.client_name,
+                leads.title,
+                leads.company_name,
+                leads.closed_date,
+                leads.budget,
+                leads.status as status,
+                leads.stage,
+                leads.quality,
+                ROW_NUMBER() OVER (
+                PARTITION BY 
+                    CASE 
+                        WHEN chats.from < chats.to THEN chats.from 
+                        ELSE chats.to 
+                    END,
+                    CASE 
+                        WHEN chats.from < chats.to THEN chats.to 
+                        ELSE chats.from 
+                    END
+                ORDER BY chats.created_at DESC
+                ) AS rn
+            FROM chats
+            INNER JOIN leads ON chats.lead_id = leads.id
+            WHERE 
+                leads.status <> ?
+                AND chats.from IS NOT NULL
+                AND chats.to IS NOT NULL
+            )
+            SELECT 
+                participant1,
+                participant2,
+                ranked_chats.id as id,
+                ranked_chats.from,
+                ranked_chats.to,
+                ranked_chats.message,
+                ranked_chats.created_at,
+                ranked_chats.lead_id,
+                id,
+                client_name,
+                title,
+                company_name,
+                closed_date,
+                budget,
+                status,
+                stage,
+                quality
+            FROM ranked_chats
+            WHERE rn = ?
+            ORDER BY created_at DESC;
+    ', ['Active', 1]);
 
 @endphp
 
@@ -47,7 +186,7 @@
                                 <li class="chat-contact-list-item" data-contact="{{ $value->from }}">
                                     <a class="d-flex align-items-center">
                                         <div class="avatar-initial" style="padding: 12px;">
-                                            <span class="text-dark fw-bolder">{{ Helper::getInitial($value->lead?->client_name); }}</span>
+                                            <span class="text-dark fw-bolder">{{ Helper::getInitial($value->client_name); }}</span>
                                         </div>
 
                                         <div class="d-flex flex-column chat-contact-info flex-grow-1 ms-2 gap-2">
@@ -56,21 +195,28 @@
                                                 <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" 
                                                 data-id="{{ $value->from }}" 
                                                 data-counter="{{ $value->created_at }}" 
-                                                data-contact="{{ $value->lead?->client_name }}" 
+                                                data-contact="{{ $value->client_name }}" 
                                                 data-type="contact" 
-                                                data-job="{{ $value->lead?->title }}" 
-                                                data-company="{{ $value->lead?->company_name }}"
-                                                data-closed="{{ $value->lead?->closed_date }}" 
-                                                data-budget="{{ $value->lead?->budget }}"
+                                                data-job="{{ $value->title }}" 
+                                                data-company="{{ $value->company_name }}"
+                                                data-closed="{{ $value->closed_date }}" 
+                                                data-budget="{{ $value->budget }}"
                                                 >
-                                                {{ isset($value->lead->client_name) ? $value->lead->client_name : $value->from }}</h6>
-                                                @if ($value->created_at->isToday())
-                                                <small>{{ $value->created_at->format('H:i'); }}</small>
+                                                {{ isset($value->client_name) ? $value->client_name : $value->from }}</h6>
+                                                <!-- if (value->created_at->isToday())
+                                                <small>value->created_at->format('H:i');</small>
+                                                else
+                                                <small>value->created_at->diffForHumans()</small>
+                                                endif -->
+                                                @if (date('Y-m-d') == date('Y-m-d', strtotime($value->created_at)))
+                                                <small>{{ date('H:i', strtotime($value->created_at)); }}</small>
                                                 @else
-                                                <small>{{ $value->created_at->diffForHumans() }}</small>
+                                                <small>{{ \Carbon\Carbon::parse($value->created_at)->diffForHumans() }}</small>
                                                 @endif
+                                                <!-- {{ $value->created_at }} -->
                                                 </div>
-                                                <small>{{ $value->from }}</small>
+                                                <!-- <small>{{ $value->from }}</small> -->
+                                                 <small>{{ $value->message }}</small>
                                             </div>
 
                                             <div>
@@ -78,15 +224,15 @@
                                                     <input type="hidden" id="id" value="{{ $value->id }}"/>
                                                     <span class="badge badge-sm rounded-pill text-dark"
                                                         style="background: #B8E9EF;">
-                                                        {{ $value->lead?->status }}
+                                                        {{ $value->status }}
                                                     </span>
                                                     <span class="badge badge-sm rounded-pill text-dark"
                                                         style="background: #B8E9EF;">
-                                                        {{ $value->lead?->quality }}
+                                                        {{ $value->quality }}
                                                     </span>
                                                     <span class="badge badge-sm rounded-pill text-dark"
                                                         style="background: #B8E9EF;">
-                                                        {{ $value->lead?->stage }}
+                                                        {{ $value->stage }}
                                                     </span>
 
                                                 </p>
@@ -125,17 +271,18 @@
                                 <li class="chat-contact-list-item" data-contact="{{ $value->from }}">
                                     <a class="d-flex align-items-center">
                                         <div class="avatar-initial" style="padding: 12px;">
-                                            <span class="text-dark fw-bolder">{{ Helper::getInitial($value->lead?->client_name); }}</span>
+                                            <span class="text-dark fw-bolder">{{ Helper::getInitial($value->client_name); }}</span>
                                         </div>
 
                                         <div class="d-flex flex-column chat-contact-info flex-grow-1 ms-2 gap-2">
                                             <div class="d-flex flex-column gap-1">
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value->from }}" data-contact="{{ $value->lead?->client_name }}" data-type="contact" data-job="{{ $value->lead?->title }}" data-company="{{ $value->lead?->company_name }}">
-                                                {{ isset($value->lead->client_name) ? $value->lead->client_name : $value->from }}</h6>
-                                                <small>{{ $value->created_at->diffForHumans() }}</small>
+                                                <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" data-id="{{ $value->from }}" data-contact="{{ $value->client_name }}" data-type="contact" data-job="{{ $value->title }}" data-company="{{ $value->company_name }}">
+                                                {{ isset($value->client_name) ? $value->client_name : $value->from }}</h6>
+                                                <small>{{ \Carbon\Carbon::parse($value->created_at)->diffForHumans() }}</small>
                                                 </div>
-                                                <small>{{ $value->from }}</small>
+                                                <!-- <small>{{ $value->from }}</small> -->
+                                                 <small>{{ $value->message }}</small>
                                             </div>
                                             <div>
                                                 <p class="chat-contact-status text-chat text-truncate mb-0">
@@ -155,7 +302,7 @@
                                                     </div>
                                                     <span class="badge badge-sm rounded-pill text-dark"
                                                         style="background: #B8E9EF;">
-                                                        {{ $value->lead?->status }}
+                                                        {{ $value->status }}
                                                     </span>
                                                 </div>
                                                 <button class="btn-route-customer" data-id="{{ $value->id }}">
@@ -331,6 +478,7 @@
                 </select>
             </div>
         </div>
+
         <div class="sidebar-card d-flex flex-column gap-3">
             <div class="d-flex justify-content-between align-items-center">
                 <span class="text-dark fw-bold" style="font-size: 18px">Contact Information</span>

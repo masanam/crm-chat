@@ -525,6 +525,7 @@ Route::middleware(['auth'])->group(function () {
   Route::get('customers/{id}/ticket', [CustomerController::class, 'detailTicket'])->name('customers.detailTicket');
   Route::post('customers/add-contact', [CustomerController::class, 'addContact'])->name('customers.add-contact');
   Route::post('customers/addmore', [CustomerController::class, 'addMorePost'])->name('customers.addMorePost');
+  Route::post('customers/update-status', [CustomerController::class, 'updateStatus'])->name('customers.updateStatus');
 
   
   // Route::post("addmore","HomeController@addMorePost");

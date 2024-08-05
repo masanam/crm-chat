@@ -290,36 +290,47 @@
             </div>
         </div>
         <div class="sidebar-card d-flex flex-column">
+        <div class="d-flex justify-content-between align-items-center">
+                                <img src="{{ asset('assets/svg/icons/edit.svg') }}" alt="edit"
+                                                width="15" data-bs-toggle="modal" data-bs-target="#update-status"
+                                                class="cursor-pointer">
+
+                                    <span class="text-dark fw-bold" style="font-size: 18px">Status</span>
+                                </div>
+
             <div class="d-flex justify-content-between align-items-center">
                 <h6 class="text-dark">Status</h6>
                 <select id="status" class="form-select custom-select" data-allow-clear="true">
-                    <option value="active">Active</option>
-                    <option value="offline">Offline</option>
-                    <option value="away">Away</option>
-                    <option value="busy">Busy</option>
+                    @foreach ($stat as $itemStatus)
+                    <option value="{{ $itemStatus }}">{{ $itemStatus }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="d-flex justify-content-between align-items-center">
                 <h6 class="text-dark">Quality</h6>
                 <select id="status" class="form-select custom-select" data-allow-clear="true">
-                    <option value="warm">Warm</option>
+                @foreach ($qty as $itemQty)
+                    <option value="{{ $itemQty }}">{{ $itemQty }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="d-flex justify-content-between align-items-center">
                 <h6 class="text-dark">Stage</h6>
                 <select id="status" class="form-select custom-select" data-allow-clear="true">
-                    <option value="test-drive">Test drive</option>
+                @foreach ($stg as $itemStage)
+                    <option value="{{ $itemStage }}">{{ $itemStage }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="d-flex justify-content-between align-items-center">
                 <h6 class="text-dark">Customer Type</h6>
                 <select id="status" class="form-select custom-select" data-allow-clear="true">
-                    <option value="test-drive">B2B</option>
-                    <option value="test-drive">B2C</option>
+                @foreach ($type as $itemType)
+                    <option value="{{ $itemType }}">{{ $itemType }}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
-
         <div class="sidebar-card d-flex flex-column gap-3">
             <div class="d-flex justify-content-between align-items-center">
                 <span class="text-dark fw-bold" style="font-size: 18px">Contact Information</span>

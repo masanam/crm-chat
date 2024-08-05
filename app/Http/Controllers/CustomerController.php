@@ -79,6 +79,21 @@ class CustomerController extends Controller
     return view('content.customer.create');
   }
 
+  public function getLeads()
+  {
+      $data = Lead::latest()->get();
+      return DataTables::of($data)
+        ->addIndexColumn()
+        ->addColumn('action', function ($row) {
+          $actionBtn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="editRecord btn btn-primary btn-sm">Edit</a> 
+              <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="deleteRecord btn btn-danger btn-sm">Delete</a>';
+          return $actionBtn;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+  }
+
+
   /**
 
    * Store a newly created resource in storage.
@@ -249,11 +264,14 @@ class CustomerController extends Controller
 // 'notes' => $request->notes,
 // 'showroom_handler' => $request->showroom_handler,
 
-    Lead::create([
-      'client_name' => $request->client_name,
-      'phone_number' => $request->phone_number,
-    ]);
-    $request->session()->flash('success', 'Ubah Data Berhasil');
+if (!empty($request->client_name)){
+  Lead::create([
+    'client_name' => $request->client_name,
+    'phone_number' => $request->phone_number,
+  ]);
+  $request->session()->flash('success', 'Ubah Data Berhasil');
+
+}
     return redirect()->back();
 
  // try {

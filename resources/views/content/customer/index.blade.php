@@ -32,10 +32,9 @@
     <script src="{{ asset('assets/js/components/chat-history.js') }}"></script>
     <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
     <script src="{{ asset('assets/js/customer.js') }}"></script>
-    <script src="{{asset('js/components/ticket-kanban.js')}}"></script>
+    <script src="{{asset('js/components/customer-kanban.js')}}"></script>
     <script src="{{ asset('js/chatify/autosize.js') }}"></script>
     <script src='https://unpkg.com/nprogress@0.2.0/nprogress.js'></script>
-    <script src="{{asset('js/components/ticket-kanban.js')}}"></script>
     <script src="https://js.pusher.com/7.2.0/pusher.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
     <script >
@@ -50,6 +49,48 @@
             pusherAuthEndpoint: '{{route("pusher.auth")}}'
         };
         window.chatify.allAllowedExtensions = chatify.allowedImages.concat(chatify.allowedFiles);
+      
+   var table = $('.data-leads').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: "{{ route('customers.leads') }}",
+      columns: [{
+          data: 'DT_RowIndex',
+          name: 'DT_RowIndex'
+        },
+        {
+          data: 'client_name',
+          name: 'client_name'
+        },
+        {
+          data: 'phone_number',
+          name: 'phone_number'
+        },
+        {
+          data: 'unit',
+          name: 'unit'
+        },
+        {
+          data: 'status',
+          name: 'status'
+        },
+        {
+          data: 'payment_method',
+          name: 'payment_method'
+        },
+        {
+          data: 'budget',
+          name: 'budget'
+        },
+        {
+          data: 'action',
+          name: 'action',
+          orderable: false,
+          searchable: false
+        },
+      ]
+    });
+
     </script>
     <script src="{{ asset('js/chatify/utils.js') }}"></script>
     <script src="{{ asset('assets/js/box-chat.js') }}"></script>
@@ -260,6 +301,7 @@
             </div>
         </div>
     </x-modal>
+
     {{-- modal add/select customer --}}
     <x-modal title="Customers" name="customers" wrapperModalClass="modal-right" isUsingBtnFooter="{{ false }}">
         <div class="d-flex flex-column gap-3 modal-add-contact">

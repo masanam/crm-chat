@@ -90,6 +90,29 @@
 
 @php
    [$stages, $alphabet, $quality, $status, $listChannels] = Helper::getConstants();
+//   $leads = \App\Models\Lead::orderBy('client_name','ASC')->get();
+
+   $alphabets = range('A', 'Z');
+    $leadsByAlphabet = [];
+
+    foreach ($alphabets as $alphabet) {
+        $leads = \App\Models\Lead::where('client_name', 'like', $alphabet . '%')
+                        ->orderBy('client_name')
+                        ->get();
+
+        $leadsByAlphabet[$alphabet] = $leads;
+    }
+
+   $lead = \App\Models\Lead::where('id','156')->first();
+        $labels = explode (",", $lead->label); 
+        $names = explode (",", $lead->name); 
+    $option = \App\Models\Option::first();
+        $stat = explode (",", $option->status); 
+        $type = explode (",", $option->type); 
+        $qty = explode (",", $option->quality); 
+        $stg = explode (",", $option->stage); 
+
+
 @endphp
 
 @section('content')
@@ -235,30 +258,39 @@
             <div class="d-flex justify-content-between">
                 <div class="d-flex flex-column modal-contact">
                     <div class="d-flex flex-column">
-                        <h6 class="text-dark fw-bold">R</h6>
                         <div class="d-flex align-items-center gap-2 modal-contact-body">
-                            <div class="flex-shrink-0 avatar">
-                                <span class="avatar-initial rounded-8 bg-label-success text-dark fw-bolder">AR</span>
-                            </div>
                             <div class="">
-                                <h6 class="text-dark fw-bold modal-contact-title">Ricky Jonathan</h6>
-                                <div class="d-flex align-items-center gap-1">
-                                    <span class="badge badge-sm badge-status rounded-pill text-dark">
-                                    Status
-                                </span>
-                                <span class="badge badge-sm rounded-pill badge-quality text-dark">
-                                    Quality
-                                </span>
-                                <small class="text-muted">Product name</small>    
+
+                            @foreach ($alphabets as $alphabet)
+                            <h5 class="text-dark fw-bold mt-4">{{ $alphabet }}</h5>
+                                @foreach ($leadsByAlphabet[$alphabet] as $item)
+                                <div class="d-flex align-items-center gap-2 cursor-pointer chat-contact-list-item p-2" data-contact="{{ $item->phone_number }}">
+                                    <div class="flex-shrink-0 avatar">
+                                        <span class="avatar-initial rounded-8 bg-label-success text-dark">{{ Helper::getInitial($item->client_name); }}</span>
+                                    </div>
+                                    <h6 class="text-dark contact-title" style="padding:3px;border-bottom:1px solid #999;" data-contact="{{ $item->phone_number }}">
+                                    <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" 
+                                    
+                                                data-id="{{ $item->phone_number }}" 
+                                                data-counter="{{ $item->created_at }}" 
+                                                data-contact="{{ $item->client_name }}" 
+                                                data-type="contact" 
+                                                data-job="{{ $item->title }}" 
+                                                data-company="{{ $item->company_name }}"
+                                                data-closed="{{ $item->closed_date }}" 
+                                                data-budget="{{ $item->budget }}"
+                                                >
+    
+                                    {{ isset($item->client_name) ? $item->client_name : $item->phone_number   }}</h6>
                                 </div>
-                            </div> 
+                                @endforeach
+                            @endforeach
+
+                        </div>
                         </div>
                     </div>
                 </div>
                 <div class="alphabet">
-                    @foreach($alphabet as $alpha)
-                    <small>{{ $alpha }}</small>
-                    @endforeach
                 </div>   
             </div>
         </div>
@@ -452,5 +484,76 @@
             </div>
         </div>
     </x-modal>
+
+    {{-- modal add/edit Deals Info --}}
+
+<div class="modal fade" id="update-status" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="d-flex align-items-center justify-content-between border border-bottom-2">
+      <div class="d-flex align-items-center p-3">
+        <h4 class="modal-title text-dark fw-bold" id="exampleModalLabel2">Update Status</h5>
+      </div>
+    </div>
+    
+    <div class="modal-body px-4 py-3">
+    <div class="row">
+        <div class="col-xl-12" style="padding: 16px;
+border-radius: 12px;
+border: 1px solid #DDE0E4;
+background: #FFF;">
+        <div class="form-group ">
+        <form id="update-status" method="POST" action="{{ route('customers.updateStatus') }}" enctype="multipart/form-data" style="display: flex; flex-direction: column;">
+                    @csrf
+            <div class="table-responsive">
+                <table class="table table-borderless table-condensed" id="dynamic_field">
+                    <tr>  
+                            <td style="width:1px; white-space:nowrap;">
+                                Status
+                            </td>  
+                            <td>
+                            <input type="text" name="status" id="status" class="form-control" value="{{ $option->status }}"/>
+                            </td>  
+                        </tr>  
+                        <tr>  
+                            <td>
+                                Quality
+                            </td>  
+                            <td>
+                            <input type="text" name="quality" id="quality" class="form-control" value="{{ $option->quality }}"/>
+                            </td>  
+                        </tr>  
+                        <tr>  
+                            <td>
+                                Stage
+                            </td>  
+                            <td>
+                            <input type="text" name="stage" id="stage" class="form-control" value="{{ $option->stage }}"/>
+                            </td>  
+                        </tr>  
+                        <tr>  
+                            <td>
+                                Customer Type
+                            </td>  
+                            <td>
+                            <input type="text" name="type" id="type" class="form-control" value="{{ $option->type }}"/>
+                            </td>  
+                        </tr>  
+
+                        <input type="hidden" name="id" id="id" class="form-control" value="1"/>
+
+                </table>  
+            </div>
+
+            <div class="modal-footer d-flex justify-content-center align-items-center w-100 p-4">
+                <button type="submit" data-bs-dismiss="modal" id="update-status" class="btn btn-primary" >Save</button>
+                <button type="button" data-bs-dismiss="modal" class="btn" style="background: #667085; color: #FFF;">Close</button>
+            </div>
+        </form>  
+    </div>
+
+        </div>
+</div>
+
 
 @endsection

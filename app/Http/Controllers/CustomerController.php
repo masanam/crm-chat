@@ -14,6 +14,8 @@ use App\Models\Profile;
 use App\Models\Contact;
 use App\Models\InternalChat;
 use App\Models\Lead;
+use App\Models\Option;
+
 
 
 class CustomerController extends Controller
@@ -104,6 +106,22 @@ class CustomerController extends Controller
         'deadline' => now(),
         'priority' => $request->priority,
         'code' => $request->priority,
+      ]
+    );
+    return redirect()->back();
+  }
+
+  public function updateStatus(Request $request)
+  {
+    Option::updateOrCreate(
+      [
+        'id' => $request->id,
+      ],
+      [
+        'status' => $request->status,
+        'quality' => $request->quality,
+        'stage' => $request->stage,
+        'type' => $request->type,
       ]
     );
     return redirect()->back();

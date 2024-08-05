@@ -221,6 +221,30 @@ class MessagesController extends Controller
                     ]);
                 }
             }
+
+            if ($request['type'] == 'internalChat'){
+                $message = Chatify::newContactMessage([
+                    'to' => $request['id'],
+                    'from' => env('TWILIO_WHATSAPP_FROM'),
+                    'type' => 'internal_notes',
+                    'message' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
+                    'attachment' => ($attachment) ? json_encode((object)[
+                        'new_name' => $attachment,
+                        'old_name' => htmlentities(trim($attachment_title), ENT_QUOTES, 'UTF-8'),
+                    ]) : null,
+
+                ]);
+
+                $messageData = Chatify::parseMessageContact($message);
+                if (Auth::user()->id != $request['id']) {
+                    Chatify::push("private-chatify.".$request['id'], 'messaging', [
+                        'from_id' => Auth::user()->id,
+                        'to_id' => $request['id'],
+                        'message' => Chatify::messageCard($messageData, true)
+                    ]);
+                }
+            }
+
         }
 
         // PRICES

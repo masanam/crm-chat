@@ -20,8 +20,8 @@ $timeAndSeen = "<span id='wrapper-time' data-time='$created_at' class='message-t
         </div>
         @endif
         @if (@$attachment->type != 'image' || $message)
-            @if ($type =='internal_notes')
-            <div class="message" style="display: flex; flex-direction: column; border-radius: 12px; background: #fcf0d4 !important; color: #000;">
+        @if (isset($type) && ($type =='internal_notes'))
+        <div class="message" style="display: flex; flex-direction: column; border-radius: 12px; background: #fcf0d4 !important; color: #000;">
                     {!! ($message == null && $attachment != null && @$attachment->type != 'file') ? $attachment->title : nl2br($message) !!}
                     {!! $timeAndSeen !!}
                     <span class='message-time'>{!! ($client_name != '') ? $client_name : 'Manager'  !!}</span>

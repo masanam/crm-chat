@@ -230,49 +230,75 @@ class CustomerController extends Controller
 
   public function addContact(Request $request)
   {
-    try {
-      $validator = Validator::make($request->all(), [
-        'first_name' => ['required', 'string'],
-        'last_name' => ['string'],
-        'job_title' => ['string'],
-        'whatsapp_contact' => ['string'],
-        'email_contact' => ['string'],
-        'client_id' => ['required', 'integer'],
-        'task_id' => ['required', 'integer'],
-      ]);
+// dd($request);
+// "client_name" => "Elvis"
+// "first_name" => "Elvis"
+// "last_name" => "Kudo"
+// "whatsapp" => null
+// "phone_number" => "628567638156"
+// "deal_revenue" => null
+// "flatpickr-date" => null
+// "next_step" => null
+// "description" => null
+// 'location' => $request->location,
+// 'interest' => $request->interest,
+// 'progress' => $request->progress,
+// 'payment_method' => $request->payment_method,
+// 'budget' => $request->budget,
+// 'need_car' => $request->need_car,
+// 'notes' => $request->notes,
+// 'showroom_handler' => $request->showroom_handler,
 
-      if ($validator->fails()) {
-        return redirect('customers/' . $request->task_id . '/ticket')
-          ->withErrors($validator)
-          ->withInput();
-      }
+    Lead::create([
+      'client_name' => $request->client_name,
+      'phone_number' => $request->phone_number,
+    ]);
+    $request->session()->flash('success', 'Ubah Data Berhasil');
+    return redirect()->back();
 
-      $params = $validator->validate();
+ // try {
+    //   $validator = Validator::make($request->all(), [
+    //     'first_name' => ['required', 'string'],
+    //     'last_name' => ['string'],
+    //     'job_title' => ['string'],
+    //     'whatsapp_contact' => ['string'],
+    //     'email_contact' => ['string'],
+    //     'client_id' => ['required', 'integer'],
+    //     'task_id' => ['required', 'integer'],
+    //   ]);
 
-      Contact::updateOrCreate(
-        [
-          'client_id' => $params['client_id'],
-          'whatsapp' => $params['whatsapp_contact'],
-          'email' => $params['email_contact'],
-        ],
-        [
-          'first_name' => $params['first_name'],
-          'last_name' => $params['last_name'],
-          'job_title' => $params['job_title'],
-          'whatsapp' => $params['whatsapp_contact'],
-          'email' => $params['email_contact'],
-          'client_id' => $params['client_id'],
-          'created_by' => Auth::user()->profile_id,
-        ]
-      );
+    //   if ($validator->fails()) {
+    //     return redirect('customers/' . $request->task_id . '/ticket')
+    //       ->withErrors($validator)
+    //       ->withInput();
+    //   }
 
-      return redirect('customers/' . $params['task_id'] . '/ticket');
-    } catch (Exception $e) {
-      return redirect('customers/' . $params['task_id'] . '/ticket')->with(
-        'error',
-        'Something went wrong. Please try again later.'
-      );
-    }
+    //   $params = $validator->validate();
+
+    //   Contact::updateOrCreate(
+    //     [
+    //       'client_id' => $params['client_id'],
+    //       'whatsapp' => $params['whatsapp_contact'],
+    //       'email' => $params['email_contact'],
+    //     ],
+    //     [
+    //       'first_name' => $params['first_name'],
+    //       'last_name' => $params['last_name'],
+    //       'job_title' => $params['job_title'],
+    //       'whatsapp' => $params['whatsapp_contact'],
+    //       'email' => $params['email_contact'],
+    //       'client_id' => $params['client_id'],
+    //       'created_by' => Auth::user()->profile_id,
+    //     ]
+    //   );
+
+    //   return redirect('customers/' . $params['task_id'] . '/ticket');
+    // } catch (Exception $e) {
+    //   return redirect('customers/' . $params['task_id'] . '/ticket')->with(
+    //     'error',
+    //     'Something went wrong. Please try again later.'
+    //   );
+    // }
   }
 
   public function addMorePost(Request $request)

@@ -166,11 +166,12 @@
      if (btnInfo) {
       btnInfo.addEventListener('click', (e) => {
         e.stopPropagation()
-        window.location.href = '/customers/test'
+        const uid = $(this).find("button[data-id]").attr("data-id");
+        window.location.href = '/customers/test/'
+        // routerPush(document.title, `${url}/customers/show/${uid}`); 
       })
      }
-
-     /**
+         /**
       * @description set scrollable sidebar client
       */
      const sidebarClient = document.querySelector('.sidebar-client-info');

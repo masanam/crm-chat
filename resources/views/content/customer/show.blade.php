@@ -284,7 +284,12 @@
     $listMeetingMode = [$meetingModeOnline, $meetingModeOffline];
 
     [$stages, $alphabet, $quality, $status, $listChannels, $listTicketTypes, $listPrioritys, $listStatusProjects] = Helper::getConstants();
-                            
+    $option = \App\Models\Option::first();
+        $stat = explode (",", $option->status); 
+        $type = explode (",", $option->type); 
+        $qty = explode (",", $option->quality); 
+        $stg = explode (",", $option->stage); 
+
 @endphp
 
 @section('content')
@@ -300,56 +305,67 @@
                                 <div class="d-flex flex-column gap-3">
                                     <div class="d-flex flex-column justify-content-center align-items-center gap-2">
                                         <div class="flex-shrink-0 avatar">
-                                            <span
-                                                class="avatar-initial border-12 bg-avatar-call text-dark fw-bolder">{{ Helper::getInitial('Acme Inc') }}</span>
+                                            <span class="avatar-initial border-12 bg-avatar-call text-dark fw-bolder">{{ Helper::getInitial($lead->client_name); }}</span>
                                         </div>
-                                        <span class="text-dark fw-bold" style="font-size: 22px">Acme Inc</span>
+                                        <span class="text-dark fw-bold" style="font-size: 22px">{{ $lead->client_name}}</span>
                                         <x-badge-stage type="Lead"></x-badge-stage>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center px-2">
                                         <div>
                                             <img src="{{ asset('assets/svg/icons/icon-calendar.svg') }}" alt="calendar"
                                                 width="15">
-                                            <span style="font-size: 12px">April 22, 2024</span>
+                                            <span style="font-size: 12px">{{ $lead->closed_date }}</span>
                                         </div>
                                         <div>
                                             <img src="{{ asset('assets/svg/icons/icon-dolar.svg') }}" alt="dolar"
                                                 width="15">
-                                            <span style="font-size: 12px">Rp. 2,000,000</span>
+                                            <span style="font-size: 12px">{{ $lead->budget }}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="sidebar-card d-flex flex-column">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="text-dark">Status</h6>
-                                    <select id="status" class="form-select custom-select" data-allow-clear="true">
-                                        <option value="active">Active</option>
-                                        <option value="offline">Offline</option>
-                                        <option value="away">Away</option>
-                                        <option value="busy">Busy</option>
-                                    </select>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <img src="{{ asset('assets/svg/icons/edit.svg') }}" alt="edit"
+                                                width="15" data-bs-toggle="modal" data-bs-target="#update-status"
+                                                class="cursor-pointer">
+
+                                    <span class="text-dark fw-bold" style="font-size: 18px">Status</span>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="text-dark">Quality</h6>
-                                    <select id="status" class="form-select custom-select" data-allow-clear="true">
-                                        <option value="warm">Warm</option>
-                                    </select>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="text-dark">Stage</h6>
-                                    <select id="status" class="form-select custom-select" data-allow-clear="true">
-                                        <option value="test-drive">Test drive</option>
-                                    </select>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="text-dark">Customer Type</h6>
-                                    <select id="status" class="form-select custom-select" data-allow-clear="true">
-                                        <option value="test-drive">B2B</option>
-                                        <option value="test-drive">B2C</option>
-                                    </select>
-                                </div>
-                            </div>
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="text-dark">Status</h6>
+                <select id="status" class="form-select custom-select" data-allow-clear="true">
+                    @foreach ($stat as $itemStatus)
+                    <option value="{{ $itemStatus }}">{{ $itemStatus }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="text-dark">Quality</h6>
+                <select id="status" class="form-select custom-select" data-allow-clear="true">
+                @foreach ($qty as $itemQty)
+                    <option value="{{ $itemQty }}">{{ $itemQty }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="text-dark">Stage</h6>
+                <select id="status" class="form-select custom-select" data-allow-clear="true">
+                @foreach ($stg as $itemStage)
+                    <option value="{{ $itemStage }}">{{ $itemStage }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="text-dark">Customer Type</h6>
+                <select id="status" class="form-select custom-select" data-allow-clear="true">
+                @foreach ($type as $itemType)
+                    <option value="{{ $itemType }}">{{ $itemType }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
 
                             <div class="sidebar-card d-flex flex-column gap-3">
                                 <div class="d-flex justify-content-between align-items-center">
@@ -385,27 +401,27 @@
                             </div>
 
                             <div class="sidebar-card d-flex flex-column gap-3">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-dark fw-bold" style="font-size: 18px">Company Information</span>
-                                    <i class="ti ti-chevron-down text-dark"></i>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-dark">Company Name</span>
-                                    <span>Acme Inc</span>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-dark">Industry</span>
-                                    <span>Entertainment</span>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-dark">Location</span>
-                                    <span>Indonesia</span>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-dark">Website</span>
-                                    <span>http://www.acme.com</span>
-                                </div>
-                            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="text-dark fw-bold" style="font-size: 18px">Company Information</span>
+                <i class="ti ti-chevron-down text-dark"></i>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="text-dark">Company Name</span>
+                <span class="client-company">{{ $lead->company_name}}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="text-dark">Industry</span>
+                <span>Entertainment</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="text-dark">Location</span>
+                <span>{{ $lead->location}}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <span class="text-dark">Website</span>
+                <span>http://www.acme.com</span>
+            </div>
+        </div>
 
                             <div class="sidebar-card d-flex flex-column gap-3">
                                 <div class="d-flex justify-content-between align-items-center">

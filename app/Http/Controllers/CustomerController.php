@@ -68,7 +68,11 @@ class CustomerController extends Controller
     $dataPending = Task::where('status_id', 1)->get();
     $dataClosed = Task::where('status_id', 2)->get();
 
-    return view('content.customer.index', compact('dataOpen', 'dataPending', 'dataClosed'));
+    $lead = \App\Models\Lead::where('id','156')->first();
+    $labels = explode (",", $lead->label); 
+    $names = explode (",", $lead->name); 
+
+    return view('content.customer.index', compact('dataOpen', 'dataPending', 'dataClosed','lead','labels', 'names'));
   }
 
   /**
@@ -145,12 +149,20 @@ class CustomerController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show(Task $task)
+  public function show($id)
   {
 
-    $lead = Lead::where('id','156')->first();
-        $labels = explode (",", $lead->label); 
-        $names = explode (",", $lead->name); 
+    $lead = \App\Models\Lead::where('phone_number',$id)->first();
+
+if ($lead == NULL ){
+  $lead = \App\Models\Lead::where('id','156')->first();
+
+}    
+
+    $cst = \App\Models\Lead::where('id','156')->first();
+    $labels = explode (",", $cst->label); 
+    $names = explode (",", $cst->name); 
+
 
     return view('content.customer.show',compact('lead','labels', 'names'));
   }

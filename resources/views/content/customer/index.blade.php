@@ -144,9 +144,9 @@
         $leadsByAlphabet[$alphabet] = $leads;
     }
 
-   $lead = \App\Models\Lead::where('id','156')->first();
-        $labels = explode (",", $lead->label); 
-        $names = explode (",", $lead->name); 
+   //$lead = \App\Models\Lead::where('id','156')->first();
+   //     $labels = explode (",", $lead->label); 
+   //     $names = explode (",", $lead->name); 
     $option = \App\Models\Option::first();
         $stat = explode (",", $option->status); 
         $type = explode (",", $option->type); 

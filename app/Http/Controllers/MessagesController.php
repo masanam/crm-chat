@@ -203,9 +203,6 @@ class MessagesController extends Controller
       }
 
       if (!$error->status) {
-          if ($request['type'] == 'contactChat'){
-          }
-
           if ($request['type'] == 'internalChat'){
               $message = Chatify::newContactMessage([
                   'to' => $request['id'],

@@ -185,8 +185,6 @@ Route::get('/test123', [Chat::class, 'test']);
 
 Route::get('/clear', function () {
     $clearcache = Artisan::call('optimize:clear');
-    $clearcache = Artisan::call('storage:link');
-
     echo "Cache cleared<br>";
 });
 

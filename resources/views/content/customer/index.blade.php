@@ -140,23 +140,26 @@
         targetNameModalStack="customers"
         modalClass=""
         buttonSubmitClass=""
+        isPost="true"
+        url="{{ route('customers.add-contact') }}"
         buttonWrapperSubmitClass="d-flex justify-content-center align-items-center w-100"
-    >
+            >
         <div class="d-flex flex-column gap-3">
             <div class="d-flex flex-column gap-2">
                 <h6 class="text-dark fw-bold">General Information</h6>
                 <div class="d-flex flex-column gap-3">
                     <x-input-floating
                         label="Customer Name"
-                        id="customer name"
-                        name="customer name"
+                        id="customer-name"
+                        name="client_name"
                     ></x-input-floating>
                     <div class="d-flex align-items-center justify-content-between gap-3">
                         <div class="d-flex flex-column">
                             <span class="text-dark" style="font-size: 14px;">Customer Type</span>
                             <select id="status" class="form-select custom-select" data-allow-clear="true" style="border: none; padding-left: 0px;">
-                                <option value="b2c">B2C</option>
-                                <option value="b2b">B2B</option>
+                            @foreach ($type as $item)
+                            <option value="{{ $item }}">{{ $item }}</option>
+                               @endforeach
                             </select>
                         </div>
                         <div class="d-flex flex-column">
@@ -182,17 +185,32 @@
                     <div class="d-flex justify-content-between gap-5 w-100">
                         <x-input-floating
                             label="First Name"
-                            id="first name"
-                            name="first name"
+                            id="first-name"
+                            name="first_name"
                         >
                         </x-input-floating>
                         <x-input-floating
                             label="Last Name"
-                            id="last name"
-                            name="last name"
+                            id="last-name"
+                            name="last_name"
                         >
                         </x-input-floating>
                     </div>
+                    <div class="d-flex justify-content-between gap-5 w-100">
+                        <x-input-floating
+                            label="Whatsapp"
+                            id="whatsapp"
+                            name="whatsapp"
+                        >
+                        </x-input-floating>
+                        <x-input-floating
+                            label="No Whatsapp"
+                            id="phone_number"
+                            name="phone_number"
+                        >
+                        </x-input-floating>
+                    </div>
+
 
                     {{-- !! Dont remove this tag --}}
                     <div class="hidden" id="wrapper-channel-customer"></div>
@@ -242,7 +260,6 @@
             </div>
         </div>
     </x-modal>
-
     {{-- modal add/select customer --}}
     <x-modal title="Customers" name="customers" wrapperModalClass="modal-right" isUsingBtnFooter="{{ false }}">
         <div class="d-flex flex-column gap-3 modal-add-contact">
@@ -259,6 +276,7 @@
                 <div class="d-flex flex-column modal-contact">
                     <div class="d-flex flex-column">
                         <div data-bs-dismiss="modal" class="d-flex align-items-center gap-2 modal-contact-body">
+
                             <div class="">
 
                             @foreach ($alphabets as $alphabet)

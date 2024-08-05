@@ -518,6 +518,7 @@ Route::middleware(['auth'])->group(function () {
 
   // Route::resource('Customer', CustomerController::class);
   Route::get('customers', [CustomerController::class, 'index'])->name('customers.index');
+  Route::get('getleads', [CustomerController::class, 'getLeads'])->name('customers.leads');
   Route::get('customers/create', [CustomerController::class, 'create'])->name('customers.create');
   Route::post('customers', [CustomerController::class, 'store'])->name('customers.store');
   Route::get('customers/{id}', [CustomerController::class, 'show'])->name('customers.show');

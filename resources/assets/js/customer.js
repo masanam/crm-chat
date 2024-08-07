@@ -162,11 +162,14 @@
      /**
       * @description handle navigation customer detail
       */
-     const btnInfo = document.querySelector('.btn-route-customer');
-     if (btnInfo) {
-      btnInfo.addEventListener('click', (e) => {
-        e.stopPropagation()
-        window.location.href = '/customers/test'
+     const btnInfo = document.querySelectorAll('.btn-route-customer');
+     if (btnInfo.length > 0) {
+      btnInfo.forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation()
+          const uid = el.getAttribute('data-id')
+          window.location.href = `/customers/${uid}`
+        })
       })
      }
 
@@ -587,9 +590,14 @@
     /**
      * @description handle flow internal chat
      */
-    const btnInternalChat = document.querySelector('#btn-internal-chat')
-    const getTextChat = document.querySelector('.messenger-sendCard')
-    const getCountdownSession = $('#countdown-session')
+     const getCountdownSession = $('#countdown-session')
+     const btnInternalChat = document.querySelector('#btn-internal-chat')
+     const btntemplate = document.querySelector('#btn-template')
+     const getTextChat = document.querySelector('.messenger-sendCard')
+     btntemplate.addEventListener('click', (e) => {
+       e.preventDefault()
+       $('#type').val('templateChat')
+     })
     if (btnInternalChat) {
       btnInternalChat.addEventListener('click', (e) => {
         e.preventDefault()

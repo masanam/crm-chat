@@ -162,16 +162,18 @@
      /**
       * @description handle navigation customer detail
       */
-     const btnInfo = document.querySelector('.btn-route-customer');
-     if (btnInfo) {
-      btnInfo.addEventListener('click', (e) => {
-        e.stopPropagation()
-        const uid = $(this).find("button[data-id]").attr("data-id");
-        window.location.href = '/customers/test/'
-        // routerPush(document.title, `${url}/customers/show/${uid}`); 
+     const btnInfo = document.querySelectorAll('.btn-route-customer');
+     if (btnInfo.length > 0) {
+      btnInfo.forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation()
+          const uid = el.getAttribute('data-id')
+          window.location.href = `/customers/${uid}`
+        })
       })
      }
-         /**
+
+     /**
       * @description set scrollable sidebar client
       */
      const sidebarClient = document.querySelector('.sidebar-client-info');
@@ -588,15 +590,14 @@
     /**
      * @description handle flow internal chat
      */
-    const getCountdownSession = $('#countdown-session')
-    const btnInternalChat = document.querySelector('#btn-internal-chat')
-    const btntemplate = document.querySelector('#btn-template')
-    const getTextChat = document.querySelector('.messenger-sendCard')
-    btntemplate.addEventListener('click', (e) => {
-      e.preventDefault()
-      $('#type').val('templateChat')
-    })
-
+     const getCountdownSession = $('#countdown-session')
+     const btnInternalChat = document.querySelector('#btn-internal-chat')
+     const btntemplate = document.querySelector('#btn-template')
+     const getTextChat = document.querySelector('.messenger-sendCard')
+     btntemplate.addEventListener('click', (e) => {
+       e.preventDefault()
+       $('#type').val('templateChat')
+     })
     if (btnInternalChat) {
       btnInternalChat.addEventListener('click', (e) => {
         e.preventDefault()

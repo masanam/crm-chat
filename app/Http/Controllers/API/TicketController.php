@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
 
 use App\Models\Task;
+use App\Models\Lead;
+
 use App\Models\TeamMember;
 
 class TicketController extends Controller
@@ -48,6 +50,40 @@ class TicketController extends Controller
       'data' => $tasks,
     ]);
   }
+
+  public function getLead(): JsonResponse
+  {
+    $tasks = Lead::orderBy('status')
+      ->get()
+      ->groupBy('status')
+      ->map(function ($taskGroup, $status) {
+        return [
+          'id' => 'board-' . strtolower($status),
+          'title' => $status,
+          'badge-title' => $this->getBadgeTitle($status),
+          'item' => $taskGroup
+            ->map(function ($task) {
+              return [
+                'id' => 'task-' . $task->id,
+                'text' => $task->client_name,
+                'company' => $task->phone_number,
+                'priority' => $task->stage, // Placeholder priority
+                'due-date' => $task->closed_date, // Placeholder date
+              ];
+            })
+            ->toArray(),
+        ];
+      })
+      ->values()
+      ->toArray();
+
+    return response()->json([
+      'status' => 200,
+      'message' => 'Board list',
+      'data' => $tasks,
+    ]);
+  }
+
 
   public function getMembers(Request $request): JsonResponse
   {

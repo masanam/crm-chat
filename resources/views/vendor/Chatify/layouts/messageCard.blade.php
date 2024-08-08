@@ -1,11 +1,11 @@
 <?php
 $seenIcon = (!!$seen ? 'check-double' : 'check');
-$timeAndSeen = "<span data-time='$created_at' class='message-time'>
+$timeAndSeen = "<span id='wrapper-time' data-time='$created_at' class='message-time'>
      <span class='time'>$timeAgo</span> ".($isSender ? "<span class='fas fa-$seenIcon' seen'></span>" : '' )."
     </span>";
 ?>
 
-<div class="message-card @if($isSender) mc-sender @endif" data-id="{{ $id }}">
+<div class="message-card @if($isSender) mc-sender @else mc-receiver @endif" data-id="{{ $id }}">
     {{-- Delete Message Button --}}
     @if ($isSender)
         <!-- <div class="actions">
@@ -20,8 +20,8 @@ $timeAndSeen = "<span data-time='$created_at' class='message-time'>
         </div>
         @endif
         @if (@$attachment->type != 'image' || $message)
-            @if ($type =='internal_notes')
-            <div class="message" style="display: flex; flex-direction: column; border-radius: 12px; background: #fcf0d4 !important; color: #000;">
+        @if (isset($type) && ($type =='internal_notes'))
+        <div class="message" style="display: flex; flex-direction: column; border-radius: 12px; background: #fcf0d4 !important; color: #000;">
                     {!! ($message == null && $attachment != null && @$attachment->type != 'file') ? $attachment->title : nl2br($message) !!}
                     {!! $timeAndSeen !!}
                     <span class='message-time'>{!! ($client_name != '') ? $client_name : 'Manager'  !!}</span>

@@ -186,8 +186,8 @@ Route::get('/test123', [Chat::class, 'test']);
 Route::get('/clear', function () {
     $clearcache = Artisan::call('optimize:clear');
     echo "Cache cleared<br>";
-
 });
+
 
 Route::group(['middleware' => ['auth']], function() {
   /**
@@ -208,6 +208,7 @@ Route::post('/receive-chat', [Chat::class, 'receiveWhatsAppMessage']);
 
 Route::post('/sendMessage', [MessagesController::class,'send'])->name('send.message');
 Route::post('/sendTemplate', [MessagesController::class,'sendTemplate'])->name('send.template');
+Route::post('/updateContacts', [MessagesController::class,'updateContactItem'])->name('contacts.update');
 
 
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');
@@ -515,6 +516,7 @@ Route::middleware(['auth'])->group(function () {
 
   // Route::resource('Customer', CustomerController::class);
   Route::get('customers', [CustomerController::class, 'index'])->name('customers.index');
+  Route::get('getleads', [CustomerController::class, 'getLeads'])->name('customers.leads');
   Route::get('customers/create', [CustomerController::class, 'create'])->name('customers.create');
   Route::post('customers', [CustomerController::class, 'store'])->name('customers.store');
   Route::get('customers/{id}', [CustomerController::class, 'show'])->name('customers.show');
@@ -525,6 +527,7 @@ Route::middleware(['auth'])->group(function () {
   Route::get('customers/{id}/ticket', [CustomerController::class, 'detailTicket'])->name('customers.detailTicket');
   Route::post('customers/add-contact', [CustomerController::class, 'addContact'])->name('customers.add-contact');
   Route::post('customers/addmore', [CustomerController::class, 'addMorePost'])->name('customers.addMorePost');
+  Route::post('customers/update-status', [CustomerController::class, 'updateStatus'])->name('customers.updateStatus');
 
   
   // Route::post("addmore","HomeController@addMorePost");

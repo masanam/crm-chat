@@ -64,61 +64,25 @@ $dummyData2 = (object) [
 ];
 
 $listData = [$dummyData, $dummyData2];
-@endphp
 
+
+@endphp
 <section class="px-5 py-4 tab-pane fade" id="list-view" role="tabpanel">
-    <x-table
-    :headers="$headers"
-    isSelectedTable="{{ true }}"
-    isUsingTableHeader="{{ false }}"
-  >
-    @foreach($listData as $key => $value)
-    <tr class="{{ $key % 2 === 0 ? 'odd' : 'even' }}">
-      <td class="control" style="display: none;" tabindex="0"></td>
-      <td class="dt-checkboxes-cell"><input type="checkbox" class="dt-checkboxes form-check-input"></td>
-      <td>
-        <div class="d-flex justify-content-start align-items-center user-name">
-          <div class="avatar-wrapper">
-            <div class="avatar me-2"><span class="avatar-initial rounded-circle bg-label-info">{{ Helper::getInitial($value->customer) }}</span></div>
-          </div>
-          <span class="emp_name text-truncate">{{ $value->customer }}</span>
-        </div>
-      </td>
-      <td>
-        <div class="badge-status rounded-pill">
-          <div class="badge-status-dot"></div>
-          <x-badge-stage :type="$value->stage"></x-badge-stage>
-        </div>
-      </td>
-      <td>
-        <span class="text-sm">{{ $value->pipeline }}</span>
-      </td>
-      <td>
-        <span class="text-sm">{{ $value->estClosedDate }}</span>
-      </td>
-      <td>
-        <span class="text-sm">{{ $value->company }}</span>
-      </td>
-      <td>
-        <span class="text-sm">{{ $value->value }}</span>
-      </td>
-      <td>
-        <span class="text-sm">{{ $value->createdAt }}</span>
-      </td>
-      <td>
-        <span class="text-sm">{{ $value->updatedAt }}</span>
-      </td>
-      <td>
-        <a
-          href="javascript:;"
-          class="btn-sm btn-icon"
-          data-bs-toggle="modal"
-          data-bs-target="#edit-team-members"
-        >
-          <img src="{{asset('assets/svg/icons/pencil2.svg')}}" alt="edit">
-        </a>
-      </td>
-    </tr>
-    @endforeach
-  </x-table>
+
+<div class="card-body table-responsive pt-0">
+      <table class="table table-bordered data-leads">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Client Nama</th>
+            <th>Phone Number</th>
+            <th>Unit</th>
+            <th>Status</th>
+            <th>Payment Method</th>
+            <th>Budget</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
 </section>

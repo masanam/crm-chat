@@ -14,6 +14,8 @@ use App\Models\Profile;
 use App\Models\Contact;
 use App\Models\InternalChat;
 use App\Models\Lead;
+use App\Models\Option;
+
 
 
 class CustomerController extends Controller
@@ -66,7 +68,11 @@ class CustomerController extends Controller
     $dataPending = Task::where('status_id', 1)->get();
     $dataClosed = Task::where('status_id', 2)->get();
 
-    return view('content.customer.index', compact('dataOpen', 'dataPending', 'dataClosed'));
+    $lead = \App\Models\Lead::where('id','156')->first();
+    $labels = explode (",", $lead->label); 
+    $names = explode (",", $lead->name); 
+
+    return view('content.customer.index', compact('dataOpen', 'dataPending', 'dataClosed','lead','labels', 'names'));
   }
 
   /**
@@ -76,6 +82,21 @@ class CustomerController extends Controller
   {
     return view('content.customer.create');
   }
+
+  public function getLeads()
+  {
+      $data = Lead::latest()->get();
+      return DataTables::of($data)
+        ->addIndexColumn()
+        ->addColumn('action', function ($row) {
+          $actionBtn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="editRecord btn btn-primary btn-sm">Edit</a> 
+              <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="deleteRecord btn btn-danger btn-sm">Delete</a>';
+          return $actionBtn;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+  }
+
 
   /**
 
@@ -109,15 +130,39 @@ class CustomerController extends Controller
     return redirect()->back();
   }
 
+  public function updateStatus(Request $request)
+  {
+    Option::updateOrCreate(
+      [
+        'id' => $request->id,
+      ],
+      [
+        'status' => $request->status,
+        'quality' => $request->quality,
+        'stage' => $request->stage,
+        'type' => $request->type,
+      ]
+    );
+    return redirect()->back();
+  }
+
   /**
    * Display the specified resource.
    */
-  public function show(Task $task)
+  public function show($id)
   {
 
-    $lead = Lead::where('id','156')->first();
-        $labels = explode (",", $lead->label); 
-        $names = explode (",", $lead->name); 
+    $lead = \App\Models\Lead::where('phone_number',$id)->first();
+
+if ($lead == NULL ){
+  $lead = \App\Models\Lead::where('id','156')->first();
+
+}    
+
+    $cst = \App\Models\Lead::where('id','156')->first();
+    $labels = explode (",", $cst->label); 
+    $names = explode (",", $cst->name); 
+
 
     return view('content.customer.show',compact('lead','labels', 'names'));
   }
@@ -212,49 +257,78 @@ class CustomerController extends Controller
 
   public function addContact(Request $request)
   {
-    try {
-      $validator = Validator::make($request->all(), [
-        'first_name' => ['required', 'string'],
-        'last_name' => ['string'],
-        'job_title' => ['string'],
-        'whatsapp_contact' => ['string'],
-        'email_contact' => ['string'],
-        'client_id' => ['required', 'integer'],
-        'task_id' => ['required', 'integer'],
-      ]);
+// dd($request);
+// "client_name" => "Elvis"
+// "first_name" => "Elvis"
+// "last_name" => "Kudo"
+// "whatsapp" => null
+// "phone_number" => "628567638156"
+// "deal_revenue" => null
+// "flatpickr-date" => null
+// "next_step" => null
+// "description" => null
+// 'location' => $request->location,
+// 'interest' => $request->interest,
+// 'progress' => $request->progress,
+// 'payment_method' => $request->payment_method,
+// 'budget' => $request->budget,
+// 'need_car' => $request->need_car,
+// 'notes' => $request->notes,
+// 'showroom_handler' => $request->showroom_handler,
 
-      if ($validator->fails()) {
-        return redirect('customers/' . $request->task_id . '/ticket')
-          ->withErrors($validator)
-          ->withInput();
-      }
+if (!empty($request->client_name)){
+  Lead::create([
+    'client_name' => $request->client_name,
+    'phone_number' => $request->phone_number,
+  ]);
+  $request->session()->flash('success', 'Ubah Data Berhasil');
 
-      $params = $validator->validate();
+}
+    return redirect()->back();
 
-      Contact::updateOrCreate(
-        [
-          'client_id' => $params['client_id'],
-          'whatsapp' => $params['whatsapp_contact'],
-          'email' => $params['email_contact'],
-        ],
-        [
-          'first_name' => $params['first_name'],
-          'last_name' => $params['last_name'],
-          'job_title' => $params['job_title'],
-          'whatsapp' => $params['whatsapp_contact'],
-          'email' => $params['email_contact'],
-          'client_id' => $params['client_id'],
-          'created_by' => Auth::user()->profile_id,
-        ]
-      );
+ // try {
+    //   $validator = Validator::make($request->all(), [
+    //     'first_name' => ['required', 'string'],
+    //     'last_name' => ['string'],
+    //     'job_title' => ['string'],
+    //     'whatsapp_contact' => ['string'],
+    //     'email_contact' => ['string'],
+    //     'client_id' => ['required', 'integer'],
+    //     'task_id' => ['required', 'integer'],
+    //   ]);
 
-      return redirect('customers/' . $params['task_id'] . '/ticket');
-    } catch (Exception $e) {
-      return redirect('customers/' . $params['task_id'] . '/ticket')->with(
-        'error',
-        'Something went wrong. Please try again later.'
-      );
-    }
+    //   if ($validator->fails()) {
+    //     return redirect('customers/' . $request->task_id . '/ticket')
+    //       ->withErrors($validator)
+    //       ->withInput();
+    //   }
+
+    //   $params = $validator->validate();
+
+    //   Contact::updateOrCreate(
+    //     [
+    //       'client_id' => $params['client_id'],
+    //       'whatsapp' => $params['whatsapp_contact'],
+    //       'email' => $params['email_contact'],
+    //     ],
+    //     [
+    //       'first_name' => $params['first_name'],
+    //       'last_name' => $params['last_name'],
+    //       'job_title' => $params['job_title'],
+    //       'whatsapp' => $params['whatsapp_contact'],
+    //       'email' => $params['email_contact'],
+    //       'client_id' => $params['client_id'],
+    //       'created_by' => Auth::user()->profile_id,
+    //     ]
+    //   );
+
+    //   return redirect('customers/' . $params['task_id'] . '/ticket');
+    // } catch (Exception $e) {
+    //   return redirect('customers/' . $params['task_id'] . '/ticket')->with(
+    //     'error',
+    //     'Something went wrong. Please try again later.'
+    //   );
+    // }
   }
 
   public function addMorePost(Request $request)

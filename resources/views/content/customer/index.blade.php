@@ -24,6 +24,7 @@
     <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/jkanban/jkanban.js') }}"></script>
     <script src="{{asset('assets/vendor//libs/select2/select2.js')}}"></script>
+    <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
 @endsection
 
 @section('page-script')
@@ -31,10 +32,9 @@
     <script src="{{ asset('assets/js/components/chat-history.js') }}"></script>
     <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
     <script src="{{ asset('assets/js/customer.js') }}"></script>
-    <script src="{{asset('js/components/ticket-kanban.js')}}"></script>
+    <script src="{{asset('js/components/customer-kanban.js')}}"></script>
     <script src="{{ asset('js/chatify/autosize.js') }}"></script>
     <script src='https://unpkg.com/nprogress@0.2.0/nprogress.js'></script>
-    <script src="{{asset('js/components/ticket-kanban.js')}}"></script>
     <script src="https://js.pusher.com/7.2.0/pusher.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
     <script >
@@ -49,6 +49,48 @@
             pusherAuthEndpoint: '{{route("pusher.auth")}}'
         };
         window.chatify.allAllowedExtensions = chatify.allowedImages.concat(chatify.allowedFiles);
+      
+   var table = $('.data-leads').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: "{{ route('customers.leads') }}",
+      columns: [{
+          data: 'DT_RowIndex',
+          name: 'DT_RowIndex'
+        },
+        {
+          data: 'client_name',
+          name: 'client_name'
+        },
+        {
+          data: 'phone_number',
+          name: 'phone_number'
+        },
+        {
+          data: 'unit',
+          name: 'unit'
+        },
+        {
+          data: 'status',
+          name: 'status'
+        },
+        {
+          data: 'payment_method',
+          name: 'payment_method'
+        },
+        {
+          data: 'budget',
+          name: 'budget'
+        },
+        {
+          data: 'action',
+          name: 'action',
+          orderable: false,
+          searchable: false
+        },
+      ]
+    });
+
     </script>
     <script src="{{ asset('js/chatify/utils.js') }}"></script>
     <script src="{{ asset('assets/js/box-chat.js') }}"></script>
@@ -89,6 +131,29 @@
 
 @php
    [$stages, $alphabet, $quality, $status, $listChannels] = Helper::getConstants();
+//   $leads = \App\Models\Lead::orderBy('client_name','ASC')->get();
+
+   $alphabets = range('A', 'Z');
+    $leadsByAlphabet = [];
+
+    foreach ($alphabets as $alphabet) {
+        $leads = \App\Models\Lead::where('client_name', 'like', $alphabet . '%')
+                        ->orderBy('client_name')
+                        ->get();
+
+        $leadsByAlphabet[$alphabet] = $leads;
+    }
+
+   //$lead = \App\Models\Lead::where('id','156')->first();
+   //     $labels = explode (",", $lead->label); 
+   //     $names = explode (",", $lead->name); 
+    $option = \App\Models\Option::first();
+        $stat = explode (",", $option->status); 
+        $type = explode (",", $option->type); 
+        $qty = explode (",", $option->quality); 
+        $stg = explode (",", $option->stage); 
+
+
 @endphp
 
 @section('content')
@@ -116,23 +181,26 @@
         targetNameModalStack="customers"
         modalClass=""
         buttonSubmitClass=""
+        isPost="true"
+        url="{{ route('customers.add-contact') }}"
         buttonWrapperSubmitClass="d-flex justify-content-center align-items-center w-100"
-    >
+            >
         <div class="d-flex flex-column gap-3">
             <div class="d-flex flex-column gap-2">
                 <h6 class="text-dark fw-bold">General Information</h6>
                 <div class="d-flex flex-column gap-3">
                     <x-input-floating
                         label="Customer Name"
-                        id="customer name"
-                        name="customer name"
+                        id="customer-name"
+                        name="client_name"
                     ></x-input-floating>
                     <div class="d-flex align-items-center justify-content-between gap-3">
                         <div class="d-flex flex-column">
                             <span class="text-dark" style="font-size: 14px;">Customer Type</span>
                             <select id="status" class="form-select custom-select" data-allow-clear="true" style="border: none; padding-left: 0px;">
-                                <option value="b2c">B2C</option>
-                                <option value="b2b">B2B</option>
+                            @foreach ($type as $item)
+                            <option value="{{ $item }}">{{ $item }}</option>
+                               @endforeach
                             </select>
                         </div>
                         <div class="d-flex flex-column">
@@ -158,17 +226,32 @@
                     <div class="d-flex justify-content-between gap-5 w-100">
                         <x-input-floating
                             label="First Name"
-                            id="first name"
-                            name="first name"
+                            id="first-name"
+                            name="first_name"
                         >
                         </x-input-floating>
                         <x-input-floating
                             label="Last Name"
-                            id="last name"
-                            name="last name"
+                            id="last-name"
+                            name="last_name"
                         >
                         </x-input-floating>
                     </div>
+                    <div class="d-flex justify-content-between gap-5 w-100">
+                        <x-input-floating
+                            label="Whatsapp"
+                            id="whatsapp"
+                            name="whatsapp"
+                        >
+                        </x-input-floating>
+                        <x-input-floating
+                            label="No Whatsapp"
+                            id="phone_number"
+                            name="phone_number"
+                        >
+                        </x-input-floating>
+                    </div>
+
 
                     {{-- !! Dont remove this tag --}}
                     <div class="hidden" id="wrapper-channel-customer"></div>
@@ -223,12 +306,10 @@
     <x-modal title="Customers" name="customers" wrapperModalClass="modal-right" isUsingBtnFooter="{{ false }}">
         <div class="d-flex flex-column gap-3 modal-add-contact">
             <div class="d-flex flex-column gap-2 border-bottom">
-                <div class="flex-grow-1 input-group input-group-merge rounded-pill">
-                    <span class="input-group-text form-search-custom" id="basic-addon-search31"><i
-                            class="ti ti-search"></i></span>
-                    <input type="text" class="form-control chat-search-input form-search-custom" placeholder="Search contacts"
-                            aria-label="Search contacts" aria-describedby="basic-addon-search31">
-                </div>
+                <div class="">
+                    <span style="position: absolute; margin-top: 18px; margin-left: 12px;" id="basic-addon-search31"><i class="ti ti-search"></i></span>
+                    <input style="padding: 0.422rem 2.2rem; border-radius: 20px;" type="text" class="form-control" placeholder="Search contacts" aria-label="Search contacts" aria-describedby="basic-addon-search31" />
+                  </div>
                 <div class="d-flex gap-2 align-items-center">
                     <x-button-add-contact target="#add-customer" name="Add New Customer"></x-button-add-contact>
                 </div>
@@ -236,30 +317,40 @@
             <div class="d-flex justify-content-between">
                 <div class="d-flex flex-column modal-contact">
                     <div class="d-flex flex-column">
-                        <h6 class="text-dark fw-bold">R</h6>
-                        <div class="d-flex align-items-center gap-2 modal-contact-body">
-                            <div class="flex-shrink-0 avatar">
-                                <span class="avatar-initial rounded-8 bg-label-success text-dark fw-bolder">AR</span>
-                            </div>
+                        <div data-bs-dismiss="modal" class="d-flex align-items-center gap-2 modal-contact-body">
+
                             <div class="">
-                                <h6 class="text-dark fw-bold modal-contact-title">Ricky Jonathan</h6>
-                                <div class="d-flex align-items-center gap-1">
-                                    <span class="badge badge-sm badge-status rounded-pill text-dark">
-                                    Status
-                                </span>
-                                <span class="badge badge-sm rounded-pill badge-quality text-dark">
-                                    Quality
-                                </span>
-                                <small class="text-muted">Product name</small>    
+
+                            @foreach ($alphabets as $alphabet)
+                            <h5 class="text-dark fw-bold mt-4">{{ $alphabet }}</h5>
+                                @foreach ($leadsByAlphabet[$alphabet] as $item)
+                                <div class="d-flex align-items-center gap-2 cursor-pointer chat-contact-list-item p-2" data-contact="{{ $item->phone_number }}">
+                                    <div class="flex-shrink-0 avatar">
+                                        <span class="avatar-initial rounded-8 bg-label-success text-dark">{{ Helper::getInitial($item->client_name); }}</span>
+                                    </div>
+                                    <h6 class="text-dark contact-title" style="padding:3px;border-bottom:1px solid #999;" data-contact="{{ $item->phone_number }}">
+                                    <h6 class="chat-contact-name text-truncate m-0 text-dark fw-bolder" 
+                                    
+                                                data-id="{{ $item->phone_number }}" 
+                                                data-counter="{{ $item->created_at }}" 
+                                                data-contact="{{ $item->client_name }}" 
+                                                data-type="contact" 
+                                                data-job="{{ $item->title }}" 
+                                                data-company="{{ $item->company_name }}"
+                                                data-closed="{{ $item->closed_date }}" 
+                                                data-budget="{{ $item->budget }}"
+                                                >
+    
+                                    {{ isset($item->client_name) ? $item->client_name : $item->phone_number   }}</h6>
                                 </div>
-                            </div> 
+                                @endforeach
+                            @endforeach
+
+                        </div>
                         </div>
                     </div>
                 </div>
                 <div class="alphabet">
-                    @foreach($alphabet as $alpha)
-                    <small>{{ $alpha }}</small>
-                    @endforeach
                 </div>   
             </div>
         </div>
@@ -453,5 +544,76 @@
             </div>
         </div>
     </x-modal>
+
+    {{-- modal add/edit Deals Info --}}
+
+<div class="modal fade" id="update-status" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="d-flex align-items-center justify-content-between border border-bottom-2">
+      <div class="d-flex align-items-center p-3">
+        <h4 class="modal-title text-dark fw-bold" id="exampleModalLabel2">Update Status</h5>
+      </div>
+    </div>
+    
+    <div class="modal-body px-4 py-3">
+    <div class="row">
+        <div class="col-xl-12" style="padding: 16px;
+border-radius: 12px;
+border: 1px solid #DDE0E4;
+background: #FFF;">
+        <div class="form-group ">
+        <form id="update-status" method="POST" action="{{ route('customers.updateStatus') }}" enctype="multipart/form-data" style="display: flex; flex-direction: column;">
+                    @csrf
+            <div class="table-responsive">
+                <table class="table table-borderless table-condensed" id="dynamic_field">
+                    <tr>  
+                            <td style="width:1px; white-space:nowrap;">
+                                Status
+                            </td>  
+                            <td>
+                            <input type="text" name="status" id="status" class="form-control" value="{{ $option->status }}"/>
+                            </td>  
+                        </tr>  
+                        <tr>  
+                            <td>
+                                Quality
+                            </td>  
+                            <td>
+                            <input type="text" name="quality" id="quality" class="form-control" value="{{ $option->quality }}"/>
+                            </td>  
+                        </tr>  
+                        <tr>  
+                            <td>
+                                Stage
+                            </td>  
+                            <td>
+                            <input type="text" name="stage" id="stage" class="form-control" value="{{ $option->stage }}"/>
+                            </td>  
+                        </tr>  
+                        <tr>  
+                            <td>
+                                Customer Type
+                            </td>  
+                            <td>
+                            <input type="text" name="type" id="type" class="form-control" value="{{ $option->type }}"/>
+                            </td>  
+                        </tr>  
+
+                        <input type="hidden" name="id" id="id" class="form-control" value="1"/>
+
+                </table>  
+            </div>
+
+            <div class="modal-footer d-flex justify-content-center align-items-center w-100 p-4">
+                <button type="submit" data-bs-dismiss="modal" id="update-status" class="btn btn-primary" >Save</button>
+                <button type="button" data-bs-dismiss="modal" class="btn" style="background: #667085; color: #FFF;">Close</button>
+            </div>
+        </form>  
+    </div>
+
+        </div>
+</div>
+
 
 @endsection

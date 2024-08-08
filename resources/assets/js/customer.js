@@ -162,11 +162,14 @@
      /**
       * @description handle navigation customer detail
       */
-     const btnInfo = document.querySelector('.btn-route-customer');
-     if (btnInfo) {
-      btnInfo.addEventListener('click', (e) => {
-        e.stopPropagation()
-        window.location.href = '/customers/test'
+     const btnInfo = document.querySelectorAll('.btn-route-customer');
+     if (btnInfo.length > 0) {
+      btnInfo.forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation()
+          const uid = el.getAttribute('data-id')
+          window.location.href = `/customers/${uid}`
+        })
       })
      }
 
@@ -587,60 +590,63 @@
     /**
      * @description handle flow internal chat
      */
-    const btnInternalChat = document.querySelector('#btn-internal-chat')
-    const getTextChat = document.querySelector('.messenger-sendCard')
+     const getCountdownSession = $('#countdown-session')
+     const btnInternalChat = document.querySelector('#btn-internal-chat')
+     const btntemplate = document.querySelector('#btn-template')
+     const getTextChat = document.querySelector('.messenger-sendCard')
+     btntemplate.addEventListener('click', (e) => {
+       e.preventDefault()
+       $('#type').val('templateChat')
+     })
     if (btnInternalChat) {
       btnInternalChat.addEventListener('click', (e) => {
         e.preventDefault()
-        getTextChat.style.background = '#FCF0D4'
-        $('#confirmation-internal-chat').toggle()
-        $('#btn-upload').hide()
-        $('#btn-template').hide()
+        if ($('#confirmation-internal-chat').is(":hidden")) {
+          getTextChat.style.background = '#FCF0D4'
+          $('#confirmation-internal-chat').show()
+          $('#btn-upload').hide()
+          $('#btn-template').hide()
+          $('#confirmation-session-expired').hide()
+          $('.m-send').show()
+          $('.send-button').show();
+          $('#type').val('internalChat')
+        } else if (getCountdownSession.text() === 'EXPIRED') {
+          $('.m-send').hide()
+          $('#confirmation-internal-chat').hide()
+          $('#confirmation-session-expired').show()
+          $('#btn-template').show();
+          $('#icon-bolt').hide();
+          $('#btn-upload').hide();
+          $('#btn-internal-chat').show();
+          $('.send-button').hide();
+          $('#icon-bolt-active').show()
+          $('#type').val('contactChat')
+          getTextChat.style.background = 'rgb(241, 242, 244)'
+        } else {
+          $('#btn-upload').show()
+          $('#btn-template').show()
+          $('#confirmation-internal-chat').hide()
+          getTextChat.style.background = 'rgb(241, 242, 244)'
+        }
       })
       $('#confirmation-internal-chat').on('click', (e) => {
         e.preventDefault()
-        $('#btn-upload').show()
-        $('#btn-template').show()
         $('#confirmation-internal-chat').hide()
         getTextChat.style.background = 'rgb(241, 242, 244)'
+        
+        if (getCountdownSession.text() === 'EXPIRED') {
+          $('#confirmation-session-expired').show()
+          $('.m-send').hide();
+          $('#btn-template').show();
+          $('#icon-bolt').hide();
+          $('#btn-upload').hide();
+          $('.send-button').hide();
+          $('#icon-bolt-active').show();
+        } else {
+          $('#btn-upload').show();
+          $('#btn-template').show();
+        }
       })
-    }
-
-    /**
-     * @description handle countdown timer
-     */
-    const getCountdownSession = document.querySelector('#countdown-session')
-    if (getCountdownSession) {
-      const countdownSession = (duration) => {
-          var timer = duration, hours;
-
-          // Update the count down every 1 second
-          var x = setInterval(function() {
-          
-          // Time calculations for hours
-          hours = parseInt((timer / 3600) % 24, 10)
-          hours = hours < 10 ? "0" + hours : hours;
-          
-          // Output the result in an element with id="demo"
-          getCountdownSession.innerHTML = hours + "h "
-          + "until session ends";
-          
-          // If the count down is over, write some text 
-          if (hours < 10) {
-            clearInterval(x);
-            getCountdownSession.innerHTML = "Session expired";
-            getCountdownSession.style.background = '#BA1A1A';
-            $('#confirmation-session-expired').show()
-            $('#confirmation-session-expired').css({ 'display': 'flex', 'flex-direction': 'column' })
-            $('.m-send').hide()
-            $('#icon-bolt').hide()
-            $('#icon-bolt-active').show()
-          }
-        }, 1000);
-      }
-
-      var twentyFourHours = new Date("July 26, 2024 22:37:25").getTime();
-      countdownSession(twentyFourHours);
     }
    })();
  });

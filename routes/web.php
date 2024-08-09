@@ -178,6 +178,7 @@ use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\FormBuilderController;
 use App\Http\Controllers\FormsController;
 use App\Http\Controllers\MessagesController;
+use App\Http\Controllers\SettingController;
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -590,6 +591,8 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/dynamic-form', function () {
     return view('dynamic_form');
   });
+
+  Route::get('/settings', [SettingController::class, 'index'])->name('settings');
 });
 
 

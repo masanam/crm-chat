@@ -725,6 +725,22 @@ function setMessagesLoading(loading = false) {
  messagesLoading = loading;
 }
 
+/**
+ * @description handle change format all message chat
+ */
+function changeDateFormatChatTime() {
+  $(".message-time").each(function () {
+    const time = $(this).attr("data-time");
+    const diff = checkDiffDate(new Date(time), new Date())
+
+    if (diff === 0) {
+      $(this).find(".time").text(moment(time).format('HH:mm'));
+    } else {
+      $(this).find(".time").text(dateStringToTimeAgo(time));
+    }
+  });
+}
+
 function fetchMessages(type, id, newFetch = false) {
  if (newFetch) {
    messagesPage = 1;
@@ -780,6 +796,9 @@ function fetchMessages(type, id, newFetch = false) {
         updateCounter();
         $('#countdown-session').hide();
        }
+
+       // change format datetime
+       changeDateFormatChatTime()
      },
      error: (error) => {
        setMessagesLoading(false);
@@ -2257,10 +2276,9 @@ function groupChatAddingModalInit(){
 *-------------------------------------------------------------
 */
 function updateElementsDateToTimeAgo() {
- $(".message-time").each(function () {
-   const time = $(this).attr("data-time");
-   $(this).find(".time").text(dateStringToTimeAgo(time));
- });
+  // change format datetime
+ changeDateFormatChatTime()
+
  $(".contact-item-time").each(function () {
    const time = $(this).attr("data-time");
    $(this).text(dateStringToTimeAgo(time));

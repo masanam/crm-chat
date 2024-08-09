@@ -19,6 +19,9 @@
 .dashboard-crm-content .tabs-crm .nav-item .active {
   background: transparent !important;
 }
+.dashboard-crm-content .tab-content .tab-pane.active {
+  background: transparent !important;
+}
 .dashboard-crm-content section .text-subtitle {
   color: #475467 !important;
 }
@@ -181,7 +184,7 @@
   border-radius: 10px;
   font-size: 18px;
   font-weight: 500;
-  width: 303px;
+  max-width: 303px;
 }
 .dashboard-crm-content section .tab-channels .btn-wa img {
   margin-left: 3rem;

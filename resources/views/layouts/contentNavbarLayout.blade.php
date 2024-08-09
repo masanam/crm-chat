@@ -57,7 +57,8 @@ $currentRouteName = Route::currentRouteName();
         @class([
           'd-flex gap-5 align-items-center',
           'justify-content-end' => Route::currentRouteName() != 'customers.show',
-          'justify-content-between' => Route::currentRouteName() == 'customers.show'
+          'justify-content-between' => Route::currentRouteName() == 'customers.show',
+          'justify-content-between'=> $currentRouteName == 'settings'
         ])
         style="background: #EEF8F9; padding: 1rem 2.5rem;"
       >
@@ -67,38 +68,38 @@ $currentRouteName = Route::currentRouteName();
             Back
           </button>
         @endif
-
-        <!-- <header class = "" (['d-flex gap-5 align-items-center', 'justify-content-end'=> $currentRouteName == 'dashboard-crm']) style="background: #EEF8F9; padding: 1rem 2.5rem;"> -->
-        {{-- <img class="text-dark" src="{{asset('assets/svg/icons/info-dark.svg')}}" alt="info">
-        <span class="text-dark" style="font-size: 16px; font-weight: 700;">Get started now! <a href="#" style="color: #4480FF; text-decoration-line: underline;">Contact support</a></span> --}}
-        {{-- @if ($currentRouteName == 'dashboard-crm')
+        @if ($currentRouteName == 'settings')
         <nav class="nav-parent">
-          <ul class="nav nav-tabs tabs-crm" id="chats-tabs" role="tablist">
+          <ul class="nav nav-tabs tabs-crm" id="chats-tabs" role="tablist" style="background: transparent">
             @foreach($tabs as $key => $value)
-                <li class="nav-item" role="presentation" style="background-color: #F4FBFA">
+                <li class="nav-item" role="presentation" style="background-color: transparent">
                     <button
                       class="nav-link {{ $key === 0 ? 'active' : '' }}"
-        role="tab"
-        data-bs-toggle="tab"
-        data-bs-target="#{{ $value->key }}"
-        aria-controls="{{ $value->key }}"
-        aria-selected="true"
-        >
-        {{ $value->title }}
-        </button>
-        </li>
-        @endforeach
-        </ul>
-        @endif --}}
+                      style="background: transparent"
+                      role="tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#{{ $value->key }}"
+                      aria-controls="{{ $value->key }}"
+                      aria-selected="true"
+                    >
+                      {{ $value->title }}
+                    </button>
+                </li>
+            @endforeach
+          </ul>
+        @endif
         </nav>
+
+        {{-- <img class="text-dark" src="{{asset('assets/svg/icons/info-dark.svg')}}" alt="info">
+        <span class="text-dark" style="font-size: 16px; font-weight: 700;">Get started now! <a href="#" style="color: #4480FF; text-decoration-line: underline;">Contact support</a></span> --}}
         <div class="d-flex gap-3 align-items-center">
           <div class="d-flex flex-row gap-3">
             <button class="btn" style="padding: 0.5rem 0.5rem;">
               <img src="{{asset('assets/svg/icons/icon-notification.svg')}}" alt="icon notification">
             </button>
-            <button class="btn" style="padding: 0.5rem 0.5rem;">
+            <a class="btn" style="padding: 0.5rem 0.5rem;" href="{{ url('settings') }}">
               <img src="{{asset('assets/svg/icons/icon-setting.svg')}}" alt="icon setting">
-            </button>
+            </a>
           </div>
           <button class="btn d-flex flex-row dropdown-account dropbtn" aria-haspopup="true" aria-expanded="false" role="button">
             <div class="avatar avatar-online me-2">

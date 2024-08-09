@@ -164,9 +164,9 @@
             <div class="app-chat customer overflow-hidden">
                 <x-page-title title="Customers" placeholderSearchText="Search leads" targetOpenModal="#customers"></x-page-title>
                 <div class="row g-0">
-                    @include('content/customer/components/customer-chat-view')
-                    @include('content/customer/components/customer-kanban-view')
                     @include('content/customer/components/customer-list-view')
+                    @include('content/customer/components/customer-kanban-view')
+                    @include('content/customer/components/customer-chat-view')
                 </div>
             </div>
         </div>
@@ -493,7 +493,9 @@
         <div class="d-flex flex-column gap-5">
             <div class="d-flex flex-column gap-2 w-100 py-2 px-3" style="border: 1px solid #DDE0E4; border-radius: 12px;">
                 <span style="color: #000; font-weight: 600; font-size: 16px;">Introduction</span>
-                <span style="color: #616A75; font-size: 14px;">👋 Hello! My name is <span class="first_name"></span> from <span class="client-company"></span>. I hear you are interested in purchasing a car. Before we proceed, I need some information from you.</span>
+                <span style="color: #616A75; font-size: 14px;">
+                Welcome and congratulations!! This message demonstrates your ability to send a WhatsApp message notification from the Cloud API, hosted by Meta. Thank you for taking the time to test with us.
+                </span>
             </div>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-5">

@@ -1,28 +1,10 @@
 {
   "menu": [
     {
-      "name": "Dashboards",
-      "slug": "dashboard-crm",
-      "iconUrl": "assets/svg/icons/dashboard-icon.svg",
-      "url": "/"
-    },
-    {
       "name": "Customers",
       "slug": "customers.index",
       "iconUrl": "assets/svg/icons/customer-icon.svg",
       "url": "/customers"
-    },
-    {
-      "name": "Activities",
-      "slug": "activities",
-      "iconUrl": "assets/svg/icons/activities-icon.svg",
-      "url": "/activities"
-    },
-    {
-      "name": "Calls",
-      "slug": "calls",
-      "iconUrl": "assets/svg/icons/calls-icon.svg",
-      "url": "/calls"
     },
     {
       "name": "Tickets",

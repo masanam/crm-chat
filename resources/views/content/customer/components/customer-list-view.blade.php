@@ -67,7 +67,7 @@ $listData = [$dummyData, $dummyData2];
 
 
 @endphp
-<section class="px-5 py-4 tab-pane fade" id="list-view" role="tabpanel">
+<section class="d-flex tab-pane fade active show" id="list-view" role="tabpanel">
 
 <div class="card-body table-responsive pt-0">
       <table class="table table-bordered data-leads">

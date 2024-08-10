@@ -28,4 +28,9 @@ class Profile extends Model
     'client_id',
     'job_title',
   ];
+
+  public function dealer()
+  {
+    return $this->belongsTo(Dealer::class);
+  }
 }

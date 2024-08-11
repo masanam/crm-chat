@@ -18,6 +18,10 @@ class Table extends Component
     public $headers;
     public $isSelectedTable;
     public $isUsingTableHeader;
+    public $isUsingTableResponsive;
+    public $wrapperClass;
+    public $isDisableButtonHeader;
+    public $isUsingHeaderAction;
 
     public function __construct(
         $title = 'title',
@@ -26,7 +30,10 @@ class Table extends Component
         $buttonHeaderTarget = '',
         $headers = [],
         $isSelectedTable = false,
-        $isUsingTableHeader = true
+        $isUsingTableHeader = true,
+        $isUsingTableResponsive = true,
+        $isDisableButtonHeader = true,
+        $isUsingHeaderAction = true,
     )
     {
         $this->title = $title;
@@ -36,6 +43,9 @@ class Table extends Component
         $this->headers = $headers;
         $this->isSelectedTable = $isSelectedTable;
         $this->isUsingTableHeader = $isUsingTableHeader;
+        $this->isUsingTableResponsive = $isUsingTableResponsive;
+        $this->isDisableButtonHeader = $isDisableButtonHeader;
+        $this->isUsingHeaderAction = $isUsingHeaderAction;
     }
 
     /**

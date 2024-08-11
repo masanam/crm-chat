@@ -29,7 +29,7 @@
         <label for="{{ $id }}">{{ $label }}</label>
         @break
     @default
-        <input placeholder="" type="{{ $type }}" id="{{ $id }}" name="{{ $name }}" value="{{ $value }}"/>
+        <input placeholder="{{ $placeholder }}" type="{{ $type }}" id="{{ $id }}" name="{{ $name }}" value="{{ $value }}"/>
         <label for="{{ $id }}">{{ $label }}</label>
     @endswitch
   </div>

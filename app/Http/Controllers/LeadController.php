@@ -175,4 +175,9 @@ class LeadController extends Controller
     Lead::find($id)->delete();
     return response()->json(['success' => 'Data deleted successfully.']);
   }
+
+  public function leadSearchView()
+  {
+    return view('content.lead.lead-search');
+  }
 }

@@ -87,7 +87,11 @@ $gender2 = (object) [
   'label' => 'Female',
   'value' => 'female',
 ];
-$genders = [$default, $gender, $gender2];
+$gender3 = (object) [
+  'label' => 'All',
+  'value' => 'all',
+];
+$genders = [$default, $gender, $gender2, $gender3];
 
 $default2 = (object) [
   'label' => 'Search for job',
@@ -102,13 +106,14 @@ $jobs = [$default2]
     <div class="card card-search">
         <span style="font-weight: 600; font-size: 20px; color: #1F2124;">What are you looking for?</span>
         <x-input-floating
-            label="Search people"
-            id="search_people"
-            name="search_people"
+          label="Search people"
+          id="search_people"
+          name="search_people"
+          placeholder=""
         >
         </x-input-floating>
         <button class="btn-search">
-            <i class="ti ti-search"></i>
+          <i class="ti ti-search"></i>
         </button>
     </div>
     <div class="card card-filters">
@@ -249,7 +254,7 @@ $jobs = [$default2]
     <x-table
     title="5 match your filters"
     buttonHeaderName="Save bulk contact"
-    buttonHeaderTarget="add-team"
+    buttonHeaderTarget="list"
     :headers="$headers"
     isSelectedTable="{{ true }}"
     isUsingTableResponsive="{{ true }}"
@@ -274,9 +279,13 @@ $jobs = [$default2]
       <td>{{ $value->wa_number }}</td>
       <td>{{ $value->location }}</td>
       <td>
-        <button class="btn-add-list">
-            <i class="ti ti-plus"></i>
-            Add to list
+        <button
+          class="btn-add-list"
+          data-bs-toggle="modal"
+          data-bs-target="#list"
+        >
+          <i class="ti ti-plus"></i>
+          Add to list
         </button>
       </td>
     </tr>
@@ -285,5 +294,52 @@ $jobs = [$default2]
   </div>
 </section>
 
+{{-- modal add/select list --}}
+<x-modal title="Add to list" name="list" isUsingBtnFooter="{{ false }}">
+  <div class="d-flex flex-column gap-3 modal-add-contact">
+      <div class="d-flex flex-column gap-2 border-bottom">
+          <div class="">
+              <span style="position: absolute; margin-top: 8px; margin-left: 12px;" id="basic-addon-search31"><i class="ti ti-search"></i></span>
+              <input style="padding: 0.422rem 2.2rem; border-radius: 20px;" type="text" class="form-control" placeholder="Search team members" aria-label="Search team members" aria-describedby="basic-addon-search31" />
+            </div>
+          <div class="d-flex gap-2 align-items-center">
+              <x-button-add-contact
+                target="#add-list"
+                name="Create New List"
+                icon="assets/svg/icons/icon-add-circle-outline.svg"
+              ></x-button-add-contact>
+          </div>
+      </div>
+      <div class="d-flex flex-column gap-1">
+        <h6 style="color: #1F2124;">Name of list 1</h6>
+        <h6 style="color: #1F2124;">Name of list 2</h6>
+        <h6 style="color: #1F2124;">Name of list 3</h6>
+      </div>
+  </div>
+</x-modal>
+
+<x-modal
+  title="Create new list"
+  name="add-list"
+  isUsingBtnFooter="{{ false }}"
+  buttonSubmitClass=""
+  modalClass=""
+  buttonWrapperSubmitClass="d-flex justify-content-end align-items-center w-100"
+>
+<div class="d-flex flex-column gap-3">
+  <div class="d-flex flex-column gap-4 w-100">
+      <x-input-floating
+          label="List Name"
+          id="list_name"
+          name="list_name"
+          placeholder="Create list name"
+      >
+      </x-input-floating>
+  </div>
+  <div class="d-flex justify-content-end w-100 mt-2">
+      <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+  </div>
+</div>
+</x-modal>
 
 @endsection

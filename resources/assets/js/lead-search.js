@@ -8,6 +8,7 @@
    (async function () {
     // variable form filters
     let searchPeopleValue, ageValue, locationsValue = [], incomeValue, jobValue;
+    let checkedLead = []
 
     /**
      * @description handle change icon chevron right/up
@@ -81,6 +82,12 @@
         handleChangeIconFilter(content)
     });
 
+    /**
+     * @description handle event click field gender
+     */
+    $('select[name="gender"]').on('click', (e) => {
+        e.stopPropagation();
+    })
 
     /**
      * @description handle event enter field locations
@@ -153,6 +160,53 @@
     $('#btn-filter-save').on('click', function() {
         $('#table-lead-search').toggle()
         $('#card-empty-search').toggle()
+
+        // handle change checkbox select all
+        $('.dt-checkboxes-select-all').on('change', function(e) {
+            if (e.target.checked) {
+                $('.dt-checkboxes').each(function() {
+                    $(this).prop('checked', true)
+                })
+                $('#btn-header').attr('disabled', false)
+            } else {
+                $('.dt-checkboxes').each(function() {
+                    $(this).prop('checked', false)
+                })
+                $('#btn-header').attr('disabled', true)
+            }
+        })
+
+        // handle change value checkbox
+        $('.dt-checkboxes').each(function(index) {
+            checkedLead.push($(this).prop('checked'))
+
+            $(this).on('change', function(e) {
+                if (e.target.checked) {
+                    $(this).prop('checked', true)
+                    $('#btn-header').attr('disabled', false)
+                    checkedLead = checkedLead.map((item, itemIndex) => {
+                        if (itemIndex === index) {
+                            return true
+                        }
+                        return item
+                    })
+                } else {
+                    $(this).prop('checked', false)
+                    checkedLead = checkedLead.map((item, itemIndex) => {
+                        if (itemIndex === index) {
+                            return false
+                        }
+                        return item
+                    })
+                }
+                
+                // check if atleast one checkbox is checked
+                const isChecked = checkedLead.some(item => item)
+                if (!isChecked) {
+                    $('#btn-header').attr('disabled', true)
+                }
+            })
+        })
     })
    })();
  });

@@ -11,6 +11,7 @@
       </div>
       <div class="col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end">
         <button
+          id="btn-header"
           class="btn btn-primary"
           data-bs-toggle="modal"
           disabled="{{ $isDisableButtonHeader }}"

@@ -13,11 +13,13 @@ class ButtonAddContact extends Component
      */
     public $target;
     public $name;
+    public $icon;
 
-    public function __construct($target = '', $name = '-')
+    public function __construct($target = '', $name = '-', $icon = 'assets/svg/icons/person_add.svg')
     {
         $this->target = $target;
         $this->name = $name;
+        $this->icon = $icon;
     }
 
     /**

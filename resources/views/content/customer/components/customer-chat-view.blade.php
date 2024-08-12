@@ -175,7 +175,7 @@
 
 @endphp
 
-<section class="d-flex tab-pane fade active show" id="chat-view" role="tabpanel">
+<section class="d-flex tab-pane fade" id="chat-view" role="tabpanel">
     <x-sidebar-chat-contacts :tabs="$listTabs" isUsingSearch="{{ false }}">
         <x-slot name="body">
             <div class="tab-content p-0">

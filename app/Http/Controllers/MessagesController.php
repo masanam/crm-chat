@@ -16,10 +16,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
-use GuzzleHttp\Client as GuzzleHttp;
 use Illuminate\Support\Facades\Log;
 
-use Twilio\Rest\Client;
+use GuzzleHttp\Client;
 
 class MessagesController extends Controller
 {
@@ -408,7 +407,6 @@ class MessagesController extends Controller
   public function send(Request $request)
   {
 
-      // dd($request);
      /**
    * "_token" => "oIiRjzjbZBNOStEoq3KGiXDBjyfXt2TRrHIqhBAa"
     *"message" => "test"
@@ -496,6 +494,7 @@ class MessagesController extends Controller
 
     // https://developers.facebook.com/docs/whatsapp/pricing
 
+
     // PRICES
     // https://developers.facebook.com/docs/whatsapp/pricing
     // Cost per conversation in USD, effective June 1, 2023,,,,,,
@@ -515,6 +514,39 @@ class MessagesController extends Controller
       // $twilio = new Client($sid, $token);
       $from = env('TWILIO_WHATSAPP_FROM');
   
+    //   $bodyText = [
+    //     'messaging_product' => 'whatsapp',
+    //     'recipient_type' => 'individual',
+    //     'to' => str_replace('+', '', $request->id),
+    //     'type' => 'text',
+    //     'text' => [
+    //       'preview_url' => true,
+    //       'body' => $request->message,
+    //     ],
+    //   ];
+
+      $bodyTemplate = [
+        'messaging_product' => 'whatsapp',
+        'to' => str_replace('+', '', $request->id),
+        'type' => 'template',
+        'template' => [
+            'name' => 'hello_world',
+            'language' => [
+                'code' => 'en_US'
+            ]
+            ],
+        ];
+
+    //   $client = new Client();
+    //   $responseWa = $client->post('https://graph.facebook.com/v19.0/' . $sid . '/messages', [
+    //       'headers' => [
+    //           'Authorization' => 'Bearer ' . $token,
+    //           'Content-Type'  => 'application/json'
+    //       ],
+    //       'json' => $bodyTemplate
+    //   ]);
+    // dd($responseWa);
+
       $service = new \PHPSupabase\Service(env('SUPABASE_KEY'), env('SUPABASE_URL'));
       $auth = $service->createAuth();
       $auth->signInWithEmailAndPassword('dandi@pasima.co', '123456asd');
@@ -564,6 +596,31 @@ class MessagesController extends Controller
           Log::info('ChatController - sendWhatsAppMessage - chatData', [
                 'data' => $chatData,
               ]);
+
+            //   dd($request->all());
+            //   {"type":"text","dealer_id":5,"user_id":"3dbcb102-3a16-484c-9332-b30de6ac1ef4","lead_id":107,"message":"hello","template_name":null,"language_code":null,"phone":"+62811309299","media_link":null,"media":null}
+
+            // [ // app/Http/Controllers/MessagesController.php:601
+            //     "_token" => "iXhVNbLG2EC5k2acq8c33kmH6JlVZ8HuXh6KAREc"
+            //     "message" => "test request"
+            //     "type" => "contactChat"
+            //     "id" => "628128068812"
+            //     "temporaryMsgId" => "temp_1"
+            //   ]
+
+              
+      $requestBody = [
+        'type' => 'text',
+        'dealer_id' => '',
+        'lead_id' => '',
+        'message' => $request->message,
+        'template_name' => null,
+        'language_code' => null,
+        'phone' => $request->phone,
+        'media_link' => null,
+        'media' => null,
+        ];
+
       $chat = \App\Models\Chat::updateOrCreate(
         [
           'id' => $message->id,
@@ -593,6 +650,7 @@ class MessagesController extends Controller
       // );
   
       $phone_number_id = $sid;
+
       if ($request->type == 'template') {
         $template = 'hello_pasima';
         $languageCode = 'id';

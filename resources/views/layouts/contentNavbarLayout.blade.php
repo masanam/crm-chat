@@ -100,7 +100,9 @@ $profile = \App\Models\Profile::with('dealer')->where('id', $user->profile_id)->
               <img src="{{asset('assets/svg/icons/icon-notification.svg')}}" alt="icon notification">
             </button>
             <button class="btn" style="padding: 0.5rem 0.5rem;">
-              <img src="{{asset('assets/svg/icons/icon-setting.svg')}}" alt="icon setting">
+            <a href="{{ route('settings') }}">
+            <img src="{{asset('assets/svg/icons/icon-setting.svg')}}" alt="icon setting">
+        </a>
             </button>
           </div>
           <button class="btn d-flex flex-row dropdown-account dropbtn" aria-haspopup="true" aria-expanded="false" role="button">

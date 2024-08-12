@@ -470,19 +470,11 @@
 
                         <div class="d-flex flex-column" style="width: 45%">
                             <ul class="nav nav-tabs nav-tabs-customer-detail" role="tablist">
-                                <!-- <li class="nav-item">
-                                  <button type="button" class="nav-link nav-item-customer-detail active" role="tab" data-bs-toggle="tab" data-bs-target="#tab-activities" aria-controls="tab-activities" aria-selected="true">Activities</button>
-                                </li>
-                                <li class="nav-item">
-                                  <button type="button" class="nav-link nav-item-customer-detail" role="tab" data-bs-toggle="tab" data-bs-target="#tab-communication" aria-controls="tab-communication" aria-selected="false">Communication</button>
-                                </li> -->
                                 <li class="nav-item">
                                   <button type="button" class="nav-link nav-item-customer-detail active" role="tab" data-bs-toggle="tab" data-bs-target="#tab-ticket" aria-controls="tab-ticket" aria-selected="false">Tickets</button>
                                 </li>
                             </ul>
                             <div class="tab-content-chat">
-                                @include('content/customer/components/customer-tab-activities')
-                                @include('content/customer/components/customer-tab-communication')
                                 @include('content/customer/components/customer-tab-ticket')
                             </div>
                         </div>

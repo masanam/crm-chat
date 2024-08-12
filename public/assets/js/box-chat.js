@@ -492,6 +492,8 @@ const countdownSessionNotExpired = () => {
 }
 
 function updateCounter(dataCounter) {
+  if (!dataCounter) return clearInterval(interval);
+
   var minutes, seconds;
   const customerDate = new Date(dataCounter)
   // clear interval
@@ -769,9 +771,14 @@ function fetchMessages(type, id, newFetch = false) {
        // update countdown session
        const getAllChatCustomer = document.querySelectorAll('.mc-receiver #wrapper-time')
        if (getAllChatCustomer.length > 0) {
+        // if chat customer exist
         const getLastChatCustomer = getAllChatCustomer[getAllChatCustomer.length - 1].getAttribute('data-time')
         updateCounter(getLastChatCustomer);
         $('#countdown-session').show();
+       } else {
+        // if chat customer doesnt exist
+        updateCounter();
+        $('#countdown-session').hide();
        }
      },
      error: (error) => {
@@ -1575,7 +1582,7 @@ $(document).ready(function () {
   $(".chat-contact-list-item").removeClass("m-list-active");
   $(this).addClass("m-list-active");
   const contact_id = $(this).attr("data-contact");
-  routerPush(document.title, `${url}/customers/${contact_id}`);
+  routerPush(document.title, `${url}/customers?chat=${contact_id}`);
   updateSelectedContactChat(contact_id);
 });
 

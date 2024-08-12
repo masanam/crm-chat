@@ -40,6 +40,9 @@ $tabs[] = (object) [
 }
 
 $currentRouteName = Route::currentRouteName();
+
+$user = Auth()->user();
+$profile = \App\Models\Profile::with('dealer')->where('id', $user->profile_id)->first();
 @endphp
 
 @section('layoutContent')
@@ -107,8 +110,8 @@ $currentRouteName = Route::currentRouteName();
               <img alt="Avatar" class="rounded-circle shadow" src="{{ asset('assets/img/avatars/7.png') }}">
             </div>
             <div class="d-flex flex-column align-items-start gap-1" style="width: 80%;">
-              <span class="fw-bold text-dark" style="font-size: 14px">{{Auth::user()->name}} </span>
-              <span style="font-size: 14px; color: #475467;">{{Auth::user()->email}}</span>
+              <span class="fw-bold text-dark" style="font-size: 14px">{{ $profile->first_name }} {{ $profile->last_name }}</span>
+              <span style="font-size: 14px; color: #475467;">{{ $profile->dealer->name }}</span>
             </div>
             <div class="dropdown-account-content" role="menu">
               <div class="d-flex gap-2 align-items-center" style="padding: 14px 18px;">
@@ -116,8 +119,8 @@ $currentRouteName = Route::currentRouteName();
                   <img alt="Avatar" class="rounded-circle shadow" src="{{ asset('assets/img/avatars/7.png') }}">
                 </div>
                 <div class="d-flex flex-column align-items-start gap-1">
-                  <span class="fw-bold text-dark" style="font-size: 14px">{{Auth::user()->name}} </span>
-                  <span style="font-size: 14px; color: #616A75;">{{Auth::user()->email}}</span>
+                  <span class="fw-bold text-dark" style="font-size: 14px">{{ $profile->first_name }} {{ $profile->last_name }}</span>
+                  <span style="font-size: 14px; color: #616A75;">{{ $profile->dealer->name }}</span>
                 </div>
               </div>
               <a href="#" role="menuitem" class="d-flex align-items-center menu-account" style="color: #616A75;">

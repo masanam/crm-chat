@@ -97,7 +97,9 @@ $currentRouteName = Route::currentRouteName();
               <img src="{{asset('assets/svg/icons/icon-notification.svg')}}" alt="icon notification">
             </button>
             <button class="btn" style="padding: 0.5rem 0.5rem;">
-              <img src="{{asset('assets/svg/icons/icon-setting.svg')}}" alt="icon setting">
+            <a href="{{ route('settings') }}">
+            <img src="{{asset('assets/svg/icons/icon-setting.svg')}}" alt="icon setting">
+        </a>
             </button>
           </div>
           <button class="btn d-flex flex-row dropdown-account dropbtn" aria-haspopup="true" aria-expanded="false" role="button">
@@ -105,8 +107,8 @@ $currentRouteName = Route::currentRouteName();
               <img alt="Avatar" class="rounded-circle shadow" src="{{ asset('assets/img/avatars/7.png') }}">
             </div>
             <div class="d-flex flex-column align-items-start gap-1" style="width: 80%;">
-              <span class="fw-bold text-dark" style="font-size: 14px">Randy Haris</span>
-              <span style="font-size: 14px; color: #475467;">PT Jaya Makmur</span>
+              <span class="fw-bold text-dark" style="font-size: 14px">{{Auth::user()->name}} </span>
+              <span style="font-size: 14px; color: #475467;">{{Auth::user()->email}}</span>
             </div>
             <div class="dropdown-account-content" role="menu">
               <div class="d-flex gap-2 align-items-center" style="padding: 14px 18px;">
@@ -114,8 +116,8 @@ $currentRouteName = Route::currentRouteName();
                   <img alt="Avatar" class="rounded-circle shadow" src="{{ asset('assets/img/avatars/7.png') }}">
                 </div>
                 <div class="d-flex flex-column align-items-start gap-1">
-                  <span class="fw-bold text-dark" style="font-size: 14px">Randy Haris</span>
-                  <span style="font-size: 14px; color: #616A75;">PT Jaya Makmur</span>
+                  <span class="fw-bold text-dark" style="font-size: 14px">{{Auth::user()->name}} </span>
+                  <span style="font-size: 14px; color: #616A75;">{{Auth::user()->email}}</span>
                 </div>
               </div>
               <a href="#" role="menuitem" class="d-flex align-items-center menu-account" style="color: #616A75;">

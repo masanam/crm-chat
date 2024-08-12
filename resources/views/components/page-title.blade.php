@@ -13,10 +13,6 @@
                 <button class="btn btn-view nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#kanban-view" aria-controls="kanban-view" aria-selected="true">
                     <img src="{{asset('assets/svg/icons/icon-kanban-view.svg')}}" alt="info" width="20" height="20">
                 </button>
-                <button class="btn btn-view nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#chat-view" aria-controls="chat-view" aria-selected="true">
-                    <img src="{{asset('assets/svg/icons/icon-chat-view.svg')}}" alt="info" width="20" height="20">
-                </button>
-
             </div>
             @endif
             <button type="button" class="btn btn-border" data-bs-toggle="modal" data-bs-target="#filter">

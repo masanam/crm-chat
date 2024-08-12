@@ -1,4 +1,4 @@
-<section class="tab-ticket tab-pane fade" id="tab-ticket" role="tabpanel">
+<section class="tab-ticket tab-pane fade active show" id="tab-ticket" role="tabpanel">
     <div class=" d-flex flex-column gap-2">
         <div class="d-flex flex-wrap justify-content-between card-filter mt-3">
             <button class="btn btn-sm button-new" data-bs-toggle="modal" data-bs-target="#add-ticket">

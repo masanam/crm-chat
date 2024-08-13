@@ -97,9 +97,6 @@ $profile = \App\Models\Profile::with('dealer')->where('id', $user->profile_id)->
         <div class="d-flex gap-3 align-items-center">
           <div class="d-flex flex-row gap-3">
             <button class="btn" style="padding: 0.5rem 0.5rem;">
-              <img src="{{asset('assets/svg/icons/icon-notification.svg')}}" alt="icon notification">
-            </button>
-            <button class="btn" style="padding: 0.5rem 0.5rem;">
             <a href="{{ route('settings') }}">
             <img src="{{asset('assets/svg/icons/icon-setting.svg')}}" alt="icon setting">
         </a>

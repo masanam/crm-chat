@@ -161,12 +161,6 @@
             <img src="${assetsPath}svg/icons/r.svg" style="width: 24px">
           </a> 
           <a class='d-flex align-items-center btn-lg pe-auto'>
-            <img src="${assetsPath}svg/icons/wa-logo.svg" style="width: 24px">
-          </a>
-          <a class='d-flex align-items-center btn-lg pe-auto'>
-            <img src="${assetsPath}svg/icons/icon-envelope.svg" style="width: 24px">
-          </a>
-          <a class='d-flex align-items-center btn-lg pe-auto'>
             <img src="${assetsPath}svg/icons/info-gray.svg" style="width: 24px">
           </a>
         </div>

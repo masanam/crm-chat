@@ -208,6 +208,36 @@
             })
         })
     })
+
+    /**
+     * @description handle add button list
+     */
+    $('.btn-add-list').each(function() {
+        $(this).on('click', function(el) {
+            el.stopPropagation();
+        })
+    })
+
+    $('.nav-link').each(function() {
+        $(this).on('click', function() {
+            console.log($(this).attr('data-bs-target'))
+            switch ($(this).attr('data-bs-target')) {
+                case '#experience':
+                    $('#experience').show();
+                    $('#experience').addClass('d-flex flex-column');
+                    $('#signals').hide();
+                    $('#signals').removeClass('d-flex flex-column');
+                    break;
+            
+                case '#signals':
+                    $('#experience').hide();
+                    $('#experience').removeClass('d-flex flex-column');
+                    $('#signals').show();
+                    $('#signals').addClass('d-flex flex-column');
+                    break;
+            }
+        })
+    })
    })();
  });
  

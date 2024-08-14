@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Lead Management')
+@section('title', 'Lead Generation')
 
 
 @section('page-style')
@@ -262,7 +262,11 @@ $jobs = [$default2]
     isUsingHeaderAction="{{ false }}"
   >
     @foreach($teams as $key => $value)
-    <tr class="{{ $key % 2 === 0 ? 'odd' : 'even' }}">
+    <tr
+      class="{{ $key % 2 === 0 ? 'odd' : 'even' }}" 
+      data-bs-toggle="modal"
+      data-bs-target="#detail-customer"
+    >
       <td class="control" style="display: none;" tabindex="0"></td>
       <td class="dt-checkboxes-cell"><input type="checkbox" class="dt-checkboxes form-check-input"></td>
       <td>
@@ -340,6 +344,132 @@ $jobs = [$default2]
       <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
   </div>
 </div>
+</x-modal>
+
+<x-modal title="Customers" name="detail-customer" wrapperModalClass="modal-right" modalClass="modal-lg" isUsingBtnFooter="{{ false }}" isUsingHeaderTitle="{{ false }}">
+  <div class="gap-3 container-lead-search-detail">
+      <div class="d-flex flex-column gap-3">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+              <div class="flex-shrink-0 avatar" style="width: 110px; height: 110px;">
+                <span class="avatar-initial rounded-circle text-dark fw-bolder fs-1">{{ Helper::getInitial('Olivia Ryhe') }}</span>
+              </div>
+              <div class="d-flex flex-column justify-content-between gap-3">
+                <div class="d-flex flex-column">
+                  <div class="d-flex align-items-center gap-2">
+                    <span style="font-size: 24px;" class="text-dark fw-bold">Olivia Ryhe</span>
+                    <img src="{{ asset('assets/svg/icons/icon-verify.svg') }}" alt="verify account">
+                  </div>
+                  <span class="text-dark fw-bold">Chief Executive Officer at Beauty</span>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                  <div class="d-flex align-items-center gap-1">
+                    <i class="ti ti-user"></i>
+                    <span>Female,</span>
+                  </div>
+                  <div class="d-flex align-items-center gap-1">
+                    <span>30 - 39 age group,</span>
+                  </div>
+                  <div class="d-flex align-items-center gap-1">
+                    <img src="{{ asset('assets/svg/icons/icon-dolar-dark.svg') }}" alt="dolar">
+                    <span>Type A</span>
+                  </div>
+                  <span>&#128900;</span>
+                  <div class="d-flex align-items-center gap-1">
+                    <span>Jakarta, ID</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <i class="ti ti-x" data-bs-dismiss="modal" data-bs-target="#detail-customer" style="cursor: pointer;"></i>
+          </div>
+          <div class="card-contact-info d-flex flex-column gap-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-dark fw-bolder" style="font-size: 18px;">Contact Information</span>
+              <button
+                class="btn-add-list"
+                data-bs-toggle="modal"
+                data-bs-target="#list"
+              >
+                <i class="ti ti-plus"></i>
+                Add to list
+              </button>
+            </div>
+            <div class="contact-info-content">
+              <div class="d-flex align-items-center gap-2">
+                <img src="{{ asset('assets/svg/icons/icon-whatsapp.svg') }}" alt="wa">
+                <span class="text-dark">+62 xxx-xxx-xxx</span>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <i class="ti ti-world"></i>
+                <span class="text-dark">www.company.co</span>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <i class="ti ti-mail"></i>
+                <span class="text-dark">olivia@email.com</span>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <span>Social: </span>
+                <img src="{{ asset('assets/svg/icons/icon-linkedin.svg') }}" alt="linkedin">
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="">
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#experience">Experience</button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#signals">Signals</button>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade show active gap-3" id="experience" style="background: transparent;">
+            <div class="d-flex gap-3 align-items-start">
+              <div class="flex-shrink-0 avatar avatar-md">
+                <span class="avatar-initial text-dark fw-bolder" style="border-radius: 12px; font-size: 14px;">{{ Helper::getInitial('Beauty') }}</span>
+              </div>
+              <div class="d-flex flex-column gap-1">
+                <span class="text-dark fw-bold">Beauty</span>
+                <span class="text-dark">Chief Executive Officer</span>
+                <span>Current</span>
+              </div>
+            </div>
+            <div class="d-flex gap-3 align-items-start">
+              <div class="flex-shrink-0 avatar avatar-md">
+                <span class="avatar-initial text-dark fw-bolder" style="border-radius: 12px; font-size: 14px;">{{ Helper::getInitial('Digi Asia') }}</span>
+              </div>
+              <div class="d-flex flex-column gap-1">
+                <span class="text-dark fw-bold">Digi Asia</span>
+                <span class="text-dark">Founder</span>
+                <span>May 2020 - Aug 2024  | 4 years</span>
+              </div>
+            </div>
+            <div class="d-flex gap-3 align-items-start">
+              <div class="flex-shrink-0 avatar avatar-md">
+                <span class="avatar-initial text-dark fw-bolder" style="border-radius: 12px; font-size: 14px;">{{ Helper::getInitial('Shopee') }}</span>
+              </div>
+              <div class="d-flex flex-column gap-1">
+                <span class="text-dark fw-bold">Shopee</span>
+                <span class="text-dark">VP of Sales</span>
+                <span>Jun 2017 - May 2020  | 4 years</span>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade gap-3" id="signals"  style="background: transparent;">
+            <div class="d-flex gap-4 align-items-center">
+              <img src="{{ asset('assets/svg/icons/icon-notifications-outline-blue.svg') }}" alt="notif">
+              <span>Olivia Rhye just got promoted to Chief Executive Officer</span>
+            </div>
+            <div class="d-flex gap-4 align-items-center">
+              <img src="{{ asset('assets/svg/icons/icon-notifications-outline-blue.svg') }}" alt="notif">
+              <span>Beauty received $1,000 in funding from investor XXX.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
 </x-modal>
 
 @endsection

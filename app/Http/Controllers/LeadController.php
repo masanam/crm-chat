@@ -180,4 +180,21 @@ class LeadController extends Controller
   {
     return view('content.lead.lead-search');
   }
+
+  public function leadIndex(Request $request)
+  {
+    if ($request->ajax()) {
+      $data = Dealer::latest()->get();
+      return DataTables::of($data)
+        ->addIndexColumn()
+        ->addColumn('action', function ($row) {
+          $actionBtn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="editRecord btn btn-primary btn-sm">Edit</a> 
+              <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="deleteRecord btn btn-danger btn-sm">Delete</a>';
+          return $actionBtn;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+    }
+    return view('content.lead.lead-index');
+  }
 }

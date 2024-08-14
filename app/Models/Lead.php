@@ -20,4 +20,9 @@ class Lead extends Model
   {
     return $this->hasOne(AssignedLead::class);
   }
+
+  public function contacts()
+  {
+    return $this->hasMany(Contact::class);
+  }
 }

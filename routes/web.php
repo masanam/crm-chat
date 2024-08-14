@@ -478,7 +478,7 @@ Route::middleware(['auth'])->group(function () {
   Route::delete('dealers/{id}', [DealerController::class, 'destroy'])->name('dealers.destroy');
 
   // Route::resource('dealer', DealerController::class);
-  Route::get('leads', [LeadController::class, 'index'])->name('leads.index');
+  // Route::get('leads', [LeadController::class, 'index'])->name('leads.index');
   Route::get('leads/create', [LeadController::class, 'create'])->name('leads.create');
   Route::post('leads', [LeadController::class, 'store'])->name('leads.store');
   Route::get('leads/{id}', [LeadController::class, 'show'])->name('leads.show');
@@ -486,6 +486,7 @@ Route::middleware(['auth'])->group(function () {
   Route::put('leads/{id}', [LeadController::class, 'update'])->name('leads.update');
   Route::delete('leads/{id}', [LeadController::class, 'destroy'])->name('leads.destroy');
   Route::post('change-lead', [LeadController::class, 'updateLead'])->name('leads.change');
+  Route::get('lead-generation', [LeadController::class, 'leadSearchView'])->name('leads.index');
 
   // Route::resource('dealer', DealerController::class);
   Route::get('groups', [GroupController::class, 'index'])->name('group-list');

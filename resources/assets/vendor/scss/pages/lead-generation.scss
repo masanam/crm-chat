@@ -1,0 +1,110 @@
+.container-lead-search {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    padding: 12px 0px;
+    min-height: 85vh;
+
+    & .container-filter {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        & .card-search {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 18px 22px;
+
+            .btn-search {
+                position: absolute;
+                top: 63px;
+                right: 22px;
+                background: #33B6B9;
+                color: #FFF;
+                border: none;
+                height: 48px;
+                padding: 0px 12px;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+        }
+
+        & .card-filters {
+            height: 100%;
+
+            & .wrapper-filter {
+                padding: 22px 22px;
+            }
+
+            & .badge-location {
+                border-radius: 5px;
+                background: #DDE0E4;
+                color: #000000;
+                padding: 4px;
+
+                a {
+                    color: #000000 !important;
+                }
+            }
+        }
+
+        .hide {
+            display: none;
+        }
+    }
+
+    & .container-table-search {
+        grid-column: span 2 / span 2;
+        padding: 12px 22px;
+    }
+
+    & .card-datatable {
+        grid-column: span 2 / span 2;
+        padding: 18px !important;
+        height: 100%;
+
+        table {
+            border: 1px solid #EAECF0;
+            border-radius: 12px;
+            width: 100% !important;
+
+            .btn-add-list {
+                background: rgba(14, 165, 233, 0.1);
+                padding: 4px 10px 4px 12px;
+                border-radius: 4px;
+                border: 1px solid #33B6B9;
+                color: #33B6B9;
+                font-size: 12px;
+                width: 110px;
+            }
+        }
+
+        .table.dataTable {
+            margin-top: 2rem !important;
+        }
+    }
+}
+
+@media (min-width: 710px) and (max-width: 946px) {
+    .container-lead-search {
+        & .container-filter {
+            & .card-search {    
+                .btn-search {
+                    top: 92px;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 410px) and (max-width: 710px) {
+    .container-lead-search {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+
+        & .container-table-search {
+            padding: 32px 22px;
+        }
+    }
+}

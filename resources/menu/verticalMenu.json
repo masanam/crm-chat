@@ -7,6 +7,12 @@
       "url": "/"
     },
     {
+      "name": "Lead Generation",
+      "slug": "leads.index",
+      "iconUrl": "assets/svg/icons/leads-icon.svg",
+      "url": "/lead-generation"
+    },
+    {
       "name": "Customers",
       "slug": "customers.index",
       "iconUrl": "assets/svg/icons/customer-icon.svg",
@@ -35,12 +41,6 @@
       "slug": "group-list",
       "iconUrl": "assets/svg/icons/internal-icon.svg",
       "url": "/groups"
-    },
-    {
-      "name": "Lead Generation",
-      "slug": "lead-generation",
-      "iconUrl": "assets/svg/icons/leads-icon.svg",
-      "url": "/lead-generation"
     }
   ]
 }

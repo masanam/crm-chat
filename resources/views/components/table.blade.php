@@ -1,16 +1,20 @@
-<div class="card-datatable table-responsive pt-0">
+<div @class(['card-datatable pt-0', 'table-responsive' => $isUsingTableResponsive])>
     @if ($isUsingTableHeader)
     <header class="row px-3">
       <div class="col-sm-12 col-md-6">
         <div class="d-flex align-item-center gap-2">
           <h5 class="text-dark fw-bold">{{ $title }}</h5>
+          @if(!!$badge)
           <small class="badge-team">{{ $badge }}</small>
+          @endif
         </div>
       </div>
       <div class="col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end">
         <button
+          id="btn-header"
           class="btn btn-primary"
           data-bs-toggle="modal"
+          disabled="{{ $isDisableButtonHeader }}"
           data-bs-target="#{{ $buttonHeaderTarget }}"
         >
           {{ $buttonHeaderName }}
@@ -29,7 +33,7 @@
           @if($headers)
           @foreach($headers as $key => $value)
             <th
-              class="sorting text-column-header"
+              @class(['text-column-header', 'sorting' => $value->is_sorting])
               tabindex="0"
               aria-controls="DataTables_Table_0"
               rowspan="1"
@@ -41,7 +45,9 @@
             </th>
           @endforeach
           @endif
+          @if ($isUsingHeaderAction)
           <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 94px;" aria-label="Actions"></th>
+          @endif
         </tr>
       </thead>
       <tbody>

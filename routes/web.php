@@ -184,32 +184,32 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 Route::get('/test123', [Chat::class, 'test']);
 
 Route::get('/clear', function () {
-    $clearcache = Artisan::call('optimize:clear');
-    echo "Cache cleared<br>";
+  $clearcache = Artisan::call('optimize:clear');
+  echo 'Cache cleared<br>';
 });
 
-
-Route::group(['middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth']], function () {
   /**
-  * Verification Routes
-  */
+   * Verification Routes
+   */
   Route::get('/email/verify', 'VerificationController@show')->name('verification.notice');
-  Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify')->middleware(['signed']);
+  Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify')
+    ->name('verification.verify')
+    ->middleware(['signed']);
   Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
 });
 
 /** chat */
-Route::post('/idInfo', [MessagesController::class,'idFetchData']);
-Route::get('/customers/{id}', [MessagesController::class,'index']);
-Route::post('/fetchMessages', [MessagesController::class,'fetch'])->name('fetch.messages');
-Route::post('/shared',  [MessagesController::class,'sharedPhotos'])->name('shared');
-Route::post('/makeSeen', [MessagesController::class,'seen'])->name('messages.seen');
+Route::post('/idInfo', [MessagesController::class, 'idFetchData']);
+Route::get('/customers/{id}', [MessagesController::class, 'index']);
+Route::post('/fetchMessages', [MessagesController::class, 'fetch'])->name('fetch.messages');
+Route::post('/shared', [MessagesController::class, 'sharedPhotos'])->name('shared');
+Route::post('/makeSeen', [MessagesController::class, 'seen'])->name('messages.seen');
 Route::post('/receive-chat', [Chat::class, 'receiveWhatsAppMessage']);
 
-Route::post('/sendMessage', [MessagesController::class,'send'])->name('send.message');
-Route::post('/sendTemplate', [MessagesController::class,'sendTemplate'])->name('send.template');
-Route::post('/updateContacts', [MessagesController::class,'updateContactItem'])->name('contacts.update');
-
+Route::post('/sendMessage', [MessagesController::class, 'send'])->name('send.message');
+Route::post('/sendTemplate', [MessagesController::class, 'sendTemplate'])->name('send.template');
+Route::post('/updateContacts', [MessagesController::class, 'updateContactItem'])->name('contacts.update');
 
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');
 // Route::get('/dashboard/crm', [Crm::class, 'index'])->name('dashboard-crm');
@@ -330,9 +330,7 @@ Route::get('/pages/account-settings-connections', [AccountSettingsConnections::c
   'pages-account-settings-connections'
 );
 
-Route::get('/settings', [Crm::class, 'index'])->name(
-  'settings'
-);
+Route::get('/settings', [Crm::class, 'index'])->name('settings');
 
 Route::get('/pages/faq', [Faq::class, 'index'])->name('pages-faq');
 Route::get('/pages/pricing', [PagesPricing::class, 'index'])->name('pages-pricing');
@@ -490,6 +488,7 @@ Route::middleware(['auth'])->group(function () {
   Route::put('leads/{id}', [LeadController::class, 'update'])->name('leads.update');
   Route::delete('leads/{id}', [LeadController::class, 'destroy'])->name('leads.destroy');
   Route::post('change-lead', [LeadController::class, 'updateLead'])->name('leads.change');
+  Route::post('leads/add-contact', [LeadController::class, 'addContact'])->name('leads.add-contact');
 
   // Route::resource('dealer', DealerController::class);
   Route::get('groups', [GroupController::class, 'index'])->name('group-list');
@@ -499,7 +498,6 @@ Route::middleware(['auth'])->group(function () {
   Route::get('groups/{id}/edit', [GroupController::class, 'edit'])->name('groups.edit');
   Route::put('groups/{id}', [GroupController::class, 'update'])->name('groups.update');
   Route::delete('groups/{id}', [GroupController::class, 'destroy'])->name('groups.destroy');
-
 
   // Route::resource('dealer', DealerController::class);
   Route::get('profiles', [ProfileController::class, 'index'])->name('profiles.index');
@@ -534,7 +532,6 @@ Route::middleware(['auth'])->group(function () {
   Route::post('customers/addmore', [CustomerController::class, 'addMorePost'])->name('customers.addMorePost');
   Route::post('customers/update-status', [CustomerController::class, 'updateStatus'])->name('customers.updateStatus');
 
-  
   // Route::post("addmore","HomeController@addMorePost");
   // Route::resource('dealer', DealerController::class);
   Route::get('clients', [ClientController::class, 'index'])->name('clients.index');
@@ -597,8 +594,6 @@ Route::middleware(['auth'])->group(function () {
   });
 });
 
-
-
 //AUTH ROUTES
 
 Route::middleware(['guest'])->group(function () {
@@ -613,7 +608,7 @@ Route::controller(StripePaymentController::class)->group(function () {
   Route::get('stripe', 'stripe');
   Route::get('subscribe', 'subscribe');
   Route::post('stripe', 'stripePost')->name('stripe.post');
-  Route::post('payment', 'processPayment')->name('stripe.payment');;
+  Route::post('payment', 'processPayment')->name('stripe.payment');
 });
 
 // Start Form Builder===============================================================
@@ -637,5 +632,3 @@ Route::get('get-form-builder', [FormsController::class, 'read']);
 Route::post('save-form-transaction', [FormsController::class, 'create']);
 
 // End Form Builder===============================================================
-
-

@@ -10,7 +10,18 @@
       "name": "Lead Generation",
       "slug": "leads.index",
       "iconUrl": "assets/svg/icons/leads-icon.svg",
-      "url": "/lead-generation"
+      "submenu": [
+        {
+          "name": "Search",
+          "slug": "leads.index",
+          "url": "/lead-generation"
+        },
+        {
+          "name": "Create",
+          "slug": "leads.create",
+          "url": "/lead-generation/list"
+        }
+      ]
     },
     {
       "name": "Customers",

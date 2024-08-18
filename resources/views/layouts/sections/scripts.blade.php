@@ -21,14 +21,19 @@
 
     for (i = 0; i < dropdown.length; i++) {
         dropdown[i].addEventListener("click", function() {
-            this.classList.toggle("active");
             var dropdownContent = this.nextElementSibling;
-            if (dropdownContent.style.display === "block") {
-                dropdownContent.style.display = "none";
-            } else {
+            if (dropdownContent) {
                 dropdownContent.style.display = "block";
+            } else {
+                dropdownContent.style.display = "none";
             }
         });
+    }
+
+    const getMenuActive = document.querySelector('.menu-inner > .menu-item .active')
+    if (getMenuActive) {
+        var dropdownContent = getMenuActive.parentElement;
+        dropdownContent.style.display = "block";
     }
 </script>
 

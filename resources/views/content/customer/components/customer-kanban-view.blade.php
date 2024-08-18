@@ -1,4 +1,4 @@
-<section class="tab-pane fade app-kanban" id="kanban-view" role="tabpanel">
+<section class="tab-pane fade app-kanban hidden" id="kanban-view" role="tabpanel">
     <!-- Kanban Wrapper -->
     <div class="kanban-wrapper"></div>
     <!-- Edit Task & Activities -->

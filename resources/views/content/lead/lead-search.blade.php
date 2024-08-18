@@ -264,12 +264,10 @@ $jobs = [$default2]
     @foreach($teams as $key => $value)
     <tr
       class="{{ $key % 2 === 0 ? 'odd' : 'even' }}" 
-      data-bs-toggle="modal"
-      data-bs-target="#detail-customer"
     >
       <td class="control" style="display: none;" tabindex="0"></td>
       <td class="dt-checkboxes-cell"><input type="checkbox" class="dt-checkboxes form-check-input"></td>
-      <td>
+      <td data-bs-toggle="modal" data-bs-target="#detail-customer">
         <div class="d-flex justify-content-start align-items-center user-name">
           <div class="avatar-wrapper">
             <div class="avatar me-2"><span class="avatar-initial rounded-circle bg-label-info">{{ Helper::getInitial($value->lead_info) }}</span></div>
@@ -280,8 +278,8 @@ $jobs = [$default2]
           </div>
         </div>
       </td>
-      <td>{{ $value->wa_number }}</td>
-      <td>{{ $value->location }}</td>
+      <td data-bs-toggle="modal" data-bs-target="#detail-customer">{{ $value->wa_number }}</td>
+      <td data-bs-toggle="modal" data-bs-target="#detail-customer">{{ $value->location }}</td>
       <td>
         <button
           class="btn-add-list"
@@ -371,7 +369,7 @@ $jobs = [$default2]
                     <span>30 - 39 age group,</span>
                   </div>
                   <div class="d-flex align-items-center gap-1">
-                    <img src="{{ asset('assets/svg/icons/icon-dolar-dark.svg') }}" alt="dolar">
+                    <img src="{{ asset('assets/svg/icons/icon-dolar-outline.svg') }}" alt="dolar">
                     <span>Type A</span>
                   </div>
                   <span>&#128900;</span>

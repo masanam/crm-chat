@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Lead;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\Datatables;
+
+use App\Models\Lead;
+use App\Models\Contact;
 
 class LeadController extends Controller
 {
-
   public function index(Request $request)
   {
     if ($request->ajax()) {
@@ -16,8 +19,13 @@ class LeadController extends Controller
       return DataTables::of($data)
         ->addIndexColumn()
         ->addColumn('action', function ($row) {
-          $actionBtn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="editRecord btn btn-primary btn-sm">Edit</a> 
-              <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="deleteRecord btn btn-danger btn-sm">Delete</a>';
+          $actionBtn =
+            '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' .
+            $row->id .
+            '" data-original-title="Edit" class="editRecord btn btn-primary btn-sm">Edit</a> 
+              <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' .
+            $row->id .
+            '" data-original-title="Delete" class="deleteRecord btn btn-danger btn-sm">Delete</a>';
           return $actionBtn;
         })
         ->rawColumns(['action'])
@@ -35,10 +43,10 @@ class LeadController extends Controller
     $formattedData = $leads->map(function ($lead) {
       return [
         'id' => $lead->id,
-        'avatar' => "10.png",
+        'avatar' => '10.png',
         'full_name' => $lead->client_name,
         'location' => $lead->location,
-        'whatsapp_number' => "+" . $lead->phone_number,
+        'whatsapp_number' => '+' . $lead->phone_number,
         'car_unit' => $lead->interest,
         'progress' => $lead->progress,
         'payment_method' => $lead->payment_method,
@@ -46,7 +54,7 @@ class LeadController extends Controller
         'need_car' => $lead->need_car,
         'notes' => $lead->notes,
         'lead_id' => $lead->lead_id,
-        'lead_name' => "JAYA MOTOR",
+        'lead_name' => 'JAYA MOTOR',
         'showroom_handler' => $lead->showroom_handler,
         'created_at' => $lead->created_at->format('F j, Y g:ia'), // Format tanggal
       ];
@@ -153,19 +161,50 @@ class LeadController extends Controller
     return redirect()->back();
   }
 
-    /**
+  public function addContact(Request $request)
+  {
+    $model = Contact::where('lead_id', $request->lead_id)
+      ->where('whatsapp', $request->whatsapp_contact)
+      ->where('email', $request->email_contact)
+      ->first();
+
+    if ($model) {
+      $model->update([
+        'first_name' => $request->first_name,
+        'last_name' => $request->last_name,
+        'job_title' => $request->job_title,
+        'whatsapp' => $request->whatsapp_contact,
+        'email' => $request->email_contact,
+      ]);
+    } else {
+      $model = new Contact();
+      $model->first_name = $request->first_name;
+      $model->last_name = $request->last_name;
+      $model->job_title = $request->job_title;
+      $model->whatsapp = $request->whatsapp_contact;
+      $model->email = $request->email_contact;
+      $model->lead_id = (int) $request->lead_id;
+      $model->client_id = 53;
+      $model->created_by = Auth::user()->profile_id;
+      $model->save();
+    }
+
+    $request->session()->flash('success', 'Ubah Data Berhasil');
+    return redirect()->back();
+  }
+
+  /**
    * Update the specified resource in storage.
    */
   public function updateLead(Request $request, Lead $lead)
   {
-    $lead->where('phone_number',$request->contact)->update([
-      'client_name' => $request->first_name.' '.$request->last_name,
+    $lead->where('phone_number', $request->contact)->update([
+      'client_name' => $request->first_name . ' ' . $request->last_name,
       'title' => $request->job_title,
     ]);
     $request->session()->flash('success', 'Ubah Data Berhasil');
     return redirect()->back();
   }
-
 
   /**
    * Remove the specified resource from storage.

@@ -16,8 +16,6 @@ use App\Models\InternalChat;
 use App\Models\Lead;
 use App\Models\Option;
 
-
-
 class CustomerController extends Controller
 {
   /**
@@ -68,11 +66,11 @@ class CustomerController extends Controller
     $dataPending = Task::where('status_id', 1)->get();
     $dataClosed = Task::where('status_id', 2)->get();
 
-    $lead = \App\Models\Lead::where('id','156')->first();
-    $labels = explode (",", $lead->label); 
-    $names = explode (",", $lead->name); 
+    $lead = \App\Models\Lead::where('id', '156')->first();
+    $labels = explode(',', $lead->label);
+    $names = explode(',', $lead->name);
 
-    return view('content.customer.index', compact('dataOpen', 'dataPending', 'dataClosed','lead','labels', 'names'));
+    return view('content.customer.index', compact('dataOpen', 'dataPending', 'dataClosed', 'lead', 'labels', 'names'));
   }
 
   /**
@@ -85,18 +83,22 @@ class CustomerController extends Controller
 
   public function getLeads()
   {
-      $data = Lead::latest()->get();
-      return DataTables::of($data)
-        ->addIndexColumn()
-        ->addColumn('action', function ($row) {
-          $actionBtn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="editRecord btn btn-primary btn-sm">Edit</a> 
-              <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="deleteRecord btn btn-danger btn-sm">Delete</a>';
-          return $actionBtn;
-        })
-        ->rawColumns(['action'])
-        ->make(true);
+    $data = Lead::latest()->get();
+    return DataTables::of($data)
+      ->addIndexColumn()
+      ->addColumn('action', function ($row) {
+        $actionBtn =
+          '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' .
+          $row->id .
+          '" data-original-title="Edit" class="editRecord btn btn-primary btn-sm">Edit</a> 
+              <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' .
+          $row->id .
+          '" data-original-title="Delete" class="deleteRecord btn btn-danger btn-sm">Delete</a>';
+        return $actionBtn;
+      })
+      ->rawColumns(['action'])
+      ->make(true);
   }
-
 
   /**
 
@@ -151,20 +153,19 @@ class CustomerController extends Controller
    */
   public function show($id)
   {
+    $lead = \App\Models\Lead::with('contacts')
+      ->where('phone_number', $id)
+      ->first();
 
-    $lead = \App\Models\Lead::where('phone_number',$id)->first();
+    if ($lead == null) {
+      $lead = \App\Models\Lead::find(156);
+    }
 
-if ($lead == NULL ){
-  $lead = \App\Models\Lead::where('id','156')->first();
+    // $cst = \App\Models\Lead::where('id','156')->first();
+    $labels = explode(',', $lead->label);
+    $names = explode(',', $lead->name);
 
-}    
-
-    $cst = \App\Models\Lead::where('id','156')->first();
-    $labels = explode (",", $cst->label); 
-    $names = explode (",", $cst->name); 
-
-
-    return view('content.customer.show',compact('lead','labels', 'names'));
+    return view('content.customer.show', compact('lead', 'labels', 'names'));
   }
 
   /**
@@ -211,7 +212,6 @@ if ($lead == NULL ){
     return response()->json(['success' => 'Data deleted successfully.']);
   }
 
-
   /**
    * Display detail email in tab communication sub tab email
    */
@@ -257,36 +257,35 @@ if ($lead == NULL ){
 
   public function addContact(Request $request)
   {
-// dd($request);
-// "client_name" => "Elvis"
-// "first_name" => "Elvis"
-// "last_name" => "Kudo"
-// "whatsapp" => null
-// "phone_number" => "628567638156"
-// "deal_revenue" => null
-// "flatpickr-date" => null
-// "next_step" => null
-// "description" => null
-// 'location' => $request->location,
-// 'interest' => $request->interest,
-// 'progress' => $request->progress,
-// 'payment_method' => $request->payment_method,
-// 'budget' => $request->budget,
-// 'need_car' => $request->need_car,
-// 'notes' => $request->notes,
-// 'showroom_handler' => $request->showroom_handler,
+    // dd($request);
+    // "client_name" => "Elvis"
+    // "first_name" => "Elvis"
+    // "last_name" => "Kudo"
+    // "whatsapp" => null
+    // "phone_number" => "628567638156"
+    // "deal_revenue" => null
+    // "flatpickr-date" => null
+    // "next_step" => null
+    // "description" => null
+    // 'location' => $request->location,
+    // 'interest' => $request->interest,
+    // 'progress' => $request->progress,
+    // 'payment_method' => $request->payment_method,
+    // 'budget' => $request->budget,
+    // 'need_car' => $request->need_car,
+    // 'notes' => $request->notes,
+    // 'showroom_handler' => $request->showroom_handler,
 
-if (!empty($request->client_name)){
-  Lead::create([
-    'client_name' => $request->client_name,
-    'phone_number' => $request->phone_number,
-  ]);
-  $request->session()->flash('success', 'Ubah Data Berhasil');
-
-}
+    if (!empty($request->client_name)) {
+      Lead::create([
+        'client_name' => $request->client_name,
+        'phone_number' => $request->phone_number,
+      ]);
+      $request->session()->flash('success', 'Ubah Data Berhasil');
+    }
     return redirect()->back();
 
- // try {
+    // try {
     //   $validator = Validator::make($request->all(), [
     //     'first_name' => ['required', 'string'],
     //     'last_name' => ['string'],
@@ -333,19 +332,18 @@ if (!empty($request->client_name)){
 
   public function addMorePost(Request $request)
   {
-
-    $name_fields =[];
-    if(isset($request->name) && is_array($request->name)){
-      $name_fields = implode(",", $request->name); 
+    $name_fields = [];
+    if (isset($request->name) && is_array($request->name)) {
+      $name_fields = implode(',', $request->name);
     }
-    $label_fields=[];
+    $label_fields = [];
     // foreach($request->label as $key => $value) {
-    if(isset($request->label) && is_array($request->label)){
-      $label_fields = implode(",", $request->label); 
+    if (isset($request->label) && is_array($request->label)) {
+      $label_fields = implode(',', $request->label);
     }
 
-      Lead::where('id','156')->update(['name' => $name_fields, 'label' => $label_fields ]);
-      return response()->json(['success'=>'done']);
-      // return response()->json(['error'=>$validator->errors()->all()]);
+    Lead::where('id', '156')->update(['name' => $name_fields, 'label' => $label_fields]);
+    return response()->json(['success' => 'done']);
+    // return response()->json(['error'=>$validator->errors()->all()]);
   }
 }

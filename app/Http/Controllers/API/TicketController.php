@@ -53,20 +53,20 @@ class TicketController extends Controller
 
   public function getLead(): JsonResponse
   {
-    $tasks = Lead::orderBy('status')
+    $tasks = Lead::orderBy('stage')
       ->get()
-      ->groupBy('status')
-      ->map(function ($taskGroup, $status) {
+      ->groupBy('stage')
+      ->map(function ($taskGroup, $stage) {
         return [
-          'id' => 'board-' . strtolower($status),
-          'title' => $status,
-          'badge-title' => $this->getBadgeTitle($status),
+          'id' => 'board-' . strtolower($stage),
+          'title' => $stage,
+          'badge-title' => $this->getBadgeTitle($stage),
           'item' => $taskGroup
             ->map(function ($task) {
               return [
-                'id' => 'task-' . $task->id,
+                'id' => $task->phone_number,
                 'text' => $task->client_name,
-                'company' => $task->phone_number,
+                'company' => $task->id,
                 'priority' => $task->stage, // Placeholder priority
                 'due-date' => $task->closed_date, // Placeholder date
               ];

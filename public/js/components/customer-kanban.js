@@ -39,6 +39,20 @@
     });
   }
 
+  function routerPush(title, url) {
+    $("meta[name=url]").attr("content", url);
+    return window.history.pushState({}, title || document.title, url);
+   }
+   
+  $("body").on("click", ".kanban-item", function () {
+    // alert('test');
+    // $(".chat-contact-list-item").removeClass("m-list-active");
+    // $(this).addClass("m-list-active");
+    const contact_id = $(this).attr("data-eid");
+    routerPush(document.title, `${url}/customers/${contact_id}`);
+    // updateSelectedContactChat(contact_id);
+  });
+
   //! TODO: Update Event label and guest code to JS once select removes jQuery dependency
   // select2
   // if (select2.length) {
@@ -161,12 +175,6 @@
             <img src="${assetsPath}svg/icons/r.svg" style="width: 24px">
           </a> 
           <a class='d-flex align-items-center btn-lg pe-auto'>
-            <img src="${assetsPath}svg/icons/wa-logo.svg" style="width: 24px">
-          </a>
-          <a class='d-flex align-items-center btn-lg pe-auto'>
-            <img src="${assetsPath}svg/icons/icon-envelope.svg" style="width: 24px">
-          </a>
-          <a class='d-flex align-items-center btn-lg pe-auto'>
             <img src="${assetsPath}svg/icons/info-gray.svg" style="width: 24px">
           </a>
         </div>
@@ -190,6 +198,11 @@
     //   footer: false // position the button on footer
     // },
     click: function (el) {
+      // const contact_id = $(this).getAttribute("data-eid");
+      // routerPush(document.title, `${url}/customers/${contact_id}`);
+      // window.location.href = baseUrl + `customers/${contact_id}`;
+
+
       // let element = el;
       // let title = element.getAttribute('data-eid')
       //   ? element.querySelector('.kanban-text').textContent
@@ -224,24 +237,24 @@
       //     "<span class='avatar-initial rounded-circle bg-label-secondary'><i class='ti ti-plus ti-xs text-heading'></i></span>" +
       //     '</div>'
       //   );
-      const eid = el.getAttribute('data-eid').match(/\d+/g)[0]
+      const eid = el.getAttribute('data-eid').match(/\d+/g)[0];
 
-      // check if eid not lead
-      async function is_lead() {
-        await fetch(`${baseUrl}api/is_lead/${eid}`)
-          .then((res) => {
-            if (res.ok) {
-              window.location.href = baseUrl + `customers/${eid}/ticket`;
-              exit();
-            }
+      // // check if eid not lead
+      // async function is_lead() {
+      //   await fetch(`${baseUrl}api/is_lead/${eid}`)
+      //     .then((res) => {
+      //       if (res.ok) {
+              window.location.href = baseUrl + `customers/${eid}`;
+      //         exit();
+      //       }
 
-            throw new Error('Your task is not in lead')
-          })
-          .then(text => console.log('text', text))
-          .catch(error => toastr.warning(error))
-      }
+      //       throw new Error('Your task is not in lead')
+      //     })
+      //     .then(text => console.log('text', text))
+      //     .catch(error => toastr.warning(error))
+      // }
 
-      is_lead()
+      // is_lead()
     },
 
     // buttonClick: function (el, boardId) {
@@ -485,7 +498,7 @@
   kanbanSidebar.addEventListener('hidden.bs.offcanvas', function () {
     kanbanSidebar.querySelector('.ql-editor').firstElementChild.innerHTML = '';
   });
-
+  
   // Re-init tooltip when offcanvas opens(Bootstrap bug)
   if (kanbanSidebar) {
     kanbanSidebar.addEventListener('shown.bs.offcanvas', function () {

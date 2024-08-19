@@ -91,7 +91,7 @@ class CustomerController extends Controller
       ->addIndexColumn()
       ->addColumn('action', function ($row) {
         $actionBtn =
-          '<a href="' .
+          '<a href="/customers/' .
           $row->phone_number .
           '" data-toggle="tooltip"  data-id="' .
           $row->id .

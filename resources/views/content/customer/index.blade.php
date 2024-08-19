@@ -4,9 +4,9 @@
 
 @section('vendor-style')
 <link rel='stylesheet' href='https://unpkg.com/nprogress@0.2.0/nprogress.css' />
-<link rel="stylesheet" href="{{asset('assets/vendor/libs/jkanban/jkanban.css')}}" />
-<link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
-<link rel="stylesheet" href="{{asset('assets/vendor/libs/toastr/toastr.css')}}" />
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/jkanban/jkanban.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/toastr/toastr.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" />
 @endsection
@@ -14,8 +14,8 @@
 @section('page-style')
 <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/app-chat.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/customer.css') }}" />
-<link rel="stylesheet" href="{{ asset('css/components/ticket-kanban.css')}}" />
-<link rel="stylesheet" href="{{ asset('assets/css/box-chat.css')}}" />
+<link rel="stylesheet" href="{{ asset('css/components/ticket-kanban.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/css/box-chat.css') }}" />
 
 @endsection
 
@@ -23,7 +23,7 @@
 <script src="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
 <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
 <script src="{{ asset('assets/vendor/libs/jkanban/jkanban.js') }}"></script>
-<script src="{{asset('assets/vendor//libs/select2/select2.js')}}"></script>
+<script src="{{ asset('assets/vendor//libs/select2/select2.js') }}"></script>
 <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
 @endsection
 
@@ -32,7 +32,7 @@
 <script src="{{ asset('assets/js/components/chat-history.js') }}"></script>
 <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
 <script src="{{ asset('assets/js/customer.js') }}"></script>
-<script src="{{asset('js/components/customer-kanban.js')}}"></script>
+<script src="{{ asset('js/components/customer-kanban.js') }}"></script>
 <script src="{{ asset('js/chatify/autosize.js') }}"></script>
 <script src='https://unpkg.com/nprogress@0.2.0/nprogress.js'></script>
 <script src="https://js.pusher.com/7.2.0/pusher.min.js"></script>

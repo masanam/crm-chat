@@ -3,6 +3,7 @@
 @section('title', 'Customer Detail - Apps')
 
 @section('vendor-style')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
 <link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/vendor/libs/quill/typography.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/vendor/libs/quill/katex.css') }}" />
@@ -12,12 +13,6 @@
 @section('page-style')
 <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/app-chat.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/customer.css') }}" />
-@endsection
-
-@section('vendor-script')
-<script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
-<script src="{{asset('assets/vendor/libs/quill/katex.js')}}"></script>
-<script src="{{asset('assets/vendor/libs/quill/quill.js')}}"></script>
 <style>
     .frmb-control li {
         cursor: pointer;
@@ -59,13 +54,19 @@
 </style>
 @endsection
 
+@section('vendor-script')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>   
+<script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/quill/katex.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/quill/quill.js') }}"></script>
+@endsection
+
 @section('page-script')
 <script src="{{ asset('assets/js/app-chat.js') }}"></script>
 <script src="{{ asset('assets/js/components/chat-history.js') }}"></script>
 <script src="{{ asset('assets/js/components/input-floating.js') }}"></script>
 <script src="{{ asset('assets/js/customer.js') }}"></script>
 <script type="text/javascript">
-
     $(document).ready(function () {
         var postURL = "<?php echo url('customers/addmore'); ?>";
         var total = $('#totalData').val();
@@ -95,7 +96,6 @@
                     document.getElementById('optionSelect').style.display = 'none';
                     break;
             }
-
         });
 
         $('#add-more').click(function () {
@@ -113,7 +113,6 @@
             var optionVal1 = $("#option1").val();
             var optionVal2 = $("#option2").val();
             var optionVal3 = $("#option3").val();
-
 
             switch (Number(radioValue)) {
                 case 1:
@@ -176,15 +175,12 @@
                     console.log(radioValue);
                     $('#dynamic_field').append('<tr id="row' + i + '" class="dynamic-added"><td><input type="text" name="label[]" placeholder="" class="form-control label_list" /></td><td><input type="text" name="name[]" placeholder="" class="form-control name_list" /></td><td width="5%"><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove btn-sm">X</button></td></tr>');
             }
-
         });
-
 
         $(document).on('click', '.btn_remove', function () {
             var button_id = $(this).attr("id");
             $('#row' + button_id + '').remove();
         });
-
 
         $.ajaxSetup({
             headers: {
@@ -224,13 +220,9 @@
                 $(".print-error-msg").find("ul").append('<li>' + value + '</li>');
             });
         }
-
     });
 
     $(document).ready(function () {
-        // $('#ticket-created').text(moment("{{ date('Y-m-d H:i:s', strtotime($lead->created_at)) }}").fromNow())
-        // $('#ticket-deadline').text(moment("{{ date('Y-m-d H:i:s', strtotime($lead->deadline)) }}").fromNow())
-
         function postData(id, text, type, url) {
             let fd = new FormData();
             fd.set('text', text);
@@ -261,11 +253,46 @@
         });
 
         $('.select-editable').on('blur', function () {
-            const newValue = $(this).text();
+            const newValue = $(this).val();
 
             postData($(this).data('id'), newValue, $(this).data('type'), $(this).data('url'));
         });
     })
+
+    $(document).ready(function() {
+        $('#editable-date').on('click', function() {
+            // Tampilkan datepicker
+            $('#editable-date').datepicker({
+                inline: true,
+                format: 'yyyy-mm-dd', // Sesuaikan format tanggal yang Anda inginkan
+                autoclose: true
+            }).on('changeDate', function(e) {
+                // Simpan nilai tanggal ke input hidden
+                $('#date-input').val(e.format(0, 'yyyy-mm-dd'));
+
+                // Kirim data ke API
+                $.ajax({
+                    url: baseUrl + 'api/leads/{!! $lead->id !!}/change', // Ganti dengan URL API Anda
+                    method: 'POST',
+                    data: {
+                        id: '{!! $lead->id !!}',
+                        type: 'closed_date',
+                        text: $('#date-input').val(),
+                    },
+                    success: function(response) {
+                        console.log('Data berhasil diupdate:', response);
+                        $('#editable-date').html($('#date-input').val())
+                    },
+                    error: function(error) {
+                        console.error('Terjadi kesalahan:', error);
+                    }
+                });
+
+                // Sembunyikan datepicker setelah dipilih
+                $(this).datepicker('hide');
+            });
+        });
+    });
 </script>
 @endsection
 
@@ -358,15 +385,11 @@ $stg = explode (",", $option->stage);
                                     <div>
                                         <img src="{{ asset('assets/svg/icons/icon-calendar.svg') }}" alt="calendar"
                                             width="15">
-                                        <!-- get closed date -->
-                                        <span style="font-size: 12px">{{ date('M d, Y',
-                                            strtotime($lead->created_at)) }}</span>
+                                        <span style="font-size: 12px">{{ date('M d, Y', strtotime($lead->created_at)) }}</span>
                                     </div>
-                                    <div>
+                                    <div>Rp&nbsp;
                                         <span class="input-editable" data-id="{{ $lead->id }}" data-type="amount"
-                                            data-url="api/leads/{{ $lead->id }}/change">Rp {{
-                                            number_format($lead->amount, 0, ',', '.') ?? ' 0'
-                                            }}</span>
+                                            data-url="api/leads/{{ $lead->id }}/change">{{ $lead->amount ?? 0 }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -516,12 +539,15 @@ $stg = explode (",", $option->stage);
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-dark" style="font-weight: 600;">Revenue</span>
-                                <span class="input-editable" data-id="{{ $lead->id }}" data-type="budget"
-                                    data-url="api/leads/{{ $lead->id }}/change">{{ $lead->budget ?? ' - ' }}</span>
+                                Rp&nbsp;<span class="input-editable" data-id="{{ $lead->id }}" data-type="budget"
+                                    data-url="api/leads/{{ $lead->id }}/change">{{ $lead->budget ?? 0 }}</span>
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-dark" style="font-weight: 600;">Close Date</span>
-                                <span>{{ $lead->closed_date }}</span>
+                                <a href="javascript:;" id="editable-date" data-bs-toggle="datepicker">{{ date('Y-m-d', strtotime($lead->closed_date)) }}</a>
+                                <input type="hidden" id="date-input" value="">
+
+                                <!-- <span>{{ $lead->closed_date }}</span> -->
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-dark" style="font-weight: 600;">Source</span>
@@ -563,7 +589,46 @@ $stg = explode (",", $option->stage);
                             </li>
                         </ul>
                         <div class="tab-content-chat">
-                            @include('content/customer/components/customer-tab-ticket')
+                             <section class="tab-ticket tab-pane fade active show" id="tab-ticket" role="tabpanel">
+                                <div class=" d-flex flex-column gap-2">
+                                    <div class="d-flex flex-wrap justify-content-between card-filter mt-3">
+                                        <button class="btn btn-sm button-new" data-bs-toggle="modal" data-bs-target="#add-ticket">
+                                            New
+                                            <i class="ti ti-dots-vertical"></i>
+                                        </button>
+                                        <div class="d-flex header-filter">
+                                            <button class="active">Open</button>
+                                            <button>In-Progress</button>
+                                            <button>Pending</button>
+                                            <button>Closed</button>
+                                        </div>
+                                        <button class="btn btn-sm button-filter">
+                                            <img src="{{asset('assets/svg/icons/filter_list.svg')}}" alt="info" width="20">
+                                            Filters
+                                        </button>
+                                    </div>
+                                    <div class="d-flex flex-column gap-3 wrapper-content-ticket" id="customer-detail-content-email">
+                                        @foreach($tickets as $ticket)
+                                        <div class="card-ticket d-flex flex-column gap-3 pb-4">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="text-dark fw-bold">{{ $ticket->title }}</span>
+                                                <span style="font-size: 12px;">{{ date('M d, Y', strtotime($ticket->deadline)) }}</span>
+                                            </div>
+                                            <span class="text-dark">{{ $ticket->description }}</span>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="d-flex align-items-center badge badge-sm rounded-pill badge-user text-dark gap-1">
+                                                    <i class="ti ti-user user-icon text-dark"></i>
+                                                    <small>{{ $ticket->type }}</small>
+                                                </div>
+                                                <span class="badge badge-sm rounded-pill text-dark" style="background: #B8E9EF;">
+                                                    {{ $ticket->priority }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </section>
                         </div>
                     </div>
 
@@ -603,7 +668,7 @@ $stg = explode (",", $option->stage);
                                 </div>
                             </div>
                         </div>
-                        <div class="sidebar-card d-flex flex-column">
+                        <!-- <div class="sidebar-card d-flex flex-column">
                             <div class="d-flex justify-content-between">
                                 <h6 class="text-dark">Products</h6>
                                 <i class="ti ti-chevron-right text-dark"></i>
@@ -625,7 +690,7 @@ $stg = explode (",", $option->stage);
                                         data-target="#tag"></i>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </x-sidebar-right-info-chat>
                     <!-- Client info -->
                 </div>

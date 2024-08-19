@@ -83,17 +83,19 @@ class CustomerController extends Controller
 
   public function getLeads()
   {
-    $data = Lead::latest()->get();
+    $data = Lead::latest()
+      ->whereNotNull('phone_number')
+      ->get();
+
     return DataTables::of($data)
       ->addIndexColumn()
       ->addColumn('action', function ($row) {
         $actionBtn =
-          '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' .
+          '<a href="' .
+          $row->phone_number .
+          '" data-toggle="tooltip"  data-id="' .
           $row->id .
-          '" data-original-title="Edit" class="editRecord btn btn-primary btn-sm">Edit</a> 
-              <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' .
-          $row->id .
-          '" data-original-title="Delete" class="deleteRecord btn btn-danger btn-sm">Delete</a>';
+          '" data-original-title="Edit" class="editRecord btn btn-primary btn-sm">Edit</a>';
         return $actionBtn;
       })
       ->rawColumns(['action'])
@@ -161,11 +163,15 @@ class CustomerController extends Controller
       $lead = \App\Models\Lead::find(156);
     }
 
+    $tickets = Task::where('lead_id', $lead->id)
+      ->orderBy('created_at', 'desc')
+      ->get();
+
     // $cst = \App\Models\Lead::where('id','156')->first();
     $labels = explode(',', $lead->label);
     $names = explode(',', $lead->name);
 
-    return view('content.customer.show', compact('lead', 'labels', 'names'));
+    return view('content.customer.show', compact('lead', 'labels', 'names', 'tickets'));
   }
 
   /**

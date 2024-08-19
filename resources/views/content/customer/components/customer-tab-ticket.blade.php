@@ -17,7 +17,25 @@
             </button>
         </div>
         <div class="d-flex flex-column gap-3 wrapper-content-ticket" id="customer-detail-content-email">
-            <div class="card-ticket d-flex flex-column gap-3 pb-4" onclick="window.location.href = '/customers/test/ticket'">
+            @foreach($tickets as $ticket)
+            <div class="card-ticket d-flex flex-column gap-3 pb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-dark fw-bold">{{ $ticket->title }}</span>
+                    <span style="font-size: 12px;">{{ date('M d, Y', strtotime($ticket->deadline)) }}</span>
+                </div>
+                <span class="text-dark">{{ $ticket->description }}</span>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="d-flex align-items-center badge badge-sm rounded-pill badge-user text-dark gap-1">
+                        <i class="ti ti-user user-icon text-dark"></i>
+                        <small>{{ $ticket->type }}</small>
+                    </div>
+                    <span class="badge badge-sm rounded-pill text-dark" style="background: #B8E9EF;">
+                        {{ $ticket->priority }}
+                    </span>
+                </div>
+            </div>
+            @endforeach
+            <!-- <div class="card-ticket d-flex flex-column gap-3 pb-4" onclick="window.location.href = '/customers/test/ticket'">
                 <div class="d-flex justify-content-between align-items-center">
                     <span class="text-dark fw-bold">Cek stock</span>
                     <span style="font-size: 12px;">Today, 3 Jun 2024 15.53</span>
@@ -32,23 +50,7 @@
                         Cold
                     </span>
                 </div>
-            </div>
-            <div class="card-ticket d-flex flex-column gap-3 pb-4" onclick="window.location.href = '/customers/test/ticket'">
-                <div class="d-flex justify-content-between align-items-center">
-                    <span class="text-dark fw-bold">Cek stock</span>
-                    <span style="font-size: 12px;">Today, 3 Jun 2024 15.53</span>
-                </div>
-                <span class="text-dark">Help to follow up</span>
-                <div class="d-flex align-items-center gap-2">
-                    <div class="d-flex align-items-center badge badge-sm rounded-pill badge-user text-dark gap-1">
-                        <i class="ti ti-user user-icon text-dark"></i>
-                        <small>Operations Team</small>
-                    </div>
-                    <span class="badge badge-sm rounded-pill text-dark" style="background: #B8E9EF;">
-                        Cold
-                    </span>
-                </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </section>

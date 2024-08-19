@@ -33,7 +33,7 @@
           @if($headers)
           @foreach($headers as $key => $value)
             <th
-              @class(['text-column-header', 'sorting' => $value->is_sorting])
+              @class(['text-column-header', 'sorting' => isset($value->is_sorting)])
               tabindex="0"
               aria-controls="DataTables_Table_0"
               rowspan="1"

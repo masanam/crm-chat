@@ -1,4 +1,3 @@
-@section('content')
 <h4 class="py-3 mb-4">
   <span class="text-muted fw-light">Dashboard
 </h4>
@@ -823,5 +822,3 @@
 </div><!--/ Shipment statistics -->
 
 </div>
-
-@endsection

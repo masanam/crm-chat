@@ -224,44 +224,8 @@ foreach ($tabItemsBilling as $item) {
 @endphp
 
 @section('content')
-<section class="row dashboard-crm-content">
-  <nav class="nav-parent">
-    <ul class="nav nav-tabs tabs-crm" id="chats-tabs" role="tablist">
-      @foreach($tabs as $key => $value)
-          <li class="nav-item" role="presentation">
-              <button
-                class="nav-link {{ $key === 0 ? 'active' : '' }}"
-                role="tab"
-                data-bs-toggle="tab"
-                data-bs-target="#{{ $value->key }}"
-                aria-controls="{{ $value->key }}"
-                aria-selected="true"
-              >
-                {{ $value->title }}
-              </button>
-          </li>
-      @endforeach
-    </ul>
-  </nav>
-  <section id="tab-content-wrapper" class="tab-content d-flex">
-    @include('content/dashboard/components/dashboard-tab-profile')
-    @include('content/dashboard/components/dashboard-tab-team')
-    @include('content/dashboard/components/dashboard-tab-members')
-    @include('content/dashboard/components/dashboard-tab-billing')
-    @include('content/dashboard/components/dashboard-tab-purchase')
-    @include('content/dashboard/components/dashboard-tab-channel')
-  </section>
+<section class="px-4">
+  @include('content/dashboard/components/dashboard-user')
 </section>
-
-{{-- modal create/edit new team --}}
-@include('content/dashboard/components/dashboard-modal-create-edit-new-team')
-{{-- modal create team members --}}
-@include('content/dashboard/components/dashboard-modal-create-team-member')
-{{-- modal edit team members --}}
-@include('content/dashboard/components/dashboard-modal-edit-team-member')
-{{-- modal add payment billing --}}
-@include('content/dashboard/components/dashboard-modal-payment-billing')
-{{-- modal checkout --}}
-@include('content/dashboard/components/dashboard-modal-checkout')
 
 @endsection

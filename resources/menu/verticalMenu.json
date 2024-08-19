@@ -1,10 +1,22 @@
 {
   "menu": [
     {
-      "name": "Dashboards",
-      "slug": "dashboard-crm",
-      "iconUrl": "assets/svg/icons/dashboard-icon.svg",
-      "url": "/"
+      "name": "Customers",
+      "slug": "customers.index",
+      "iconUrl": "assets/svg/icons/customer-icon.svg",
+      "url": "/customers"
+    },
+    {
+      "name": "Tickets",
+      "slug": "tickets.index",
+      "iconUrl": "assets/svg/icons/tickets-icon.svg",
+      "url": "/tickets"
+    },
+    {
+      "name": "Internal",
+      "slug": "group-list",
+      "iconUrl": "assets/svg/icons/internal-icon.svg",
+      "url": "/chatify"
     },
     {
       "name": "Lead Generation",
@@ -22,36 +34,6 @@
           "url": "/lead-generation/list"
         }
       ]
-    },
-    {
-      "name": "Customers",
-      "slug": "customers.index",
-      "iconUrl": "assets/svg/icons/customer-icon.svg",
-      "url": "/customers"
-    },
-    {
-      "name": "Activities",
-      "slug": "activities",
-      "iconUrl": "assets/svg/icons/activities-icon.svg",
-      "url": "/activities"
-    },
-    {
-      "name": "Calls",
-      "slug": "calls",
-      "iconUrl": "assets/svg/icons/calls-icon.svg",
-      "url": "/calls"
-    },
-    {
-      "name": "Tickets",
-      "slug": "tickets.index",
-      "iconUrl": "assets/svg/icons/tickets-icon.svg",
-      "url": "/tickets"
-    },
-    {
-      "name": "Internal",
-      "slug": "group-list",
-      "iconUrl": "assets/svg/icons/internal-icon.svg",
-      "url": "/groups"
     }
   ]
 }

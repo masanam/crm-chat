@@ -66,12 +66,12 @@ $userName = 'Dandi';
 
     {{-- main menu --}}
     <li class="menu-item {{$activeClass}}">
-      <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}" class="dropdown-btn {{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}" @if (isset($menu->target) and !empty($menu->target)) target="_blank" @endif>
+      <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}" class="dropdown-btn menu-link" @if (isset($menu->target) and !empty($menu->target)) target="_blank" @endif>
         @isset($menu->icon)
         <i class="{{ $menu->icon }} "></i>
         @endisset
         @isset($menu->iconUrl)
-        <img src="{{ asset($menu->iconUrl) }}" alt="menu-icon" style="{{ $activeClass && !isset($menu->submenu) ? 'filter: brightness(0) invert(1);' : '' }}">
+        <img src="{{ asset($menu->iconUrl) }}" alt="menu-icon" style="{{ $activeClass }}">
         @endisset
         <div class="{{ isset($menu->iconUrl) ? 'ms-2' : '' }}">{{ isset($menu->name) ? __($menu->name) : '' }}</div>
         @isset($menu->badge)

@@ -148,3 +148,19 @@
       align-items: center;
       width: 100%;
       }
+
+.divide-b {
+  border-bottom: 1px solid #D0D5DD;
+}
+.gap-1 {
+  gap: 1rem;
+}
+.gap-2 {
+  gap: 2rem;
+}
+.gap-3 {
+  gap: 3rem;
+}
+.cursor-pointer {
+  cursor: pointer;
+}

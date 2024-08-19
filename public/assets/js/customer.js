@@ -81,6 +81,9 @@
     const listView = document.querySelector('#list-view');
 
     if (navLink) {
+      kanbanView.classList.add('hidden')
+      chatView.classList.add('hidden')
+
       navLink.forEach(el => {
         el?.addEventListener('click', () => {
           switch (el.getAttribute('data-bs-target')) {

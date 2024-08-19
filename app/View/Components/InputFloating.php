@@ -23,7 +23,7 @@ class InputFloating extends Component
 
 
     public function __construct(
-        $placeholder = 'placeholder',
+        $placeholder = '',
         $label = 'label',
         $type = 'text',
         $rows = 4,

@@ -27,12 +27,9 @@
   }
   @endphp
 
-  <li class="menu-item {{$activeClass}} dropdown-container">
-    <a href="{{ isset($submenu->url) ? url($submenu->url) : 'javascript:void(0)' }}" class="{{ isset($submenu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}" @if (isset($submenu->target) and !empty($submenu->target)) target="_blank" @endif>
-      @if (isset($submenu->icon))
-      <i class="{{ $submenu->icon }}"></i>
-      @endif
-      <div>{{ isset($submenu->name) ? __($submenu->name) : '' }}</div>
+  <li class="menu-item {{$activeClass}}" style="padding: 8px 3.5rem;">
+    <a href="{{ isset($submenu->url) ? url($submenu->url) : 'javascript:void(0)' }}" @if (isset($submenu->target) and !empty($submenu->target)) target="_blank" @endif>
+      <span style="color: {{ isset($activeClass) ? '#33B6B9' : '#6f6b7d' }}; border-bottom: {{ isset($activeClass) ? '1px solid #33B6B9' : '' }};">{{ isset($submenu->name) ? __($submenu->name) : '' }}</span>
     </a>
 
     {{-- submenu --}}

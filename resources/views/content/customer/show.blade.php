@@ -229,7 +229,16 @@
             fd.set('id', id);
             fd.set('type', type);
 
-            fetch(baseUrl + url, { method: 'post', body: fd, mode: 'cors' })
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            fetch(baseUrl + url, {
+                method: 'post',
+                body: fd,
+                mode: 'cors',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            })
                 .then(r => r.text())
                 .then(text => {
                     console.log('Do something with returned response: %s', text)

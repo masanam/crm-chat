@@ -1,31 +1,41 @@
 <!-- Name Field -->
 <div class="form-group col-sm-12 p-2">
-    {!! Form::label('name', 'Name:', ['class' => 'form-label']) !!}
-    {!! Form::text('name', null, ['class' => 'form-control dt-name','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
+    {!! Form::label('customer_name', 'Customer Name:', ['class' => 'form-label']) !!}
+    {!! Form::text('customer_name', null, ['class' => 'form-control dt-customer-name','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
 </div>
 
 <!-- Grade Field -->
 <div class="form-group col-sm-12 p-2">
-    {!! Form::label('grade', 'Package:', ['class' => 'form-label']) !!}
-    {!! Form::text('grade', null, ['class' => 'form-control dt-package','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
+    {!! Form::label('phone', 'Whatsapp:', ['class' => 'form-label']) !!}
+    {!! Form::text('phone', null, ['class' => 'form-control dt-phone','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
 </div>
 
 <!-- Course Field -->
 <div class="form-group col-sm-12 p-2">
-    {!! Form::label('course', 'Due Date:', ['class' => 'form-label']) !!}
-    {!! Form::text('course', null, ['class' => 'form-control dt-due-date','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
+    {!! Form::label('location', 'Location:', ['class' => 'form-label']) !!}
+    {!! Form::text('location', null, ['class' => 'form-control dt-location','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
 </div>
 
 <!-- School Id Field -->
 <div class="form-group col-sm-12 p-2">
-    {!! Form::label('school_id', 'Phone:', ['class' => 'form-label']) !!}
-    {!! Form::text('course', null, ['class' => 'form-control dt-phone','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
+    {!! Form::label('age', 'Age:', ['class' => 'form-label']) !!}
+    {!! Form::text('age', null, ['class' => 'form-control dt-age','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
 </div>
 
 <!-- Phone Field -->
 <div class="form-group col-sm-12 p-2">
-    {!! Form::label('phone', 'Whatsapp:', ['class' => 'form-label']) !!}
-    {!! Form::text('course', null, ['class' => 'form-control dt-whatsapp','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
+    {!! Form::label('gender', 'Gender:', ['class' => 'form-label']) !!}
+    {!! Form::text('gender', null, ['class' => 'form-control dt-gender','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
+</div>
+
+<div class="form-group col-sm-12 p-2">
+    {!! Form::label('income_level', 'Income Level:', ['class' => 'form-label']) !!}
+    {!! Form::text('income_level', null, ['class' => 'form-control dt-income-level','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
+</div>
+
+<div class="form-group col-sm-12 p-2">
+    {!! Form::label('job_title', 'Job Title:', ['class' => 'form-label']) !!}
+    {!! Form::text('job_title', null, ['class' => 'form-control dt-job-title','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
 </div>
 
 

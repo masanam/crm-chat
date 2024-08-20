@@ -179,6 +179,7 @@ use App\Http\Controllers\FormBuilderController;
 use App\Http\Controllers\FormsController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\LeadGenerationController;
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -488,8 +489,9 @@ Route::middleware(['auth'])->group(function () {
   Route::post('change-lead', [LeadController::class, 'updateLead'])->name('leads.change');
   Route::post('leads/add-contact', [LeadController::class, 'addContact'])->name('leads.add-contact');
 
-  Route::get('lead-generation', [LeadController::class, 'leadSearchView'])->name('leads.index');
-  Route::get('lead-generation/list', [LeadController::class, 'leadIndex'])->name('leads.create');
+  Route::get('lead-generation', [LeadGenerationController::class, 'leadSearchView'])->name('lead-gen.index');
+  Route::get('lead-generation/list', [LeadGenerationController::class, 'index'])->name('lead-gen.customer-list');
+  Route::post('lead-generation', [LeadGenerationController::class, 'store'])->name('lead-gen.create-customer');
 
   // Route::resource('dealer', DealerController::class);
   Route::get('groups', [GroupController::class, 'index'])->name('group-list');

@@ -84,6 +84,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 Route::get('/tickets', [TicketController::class, 'get']);
 Route::get('/get-lead', [TicketController::class, 'getLead']);
+Route::get('/tickets-lead/{id}', [TicketController::class, 'ticketLead']);
 
 Route::get('/get-members', [TicketController::class, 'getMembers']);
 Route::get('/is_lead/{id}', [TicketController::class, 'isLead']);

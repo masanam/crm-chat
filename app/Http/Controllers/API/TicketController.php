@@ -51,7 +51,7 @@ class TicketController extends Controller
     ]);
   }
 
-  public function getLead(): JsonResponse
+  public function ticketLead(Request $request, $id): JsonResponse
   {
     $tasks = Lead::orderBy('stage')
       ->get()
@@ -84,6 +84,38 @@ class TicketController extends Controller
     ]);
   }
 
+  public function getLead(): JsonResponse
+  {
+    $tasks = Lead::orderBy('stage')
+      ->get()
+      ->groupBy('stage')
+      ->map(function ($taskGroup, $stage) {
+        return [
+          'id' => 'board-' . strtolower($stage),
+          'title' => $stage,
+          'badge-title' => $this->getBadgeTitle($stage),
+          'item' => $taskGroup
+            ->map(function ($task) {
+              return [
+                'id' => $task->phone_number,
+                'text' => $task->client_name,
+                'company' => $task->id,
+                'priority' => $task->stage, // Placeholder priority
+                'due-date' => $task->closed_date, // Placeholder date
+              ];
+            })
+            ->toArray(),
+        ];
+      })
+      ->values()
+      ->toArray();
+
+    return response()->json([
+      'status' => 200,
+      'message' => 'Board list',
+      'data' => $tasks,
+    ]);
+  }
 
   public function getMembers(Request $request): JsonResponse
   {

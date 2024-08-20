@@ -435,8 +435,16 @@ $stg = explode (",", $option->stage);
                                 <select id="stage" data-id="{{ $lead->id }}" data-type="stage"
                                     data-url="api/leads/{{ $lead->id }}/change"
                                     class="form-select select-editable custom-select" data-allow-clear="true">
+                                    <option value="Lead" {{ $lead->stage == 'Lead' ? 'selected' : ''
+                                        }}>Lead</option>
+                                    <option value="Proposal" {{ $lead->stage == 'Proposal' ? 'selected' : ''
+                                        }}>Proposal</option>
                                     <option value="Test Drive" {{ $lead->stage == 'Test Drive' ? 'selected' : ''
                                         }}>Test Drive</option>
+                                    <option value="SPK" {{ $lead->stage == 'SPK' ? 'selected' : ''
+                                        }}>SPK</option>
+                                    <option value="Deal" {{ $lead->stage == 'Deal' ? 'selected' : ''
+                                        }}>Deal</option>
                                 </select>
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
@@ -644,7 +652,37 @@ $stg = explode (",", $option->stage);
                     <!-- Client info -->
                     <x-sidebar-right-info-chat isUsingHeader="{{ false }}" sidebarClass="show sidebar-client-info"
                         sidebarBodyClass="mt-2">
-                        <x-card-progress></x-card-progress>
+                        <div class="sidebar-card d-flex flex-column">
+                            <h4 class="text-dark fw-bold">Progress / stage</h3>
+                            <div class="d-flex align-items-center gap-1">
+                                @if($lead->stage == 'Lead')
+                                <div style="background: #33B6B9; width: 20%; height: 8px;"></div>
+                                @elseif($lead->stage == 'Proposal')
+                                <div style="background: #33B6B9; width: 20%; height: 8px;"></div>
+                                <div style="background: #33B6B9; width: 20%; height: 8px;"></div>
+                                @elseif($lead->stage == 'Test Drive')
+                                <div style="background: #33B6B9; width: 20%; height: 8px;"></div>
+                                <div style="background: #33B6B9; width: 20%; height: 8px;"></div>
+                                <div style="background: #33B6B9; width: 20%; height: 8px;"></div>
+                                @elseif($lead->stage == 'SPK')
+                                <div style="background: #33B6B9; width: 20%; height: 8px;"></div>
+                                <div style="background: #33B6B9; width: 20%; height: 8px;"></div>
+                                <div style="background: #33B6B9; width: 20%; height: 8px;"></div>
+                                <div style="background: #33B6B9; width: 20%; height: 8px;"></div>
+                                @elseif($lead->stage == 'Deal')
+                                <div style="background: #33B6B9; width: 20%; height: 8px;"></div>
+                                <div style="background: #33B6B9; width: 20%; height: 8px;"></div>
+                                <div style="background: #33B6B9; width: 20%; height: 8px;"></div>
+                                <div style="background: #33B6B9; width: 20%; height: 8px;"></div>
+                                <div style="background: #33B6B9; width: 20%; height: 8px;"></div>
+                                @endif
+                                <!-- <div style="background: #667085; width: 20%; height: 8px;"></div>
+                                <div style="background: #667085; width: 20%; height: 8px;"></div>
+                                <div style="background: #667085; width: 20%; height: 8px;"></div>
+                                <div style="background: #667085; width: 20%; height: 8px;"></div> -->
+                            </div>
+                            <span class="mt-3 text-dark fw-bold" style="font-size: 12px;"></span>
+                        </div>
                         <div class="sidebar-card d-flex flex-column">
                             <h6 class="text-dark">Insights</h6>
                             <div class="d-flex flex-column gap-3">

@@ -21,6 +21,7 @@
 
   // Get kanban data
   // const kanbanResponse = await fetch(assetsPath + 'json/components/ticket-kanban.json');
+  // const kanbanResponse = await fetch(`${baseUrl}api/tickets-lead/${lead_id}`);
   const kanbanResponse = await fetch(`${baseUrl}api/get-lead`);
 
   if (!kanbanResponse.ok) {
@@ -42,8 +43,8 @@
   function routerPush(title, url) {
     $("meta[name=url]").attr("content", url);
     return window.history.pushState({}, title || document.title, url);
-   }
-   
+  }
+
   $("body").on("click", ".kanban-item", function () {
     // alert('test');
     // $(".chat-contact-list-item").removeClass("m-list-active");
@@ -244,7 +245,7 @@
       //   await fetch(`${baseUrl}api/is_lead/${eid}`)
       //     .then((res) => {
       //       if (res.ok) {
-              window.location.href = baseUrl + `customers/${eid}`;
+      window.location.href = baseUrl + `customers/${eid}`;
       //         exit();
       //       }
 
@@ -498,7 +499,7 @@
   kanbanSidebar.addEventListener('hidden.bs.offcanvas', function () {
     kanbanSidebar.querySelector('.ql-editor').firstElementChild.innerHTML = '';
   });
-  
+
   // Re-init tooltip when offcanvas opens(Bootstrap bug)
   if (kanbanSidebar) {
     kanbanSidebar.addEventListener('shown.bs.offcanvas', function () {

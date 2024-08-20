@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dealer;
-use Yajra\DataTables\Facades\Datatables;
+use Yajra\DataTables\Datatables;
 use Illuminate\Http\Request;
 
 class DealerController extends Controller

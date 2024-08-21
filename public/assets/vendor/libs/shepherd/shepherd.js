@@ -4876,12 +4876,12 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         modalOverlayOpeningRadius = _step$options.modalOverlayOpeningRadius;
       var scrollParent = _getScrollParent(step.target); // Setup recursive function to call requestAnimationFrame to update the modal opening position
 
-      var rafLoop = function rafLoop() {
+      var _rafLoop = function rafLoop() {
         rafId = undefined;
         positionModal(modalOverlayOpeningPadding, modalOverlayOpeningRadius, scrollParent, step.target);
-        rafId = requestAnimationFrame(rafLoop);
+        rafId = requestAnimationFrame(_rafLoop);
       };
-      rafLoop();
+      _rafLoop();
       _addStepEventListeners();
     }
     function svg_binding($$value) {

@@ -492,6 +492,8 @@ Route::middleware(['auth'])->group(function () {
   Route::get('lead-generation', [LeadGenerationController::class, 'leadSearchView'])->name('lead-gen.index');
   Route::get('lead-generation/list', [LeadGenerationController::class, 'index'])->name('lead-gen.customer-list');
   Route::post('lead-generation', [LeadGenerationController::class, 'store'])->name('lead-gen.create-customer');
+  Route::put('/lead-generation/{id}', [LeadGenerationController::class, 'update']);
+  Route::delete('lead-generation/{id}', [LeadGenerationController::class, 'destroy'])->name('lead-gen.customer-destroy');
 
   // Route::resource('dealer', DealerController::class);
   Route::get('groups', [GroupController::class, 'index'])->name('group-list');

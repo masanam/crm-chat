@@ -51,7 +51,9 @@
       ]
     });
 
+    const token = $("meta[name='csrf-token']").attr("content");
     const formAddNewRecord = document.getElementById('form-add-new-record');
+    let currentId = ''
 
     setTimeout(() => {
       const newRecord = document.querySelector('.create-new'),
@@ -82,14 +84,23 @@
       $('body').on('click', '.editRecord', function() {
         offCanvasE2 = new bootstrap.Offcanvas(offCanvasElement2);
         // Empty fields on offCanvas open
-        var data_id = $(this).data('id');
-        $.get("{{ route('lead-gen.customer-list') }}" + '/' + data_id + '/edit', function(data) {
-          console.log(data);
-          (offCanvasElement2.querySelector('.dt-name').value = data.name),
-          (offCanvasElement2.querySelector('.dt-package').value = data.package),
-          (offCanvasElement2.querySelector('.dt-due-date').value = data.due_date),
-          (offCanvasElement2.querySelector('.dt-phone').value = data.business_phone),
-          (offCanvasElement2.querySelector('.dt-whatsapp').value = data.wa_account_phone_number_id);
+        currentId = $(this).attr('data-id');
+        fetch(`${baseUrl}api/lead-generation/${currentId}`, {
+          method: 'GET',
+          headers: {
+            'X-CSRF-TOKEN': token
+          }
+        })
+        .then(r => r.json())
+        .then(res => {
+          const { age, customer_name, gender, income_level, job_title, phone, location } = res.data
+          offCanvasElement2.querySelector('.dt-customer-name').value = res.data.customer_name
+          offCanvasElement2.querySelector('.dt-phone').value = phone
+          offCanvasElement2.querySelector('.dt-location').value = location
+          offCanvasElement2.querySelector('.dt-age').value = age
+          offCanvasElement2.querySelector('.dt-gender').value = gender
+          offCanvasElement2.querySelector('.dt-income-level').value = income_level
+          offCanvasElement2.querySelector('.dt-job-title').value = job_title
         })
         // Open offCanvas with form
         offCanvasE2.show();
@@ -97,8 +108,51 @@
     }, 200);
 
 
+    setTimeout(() => {
+      const btnDelete = $('.btn-danger')
+      if (btnDelete && btnDelete.length > 0) {
+        btnDelete.each(function() {
+          $(this).on('click', function() {
+            let postId = $(this).attr('data-id');
+            fetch(`${baseUrl}api/lead-generation/${postId}`, {
+              method: 'DELETE',
+              headers: {
+                'X-CSRF-TOKEN': token
+              }
+            })
+            .then(r => r.text())
+            .then(res => {
+              $(this).parent().parent().remove()
+            })
+          })
+        })
+      }
+    }, 3000)
 
+    $('#form-customer-update').on('click', function(e) {
+      e.preventDefault()
+      const payload = new FormData()
+      
+      $.each($(this).serializeArray(), function(i, field) {
+        if (field.name === 'age') {
+          payload.set(field.name, parseInt(field.value));
+        } else {
+          payload.set(field.name, field.value);
+        }
+      })
 
+      fetch(`${baseUrl}api/lead-generation/${currentId}`, {
+        method: 'PUT',
+        body: payload,
+        headers: {
+          'X-CSRF-TOKEN': token
+        }
+      })
+      .then(r => r.text())
+      .then(res => {
+        console.log(res)
+      })
+    })
   });
 </script>
 @endsection
@@ -157,12 +211,11 @@
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body flex-grow-1">
-
-    {!! Form::open(['route' => 'dealers.store']) !!}
-    <div class="row">
-      @include('content.lead.components.fields')
-    </div>
-    {!! Form::close() !!}
+    <form id="form-customer-update">
+      <div class="row">
+        @include('content.lead.components.fields')
+      </div>
+    </form>
   </div>
 </div>
 

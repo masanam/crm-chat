@@ -12,6 +12,7 @@ use App\Http\Controllers\API\CompanyController;
 use App\Http\Controllers\API\LeadController;
 use App\Http\Controllers\API\TaskController;
 use App\Http\Controllers\API\ClientController;
+use App\Http\Controllers\API\LeadGenerationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,6 +98,10 @@ Route::post('/tasks/{id}/change', [TaskController::class, 'change']);
 Route::post('/send-whatsapp', [Chat::class, 'sendWhatsAppMessage']);
 Route::post('/receive-chat', [Chat::class, 'receiveWhatsAppMessage']);
 Route::post('/add-contact', [Chat::class, 'addContact']);
+
+Route::get('/lead-generation/{id}', [LeadGenerationController::class, 'getCustomer']);
+Route::put('/lead-generation/{id}', [LeadGenerationController::class, 'update']);
+Route::delete('/lead-generation/{id}', [LeadGenerationController::class, 'destroy']);
 
 Route::get('/internal-notes/{lead}', 'App\Http\Controllers\InternalNoteController@getInternalNotesByLead')->name(
   'getInternalNotesByLead'

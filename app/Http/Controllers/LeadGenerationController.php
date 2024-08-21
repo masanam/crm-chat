@@ -59,4 +59,10 @@ class LeadGenerationController extends Controller
         return response()->json('Service Error : ' . $th , 500);
       }
     }
+
+    public function destroy($id)
+    {
+      LeadGeneration::find(1)->delete();
+      return response()->json(['success' => 'Data deleted successfully.']);
+    }
 }

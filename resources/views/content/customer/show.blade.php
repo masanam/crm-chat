@@ -302,6 +302,10 @@
             });
         });
     });
+
+    $(document).ready(function () {
+        $('#deadline').datepicker();
+    })
 </script>
 @endsection
 
@@ -367,6 +371,7 @@ $type = explode (",", $option->type);
 $qty = explode (",", $option->quality);
 $stg = explode (",", $option->stage);
 
+$statuses = \App\Models\TaskStatus::orderBy('id', 'asc')->get();
 @endphp
 
 @section('content')
@@ -857,18 +862,19 @@ $stg = explode (",", $option->stage);
 </x-modal>
 
 {{-- modal add ticket --}}
-<x-modal title="Add Ticket" name="add-ticket" submitText="Submit" buttonSubmitClass=""
-    buttonWrapperSubmitClass="d-flex justify-end w-100 justify-content-center" modalClass="">
+<x-modal title="Add Ticket" name="add-ticket" submitText="Submit" buttonSubmitClass="" isPost="true"
+    buttonWrapperSubmitClass="d-flex justify-end w-100 justify-content-center" modalClass="" url="{{ route('customers.add-ticket') }}">
     <div class="d-flex flex-column gap-4">
-        <x-input-floating label="Ticket Name" id="ticket_name" name="ticket_name"></x-input-floating>
+        <x-input-floating type="hidden" id="lead_id" name="lead_id" value="{{ $lead->id }}"></x-input-floating>
+        <x-input-floating label="Ticket Name" id="title" name="title"></x-input-floating>
         <div class="d-flex justify-content-between gap-5 w-100">
-            <x-input-floating label="Ticket ID" id="ticket_id" name="ticket_id"></x-input-floating>
-            <x-input-floating label="Resolution Date" id="resolution-date" name="resolution-date"></x-input-floating>
+            <x-input-floating label="Ticket ID" id="code" name="code"></x-input-floating>
+            <x-input-floating label="Resolution Date" id="deadline" name="deadline"></x-input-floating>
         </div>
         <div class="d-flex align-items-center justify-content-between gap-3">
             <div class="d-flex flex-column">
                 <span class="text-dark" style="font-size: 14px;">Ticket Type</span>
-                <select id="status" class="form-select custom-select" data-allow-clear="true"
+                <select id="status" name="type" class="form-select custom-select" data-allow-clear="true"
                     style="border: none; padding-left: 0px;">
                     @foreach ($listTicketTypes as $key => $value)
                     <option value="{{ $value->value }}">{{ $value->label }}</option>
@@ -877,7 +883,7 @@ $stg = explode (",", $option->stage);
             </div>
             <div class="d-flex flex-column">
                 <span class="text-dark" style="font-size: 14px;">Priority</span>
-                <select id="status" class="form-select custom-select" data-allow-clear="true"
+                <select id="priority" name="priority" class="form-select custom-select" data-allow-clear="true"
                     style="border: none; padding-left: 0px;">
                     @foreach ($listPrioritys as $key => $value)
                     <option value="{{ $value->value }}">{{ $value->label }}</option>
@@ -886,23 +892,23 @@ $stg = explode (",", $option->stage);
             </div>
             <div class="d-flex flex-column">
                 <span class="text-dark" style="font-size: 14px;">Status</span>
-                <select id="status" class="form-select custom-select" data-allow-clear="true"
+                <select id="status_id" name="status_id" class="form-select custom-select" data-allow-clear="true"
                     style="border: none; padding-left: 0px;">
-                    @foreach ($listStatusProjects as $key => $value)
-                    <option value="{{ $value->value }}">{{ $value->label }}</option>
+                    @foreach ($statuses as $status)
+                    <option value="{{ $status->id }}">{{ $status->name }}</option>
                     @endforeach
                 </select>
             </div>
         </div>
-        <div class="d-flex justify-content-between gap-5 w-100">
+        <!-- <div class="d-flex justify-content-between gap-5 w-100">
             <x-input-floating label="Team" placeholder="Please select team" id="team" name="team" type="select"
                 :options="$listTeams">
             </x-input-floating>
             <x-input-floating label="Member" placeholder="Please select member" id="member" name="member" type="select"
                 :options="$listMembers">
             </x-input-floating>
-        </div>
-        <x-input-floating id="ticket_note" name="ticket_note" label="Ticket Notes" placeholder="Write a note"
+        </div> -->
+        <x-input-floating id="description" name="description" label="Ticket Notes" placeholder="Write a note"
             type="textarea" cols="33" rows="5"></x-input-floating>
     </div>
 </x-modal>

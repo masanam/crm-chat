@@ -28,6 +28,7 @@ class Task extends Model
     'team_id',
     'member_id',
     'priority',
+    'lead_id',
     'internal_note',
     'code',
   ];

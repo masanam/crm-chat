@@ -174,6 +174,35 @@ class CustomerController extends Controller
     return view('content.customer.show', compact('lead', 'labels', 'names', 'tickets'));
   }
 
+  public function addTicket(Request $request)
+  {
+    $this->validate($request, [
+      'lead_id' => 'required',
+      'title' => 'required',
+      'code' => 'string',
+      'deadline' => 'date',
+      'type' => 'string',
+      'priority' => 'string',
+      'description' => 'string',
+      'status_id' => 'numeric',
+    ]);
+
+    $tickets = Task::create([
+      'lead_id' => (int) $request->lead_id,
+      'title' => $request->title,
+      'code' => $request->code,
+      'client_id' => 53,
+      'user_id' => Auth::user()->profile_id,
+      'deadline' => date('Y-m-d', strtotime($request->deadline)),
+      'type' => $request->type,
+      'priority' => $request->priority,
+      'description' => $request->description,
+      'status_id' => $request->status_id,
+    ]);
+
+    return redirect()->back();
+  }
+
   /**
    * Show the form for editingthe specified resource.
    *

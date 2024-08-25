@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\LeadGeneration;
 use Yajra\DataTables\Datatables;
 use Illuminate\Http\Request;
+use Validator;
+use File;
+use Illuminate\Http\JsonResponse;
 
 class LeadGenerationController extends Controller
 {
@@ -27,7 +30,9 @@ class LeadGenerationController extends Controller
           ->rawColumns(['action'])
           ->make(true);
       }
-      return view('content.lead.lead-index');
+      $list_job = File::json(base_path('public/dummy-job.json'));
+
+      return view('content.lead.lead-index', compact('list_job'));
     }
 
     public function store(Request $request)

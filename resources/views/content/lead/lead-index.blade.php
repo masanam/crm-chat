@@ -2,6 +2,15 @@
 
 @section('title', 'Lead Generation Management')
 
+@section('vendor-style')
+<link rel="stylesheet" href="assets/vendor/libs/select2/select2.css " />
+@endsection
+
+@section('vendor-script')
+<script src="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
+<script src="assets/vendor/libs/select2/select2.js"></script>
+@endsection
+
 @section('page-script')
 <script type="text/javascript">
   $(function() {
@@ -85,6 +94,10 @@
         offCanvasE2 = new bootstrap.Offcanvas(offCanvasElement2);
         // Empty fields on offCanvas open
         currentId = $(this).attr('data-id');
+
+        // change attr id form update
+        $('.form-customer-update').attr('action', `${baseUrl}api/lead-generation/${currentId}`)
+
         fetch(`${baseUrl}api/lead-generation/${currentId}`, {
           method: 'GET',
           headers: {
@@ -129,30 +142,7 @@
       }
     }, 3000)
 
-    $('#form-customer-update').on('click', function(e) {
-      e.preventDefault()
-      const payload = new FormData()
-      
-      $.each($(this).serializeArray(), function(i, field) {
-        if (field.name === 'age') {
-          payload.set(field.name, parseInt(field.value));
-        } else {
-          payload.set(field.name, field.value);
-        }
-      })
-
-      fetch(`${baseUrl}api/lead-generation/${currentId}`, {
-        method: 'PUT',
-        body: payload,
-        headers: {
-          'X-CSRF-TOKEN': token
-        }
-      })
-      .then(r => r.text())
-      .then(res => {
-        console.log(res)
-      })
-    })
+    $(".select2").select2();
   });
 </script>
 @endsection
@@ -211,7 +201,8 @@
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body flex-grow-1">
-    <form id="form-customer-update">
+    <form class="form-customer-update pt-0 row g-2" id="" action="{{route('lead-gen.update-customer', 10)}}" method="POST">
+      @csrf @method('put')
       <div class="row">
         @include('content.lead.components.fields')
       </div>

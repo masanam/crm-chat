@@ -31,39 +31,45 @@ class LeadGenerationController extends BaseController
 
     public function update(Request $request, $id)
     {
-    //   $request->validate([
-    //     'customer_name' => 'required',
-    //     'phone' => 'required',
-    //     'location' => 'required',
-    //     'age' => 'required',
-    //     'gender' => 'required',
-    //     'income_level' => 'required',
-    //     'job_title' => 'required',
-    //   ]);
-      
+      $validator = Validator::make($request->all(), [
+        'customer_name' => 'required',
+        'phone' => 'required',
+        'location' => 'required',
+        'age' => 'required',
+        'gender' => 'required',
+        'income_level' => 'required',
+        'job_title' => 'required',
+      ]);
 
-    //   $validator = Validator::make($request->all(), [
-    //     'customer_name' => ['required', 'string'],
-    //     'phone' => ['required', 'string'],
-    //     'location' => ['required', 'string'],
-    //     'age' => ['required', 'integer'],
-    //     'gender' => ['required', 'string'],
-    //     'income_level' => ['required', 'string'],
-    //     'job_title' => ['required', 'string'],
-    //   ]);
+      if ($validator->fails()) {
+        return response()->json(
+          [
+            'message' => 'Bad request',
+            'result' => $validator->errors()
+          ],
+          400
+        );
+      }
       
       try {
-        LeadGeneration::where('id', $id)->update([
-          'customer_name' => $request->customer_name,
-          'phone' => $request->phone,
-          'location' => $request->location,
-          'age' => $request->age,
-          'gender' => $request->gender,
-          'income_level' => $request->income_level,
-          'job_title' => $request->job_title
-        ]);
+        $model = LeadGeneration::find($id);
+        $model->customer_name = $request->customer_name;
+        $model->phone = $request->phone;
+        $model->location = $request->location;
+        $model->age = $request->age;
+        $model->gender = $request->gender;
+        $model->income_level = $request->income_level;
+        $model->job_title = $request->job_title;
+        $model->save();
 
-        return response()->json([], 'Lead generation updated successfully.');
+        response()->json(
+          [
+            'message' => 'Lead generation updated successfully',
+            'result' => $model
+          ],
+          200
+        );
+        return redirect()->back();
       } catch (\Throwable $th) {
         return response()->json('Service Error : ' . $th , 500);
       }

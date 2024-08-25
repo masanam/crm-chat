@@ -7,8 +7,21 @@
  document.addEventListener('DOMContentLoaded', function () {
    (async function () {
     // variable form filters
-    let searchPeopleValue, ageValue, locationsValue = [], incomeValue, jobValue;
-    let checkedLead = []
+    let locationsValue = [];
+    let checkedLead = [];
+
+    /**
+    * get initial name
+    */
+    const getInitials = function (string) {
+        var names = string.split(' '),
+            initials = names[0].substring(0, 1).toUpperCase();
+        
+        if (names.length > 1) {
+            initials += names[names.length - 1].substring(0, 1).toUpperCase();
+        }
+        return initials;
+    };
 
     /**
      * @description handle change icon chevron right/up
@@ -30,15 +43,10 @@
     /**
      * @description handle input search people
      */
-    $('input[name="search_people"]').on('keyup', (e) => {
-        e.preventDefault();
-        const value = e.target.value
-        searchPeopleValue = value
-    });
-    $('input[name="search_people"]').on('focus', () => {
+    $('input[name="customer_name"]').on('focus', () => {
         $('.btn-search').css({ top: '65px' })
     })
-    $('input[name="search_people"]').on('focusout', () => {
+    $('input[name="customer_name"]').on('focusout', () => {
         $('.btn-search').css({ top: '63px' })
     })
 
@@ -154,12 +162,139 @@
         })
     }
 
+    $('#form-search').on('submit', function(e) {
+        e.preventDefault();
+    })
+
+    /**
+     * @description render child table search customer
+     * @param {Array} data
+     */
+    const renderChildTable = (data) => {
+        if (!data) return console.error('data not found!')
+
+        const tbody = $('#table-lead-search').find('tbody')
+        if (data && Array.isArray(data)) {
+            data.forEach((val, valIndex) => {
+                const elementTr = document.createElement('tr')
+
+                if (valIndex % 2 === 0) {
+                    elementTr.innerHTML = `
+                        <tr class="odd">
+                    <td class="control" style="display: none;" tabindex="0"></td>
+                    <td class="dt-checkboxes-cell"><input type="checkbox" class="dt-checkboxes form-check-input"></td>
+                    <td data-bs-toggle="modal" data-bs-target="#detail-customer">
+                      <div class="d-flex justify-content-start align-items-center user-name">
+                        <div class="avatar-wrapper">
+                          <div class="avatar me-2"><span class="avatar-initial rounded-circle bg-label-info">${getInitials(val.customer_name)}</span></div>
+                        </div>
+                        <div class="d-flex flex-column">
+                          <span class="emp_name text-truncate" style="color: #101828;">${val.customer_name}</span>
+                          <span class="emp_name text-truncate">CEO</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td data-bs-toggle="modal" data-bs-target="#detail-customer">+62 xxx-xxx-xxx</td>
+                    <td data-bs-toggle="modal" data-bs-target="#detail-customer">${val.location}</td>
+                    <td>
+                      <button
+                        class="btn-add-list"
+                        data-bs-toggle="modal"
+                        data-bs-target="#list"
+                      >
+                        <i class="ti ti-plus"></i>
+                        Add to list
+                      </button>
+                    </td>
+                  </tr>
+                  `
+                } else {
+                    elementTr.innerHTML = `
+                    <tr class="even">
+                    <td class="control" style="display: none;" tabindex="0"></td>
+                    <td class="dt-checkboxes-cell"><input type="checkbox" class="dt-checkboxes form-check-input"></td>
+                    <td data-bs-toggle="modal" data-bs-target="#detail-customer">
+                      <div class="d-flex justify-content-start align-items-center user-name">
+                        <div class="avatar-wrapper">
+                          <div class="avatar me-2"><span class="avatar-initial rounded-circle bg-label-info">${getInitials(val.customer_name)}</span></div>
+                        </div>
+                        <div class="d-flex flex-column">
+                          <span class="emp_name text-truncate" style="color: #101828;">${val.customer_name}</span>
+                          <span class="emp_name text-truncate">CEO</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td data-bs-toggle="modal" data-bs-target="#detail-customer">+62 xxx-xxx-xxx</td>
+                    <td data-bs-toggle="modal" data-bs-target="#detail-customer">${val.location}</td>
+                    <td>
+                      <button
+                        class="btn-add-list"
+                        data-bs-toggle="modal"
+                        data-bs-target="#list"
+                      >
+                        <i class="ti ti-plus"></i>
+                        Add to list
+                      </button>
+                    </td>
+                  </tr>
+                    `
+                }
+
+                tbody.append(elementTr)
+            })
+        }
+    }
+
     /**
      * @description handle save filter
      */
-    $('#btn-filter-save').on('click', function() {
-        $('#table-lead-search').toggle()
-        $('#card-empty-search').toggle()
+    $('#btn-filter-save').on('click', function(e) {
+        e.preventDefault()
+        // reset tbody table
+        $('#table-lead-search').find('tbody').empty()
+        
+        const token = $("meta[name='csrf-token']").attr("content")
+        const payload = new FormData()
+        const age = []
+        const incomeLevel = []
+
+        $.each($('#form-search').serializeArray(), function(i, field) {
+            if (field.name.includes('age')) {
+                const ages = field.value.split('-')
+                ages.forEach(val => {
+                    age.push(parseInt(val))
+                })
+            } else if (field.name.includes('income_level')) {
+                incomeLevel.push(field.value)
+            } else if (field.value !== '') {
+                payload.set(field.name, field.value)
+            }
+        })
+
+        if (locationsValue.length > 0) {
+            payload.set('location', locationsValue)
+        }
+        if (age.length > 0) {
+            payload.set('income_level', incomeLevel)
+        }
+        if (age.length > 0) {
+            payload.set('min_age', Math.min(...age))
+            payload.set('max_age', Math.max(...age))
+        }
+
+        fetch(`${baseUrl}api/lead-generation/search-customer?` + new URLSearchParams(payload), {
+            headers: {
+              'X-CSRF-TOKEN': token
+            }
+        })
+        .then(r => r.json())
+        .then(res => {
+          renderChildTable(res.result)
+          $('#table-lead-search').find('#table-header-title').text(`${res.result.length} match your filters`)
+        })
+
+        $('#table-lead-search').css({ display: 'block' })
+        $('#card-empty-search').css({ display: 'none' })
 
         // handle change checkbox select all
         $('.dt-checkboxes-select-all').on('change', function(e) {
@@ -220,7 +355,6 @@
 
     $('.nav-link').each(function() {
         $(this).on('click', function() {
-            console.log($(this).attr('data-bs-target'))
             switch ($(this).attr('data-bs-target')) {
                 case '#experience':
                     $('#experience').show();

@@ -13,7 +13,21 @@ class LeadGenerationController extends Controller
 {
     public function leadSearchView()
     {
-      return view('content.lead.lead-search');
+      $json = File::json(base_path('public/dummy-job.json'));
+      $placeholder = (object) [
+        'label' => '- Select -',
+        'value' => '',
+      ];
+      $list_job = array($placeholder);
+      foreach ($json as $job) {
+        $data = (object) [
+          'label' => $job,
+          'value' => $job,
+        ];
+        array_push($list_job, $data);
+      }
+
+      return view('content.lead.lead-search', compact('list_job'));
     }
 
     public function index(Request $request)

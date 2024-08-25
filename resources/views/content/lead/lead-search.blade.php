@@ -77,38 +77,34 @@ $teams = [$team1, $team2, $team3, $team4, $team5];
 
 $default = (object) [
   'label' => '- Select -',
-  'value' => 'select',
+  'value' => '',
 ];
 $gender = (object) [
   'label' => 'Male',
-  'value' => 'male',
+  'value' => 'Male',
 ];
 $gender2 = (object) [
   'label' => 'Female',
-  'value' => 'female',
+  'value' => 'Female',
 ];
 $gender3 = (object) [
   'label' => 'All',
-  'value' => 'all',
+  'value' => 'All',
 ];
 $genders = [$default, $gender, $gender2, $gender3];
 
-$default2 = (object) [
-  'label' => 'Search for job',
-  'value' => '',
-];
-$jobs = [$default2]
 @endphp
 
 @section('content')
 <section class="container-lead-search">
+  <form id="form-search">
   <div class="container-filter">
     <div class="card card-search">
         <span style="font-weight: 600; font-size: 20px; color: #1F2124;">What are you looking for?</span>
         <x-input-floating
           label="Search people"
-          id="search_people"
-          name="search_people"
+          id="customer_name"
+          name="customer_name"
           placeholder=""
         >
         </x-input-floating>
@@ -133,24 +129,24 @@ $jobs = [$default2]
             </div>
             <div id="content-filter-age" class="hide">
                 <div class="mt-4">
-                    <input type="checkbox" id="age" name="age" value="age1">
-                    <label for="age" style="margin-left: 12px;"> Above - 21 years old</label><br>
+                    <input type="checkbox" id="age1" name="age1" value="1-21">
+                    <label for="age1" style="margin-left: 12px;"> Above - 21 years old</label><br>
                 </div>
                 <div class="mt-2">
-                    <input type="checkbox" id="age" name="age" value="age2">
-                    <label for="age" style="margin-left: 12px;"> 21 - 29 years old</label><br>
+                    <input type="checkbox" id="age2" name="age2" value="21-29">
+                    <label for="age2" style="margin-left: 12px;"> 21 - 29 years old</label><br>
                 </div>
                 <div class="mt-2">
-                    <input type="checkbox" id="age" name="age" value="age3">
-                    <label for="age" style="margin-left: 12px;"> 30 - 39 years old</label><br>
+                    <input type="checkbox" id="age3" name="age3" value="30-39">
+                    <label for="age3" style="margin-left: 12px;"> 30 - 39 years old</label><br>
                 </div>
                 <div class="mt-2">
-                    <input type="checkbox" id="age" name="age" value="age4">
-                    <label for="age" style="margin-left: 12px;"> 40 - 49 years old</label><br>
+                    <input type="checkbox" id="age4" name="age4" value="40-49">
+                    <label for="age4" style="margin-left: 12px;"> 40 - 49 years old</label><br>
                 </div>
                 <div class="mt-2">
-                    <input type="checkbox" id="age" name="age" value="age5">
-                    <label for="age" style="margin-left: 12px;"> 50 years old - over</label><br>
+                    <input type="checkbox" id="age5" name="age5" value="50">
+                    <label for="age5" style="margin-left: 12px;"> 50 years old - over</label><br>
                 </div>
             </div>
         </div>
@@ -202,20 +198,20 @@ $jobs = [$default2]
             </div>
             <div id="content-filter-income" class="hide">
                 <div class="mt-4">
-                    <input type="checkbox" id="income_level" name="income_level" value="type_a">
-                    <label for="income_level" style="margin-left: 12px;"> Type A *</label><br>
+                    <input type="checkbox" id="income_level1" name="income_level1" value="A">
+                    <label for="income_level1" style="margin-left: 12px;"> Type A *</label><br>
                 </div>
                 <div class="mt-2">
-                    <input type="checkbox" id="income_level" name="income_level" value="type_b">
-                    <label for="income_level" style="margin-left: 12px;"> Type B *</label><br>
+                    <input type="checkbox" id="income_level2" name="income_level2" value="B">
+                    <label for="income_level2" style="margin-left: 12px;"> Type B *</label><br>
                 </div>
                 <div class="mt-2">
-                    <input type="checkbox" id="income_level" name="income_level" value="type_c">
-                    <label for="income_level" style="margin-left: 12px;"> Type C *</label><br>
+                    <input type="checkbox" id="income_level3" name="income_level3" value="C">
+                    <label for="income_level3" style="margin-left: 12px;"> Type C *</label><br>
                 </div>
                 <div class="mt-2">
-                    <input type="checkbox" id="income_level" name="income_level" value="uncategorized">
-                    <label for="income_level" style="margin-left: 12px;"> Uncategorized *</label><br>
+                    <input type="checkbox" id="income_level4" name="income_level4" value="Uncategorized">
+                    <label for="income_level4" style="margin-left: 12px;"> Uncategorized *</label><br>
                 </div>
             </div>
         </div>
@@ -231,17 +227,18 @@ $jobs = [$default2]
                 <x-input-floating
                     label=""
                     placeholder="Search for job"
-                    id="gender"
-                    name="gender"
+                    id="job_title"
+                    name="job_title"
                     type="select"
-                    :options="$jobs"
+                    :options="$list_job"
                 >
                 </x-input-floating>
             </div>
         </div>
     </div>
-    <button id="btn-filter-save" class="btn btn-primary">Save</button>
+    <button id="btn-filter-save" class="btn btn-primary" type="submit">Save</button>
   </div>
+  </form>
   <div id="card-empty-search" class="card container-table-search align-items-center justify-content-center">
     <img src="{{ asset('assets/svg/icons/icon-lead-search.svg') }}" alt="lead-search" width="150">
     <div class="d-flex flex-column align-items-center gap-1" style="text-align: center; margin-top: 4rem;">
@@ -252,7 +249,7 @@ $jobs = [$default2]
   
   <div id="table-lead-search" style="display: none; grid-column: span 2 / span 2;">
     <x-table
-    title="5 match your filters"
+    title=""
     buttonHeaderName="Save bulk contact"
     buttonHeaderTarget="list"
     :headers="$headers"
@@ -261,37 +258,6 @@ $jobs = [$default2]
     isDisableButtonHeader="{{ true }}"
     isUsingHeaderAction="{{ false }}"
   >
-    @foreach($teams as $key => $value)
-    <tr
-      class="{{ $key % 2 === 0 ? 'odd' : 'even' }}" 
-    >
-      <td class="control" style="display: none;" tabindex="0"></td>
-      <td class="dt-checkboxes-cell"><input type="checkbox" class="dt-checkboxes form-check-input"></td>
-      <td data-bs-toggle="modal" data-bs-target="#detail-customer">
-        <div class="d-flex justify-content-start align-items-center user-name">
-          <div class="avatar-wrapper">
-            <div class="avatar me-2"><span class="avatar-initial rounded-circle bg-label-info">{{ Helper::getInitial($value->lead_info) }}</span></div>
-          </div>
-          <div class="d-flex flex-column">
-            <span class="emp_name text-truncate" style="color: #101828;">{{ $value->lead_info }}</span>
-            <span class="emp_name text-truncate">{{ $value->position }}</span>
-          </div>
-        </div>
-      </td>
-      <td data-bs-toggle="modal" data-bs-target="#detail-customer">{{ $value->wa_number }}</td>
-      <td data-bs-toggle="modal" data-bs-target="#detail-customer">{{ $value->location }}</td>
-      <td>
-        <button
-          class="btn-add-list"
-          data-bs-toggle="modal"
-          data-bs-target="#list"
-        >
-          <i class="ti ti-plus"></i>
-          Add to list
-        </button>
-      </td>
-    </tr>
-    @endforeach
   </x-table>
   </div>
 </section>

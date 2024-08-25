@@ -7,7 +7,7 @@ use App\Http\Controllers\API\BaseController as BaseController;
 use App\Models\LeadGeneration;
 use Validator;
 use Illuminate\Http\JsonResponse;
-
+use DB;
 
 class LeadGenerationController extends BaseController
 {
@@ -88,6 +88,77 @@ class LeadGenerationController extends BaseController
             LeadGeneration::find($id)->delete();
 
             return $this->sendResponse([], 'Lead generation deleted successfully.');
+        } catch (\Throwable $th) {
+            return response()->json('Service Error : ' . $th , 500);
+        }
+    }
+
+    public function searchCustomer(Request $request): JsonResponse
+    {
+        try {
+            $customer_name = $request->query('customer_name');
+            $location = $request->query('location');
+            $income_level = $request->query('income_level');
+            $job_title = $request->query('job_title');
+            $min_age = $request->query('min_age');
+            $max_age = $request->query('max_age');
+            $gender = $request->query('gender');
+            $customer;
+
+            if ($min_age == '50' || $min_age != '50' && $max_age == '50') {
+              $customer = DB::table('lead_generation')
+                ->when($customer_name, function($query, $name) {
+                  return $query->where('customer_name', 'ilike', "%{$name}%");
+                })
+                ->when($min_age, function($query, $name) {
+                  return $query->where('age', '>=', $name);
+                })
+                ->when($job_title, function($query, $name) {
+                  return $query->where('job_title', '=', $name);
+                })
+                ->when($gender, function($query, $name) {
+                  return $query->where('gender', '=', $name);
+                })
+                ->when($income_level, function($query, $name) {
+                  return $query->whereIn('income_level', explode(',', $name));
+                })
+                ->when($location, function($query, $name) {
+                  return $query->whereIn('location', explode(',', $name));
+                })
+                ->get();
+            } else {
+              $customer = DB::table('lead_generation')
+                ->when($customer_name, function($query, $name) {
+                  return $query->where('customer_name', 'ilike', "%{$name}%");
+                })
+                ->when($min_age, function($query, $name) {
+                  return $query->where('age', '>=', $name);
+                })
+                ->when($max_age, function($query, $name) {
+                  return $query->where('age', '<=', $name);
+                })
+                ->when($job_title, function($query, $name) {
+                  return $query->where('job_title', '=', $name);
+                })
+                ->when($gender, function($query, $name) {
+                  return $query->where('gender', '=', $name);
+                })
+                ->when($income_level, function($query, $name) {
+                  return $query->whereIn('income_level', explode(',', $name));
+                })
+                ->when($location, function($query, $name) {
+                  return $query->whereIn('location', explode(',', $name));
+                })
+                ->get();
+            }
+
+            return response()->json(
+              [
+                'message' => 'Lead generation search successfully',
+                'result' => $customer
+              ],
+              200
+            );
         } catch (\Throwable $th) {
             return response()->json('Service Error : ' . $th , 500);
         }

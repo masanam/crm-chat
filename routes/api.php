@@ -99,9 +99,10 @@ Route::post('/send-whatsapp', [Chat::class, 'sendWhatsAppMessage']);
 Route::post('/receive-chat', [Chat::class, 'receiveWhatsAppMessage']);
 Route::post('/add-contact', [Chat::class, 'addContact']);
 
+Route::get('/lead-generation/search-customer', [LeadGenerationController::class, 'searchCustomer']);
 Route::get('/lead-generation/{id}', [LeadGenerationController::class, 'getCustomer']);
 Route::put('/lead-generation/{id}', [LeadGenerationController::class, 'update']);
-// Route::delete('/lead-generation/{id}', [LeadGenerationController::class, 'destroy']);
+Route::delete('/lead-generation/{id}', [LeadGenerationController::class, 'destroy']);
 
 Route::get('/internal-notes/{lead}', 'App\Http\Controllers\InternalNoteController@getInternalNotesByLead')->name(
   'getInternalNotesByLead'

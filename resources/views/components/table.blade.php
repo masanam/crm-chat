@@ -3,7 +3,7 @@
     <header class="row px-3">
       <div class="col-sm-12 col-md-6">
         <div class="d-flex align-item-center gap-2">
-          <h5 class="text-dark fw-bold">{{ $title }}</h5>
+          <h5 id="table-header-title" class="text-dark fw-bold">{{ $title }}</h5>
           @if(!!$badge)
           <small class="badge-team">{{ $badge }}</small>
           @endif

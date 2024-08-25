@@ -28,7 +28,7 @@
     <select class="dt-gender select2 form-select" name="gender" id="gender">
         <option value="Male">Male</option>
         <option value="Female">Female</option>
-        <option value="None">None</option>
+        <option value="All">All</option>
     </select>
 </div>
 

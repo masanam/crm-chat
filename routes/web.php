@@ -194,11 +194,11 @@ Route::group(['middleware' => ['auth']], function () {
   /**
    * Verification Routes
    */
-  Route::get('/email/verify', 'VerificationController@show')->name('verification.notice');
-  Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify')
-    ->name('verification.verify')
-    ->middleware(['signed']);
-  Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
+  // Route::get('/email/verify', 'VerificationController@show')->name('verification.notice');
+  // Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify')
+  //   ->name('verification.verify')
+  //   ->middleware(['signed']);
+  // Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
 });
 
 /** chat */
@@ -491,6 +491,7 @@ Route::middleware(['auth'])->group(function () {
 
   Route::get('lead-generation', [LeadGenerationController::class, 'leadSearchView'])->name('lead-gen.index');
   Route::get('lead-generation/list', [LeadGenerationController::class, 'index'])->name('lead-gen.customer-list');
+  Route::get('lead-generation/search-customer', [LeadGenerationController::class, 'searchCustomer'])->name('lead-gen.customer-search');
   Route::post('lead-generation', [LeadGenerationController::class, 'store'])->name('lead-gen.create-customer');
   Route::put('lead-generation/{id}', [LeadGenerationController::class, 'update'])->name('lead-gen.update-customer');
   Route::delete('lead-generation/{id}', [LeadGenerationController::class, 'destroy'])->name('lead-gen.customer-destroy');

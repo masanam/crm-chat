@@ -538,6 +538,7 @@ Route::middleware(['auth'])->group(function () {
   Route::delete('customers/{id}', [CustomerController::class, 'destroy'])->name('customers.destroy');
   Route::get('customers/{id}/email', [CustomerController::class, 'detailEmail'])->name('customers.detailEmail');
   Route::get('customers/{id}/ticket', [CustomerController::class, 'detailTicket'])->name('customers.detailTicket');
+  Route::post('customers/add-ticket', [CustomerController::class, 'addTicket'])->name('customers.add-ticket');
   Route::post('customers/add-contact', [CustomerController::class, 'addContact'])->name('customers.add-contact');
   Route::post('customers/addmore', [CustomerController::class, 'addMorePost'])->name('customers.addMorePost');
   Route::post('customers/update-status', [CustomerController::class, 'updateStatus'])->name('customers.updateStatus');

@@ -13,6 +13,7 @@ use App\Http\Controllers\API\LeadController;
 use App\Http\Controllers\API\TaskController;
 use App\Http\Controllers\API\ClientController;
 use App\Http\Controllers\API\LeadGenerationController;
+use App\Http\Controllers\API\LeadGenerationListController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +104,9 @@ Route::get('/lead-generation/search-customer', [LeadGenerationController::class,
 Route::get('/lead-generation/{id}', [LeadGenerationController::class, 'getCustomer']);
 Route::put('/lead-generation/{id}', [LeadGenerationController::class, 'update']);
 Route::delete('/lead-generation/{id}', [LeadGenerationController::class, 'destroy']);
+
+Route::get('/lead-generation-list', [LeadGenerationListController::class, 'index']);
+Route::post('/lead-generation-list', [LeadGenerationListController::class, 'store']);
 
 Route::get('/internal-notes/{lead}', 'App\Http\Controllers\InternalNoteController@getInternalNotesByLead')->name(
   'getInternalNotesByLead'

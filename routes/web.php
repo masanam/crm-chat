@@ -180,6 +180,7 @@ use App\Http\Controllers\FormsController;
 use App\Http\Controllers\MessagesController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\LeadGenerationController;
+use App\Http\Controllers\LeadGenerationListController;
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -194,11 +195,11 @@ Route::group(['middleware' => ['auth']], function () {
   /**
    * Verification Routes
    */
-  // Route::get('/email/verify', 'VerificationController@show')->name('verification.notice');
-  // Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify')
-  //   ->name('verification.verify')
-  //   ->middleware(['signed']);
-  // Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
+  Route::get('/email/verify', 'VerificationController@show')->name('verification.notice');
+  Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify')
+    ->name('verification.verify')
+    ->middleware(['signed']);
+  Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
 });
 
 /** chat */
@@ -490,11 +491,14 @@ Route::middleware(['auth'])->group(function () {
   Route::post('leads/add-contact', [LeadController::class, 'addContact'])->name('leads.add-contact');
 
   Route::get('lead-generation', [LeadGenerationController::class, 'leadSearchView'])->name('lead-gen.index');
-  Route::get('lead-generation/list', [LeadGenerationController::class, 'index'])->name('lead-gen.customer-list');
+  Route::get('lead-generation/management', [LeadGenerationController::class, 'index'])->name('lead-gen.customer-list');
   Route::get('lead-generation/search-customer', [LeadGenerationController::class, 'searchCustomer'])->name('lead-gen.customer-search');
   Route::post('lead-generation', [LeadGenerationController::class, 'store'])->name('lead-gen.create-customer');
   Route::put('lead-generation/{id}', [LeadGenerationController::class, 'update'])->name('lead-gen.update-customer');
   Route::delete('lead-generation/{id}', [LeadGenerationController::class, 'destroy'])->name('lead-gen.customer-destroy');
+ 
+  Route::get('lead-generation-list', [LeadGenerationListController::class, 'index'])->name('lead-gen.index-list');
+  Route::post('lead-generation-list', [LeadGenerationListController::class, 'store'])->name('lead-gen.create-list');
 
   // Route::resource('dealer', DealerController::class);
   Route::get('groups', [GroupController::class, 'index'])->name('group-list');

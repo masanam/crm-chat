@@ -106,7 +106,7 @@ class LeadGenerationController extends BaseController
             $customer;
 
             if ($min_age == '50' || $min_age != '50' && $max_age == '50') {
-              $customer = DB::table('lead_generation')
+              $customer = DB::table('lead_generation_customer')
                 ->when($customer_name, function($query, $name) {
                   return $query->where('customer_name', 'ilike', "%{$name}%");
                 })
@@ -127,7 +127,7 @@ class LeadGenerationController extends BaseController
                 })
                 ->get();
             } else {
-              $customer = DB::table('lead_generation')
+              $customer = DB::table('lead_generation_customer')
                 ->when($customer_name, function($query, $name) {
                   return $query->where('customer_name', 'ilike', "%{$name}%");
                 })

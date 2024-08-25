@@ -115,7 +115,7 @@ $genders = [$default, $gender, $gender2, $gender3];
     <div class="card card-filters">
         <div class="d-flex flex-row justify-content-between divide-b wrapper-filter">
             <span style="font-weight: 600; font-size: 20px; color: #1F2124;">Filters</span>
-            <button style="outline: none; border: none; background: transparent;">
+            <button type="reset" style="outline: none; border: none; background: transparent;">
                 <span style="border-bottom: 1px solid #33B6B9; color: #33B6B9;">clear all</span>
             </button>
         </div>
@@ -268,7 +268,7 @@ $genders = [$default, $gender, $gender2, $gender3];
       <div class="d-flex flex-column gap-2 border-bottom">
           <div class="">
               <span style="position: absolute; margin-top: 8px; margin-left: 12px;" id="basic-addon-search31"><i class="ti ti-search"></i></span>
-              <input style="padding: 0.422rem 2.2rem; border-radius: 20px;" type="text" class="form-control" placeholder="Search team members" aria-label="Search team members" aria-describedby="basic-addon-search31" />
+              <input id="search-list-name" style="padding: 0.422rem 2.2rem; border-radius: 20px;" type="text" class="form-control" placeholder="Search team members" aria-label="Search team members" aria-describedby="basic-addon-search31" />
             </div>
           <div class="d-flex gap-2 align-items-center">
               <x-button-add-contact
@@ -278,10 +278,7 @@ $genders = [$default, $gender, $gender2, $gender3];
               ></x-button-add-contact>
           </div>
       </div>
-      <div class="d-flex flex-column gap-1">
-        <h6 style="color: #1F2124;">Name of list 1</h6>
-        <h6 style="color: #1F2124;">Name of list 2</h6>
-        <h6 style="color: #1F2124;">Name of list 3</h6>
+      <div id="lead-list-wrapper" class="d-flex flex-column gap-1">
       </div>
   </div>
 </x-modal>
@@ -292,22 +289,24 @@ $genders = [$default, $gender, $gender2, $gender3];
   isUsingBtnFooter="{{ false }}"
   buttonSubmitClass=""
   modalClass=""
+  isModalStack="{{ true }}"
+  targetNameModalStack="list"
   buttonWrapperSubmitClass="d-flex justify-content-end align-items-center w-100"
 >
-<div class="d-flex flex-column gap-3">
+<form id="form-create-list" class="d-flex flex-column gap-3">
   <div class="d-flex flex-column gap-4 w-100">
       <x-input-floating
-          label="List Name"
-          id="list_name"
-          name="list_name"
-          placeholder="Create list name"
+        label="List Name"
+        id="name"
+        name="name"
+        placeholder="Create list name"
       >
       </x-input-floating>
   </div>
   <div class="d-flex justify-content-end w-100 mt-2">
-      <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+      <button id="btn-create-list" type="submit" class="btn btn-primary">Save</button>
   </div>
-</div>
+</form>
 </x-modal>
 
 <x-modal title="Customers" name="detail-customer" wrapperModalClass="modal-right" modalClass="modal-lg" isUsingBtnFooter="{{ false }}" isUsingHeaderTitle="{{ false }}">

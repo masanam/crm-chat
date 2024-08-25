@@ -9,6 +9,37 @@
     // variable form filters
     let locationsValue = [];
     let checkedLead = [];
+    const token = $("meta[name='csrf-token']").attr("content")
+
+    // fetch lead generation list
+    const fetchingLeadList = () => {
+        fetch(`${baseUrl}api/lead-generation-list`, {
+            headers: {
+              'X-CSRF-TOKEN': token
+            }
+        })
+        .then(r => r.json())
+        .then(res => {
+          if (res.result && Array.isArray(res.result) && res.result.length > 0) {
+            res.result.forEach(item => {
+                const el = document.createElement('h6')
+                el.innerText = item.name
+                el.style.color = '#1F2124'
+                el.setAttribute('data-search-term', item.name)
+                el.className = 'lead-list'
+
+                $('#lead-list-wrapper').append(el)
+            })
+          } else {
+            const el = document.createElement('span')
+            el.innerText = 'No data list'
+
+            $('#lead-list-wrapper').append(el)
+          }
+        })
+    }
+
+    fetchingLeadList()
 
     /**
     * get initial name
@@ -252,8 +283,7 @@
         e.preventDefault()
         // reset tbody table
         $('#table-lead-search').find('tbody').empty()
-        
-        const token = $("meta[name='csrf-token']").attr("content")
+    
         const payload = new FormData()
         const age = []
         const incomeLevel = []
@@ -369,6 +399,51 @@
                     $('#signals').show();
                     $('#signals').addClass('d-flex flex-column');
                     break;
+            }
+        })
+    })
+
+    /**
+     * @description handle search lead generation list by name
+     */
+    $('#search-list-name').on('input', function(e) {
+        const searchValue = e.target.value.toLowerCase()
+        $('.lead-list').filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(searchValue) > -1)
+        });
+    })
+
+
+    /**
+     * @description handle prevent default form create list
+     */
+    $('#form-create-list').on('submit', function(e) {
+        e.preventDefault();
+    })
+
+    /**
+     * @description handle submit form create list
+     */
+    $('#btn-create-list').on('click', function(e) {
+        e.preventDefault()
+    
+        const payload = new FormData()
+        $.each($('#form-create-list').serializeArray(), function(i, field) {
+            payload.set(field.name, field.value)
+        })
+
+        fetch(`${baseUrl}api/lead-generation-list`, {
+            method: 'POST',
+            body: payload,
+            headers: {
+              'X-CSRF-TOKEN': token
+            }
+        })
+        .then(res => {
+            if (res.status === 200) {
+                $('#lead-list-wrapper').empty()
+                $("#add-list").find(`[data-bs-target='#list']`).click()
+                fetchingLeadList()
             }
         })
     })

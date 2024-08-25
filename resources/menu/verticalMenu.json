@@ -31,7 +31,7 @@
         {
           "name": "Create",
           "slug": "lead-gen.customer-list",
-          "url": "/lead-generation/list"
+          "url": "/lead-generation/management"
         }
       ]
     }

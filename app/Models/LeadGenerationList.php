@@ -5,25 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LeadGeneration extends Model
+class LeadGenerationList extends Model
 {
     use HasFactory;
 
-    public $table = 'lead_generation_customer';
+    public $table = 'lead_generation_list';
     public $timestamps = false;
 
-  /**
+    /**
    * The attributes that are mass assignable.
    *
    * @var array<int, string>
    */
   protected $fillable = [
-    'customer_name',
-    'phone',
-    'location',
-    'age',
-    'gender',
-    'income_level',
-    'job_title',
+    'name',
   ];
 }

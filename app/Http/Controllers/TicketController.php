@@ -15,6 +15,7 @@ use App\Models\TaskChat;
 use App\Models\Team;
 use App\Models\Client;
 use App\Models\Profile;
+use App\Models\Lead;
 use App\Models\AssignedLead;
 
 class TicketController extends Controller
@@ -48,10 +49,11 @@ class TicketController extends Controller
         ['%' . $search . '%', '%' . $search . '%']
       );
 
+      $leads = Lead::all();
       $statuses = TaskStatus::all();
       $teams = Team::all();
 
-      return view('content.ticket.index', compact('clients', 'statuses', 'teams'));
+      return view('content.ticket.index', compact('leads', 'clients', 'statuses', 'teams'));
     } catch (\Exception $e) {
       return view('content.ticket.index');
     }

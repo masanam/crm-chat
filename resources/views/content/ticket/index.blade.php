@@ -131,27 +131,23 @@
           <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-activity">
             <i class="ti ti-trending-up me-2"></i>
             <span class="align-middle">Activity</span>
+            {{ route('customers.add-ticket') }}
           </button>
         </li> -->
       <!-- </ul> -->
       <div class="tab-content px-0 pb-0">
         <!-- Update item/tasks -->
         <div class="tab-pane fade show active" id="tab-update" role="tabpanel">
-          <form action="{{ route('tickets.upsert') }}" method="post">
+          <form action="{{ route('customers.add-ticket') }}" method="post">
             @csrf
             <input type="hidden" id="task_id" name="task_id" value="">
-            <div class="d-flex flex-row justify-content-between mb-3 gap-4">
-              <div class="d-inline-flex p2">
+            <div class="mb-3">
                 <!-- <label class="form-label" for="status_id">Status</label> -->
-                <select name="client_id" id="client_id" class="select2 form-select">
-                  @foreach($clients as $client)
-                  <option value="{{ $client->id }}">{{ $client->text }}</option>
+                <select name="lead_id" id="lead_id" class="select2 form-select">
+                  @foreach($leads as $client)
+                  <option value="{{ $client->id }}">{{ !empty($client->client_name) ? $client->client_name : $client->phone_number }}</option>
                   @endforeach
                 </select>
-              </div>
-              <div class="p2 ms-auto">
-                <!-- <label class="form-label" for="status_id">Status</label> -->
-              </div>
             </div>
             <div class="mb-3">
               <label class="form-label" for="title">Ticket Name</label>
@@ -195,7 +191,7 @@
                 </select>
               </div>
             </div>
-            <div class="mb-3">
+            <!-- <div class="mb-3">
               <label class="form-label" for="team_id">Team</label>
               <select name="team_id" id="team_id" class="select2 form-select">
                 <option value="">Select your team</option>
@@ -207,11 +203,11 @@
             <div class="mb-3">
               <label class="form-label" for="member_id">Members</label>
               <select name="member_id" id="member_id" class="select2 form-select"></select>
-            </div>
+            </div>-->
             <div class="mb-3">
               <label class="form-label" for="internal_note">Ticket Notes</label>
-              <textarea name="internal_note" rows="4" id="internal_note" class="form-control"></textarea>
-            </div>
+              <textarea name="description" rows="4" id="description" class="form-control"></textarea>
+            </div> 
             <!-- <div class="mb-3">
               <label class="form-label" for="label"> Label</label>
               <select class="select2 select2-label form-select" id="label">

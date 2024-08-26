@@ -20,18 +20,18 @@
     },
     {
       "name": "Lead Generation",
-      "slug": "leads.index",
+      "slug": "lead-gen.index",
       "iconUrl": "assets/svg/icons/leads-icon.svg",
       "submenu": [
         {
           "name": "Search",
-          "slug": "leads.index",
+          "slug": "lead-gen.index",
           "url": "/lead-generation"
         },
         {
           "name": "Create",
-          "slug": "leads.create",
-          "url": "/lead-generation/list"
+          "slug": "lead-gen.customer-list",
+          "url": "/lead-generation/management"
         }
       ]
     }

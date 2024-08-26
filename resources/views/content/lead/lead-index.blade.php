@@ -1,6 +1,15 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Dealer Management')
+@section('title', 'Lead Generation Management')
+
+@section('vendor-style')
+<link rel="stylesheet" href="assets/vendor/libs/select2/select2.css " />
+@endsection
+
+@section('vendor-script')
+<script src="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
+<script src="assets/vendor/libs/select2/select2.js"></script>
+@endsection
 
 @section('page-script')
 <script type="text/javascript">
@@ -8,30 +17,39 @@
     var table = $('.data-table').DataTable({
       processing: true,
       serverSide: true,
-      ajax: "{{ route('dealers.index') }}",
-      columns: [{
+      ajax: "{{ route('lead-gen.customer-list') }}",
+      columns: [
+        {
           data: 'DT_RowIndex',
           name: 'DT_RowIndex'
         },
         {
-          data: 'name',
-          name: 'name'
+          data: 'customer_name',
+          name: 'Customer Name'
         },
         {
-          data: 'package',
-          name: 'package'
+          data: 'phone',
+          name: 'Whatsapp'
         },
         {
-          data: 'due_date',
-          name: 'due_date'
+          data: 'location',
+          name: 'Location'
         },
         {
-          data: 'business_phone',
-          name: 'business_phone'
+          data: 'age',
+          name: 'Age'
         },
         {
-          data: 'wa_account_phone_number_id',
-          name: 'wa_account_phone_number_id'
+          data: 'gender',
+          name: 'Gender'
+        },
+        {
+          data: 'income_level',
+          name: 'Income Level'
+        },
+        {
+          data: 'job_title',
+          name: 'Job Title'
         },
         {
           data: 'action',
@@ -42,7 +60,9 @@
       ]
     });
 
+    const token = $("meta[name='csrf-token']").attr("content");
     const formAddNewRecord = document.getElementById('form-add-new-record');
+    let currentId = ''
 
     setTimeout(() => {
       const newRecord = document.querySelector('.create-new'),
@@ -52,11 +72,13 @@
       newRecord.addEventListener('click', function() {
         offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
         // Empty fields on offCanvas open
-        (offCanvasElement.querySelector('.dt-name').value = ''),
-        (offCanvasElement.querySelector('.dt-package').value = ''),
-        (offCanvasElement.querySelector('.dt-due-date').value = ''),
+        (offCanvasElement.querySelector('.dt-customer-name').value = ''),
         (offCanvasElement.querySelector('.dt-phone').value = ''),
-        (offCanvasElement.querySelector('.dt-whatsapp').value = ''),
+        (offCanvasElement.querySelector('.dt-location').value = ''),
+        (offCanvasElement.querySelector('.dt-age').value = ''),
+        (offCanvasElement.querySelector('.dt-gender').value = ''),
+        (offCanvasElement.querySelector('.dt-income-level').value = ''),
+        (offCanvasElement.querySelector('.dt-job-title').value = ''),
         // Open offCanvas with form
         offCanvasEl.show();
       });
@@ -71,14 +93,27 @@
       $('body').on('click', '.editRecord', function() {
         offCanvasE2 = new bootstrap.Offcanvas(offCanvasElement2);
         // Empty fields on offCanvas open
-        var data_id = $(this).data('id');
-        $.get("{{ route('dealers.index') }}" + '/' + data_id + '/edit', function(data) {
-          console.log(data);
-          (offCanvasElement2.querySelector('.dt-name').value = data.name),
-          (offCanvasElement2.querySelector('.dt-package').value = data.package),
-          (offCanvasElement2.querySelector('.dt-due-date').value = data.due_date),
-          (offCanvasElement2.querySelector('.dt-phone').value = data.business_phone),
-          (offCanvasElement2.querySelector('.dt-whatsapp').value = data.wa_account_phone_number_id);
+        currentId = $(this).attr('data-id');
+
+        // change attr id form update
+        $('.form-customer-update').attr('action', `${baseUrl}api/lead-generation/${currentId}`)
+
+        fetch(`${baseUrl}api/lead-generation/${currentId}`, {
+          method: 'GET',
+          headers: {
+            'X-CSRF-TOKEN': token
+          }
+        })
+        .then(r => r.json())
+        .then(res => {
+          const { age, customer_name, gender, income_level, job_title, phone, location } = res.data
+          offCanvasElement2.querySelector('.dt-customer-name').value = res.data.customer_name
+          offCanvasElement2.querySelector('.dt-phone').value = phone
+          offCanvasElement2.querySelector('.dt-location').value = location
+          offCanvasElement2.querySelector('.dt-age').value = age
+          offCanvasElement2.querySelector('.dt-gender').value = gender
+          offCanvasElement2.querySelector('.dt-income-level').value = income_level
+          offCanvasElement2.querySelector('.dt-job-title').value = job_title
         })
         // Open offCanvas with form
         offCanvasE2.show();
@@ -86,8 +121,28 @@
     }, 200);
 
 
+    setTimeout(() => {
+      const btnDelete = $('.btn-danger')
+      if (btnDelete && btnDelete.length > 0) {
+        btnDelete.each(function() {
+          $(this).on('click', function() {
+            let postId = $(this).attr('data-id');
+            fetch(`${baseUrl}api/lead-generation/${postId}`, {
+              method: 'DELETE',
+              headers: {
+                'X-CSRF-TOKEN': token
+              }
+            })
+            .then(r => r.text())
+            .then(res => {
+              $(this).parent().parent().remove()
+            })
+          })
+        })
+      }
+    }, 3000)
 
-
+    $(".select2").select2();
   });
 </script>
 @endsection
@@ -97,7 +152,7 @@
   <div id="dataTables_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
     <div class="card-header flex-column flex-md-row">
       <div class="head-label text-left">
-        <h5 class="card-title mb-0"> List Dealer</h5>
+        <h5 class="card-title mb-0"> List Lead Generation Customer</h5>
       </div>
       <div class="dt-action-buttons text-end pt-3 pt-md-0">
         <div class="dt-buttons btn-group flex-wrap">
@@ -110,11 +165,13 @@
         <thead>
           <tr>
             <th>No</th>
-            <th>Nama</th>
-            <th>Package</th>
-            <th>Due Date</th>
-            <th>Business Phone</th>
-            <th>Whatsapp</th>
+            <th>Customer Name</th>
+            <th>Phone</th>
+            <th>Location</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Income Level</th>
+            <th>Job Title</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -130,9 +187,9 @@
   </div>
   <div class="offcanvas-body flex-grow-1">
 
-    {!! Form::open(['route' => 'dealers.store']) !!}
+    {!! Form::open(['route' => 'lead-gen.create-customer']) !!}
     <div class="row">
-      @include('content.dealer.fields')
+      @include('content.lead.components.fields')
     </div>
     {!! Form::close() !!}
   </div>
@@ -144,12 +201,12 @@
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body flex-grow-1">
-
-    {!! Form::open(['route' => 'dealers.store']) !!}
-    <div class="row">
-      @include('content.lead.components.fields')
-    </div>
-    {!! Form::close() !!}
+    <form class="form-customer-update pt-0 row g-2" id="" action="{{route('lead-gen.update-customer', 10)}}" method="POST">
+      @csrf @method('put')
+      <div class="row">
+        @include('content.lead.components.fields')
+      </div>
+    </form>
   </div>
 </div>
 

@@ -1,31 +1,54 @@
 <!-- Name Field -->
 <div class="form-group col-sm-12 p-2">
-    {!! Form::label('name', 'Name:', ['class' => 'form-label']) !!}
-    {!! Form::text('name', null, ['class' => 'form-control dt-name','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
+    {!! Form::label('customer_name', 'Customer Name:', ['class' => 'form-label']) !!}
+    {!! Form::text('customer_name', null, ['class' => 'form-control dt-customer-name','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
 </div>
 
 <!-- Grade Field -->
 <div class="form-group col-sm-12 p-2">
-    {!! Form::label('grade', 'Package:', ['class' => 'form-label']) !!}
-    {!! Form::text('grade', null, ['class' => 'form-control dt-package','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
+    <label for="phone" class="form-label">Whatsapp:</label>
+    <input class="form-control dt-phone" maxlength="255" name="phone" type="number" id="phone">
 </div>
 
 <!-- Course Field -->
 <div class="form-group col-sm-12 p-2">
-    {!! Form::label('course', 'Due Date:', ['class' => 'form-label']) !!}
-    {!! Form::text('course', null, ['class' => 'form-control dt-due-date','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
+    {!! Form::label('location', 'Location:', ['class' => 'form-label']) !!}
+    {!! Form::text('location', null, ['class' => 'form-control dt-location','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
 </div>
 
 <!-- School Id Field -->
 <div class="form-group col-sm-12 p-2">
-    {!! Form::label('school_id', 'Phone:', ['class' => 'form-label']) !!}
-    {!! Form::text('course', null, ['class' => 'form-control dt-phone','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
+    <label for="age" class="form-label">Age:</label>
+    <input class="form-control dt-age" maxlength="255" name="age" type="number" id="age">
 </div>
 
 <!-- Phone Field -->
 <div class="form-group col-sm-12 p-2">
-    {!! Form::label('phone', 'Whatsapp:', ['class' => 'form-label']) !!}
-    {!! Form::text('course', null, ['class' => 'form-control dt-whatsapp','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
+    <label for="gender" class="form-label">Gender:</label>
+    <select class="dt-gender select2 form-select" name="gender" id="gender">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="All">All</option>
+    </select>
+</div>
+
+<div class="form-group col-sm-12 p-2">
+    <label for="income_level" class="form-label">Income Level:</label>
+    <select class="dt-income-level select2 form-select" name="income_level" id="income_level">
+        <option value="A">Type A</option>
+        <option value="B">Type B</option>
+        <option value="C">Type C</option>
+        <option value="Uncategorized">Uncategorized</option>
+    </select>
+</div>
+
+<div class="form-group col-sm-12 p-2">
+    <label for="job_title" class="form-label">Job Title:</label>
+    <select class="dt-job-title select2 form-select" name="job_title" id="job_title">
+        @foreach ($list_job as $key => $value)
+            <option value="{{ $value }}">{{ $value }}</option>
+        @endforeach
+    </select>
 </div>
 
 

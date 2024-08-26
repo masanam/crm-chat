@@ -30,6 +30,7 @@
 
   // datepicker init
   if (datePicker) {
+    console.log('test');
     datePicker.flatpickr({
       monthSelectorType: 'static',
       altInput: true,

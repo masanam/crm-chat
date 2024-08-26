@@ -3,8 +3,9 @@
 @section('title', 'Customer Detail - Apps')
 
 @section('vendor-style')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css">
-<link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" />
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/jkanban/jkanban.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
 <link rel="stylesheet" href="{{ asset('assets/vendor/libs/quill/typography.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/vendor/libs/quill/katex.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/vendor/libs/quill/editor.css') }}" />
@@ -55,8 +56,9 @@
 @endsection
 
 @section('vendor-script')
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>   
-<script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
+<script src="{{asset('assets/vendor//libs/moment/moment.js')}}"></script>
+<script src="{{asset('assets/vendor//libs/flatpickr/flatpickr.js')}}"></script>
+<script src="{{asset('assets/vendor//libs/select2/select2.js')}}"></script>
 <script src="{{ asset('assets/vendor/libs/quill/katex.js') }}"></script>
 <script src="{{ asset('assets/vendor/libs/quill/quill.js') }}"></script>
 @endsection
@@ -68,10 +70,22 @@
 <script src="{{ asset('assets/js/customer.js') }}"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+        var datePicker = document.querySelector('.due-date');
         var postURL = "<?php echo url('customers/addmore'); ?>";
         var total = $('#totalData').val();
 
         var i = total + 1;
+
+        if (datePicker) {
+            console.log('test');
+            datePicker.flatpickr({
+            monthSelectorType: 'static',
+            altInput: true,
+            minDate: 'today',
+            altFormat: 'j F, Y',
+            dateFormat: 'Y-m-d'
+            });
+            };
 
         $(document).on('click', "input[type='radio'][name='optRadio']", function () {
             switch (Number($(this).val())) {
@@ -249,21 +263,21 @@
             $(this).attr('contenteditable', 'true');
         });
 
+        // $('.input-editable').on('blur', function () {
+        //     const newValue = $(this).text();
+
+        //     postData($(this).data('id'), newValue, $(this).data('type'), $(this).data('url'));
+        // });
+
         $('.input-editable').on('blur', function () {
             const newValue = $(this).text();
+console.log(newValue);
 
             postData($(this).data('id'), newValue, $(this).data('type'), $(this).data('url'));
         });
 
-        $('.input-editable').on('blur', function () {
-            const newValue = $(this).text();
-
-            postData($(this).data('id'), newValue, $(this).data('type'), $(this).data('url'));
-        });
-
-        $('.select-editable').on('blur', function () {
+        $('.select-editable').on('change', function () {
             const newValue = $(this).val();
-
             postData($(this).data('id'), newValue, $(this).data('type'), $(this).data('url'));
         });
     })
@@ -303,9 +317,6 @@
         });
     });
 
-    $(document).ready(function () {
-        $('#deadline').datepicker();
-    })
 </script>
 @endsection
 
@@ -402,8 +413,8 @@ $statuses = \App\Models\TaskStatus::orderBy('id', 'asc')->get();
                                         <span style="font-size: 12px">{{ date('M d, Y', strtotime($lead->created_at)) }}</span>
                                     </div>
                                     <div>Rp&nbsp;
-                                        <span class="input-editable" data-id="{{ $lead->id }}" data-type="amount"
-                                            data-url="api/leads/{{ $lead->id }}/change">{{ $lead->amount ?? 0 }}</span>
+                                        <span class="input-editable" data-id="{{ $lead->id }}" data-type="budget"
+                                            data-url="api/leads/{{ $lead->id }}/change">{{ $lead->budget ?? 0 }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -869,7 +880,8 @@ $statuses = \App\Models\TaskStatus::orderBy('id', 'asc')->get();
         <x-input-floating label="Ticket Name" id="title" name="title"></x-input-floating>
         <div class="d-flex justify-content-between gap-5 w-100">
             <x-input-floating label="Ticket ID" id="code" name="code"></x-input-floating>
-            <x-input-floating label="Resolution Date" id="deadline" name="deadline"></x-input-floating>
+            <input type="text" name="deadline" id="deadline" class="due-date form-control" placeholder="Enter Due Date" />
+
         </div>
         <div class="d-flex align-items-center justify-content-between gap-3">
             <div class="d-flex flex-column">

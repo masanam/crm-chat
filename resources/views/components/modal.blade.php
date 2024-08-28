@@ -1,4 +1,4 @@
-<div class="modal fade {{ $wrapperModalClass }}" id="{{ $name }}" aria-hidden="true">
+<div class="modal fade {{ $wrapperModalClass }}" id="{{ $name }}" aria-hidden="true" @if($isBackdrop) data-bs-backdrop="static" @endif>
   @if($isPost)
   <form method="post" action="{{ $url }}" {{ $isSendFile ? 'enctype="multipart/form-data"' : '' }}>
     @csrf

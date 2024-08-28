@@ -9,7 +9,10 @@
     // variable form filters
     let locationsValue = [];
     let checkedLead = [];
+    let industryValue = [];
     const token = $("meta[name='csrf-token']").attr("content")
+
+    $(".select2-industry").select2();
 
     // fetch lead generation list
     const fetchingLeadList = () => {
@@ -53,6 +56,78 @@
         }
         return initials;
     };
+
+    /**
+     * @description render group age based on customer age
+     */
+    const renderGroupAge = (age) => {
+        if (!age) return '-'
+        if (typeof age === 'number') {
+            let text;
+
+            switch (true) {
+                case age < 21:
+                    text = 'Above - 21 years old'
+                    break;
+                case age >= 21 && age <= 29:
+                    text = '21 - 29 years old'
+                    break;
+                case age >= 30 && age <= 39:
+                    text = '30 - 39 years old'
+                    break;
+                case age >= 40 && age <= 49:
+                    text = '40 - 49 years old'
+                    break;
+                default:
+                    text = '50 years old - over'
+                    break;
+            }
+            return text
+        }
+    }
+
+    /**
+     * @description render income level based on customer income level
+     */
+     const renderIncomeLevel = (income) => {
+        if (!income) return '-'
+        if (typeof income === 'string') {
+            let text;
+
+            switch (true) {
+                case income === 'a':
+                    text = 'Type A'
+                    break;
+                case income === 'b':
+                    text = 'Type B'
+                    break;
+                case income === 'c':
+                    text = 'Type C'
+                    break;
+                default:
+                    text = 'Uncategorized'
+                    break;
+            }
+            return text
+        }
+    }
+
+    /**
+     * handle truncate string text
+     * @param {String} str 
+     * @param {Number} offset 
+     * @returns String
+     */
+    const truncateString = (str, offset = 10) => {
+        if (!str) return ''
+        if (typeof str === 'string') {
+            if (str.length >= offset) {
+                return str.slice(0, offset) + '...'
+            } else {
+                return str
+            }
+        }
+    }
 
     /**
      * @description handle change icon chevron right/up
@@ -119,6 +194,22 @@
         const content = $('#content-filter-job')
         content.toggle();
         handleChangeIconFilter(content)
+    });
+    $('#filter-industry').on('click', function() {
+        const content = $('#content-filter-industry')
+        const elTarget = content[0].previousElementSibling
+        
+        if (content.hasClass('hide')) {
+            content.removeClass('hide')
+            content.css({ display: 'flex', flexDirection: 'column', gap: '1rem' })
+            elTarget.querySelector('.ti').classList.remove('ti-chevron-right')
+            elTarget.querySelector('.ti').classList.add('ti-chevron-up')
+        } else {
+            content.addClass('hide')
+            content.css({ display: 'none' })
+            elTarget.querySelector('.ti').classList.remove('ti-chevron-up')
+            elTarget.querySelector('.ti').classList.add('ti-chevron-right')
+        }
     });
 
     /**
@@ -214,19 +305,19 @@
                         <tr class="odd">
                     <td class="control" style="display: none;" tabindex="0"></td>
                     <td class="dt-checkboxes-cell"><input type="checkbox" class="dt-checkboxes form-check-input"></td>
-                    <td data-bs-toggle="modal" data-bs-target="#detail-customer">
+                    <td data-bs-toggle="modal" data-bs-target="#detail-customer" data-id="${val.id}">
                       <div class="d-flex justify-content-start align-items-center user-name">
                         <div class="avatar-wrapper">
                           <div class="avatar me-2"><span class="avatar-initial rounded-circle bg-label-info">${getInitials(val.customer_name)}</span></div>
                         </div>
                         <div class="d-flex flex-column">
                           <span class="emp_name text-truncate" style="color: #101828;">${val.customer_name}</span>
-                          <span class="emp_name text-truncate">CEO</span>
+                          <span class="emp_name text-truncate">${truncateString(val.job_title, 20)}</span>
                         </div>
                       </div>
                     </td>
-                    <td data-bs-toggle="modal" data-bs-target="#detail-customer">+62 xxx-xxx-xxx</td>
-                    <td data-bs-toggle="modal" data-bs-target="#detail-customer">${val.location}</td>
+                    <td data-bs-toggle="modal" data-bs-target="#detail-customer" data-id="${val.id}">+62 xxx-xxx-xxx</td>
+                    <td data-bs-toggle="modal" data-bs-target="#detail-customer" data-id="${val.id}">${val.location}</td>
                     <td>
                       <button
                         class="btn-add-list"
@@ -244,19 +335,19 @@
                     <tr class="even">
                     <td class="control" style="display: none;" tabindex="0"></td>
                     <td class="dt-checkboxes-cell"><input type="checkbox" class="dt-checkboxes form-check-input"></td>
-                    <td data-bs-toggle="modal" data-bs-target="#detail-customer">
+                    <td data-bs-toggle="modal" data-bs-target="#detail-customer" data-id="${val.id}">
                       <div class="d-flex justify-content-start align-items-center user-name">
                         <div class="avatar-wrapper">
                           <div class="avatar me-2"><span class="avatar-initial rounded-circle bg-label-info">${getInitials(val.customer_name)}</span></div>
                         </div>
                         <div class="d-flex flex-column">
                           <span class="emp_name text-truncate" style="color: #101828;">${val.customer_name}</span>
-                          <span class="emp_name text-truncate">CEO</span>
+                          <span class="emp_name text-truncate">${truncateString(val.job_title, 20)}</span>
                         </div>
                       </div>
                     </td>
-                    <td data-bs-toggle="modal" data-bs-target="#detail-customer">+62 xxx-xxx-xxx</td>
-                    <td data-bs-toggle="modal" data-bs-target="#detail-customer">${val.location}</td>
+                    <td data-bs-toggle="modal" data-bs-target="#detail-customer" data-id="${val.id}">+62 xxx-xxx-xxx</td>
+                    <td data-bs-toggle="modal" data-bs-target="#detail-customer" data-id="${val.id}">${val.location}</td>
                     <td>
                       <button
                         class="btn-add-list"
@@ -296,8 +387,12 @@
                 })
             } else if (field.name.includes('income_level')) {
                 incomeLevel.push(field.value)
-            } else if (field.value !== '') {
+            } else if (field.value !== '' && field.name !== 'industry') {
                 payload.set(field.name, field.value)
+            }
+
+            if (field.name === 'industry') {
+                industryValue.push(field.value)
             }
         })
 
@@ -311,6 +406,9 @@
             payload.set('min_age', Math.min(...age))
             payload.set('max_age', Math.max(...age))
         }
+        if (industryValue.length > 0) {
+            payload.set('industry', industryValue)
+        }
 
         fetch(`${baseUrl}api/lead-generation/search-customer?` + new URLSearchParams(payload), {
             headers: {
@@ -321,6 +419,8 @@
         .then(res => {
           renderChildTable(res.result)
           $('#table-lead-search').find('#table-header-title').text(`${res.result.length} match your filters`)
+          // fetching detail customer
+          fetchingDetailCustomer()
         })
 
         $('#table-lead-search').css({ display: 'block' })
@@ -447,6 +547,119 @@
             }
         })
     })
+
+    /**
+     * @description handle fetch detail customer on modal detail customer
+     */
+    const fetchingDetailCustomer = () => {
+        $('#table-lead-search').find(`[data-bs-target='#detail-customer']`).each(function() {
+            $(this).on('click', function() {
+                const getCustomerId = $(this).attr('data-id')
+                fetch(`${baseUrl}api/lead-generation/${getCustomerId}`, {
+                    headers: {
+                      'X-CSRF-TOKEN': token
+                    }
+                })
+                .then(r => r.json())
+                .then(res => {
+                    const data = res.data
+                    // find element modal
+                    const targetModal = $('#detail-customer').find('.modal-body')
+                    targetModal.html(`
+                    <div class="gap-3 container-lead-search-detail">
+                        <div class="d-flex flex-column gap-3">
+                            <div class="d-flex justify-content-between">
+                              <div class="d-flex align-items-center gap-3">
+                                <div class="flex-shrink-0 avatar" style="width: 110px; height: 110px;">
+                                  <span class="avatar-initial rounded-circle text-dark fw-bolder fs-1">${getInitials(data.customer_name)}</span>
+                                </div>
+                                <div class="d-flex flex-column justify-content-between gap-3">
+                                  <div class="d-flex flex-column">
+                                    <div class="d-flex align-items-center gap-2">
+                                      <span style="font-size: 24px;" class="text-dark fw-bold">${data.customer_name}</span>
+                                      <img src="assets/svg/icons/icon-verify.svg" alt="verify account">
+                                    </div>
+                                    <span class="text-dark fw-bold">${data.job_title}</span>
+                                  </div>
+                                  <div class="d-flex align-items-center gap-3">
+                                    <div class="d-flex align-items-center gap-1">
+                                      <i class="ti ti-user"></i>
+                                      <span>${data.gender},</span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-1">
+                                      <span>${renderGroupAge(data.age)},</span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-1">
+                                      <img src="assets/svg/icons/icon-dolar-outline.svg" alt="dolar">
+                                      <span>${renderIncomeLevel(data.income_level?.toLowerCase())}</span>
+                                    </div>
+                                    <span>&#128900;</span>
+                                    <div class="d-flex align-items-center gap-1">
+                                      <span>${data.location}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <i class="ti ti-x" data-bs-dismiss="modal" data-bs-target="#detail-customer" style="cursor: pointer;"></i>
+                            </div>
+                            <div class="card-contact-info d-flex flex-column gap-3">
+                              <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-dark fw-bolder" style="font-size: 18px;">Contact Information</span>
+                                <button
+                                  class="btn-add-list"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#list"
+                                >
+                                  <i class="ti ti-plus"></i>
+                                  Add to list
+                                </button>
+                              </div>
+                              <div class="contact-info-content">
+                                <div class="d-flex align-items-center gap-2">
+                                  <img src="assets/svg/icons/icon-whatsapp.svg" alt="wa">
+                                  <span class="text-dark">+62 xxx-xxx-xxx</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-2">
+                                  <i class="ti ti-world"></i>
+                                  <a target="_blank" href="${data?.url ?? '#'}" class="text-dark">
+                                    ${data?.url ?? '-'}
+                                  </a>
+                                </div>
+                                <div class="d-flex align-items-center gap-2">
+                                  <i class="ti ti-mail"></i>
+                                  <span class="text-dark">${data?.email ?? '-'}</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-2">
+                                  <span>Social: </span>
+                                  <a target="_blank" href="${data?.linkedin ?? '#'}">
+                                    <img src="assets/svg/icons/icon-linkedin.svg" alt="linkedin">
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                    `)
+                    $('#detail-customer').find(`.ti-x`).on('click', function() {
+                        targetModal.html(`
+                        <div class="d-flex justify-content-center">
+                            <i
+                              class="ti ti-x"
+                              data-bs-dismiss="modal"
+                              data-bs-target="#detail-customer"
+                              style="cursor: pointer; position: absolute; right: 0; margin-right: 20px;"
+                            >
+                            </i>
+                            <div class="spinner-border text-primary" role="status">
+                              <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        `)
+                    })
+                }).catch(err => console.error(err))
+            })
+        })
+    }
    })();
  });
  

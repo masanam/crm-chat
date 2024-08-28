@@ -39,6 +39,10 @@ class LeadGenerationController extends BaseController
         'gender' => 'required',
         'income_level' => 'required',
         'job_title' => 'required',
+        'industry' => 'required',
+        'email' => 'required',
+        'linkedin' => 'required',
+        'url' => 'required',
       ]);
 
       if ($validator->fails()) {
@@ -60,6 +64,10 @@ class LeadGenerationController extends BaseController
         $model->gender = $request->gender;
         $model->income_level = $request->income_level;
         $model->job_title = $request->job_title;
+        $model->industry = $request->industry;
+        $model->email = $request->email;
+        $model->linkedin = $request->linkedin;
+        $model->url = $request->url;
         $model->save();
 
         response()->json(
@@ -103,6 +111,7 @@ class LeadGenerationController extends BaseController
             $min_age = $request->query('min_age');
             $max_age = $request->query('max_age');
             $gender = $request->query('gender');
+            $industry = $request->query('industry');
             $customer;
 
             if ($min_age == '50' || $min_age != '50' && $max_age == '50') {
@@ -124,6 +133,9 @@ class LeadGenerationController extends BaseController
                 })
                 ->when($location, function($query, $name) {
                   return $query->whereIn('location', explode(',', $name));
+                })
+                ->when($industry, function($query, $name) {
+                  return $query->whereIn('industry', explode(',', $name));
                 })
                 ->get();
             } else {
@@ -148,6 +160,9 @@ class LeadGenerationController extends BaseController
                 })
                 ->when($location, function($query, $name) {
                   return $query->whereIn('location', explode(',', $name));
+                })
+                ->when($industry, function($query, $name) {
+                  return $query->whereIn('industry', explode(',', $name));
                 })
                 ->get();
             }

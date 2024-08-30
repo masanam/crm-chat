@@ -94,7 +94,9 @@ Route::get('/clients', [ClientController::class, 'get']);
 
 Route::post('/companies/{id}/change', [CompanyController::class, 'change']);
 Route::post('/leads/{id}/change', [LeadController::class, 'change']);
-Route::post('/tasks/{id}/change', [TaskController::class, 'change']);
+Route::post('/tasks/{id}/change', [TaskController::class, 'change'])->name('task.change');
+
+// Route::post('tasks/{id}/update', [TaskController::class, 'update'])->name('api.tasks.update');
 
 Route::post('/send-whatsapp', [Chat::class, 'sendWhatsAppMessage']);
 Route::post('/receive-chat', [Chat::class, 'receiveWhatsAppMessage']);

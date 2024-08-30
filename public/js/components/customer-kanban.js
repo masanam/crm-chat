@@ -198,6 +198,31 @@
     //   class: 'kanban-title-button btn', // default class of the button
     //   footer: false // position the button on footer
     // },
+    dropEl: function (el) {
+      // parentBoard = target.offsetParent.getAttribute("data-id");
+      var id = el.getAttribute("data-eid").replace('task-','');
+      var boardId = el.offsetParent.getAttribute("data-order");
+      console.log(boardId); 
+      console.log(id); 
+                // Kirim data ke API
+                $.ajax({
+                  url: '/leads/'+id+'/update',
+                  type: 'post',
+                  headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                  data: {
+                    'id': id,
+                    'boardId': boardId,
+                  },
+                  success: function(data) {
+                    console.log('Success:', data);
+                  },
+                  error: function(data) {
+                    console.log('Error:', data);
+                  }
+                });
+          
+    },
+
     click: function (el) {
       // const contact_id = $(this).getAttribute("data-eid");
       // routerPush(document.title, `${url}/customers/${contact_id}`);

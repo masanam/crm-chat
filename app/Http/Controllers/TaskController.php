@@ -135,6 +135,27 @@ class TaskController extends Controller
     return redirect()->back();
   }
 
+  public function simpan($id, Request $request)
+  {
+      $input = $request->all();
+
+      $task = Task::find($request->taskId);
+
+      if (empty($task)) {
+          return $this->sendError('not found');
+      }
+
+      $task->update([
+        'status_id' => $request->boardId,
+      ]);
+  
+      return response()->json([
+        'status' => 200,
+        'message' => 'Board list',
+        'data' => $task,
+      ]);
+  }
+
   /**
    * Remove the specified resource from storage.
    *

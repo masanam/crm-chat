@@ -508,5 +508,74 @@ background: #FFF;">
                     </div>
                 </div>
 
+                {{-- modal add/edit Deals Info --}}
+
+<div class="modal fade" id="update-status" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="d-flex align-items-center justify-content-between border border-bottom-2">
+      <div class="d-flex align-items-center p-3">
+        <h4 class="modal-title text-dark fw-bold" id="exampleModalLabel2">Update Status</h5>
+      </div>
+    </div>
+    
+    <div class="modal-body px-4 py-3">
+    <div class="row">
+        <div class="col-xl-12" style="padding: 16px;
+border-radius: 12px;
+border: 1px solid #DDE0E4;
+background: #FFF;">
+        <div class="form-group ">
+        <form id="update-status" method="POST" action="{{ route('customers.updateStatus') }}" enctype="multipart/form-data" style="display: flex; flex-direction: column;">
+                    @csrf
+            <div class="table-responsive">
+                <table class="table table-borderless table-condensed" id="dynamic_field">
+                    <tr>  
+                            <td style="width:1px; white-space:nowrap;">
+                                Status
+                            </td>  
+                            <td>
+                            <input type="text" name="status" id="status" class="form-control" value="{{ $option->status }}"/>
+                            </td>  
+                        </tr>  
+                        <tr>  
+                            <td>
+                                Quality
+                            </td>  
+                            <td>
+                            <input type="text" name="quality" id="quality" class="form-control" value="{{ $option->quality }}"/>
+                            </td>  
+                        </tr>  
+                        <tr>  
+                            <td>
+                                Stage
+                            </td>  
+                            <td>
+                            <input type="text" name="stage" id="stage" class="form-control" value="{{ $option->stage }}"/>
+                            </td>  
+                        </tr>  
+                        <tr>  
+                            <td>
+                                Customer Type
+                            </td>  
+                            <td>
+                            <input type="text" name="type" id="type" class="form-control" value="{{ $option->type }}"/>
+                            </td>  
+                        </tr>  
+
+                        <input type="hidden" name="id" id="id" class="form-control" value="1"/>
+
+                </table>  
+            </div>
+
+            <div class="modal-footer d-flex justify-content-center align-items-center w-100 p-4">
+                <button type="submit" data-bs-dismiss="modal" id="update-status" class="btn btn-primary" >Save</button>
+                <button type="button" data-bs-dismiss="modal" class="btn" style="background: #667085; color: #FFF;">Close</button>
+            </div>
+        </form>  
+    </div>
+
+        </div>
+</div>
 
                 @endsection

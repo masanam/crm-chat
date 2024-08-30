@@ -30,7 +30,7 @@
 
   // datepicker init
   if (datePicker) {
-    console.log('test');
+    // console.log('test');
     datePicker.flatpickr({
       monthSelectorType: 'static',
       altInput: true,
@@ -184,7 +184,38 @@
     //   class: 'kanban-title-button btn', // default class of the button
     //   footer: false // position the button on footer
     // },
-    click: function (el) {
+    dragEl: function (el, source) {},
+    dragendEl: function (el) {},
+    dragBoard: function (el, source) {},
+    dragendBoard: function (el) {},
+    dropBoard: function (el, target, source, sibling) {},
+    
+  dropEl: function (el) {
+      // parentBoard = target.offsetParent.getAttribute("data-id");
+      var taskId = el.getAttribute("data-eid").replace('task-','');
+      var boardId = el.offsetParent.getAttribute("data-order");
+      console.log(taskId); 
+      console.log(boardId); 
+                // Kirim data ke API
+                $.ajax({
+                  url: '/tasks/'+taskId+'/update',
+                  type: 'post',
+                  headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                  data: {
+                    'taskId': taskId,
+                    'boardId': boardId,
+                  },
+                  success: function(data) {
+                    console.log('Success:', data);
+                  },
+                  error: function(data) {
+                    console.log('Error:', data);
+                  }
+                });
+          
+    },
+
+  click: function (el) {
       // let element = el;
       // let title = element.getAttribute('data-eid')
       //   ? element.querySelector('.kanban-text').textContent

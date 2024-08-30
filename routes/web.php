@@ -490,6 +490,8 @@ Route::middleware(['auth'])->group(function () {
   Route::post('change-lead', [LeadController::class, 'updateLead'])->name('leads.change');
   Route::post('leads/add-contact', [LeadController::class, 'addContact'])->name('leads.add-contact');
 
+  Route::post('leads/{id}/update', [LeadController::class, 'simpan'])->name('leads.simpan');
+
   Route::get('lead-generation', [LeadGenerationController::class, 'leadSearchView'])->name('lead-gen.index');
   Route::get('lead-generation/management', [LeadGenerationController::class, 'index'])->name('lead-gen.customer-list');
   Route::get('lead-generation/search-customer', [LeadGenerationController::class, 'searchCustomer'])->name('lead-gen.customer-search');
@@ -526,6 +528,8 @@ Route::middleware(['auth'])->group(function () {
   Route::get('tasks/{id}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
   Route::put('tasks/{id}', [TaskController::class, 'update'])->name('tasks.update');
   Route::delete('tasks/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+
+  Route::post('tasks/{id}/update', [TaskController::class, 'simpan']);
 
   // Route::resource('Customer', CustomerController::class);
   Route::get('customers', [CustomerController::class, 'index'])->name('customers.index');

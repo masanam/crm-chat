@@ -109,25 +109,26 @@ class TaskController extends BaseController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, Task $task): JsonResponse
-  {
-    $input = $request->all();
+  // public function update(Request $request, Task $task): JsonResponse
+  // {
+  //   $input = $request->all();
 
-    $validator = Validator::make($input, [
-      'name' => 'required',
-      'detail' => 'required',
-    ]);
+  //   $validator = Validator::make($input, [
+  //     'name' => 'required',
+  //     'detail' => 'required',
+  //   ]);
 
-    if ($validator->fails()) {
-      return $this->sendError('Validation Error.', $validator->errors());
-    }
+  //   if ($validator->fails()) {
+  //     return $this->sendError('Validation Error.', $validator->errors());
+  //   }
 
-    $task->name = $input['name'];
-    $task->detail = $input['detail'];
-    $task->save();
+  //   $task->name = $input['name'];
+  //   $task->detail = $input['detail'];
+  //   $task->save();
 
-    return $this->sendResponse(new TaskResource($task), 'Task updated successfully.');
-  }
+  //   return $this->sendResponse(new TaskResource($task), 'Task updated successfully.');
+  // }
+
 
   /**
    * Remove the specified resource from storage.

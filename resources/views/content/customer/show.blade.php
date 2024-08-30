@@ -420,6 +420,15 @@ $statuses = \App\Models\TaskStatus::orderBy('id', 'asc')->get();
                             </div>
                         </div>
                         <div class="sidebar-card d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-center">
+                                <img src="{{ asset('assets/svg/icons/edit.svg') }}" alt="edit"
+                                                width="15" data-bs-toggle="modal" data-bs-target="#update-status"
+                                                class="cursor-pointer">
+                                    <span class="text-dark fw-bold" style="font-size: 18px">Status</span>
+                                    <i class="ti ti-chevron-down text-dark"></i>
+
+                                </div>
+
                             <div class="d-flex justify-content-between align-items-center">
                                 <h6 class="text-dark">Status</h6>
                                 <select id="status" data-id="{{ $lead->id }}" data-type="status"
@@ -922,6 +931,52 @@ $statuses = \App\Models\TaskStatus::orderBy('id', 'asc')->get();
         </div> -->
         <x-input-floating id="description" name="description" label="Ticket Notes" placeholder="Write a note"
             type="textarea" cols="33" rows="5"></x-input-floating>
+    </div>
+</x-modal>
+
+{{-- modal Status  --}}
+<x-modal title="Update Status" name="update-status" submitText="Submit" buttonSubmitClass="" isPost="true"
+    buttonWrapperSubmitClass="d-flex justify-end w-100 justify-content-center" modalClass="" url="{{ route('customers.updateStatus') }}">
+    <div class="d-flex flex-column gap-4">
+    <div class="table-responsive">
+                <table class="table table-borderless table-condensed" id="dynamic_field">
+                    <tr>  
+                            <td style="width:1px; white-space:nowrap;">
+                                Status
+                            </td>  
+                            <td>
+                            <input type="text" name="status" id="status" class="form-control" value="{{ $option->status }}"/>
+                            </td>  
+                        </tr>  
+                        <tr>  
+                            <td>
+                                Quality
+                            </td>  
+                            <td>
+                            <input type="text" name="quality" id="quality" class="form-control" value="{{ $option->quality }}"/>
+                            </td>  
+                        </tr>  
+                        <tr>  
+                            <td>
+                                Stage
+                            </td>  
+                            <td>
+                            <input type="text" name="stage" id="stage" class="form-control" value="{{ $option->stage }}"/>
+                            </td>  
+                        </tr>  
+                        <tr>  
+                            <td>
+                                Customer Type
+                            </td>  
+                            <td>
+                            <input type="text" name="type" id="type" class="form-control" value="{{ $option->type }}"/>
+                            </td>  
+                        </tr>  
+
+                        <input type="hidden" name="id" id="id" class="form-control" value="1"/>
+
+                </table>  
+            </div>
     </div>
 </x-modal>
 

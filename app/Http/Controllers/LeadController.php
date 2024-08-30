@@ -117,6 +117,27 @@ class LeadController extends Controller
     //
   }
 
+  public function simpan($id, Request $request)
+  {
+      $input = $request->all();
+
+      $lead = Lead::find($request->id);
+
+      if (empty($lead)) {
+          return $this->sendError('not found');
+      }
+
+      $lead->update([
+        'stage' => $request->boardId,
+      ]);
+  
+      return response()->json([
+        'status' => 200,
+        'message' => 'Board list',
+        'data' => $lead,
+      ]);
+  }
+
   /**
    * Show the form for editing the specified resource.
    */

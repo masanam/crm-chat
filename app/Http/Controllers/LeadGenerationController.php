@@ -13,13 +13,15 @@ class LeadGenerationController extends Controller
 {
     public function leadSearchView()
     {
-      $json = File::json(base_path('public/dummy-job.json'));
+      $job_json = File::json(base_path('public/dummy-job.json'));
+      $industry_json = File::json(base_path('public/dummy-industry.json'));
       $placeholder = (object) [
         'label' => '- Select -',
         'value' => '',
       ];
+
       $list_job = array($placeholder);
-      foreach ($json as $job) {
+      foreach ($job_json as $job) {
         $data = (object) [
           'label' => $job,
           'value' => $job,
@@ -27,7 +29,16 @@ class LeadGenerationController extends Controller
         array_push($list_job, $data);
       }
 
-      return view('content.lead.lead-search', compact('list_job'));
+      $list_industry = array();
+      foreach ($industry_json as $industry) {
+        $data = (object) [
+          'label' => $industry,
+          'value' => $industry,
+        ];
+        array_push($list_industry, $data);
+      }
+
+      return view('content.lead.lead-search', compact('list_job', 'list_industry'));
     }
 
     public function index(Request $request)
@@ -45,8 +56,9 @@ class LeadGenerationController extends Controller
           ->make(true);
       }
       $list_job = File::json(base_path('public/dummy-job.json'));
+      $list_industry = File::json(base_path('public/dummy-industry.json'));
 
-      return view('content.lead.lead-index', compact('list_job'));
+      return view('content.lead.lead-index', compact('list_job', 'list_industry'));
     }
 
     public function store(Request $request)
@@ -59,6 +71,10 @@ class LeadGenerationController extends Controller
         'gender' => 'required',
         'income_level' => 'required',
         'job_title' => 'required',
+        'industry' => 'required',
+        'email' => 'required',
+        'linkedin' => 'required',
+        'url' => 'required',
       ]);
       
       try {
@@ -69,7 +85,11 @@ class LeadGenerationController extends Controller
           'age' => $request->age,
           'gender' => $request->gender,
           'income_level' => $request->income_level,
-          'job_title' => $request->job_title
+          'job_title' => $request->job_title,
+          'industry' => $request->industry,
+          'email' => $request->email,
+          'linkedin' => $request->linkedin,
+          'url' => $request->url
         ]);
         $request->session()->flash('success', 'Save Data Berhasil');
 

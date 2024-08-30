@@ -25,5 +25,9 @@ class LeadGeneration extends Model
     'gender',
     'income_level',
     'job_title',
+    'industry',
+    'email',
+    'linkedin',
+    'url'
   ];
 }

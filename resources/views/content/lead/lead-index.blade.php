@@ -3,12 +3,14 @@
 @section('title', 'Lead Generation Management')
 
 @section('vendor-style')
-<link rel="stylesheet" href="assets/vendor/libs/select2/select2.css " />
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/css/custom.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
 @endsection
 
 @section('vendor-script')
 <script src="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
-<script src="assets/vendor/libs/select2/select2.js"></script>
+<script src="{{asset('assets/vendor/libs/select2/select2.js')}}"></script>
 @endsection
 
 @section('page-script')
@@ -63,6 +65,7 @@
     const token = $("meta[name='csrf-token']").attr("content");
     const formAddNewRecord = document.getElementById('form-add-new-record');
     let currentId = ''
+    $('.select2-industry').select2()
 
     setTimeout(() => {
       const newRecord = document.querySelector('.create-new'),
@@ -79,6 +82,10 @@
         (offCanvasElement.querySelector('.dt-gender').value = ''),
         (offCanvasElement.querySelector('.dt-income-level').value = ''),
         (offCanvasElement.querySelector('.dt-job-title').value = ''),
+        (offCanvasElement.querySelector('.dt-industry').value = ''),
+        (offCanvasElement.querySelector('.dt-email').value = ''),
+        (offCanvasElement.querySelector('.dt-link-linkedin').value = ''),
+        (offCanvasElement.querySelector('.dt-url').value = ''),
         // Open offCanvas with form
         offCanvasEl.show();
       });
@@ -106,7 +113,7 @@
         })
         .then(r => r.json())
         .then(res => {
-          const { age, customer_name, gender, income_level, job_title, phone, location } = res.data
+          const { age, customer_name, gender, income_level, job_title, phone, location, industry, email, linkedin, url } = res.data
           offCanvasElement2.querySelector('.dt-customer-name').value = res.data.customer_name
           offCanvasElement2.querySelector('.dt-phone').value = phone
           offCanvasElement2.querySelector('.dt-location').value = location
@@ -114,6 +121,10 @@
           offCanvasElement2.querySelector('.dt-gender').value = gender
           offCanvasElement2.querySelector('.dt-income-level').value = income_level
           offCanvasElement2.querySelector('.dt-job-title').value = job_title
+          offCanvasElement2.querySelector('.dt-industry').value = industry
+          offCanvasElement2.querySelector('.dt-email').value = email
+          offCanvasElement2.querySelector('.dt-link-linkedin').value = linkedin
+          offCanvasElement2.querySelector('.dt-url').value = url
         })
         // Open offCanvas with form
         offCanvasE2.show();
@@ -141,8 +152,6 @@
         })
       }
     }, 3000)
-
-    $(".select2").select2();
   });
 </script>
 @endsection

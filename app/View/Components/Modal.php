@@ -29,6 +29,7 @@ class Modal extends Component
   public $isPost;
   public $url;
   public $isSendFile;
+  public $isBackdrop;
 
   public function __construct(
     $modalClass = 'modal-sm',
@@ -48,7 +49,8 @@ class Modal extends Component
     $header = '',
     $isPost = false,
     $url = '',
-    $isSendFile = false
+    $isSendFile = false,
+    $isBackdrop = false
   ) {
     $this->modalClass = $modalClass;
     $this->title = $title;
@@ -68,6 +70,7 @@ class Modal extends Component
     $this->isPost = $isPost;
     $this->url = $url;
     $this->isSendFile = $isSendFile;
+    $this->isBackdrop = $isBackdrop;
   }
 
   /**

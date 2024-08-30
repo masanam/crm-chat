@@ -51,6 +51,30 @@
     </select>
 </div>
 
+<div class="form-group col-sm-12 p-2">
+    <label for="email" class="form-label">Email:</label>
+    <input class="form-control dt-email" maxlength="255" name="email" type="email" id="email">
+</div>
+
+<div class="form-group col-sm-12 p-2">
+    <label for="industry" class="form-label">Industry:</label>
+    <select id="industry" name="industry" class="select2-industry dt-industry form-select">
+      @foreach ($list_industry as $industry)
+        <option value="{{ $industry }}">{{ $industry }}</option>
+      @endforeach
+    </select>
+</div>
+
+<div class="form-group col-sm-12 p-2">
+    {!! Form::label('linkedin', 'Linkedin:', ['class' => 'form-label']) !!}
+    {!! Form::text('linkedin', null, ['class' => 'form-control dt-link-linkedin','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
+</div>
+
+<div class="form-group col-sm-12 p-2">
+    {!! Form::label('url', 'Url:', ['class' => 'form-label']) !!}
+    {!! Form::text('url', null, ['class' => 'form-control dt-url','maxlength' => 255,'maxlength' => 255,'maxlength' => 255]) !!}
+</div>
+
 
 <!-- Submit Field -->
 <div class="form-group col-sm-12 p-2">

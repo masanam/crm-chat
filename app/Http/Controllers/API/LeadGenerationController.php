@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
 use App\Models\LeadGeneration;
+use App\Models\LeadGenerationList;
 use Validator;
 use Illuminate\Http\JsonResponse;
 use DB;
@@ -164,18 +165,91 @@ class LeadGenerationController extends BaseController
                 ->when($industry, function($query, $name) {
                   return $query->whereIn('industry', explode(',', $name));
                 })
+                ->leftJoin('lead_generation', 'lead_generation_customer.id', '=', 'lead_generation.lead_gen_customer_id')
+                ->leftJoin('lead_generation_list', 'lead_generation.lead_gen_list_id', '=', 'lead_generation_list.id')
+                ->select('lead_generation_customer.*', 'lead_generation_list.id as list_id', 'lead_generation_list.name as list_name')
                 ->get();
             }
+
+            $customerArray = [];
+
+            foreach ($customer as $cust) {
+                if (!isset($customerArray[$cust->id])) {
+                    $customerArray[$cust->id] = (object) [
+                        'id' => $cust->id,
+                        'customer_name' => $cust->customer_name,
+                        'email' => $cust->email,
+                        'age' => $cust->age,
+                        'email' => $cust->email,
+                        'gender' => $cust->gender,
+                        'income_level' => $cust->income_level,
+                        'industry' => $cust->industry,
+                        'job_title' => $cust->job_title,
+                        'linkedin' => $cust->linkedin,
+                        'location' => $cust->location,
+                        'phone' => $cust->phone,
+                        'url' => $cust->url,
+                        'lists' => []
+                    ];
+                }
+              
+                if (!is_null($cust->list_id)) {
+                  $customerArray[$cust->id]->lists[] = (object) [
+                    'id' => $cust->list_id,
+                    'name' => $cust->list_name,
+                  ];
+                }
+            }
+
+            // Convert the associative array to an indexed array
+            $result = array_values($customerArray);
+
 
             return response()->json(
               [
                 'message' => 'Lead generation search successfully',
-                'result' => $customer
+                'result' => $result
               ],
               200
             );
         } catch (\Throwable $th) {
             return response()->json('Service Error : ' . $th , 500);
+        }
+    }
+
+    public function assignCustomer(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+          'customers' => 'required',
+          'list_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+          return response()->json(
+            [
+              'message' => 'Bad request',
+              'result' => $validator->errors()
+            ],
+            400
+          );
+        }
+        
+        try {
+          $listId = $request->list_id;
+          $customers = $request->customers;
+
+          $leadGenData = array_map(function($cust) use ($listId) {
+            return [
+              'lead_gen_customer_id' => $cust,
+              'lead_gen_list_id' => $listId
+            ];
+          }, $customers);
+
+          DB::table('lead_generation')->insert($leadGenData);
+
+          return $this->sendResponse([], 'Assign customer successfully.');
+        } catch (\Throwable $th) {
+          return response()->json('Service Error : ' . $th , 500);
         }
     }
 }

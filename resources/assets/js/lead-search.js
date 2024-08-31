@@ -10,6 +10,11 @@
     let locationsValue = [];
     let checkedLead = [];
     let industryValue = [];
+
+    // variable global
+    let customers = [];
+    let tempSearchCustomerResult;
+
     const token = $("meta[name='csrf-token']").attr("content")
 
     $(".select2-industry").select2();
@@ -28,11 +33,14 @@
                 const el = document.createElement('h6')
                 el.innerText = item.name
                 el.style.color = '#1F2124'
+                el.style.cursor = 'pointer'
                 el.setAttribute('data-search-term', item.name)
+                el.setAttribute('data-id', item.id)
                 el.className = 'lead-list'
 
                 $('#lead-list-wrapper').append(el)
             })
+            onClickAssignCustomer()
           } else {
             const el = document.createElement('span')
             el.innerText = 'No data list'
@@ -127,6 +135,55 @@
                 return str
             }
         }
+    }
+
+    /**
+     * @description fetch create assign customer to list
+     */
+    const onClickAssignCustomer = () => {
+        $('.lead-list').each(function() {
+            $(this).on('click', function() {
+                let customerNotJoin = []
+                const formData = new FormData()
+                const getListId = $(this).attr('data-id')
+
+                const getCustomerData = tempSearchCustomerResult.filter(cust => customers.includes(cust.id)).map(cust => ({
+                    ...cust,
+                    lists: cust.lists?.map(list => list.id)
+                }))
+                const getCustomerAlreadyJoinTeam = getCustomerData.filter(cust => {
+                    if (cust.lists.length > 0 && cust.lists.includes(parseInt(getListId))) {
+                        return cust
+                    } else {
+                        customerNotJoin.push(cust)
+                    }
+                })
+
+                if (getCustomerAlreadyJoinTeam.length > 0) {
+                    alert(`${getCustomerAlreadyJoinTeam.length} out of ${getCustomerData.length} customers already joined`)
+                }
+
+                customerNotJoin.forEach((cust, custIndex) => {
+                    formData.append(`customers[${custIndex}]`, cust.id)
+                })
+                formData.append('list_id', getListId)
+                fetch(`${baseUrl}api/lead-generation/assign-customer`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                      'X-CSRF-TOKEN': token
+                    }
+                })
+                .then(r => r.json())
+                .then(res => {
+                    
+                    // reset customers
+                    customers = []
+                    customerNotJoin = []
+                })
+                .catch(err => console.error(err))
+            })
+        })
     }
 
     /**
@@ -259,6 +316,18 @@
     });
 
     /**
+    * @description handle add button list
+    */
+    const onClickButtonListAdd = () => {
+        $('.btn-add-list').each(function() {
+            $(this).on('click', function(el) {
+                el.stopPropagation();
+                customers.push(parseInt($(this).attr('customer-id')))
+            })
+        })
+    }
+
+    /**
      * @description handle delete/remove location badge
      */
     const onDeleteLocation = () => {
@@ -304,7 +373,9 @@
                     elementTr.innerHTML = `
                         <tr class="odd">
                     <td class="control" style="display: none;" tabindex="0"></td>
-                    <td class="dt-checkboxes-cell"><input type="checkbox" class="dt-checkboxes form-check-input"></td>
+                    <td class="dt-checkboxes-cell">
+                        <input type="checkbox" class="dt-checkboxes form-check-input" customer-id="${val.id}">
+                    </td>
                     <td data-bs-toggle="modal" data-bs-target="#detail-customer" data-id="${val.id}">
                       <div class="d-flex justify-content-start align-items-center user-name">
                         <div class="avatar-wrapper">
@@ -323,6 +394,7 @@
                         class="btn-add-list"
                         data-bs-toggle="modal"
                         data-bs-target="#list"
+                        customer-id="${val.id}"
                       >
                         <i class="ti ti-plus"></i>
                         Add to list
@@ -334,7 +406,9 @@
                     elementTr.innerHTML = `
                     <tr class="even">
                     <td class="control" style="display: none;" tabindex="0"></td>
-                    <td class="dt-checkboxes-cell"><input type="checkbox" class="dt-checkboxes form-check-input"></td>
+                    <td class="dt-checkboxes-cell">
+                        <input type="checkbox" class="dt-checkboxes form-check-input" customer-id="${val.id}">
+                    </td>
                     <td data-bs-toggle="modal" data-bs-target="#detail-customer" data-id="${val.id}">
                       <div class="d-flex justify-content-start align-items-center user-name">
                         <div class="avatar-wrapper">
@@ -353,6 +427,7 @@
                         class="btn-add-list"
                         data-bs-toggle="modal"
                         data-bs-target="#list"
+                        customer-id="${val.id}"
                       >
                         <i class="ti ti-plus"></i>
                         Add to list
@@ -364,6 +439,7 @@
 
                 tbody.append(elementTr)
             })
+            onClickButtonListAdd()
         }
     }
 
@@ -372,6 +448,7 @@
      */
     $('#btn-filter-save').on('click', function(e) {
         e.preventDefault()
+
         // reset tbody table
         $('#table-lead-search').find('tbody').empty()
     
@@ -417,10 +494,47 @@
         })
         .then(r => r.json())
         .then(res => {
+          tempSearchCustomerResult = res.result
           renderChildTable(res.result)
           $('#table-lead-search').find('#table-header-title').text(`${res.result.length} match your filters`)
           // fetching detail customer
           fetchingDetailCustomer()
+
+          // handle change value checkbox
+          $('.dt-checkboxes').each(function(index) {
+              checkedLead.push($(this).prop('checked'))
+  
+              $(this).on('change', function(e) {
+                  if (e.target.checked) {
+                      $(this).prop('checked', true)
+                      $('#btn-header').attr('disabled', false)
+                      checkedLead = checkedLead.map((item, itemIndex) => {
+                        if (itemIndex === index) {
+                            return true
+                        }
+                        return item
+                      })
+                      // adding current customer to global variable customers
+                      customers.push(parseInt($(this).attr('customer-id')))
+                  } else {
+                      $(this).prop('checked', false)
+                      checkedLead = checkedLead.map((item, itemIndex) => {
+                        if (itemIndex === index) {
+                            return false
+                        }
+                        return item
+                      })
+                      // takeout current customer in global variable customers
+                      customers = customers.filter(cust => cust !== $(this).attr('customer-id'))
+                  }
+                  
+                  // check if atleast one checkbox is checked
+                  const isChecked = checkedLead.some(item => item)
+                  if (!isChecked) {
+                      $('#btn-header').attr('disabled', true)
+                  }
+              })
+          })
         })
 
         $('#table-lead-search').css({ display: 'block' })
@@ -429,57 +543,24 @@
         // handle change checkbox select all
         $('.dt-checkboxes-select-all').on('change', function(e) {
             if (e.target.checked) {
+                // reset global variable customers
+                customers = []
+
                 $('.dt-checkboxes').each(function() {
                     $(this).prop('checked', true)
                 })
                 $('#btn-header').attr('disabled', false)
+                // adding all customer to global variable customers
+                const customersId = tempSearchCustomerResult.map(cust => cust.id)
+                customers = customersId
             } else {
                 $('.dt-checkboxes').each(function() {
                     $(this).prop('checked', false)
                 })
                 $('#btn-header').attr('disabled', true)
+                // reset global variable customers
+                customers = []
             }
-        })
-
-        // handle change value checkbox
-        $('.dt-checkboxes').each(function(index) {
-            checkedLead.push($(this).prop('checked'))
-
-            $(this).on('change', function(e) {
-                if (e.target.checked) {
-                    $(this).prop('checked', true)
-                    $('#btn-header').attr('disabled', false)
-                    checkedLead = checkedLead.map((item, itemIndex) => {
-                        if (itemIndex === index) {
-                            return true
-                        }
-                        return item
-                    })
-                } else {
-                    $(this).prop('checked', false)
-                    checkedLead = checkedLead.map((item, itemIndex) => {
-                        if (itemIndex === index) {
-                            return false
-                        }
-                        return item
-                    })
-                }
-                
-                // check if atleast one checkbox is checked
-                const isChecked = checkedLead.some(item => item)
-                if (!isChecked) {
-                    $('#btn-header').attr('disabled', true)
-                }
-            })
-        })
-    })
-
-    /**
-     * @description handle add button list
-     */
-    $('.btn-add-list').each(function() {
-        $(this).on('click', function(el) {
-            el.stopPropagation();
         })
     })
 
@@ -609,6 +690,7 @@
                                   class="btn-add-list"
                                   data-bs-toggle="modal"
                                   data-bs-target="#list"
+                                  customer-id="${data.id}"
                                 >
                                   <i class="ti ti-plus"></i>
                                   Add to list
@@ -656,6 +738,7 @@
                         </div>
                         `)
                     })
+                    onClickButtonListAdd()
                 }).catch(err => console.error(err))
             })
         })

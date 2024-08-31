@@ -106,6 +106,7 @@ Route::get('/lead-generation/search-customer', [LeadGenerationController::class,
 Route::get('/lead-generation/{id}', [LeadGenerationController::class, 'getCustomer']);
 Route::put('/lead-generation/{id}', [LeadGenerationController::class, 'update']);
 Route::delete('/lead-generation/{id}', [LeadGenerationController::class, 'destroy']);
+Route::post('lead-generation/assign-customer', [LeadGenerationController::class, 'assignCustomer']);
 
 Route::get('/lead-generation-list', [LeadGenerationListController::class, 'index']);
 Route::post('/lead-generation-list', [LeadGenerationListController::class, 'store']);

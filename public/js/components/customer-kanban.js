@@ -202,7 +202,7 @@
       // parentBoard = target.offsetParent.getAttribute("data-id");
       var id = el.getAttribute("data-eid").replace('task-','');
       var boardId = el.offsetParent.getAttribute("data-order");
-      console.log(boardId); 
+      console.log(el); 
       console.log(id); 
                 // Kirim data ke API
                 $.ajax({
@@ -263,14 +263,15 @@
       //     "<span class='avatar-initial rounded-circle bg-label-secondary'><i class='ti ti-plus ti-xs text-heading'></i></span>" +
       //     '</div>'
       //   );
-      const eid = el.getAttribute('data-eid').match(/\d+/g)[0];
+      const phone = el.getAttribute('data-phone-number').match(/\d+/g)[0];
+      console.log(phone); 
 
       // // check if eid not lead
       // async function is_lead() {
       //   await fetch(`${baseUrl}api/is_lead/${eid}`)
       //     .then((res) => {
       //       if (res.ok) {
-      window.location.href = baseUrl + `customers/${eid}`;
+      window.location.href = baseUrl + `customers/${phone}`;
       //         exit();
       //       }
 

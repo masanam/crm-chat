@@ -24,6 +24,7 @@ class LeadGeneration extends Model
     'location',
     'age',
     'gender',
+    'income_level',
     'seniority',
     'job_title',
     'industry',

@@ -69,7 +69,7 @@
         // btn.innerText = 'Home'
         // li.appendChild(btn)
         // ul.appendChild(li)
-        // chatHistoryWrapper.prepend(ul)
+        // chatHistoryWrapper.prepend(ul)kanban-view
     }
 
     /**

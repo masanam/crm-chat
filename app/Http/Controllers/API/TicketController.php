@@ -92,17 +92,18 @@ class TicketController extends Controller
       ->map(function ($taskGroup, $stageId) {
         $phase = $taskGroup->first()->phase;
         return [
-          'id' => 'board-' . strtolower($phase->name),
-          'title' => $phase->name,
-          'badge-title' => $this->getBadgeTitle($phase->name),
+          'id' => 'board-' . strtolower($phase?->name),
+          'title' => $phase?->name,
+          'badge-title' => $this->getBadgeTitle($phase?->name),
           'item' => $taskGroup
             ->map(function ($task) {
               return [
                 'id' => $task->id,
                 'text' => $task->client_name,
                 'company' => $task->company_name,
-                'priority' => $task->phase->name, // Placeholder priority
+                'priority' => $task->phase?->name, // Placeholder priority
                 'due-date' => $task->closed_date, // Placeholder date
+                'phone-number' => $task->phone_number, // Placeholder date
               ];
             })
             ->toArray(),

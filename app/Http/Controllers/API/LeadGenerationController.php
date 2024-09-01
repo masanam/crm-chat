@@ -39,6 +39,7 @@ class LeadGenerationController extends BaseController
         'age' => 'required',
         'gender' => 'required',
         'income_level' => 'required',
+        'seniority' => 'required',
         'job_title' => 'required',
         'industry' => 'required',
         'email' => 'required',
@@ -64,6 +65,7 @@ class LeadGenerationController extends BaseController
         $model->age = $request->age;
         $model->gender = $request->gender;
         $model->income_level = $request->income_level;
+        $model->seniority = $request->seniority;
         $model->job_title = $request->job_title;
         $model->industry = $request->industry;
         $model->email = $request->email;
@@ -107,7 +109,7 @@ class LeadGenerationController extends BaseController
         try {
             $customer_name = $request->query('customer_name');
             $location = $request->query('location');
-            $income_level = $request->query('income_level');
+            $seniority = $request->query('seniority');
             $job_title = $request->query('job_title');
             $min_age = $request->query('min_age');
             $max_age = $request->query('max_age');
@@ -129,8 +131,8 @@ class LeadGenerationController extends BaseController
                 ->when($gender, function($query, $name) {
                   return $query->where('gender', '=', $name);
                 })
-                ->when($income_level, function($query, $name) {
-                  return $query->whereIn('income_level', explode(',', $name));
+                ->when($seniority, function($query, $name) {
+                  return $query->whereIn('seniority', explode(',', $name));
                 })
                 ->when($location, function($query, $name) {
                   return $query->whereIn('location', explode(',', $name));
@@ -156,8 +158,8 @@ class LeadGenerationController extends BaseController
                 ->when($gender, function($query, $name) {
                   return $query->where('gender', '=', $name);
                 })
-                ->when($income_level, function($query, $name) {
-                  return $query->whereIn('income_level', explode(',', $name));
+                ->when($seniority, function($query, $name) {
+                  return $query->whereIn('seniority', explode(',', $name));
                 })
                 ->when($location, function($query, $name) {
                   return $query->whereIn('location', explode(',', $name));
@@ -182,7 +184,7 @@ class LeadGenerationController extends BaseController
                         'age' => $cust->age,
                         'email' => $cust->email,
                         'gender' => $cust->gender,
-                        'income_level' => $cust->income_level,
+                        'seniority' => $cust->seniority,
                         'industry' => $cust->industry,
                         'job_title' => $cust->job_title,
                         'linkedin' => $cust->linkedin,

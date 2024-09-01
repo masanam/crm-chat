@@ -15,6 +15,7 @@ class LeadGenerationController extends Controller
     {
       $job_json = File::json(base_path('public/dummy-job.json'));
       $industry_json = File::json(base_path('public/dummy-industry.json'));
+      $seniority_json = File::json(base_path('public/dummy-seniority.json'));
       $placeholder = (object) [
         'label' => '- Select -',
         'value' => '',
@@ -38,7 +39,16 @@ class LeadGenerationController extends Controller
         array_push($list_industry, $data);
       }
 
-      return view('content.lead.lead-search', compact('list_job', 'list_industry'));
+      $list_seniority = array();
+      foreach ($seniority_json as $data) {
+        $data = (object) [
+          'label' => $data,
+          'value' => $data,
+        ];
+        array_push($list_seniority, $data);
+      }
+
+      return view('content.lead.lead-search', compact('list_job', 'list_industry', 'list_seniority'));
     }
 
     public function index(Request $request)
@@ -57,8 +67,9 @@ class LeadGenerationController extends Controller
       }
       $list_job = File::json(base_path('public/dummy-job.json'));
       $list_industry = File::json(base_path('public/dummy-industry.json'));
+      $list_seniority = File::json(base_path('public/dummy-seniority.json'));
 
-      return view('content.lead.lead-index', compact('list_job', 'list_industry'));
+      return view('content.lead.lead-index', compact('list_job', 'list_industry', 'list_seniority'));
     }
 
     public function store(Request $request)
@@ -70,6 +81,7 @@ class LeadGenerationController extends Controller
         'age' => 'required',
         'gender' => 'required',
         'income_level' => 'required',
+        'seniority' => 'required',
         'job_title' => 'required',
         'industry' => 'required',
         'email' => 'required',
@@ -85,6 +97,7 @@ class LeadGenerationController extends Controller
           'age' => $request->age,
           'gender' => $request->gender,
           'income_level' => $request->income_level,
+          'seniority' => $request->seniority,
           'job_title' => $request->job_title,
           'industry' => $request->industry,
           'email' => $request->email,

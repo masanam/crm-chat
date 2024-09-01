@@ -18,6 +18,7 @@
     const token = $("meta[name='csrf-token']").attr("content")
 
     $(".select2-industry").select2();
+    $(".select2-seniority").select2();
 
     // fetch lead generation list
     const fetchingLeadList = () => {
@@ -197,12 +198,12 @@
     const onClickAssignCustomer = () => {
         $('.lead-list').each(function() {
             $(this).on('click', function() {
-                let customerNotJoin = []
                 const formData = new FormData()
-                const getListId = $(this).attr('data-id')
                 const modalConfirmation = $('#confirmation')
                 const btnSubmit = modalConfirmation.find('#modal-confirm-submit')
                 const btnCancel = modalConfirmation.find('#modal-confirm-cancel')
+                let customerNotJoin = []
+                const getListId = $(this).attr('data-id')
 
                 const getCustomerData = tempSearchCustomerResult.filter(cust => customers.includes(cust.id)).map(cust => ({
                     ...cust,
@@ -216,7 +217,8 @@
                     }
                 })
 
-                if (getCustomerAlreadyJoinTeam.length > 0) {
+                // logic for single assign customer
+                if (customers.length === 1) {
                     if (getCustomerAlreadyJoinTeam.length === 1 && customerNotJoin.length === 0) {
                         // check if single assign customer
                         // and customer already join
@@ -225,13 +227,32 @@
                             subtitle: 'This customer already joined',
                             isHideBtnSubmit: true
                         })
-                    } else if (customerNotJoin.length === 0) {
+                    } else {
+                        // check if single assign customer
+                        // and customer not yet joined
+                        renderModalConfirmation({
+                            type: 'confirmation',
+                            subtitle: 'Are you sure want to assign this customer?'
+                        })
+                    }
+                }
+
+                // logic for bulk/multiple assign customer
+                if (customers.length > 1) {
+                    if (customerNotJoin.length === 0) {
                         // check if bulk assign customer
                         // and all customers already join 
                         renderModalConfirmation({
                             type: 'confirmation',
                             subtitle: 'All customers already joined',
                             isHideBtnSubmit: true
+                        })
+                    } else if (getCustomerAlreadyJoinTeam.length === 0 && customerNotJoin.length > 0) {
+                        // check if bulk assign customer
+                        // and all customers not yet joined
+                        renderModalConfirmation({
+                            type: 'confirmation',
+                            subtitle: 'Are you sure want to assign all customers?',
                         })
                     } else {
                         renderModalConfirmation({
@@ -241,7 +262,9 @@
                     }
                 }
 
-                btnSubmit.on('click', function() {
+                // handle submit assign customer
+                btnSubmit.on('click', function(e) {
+                    e.preventDefault()
                     // set btn loader
                     btnSubmit.html('<i class="ti ti-loader-2 loader"></i>')
                     btnCancel.html('<i class="ti ti-loader-2 loader"></i>')
@@ -268,6 +291,12 @@
                         // reset customers
                         customers = []
                         customerNotJoin = []
+
+                        // handle event click modal confirmation cancel
+                        // reload page
+                        $('#confirmation').find('#modal-confirm-cancel').on('click', function() {
+                            window.location.reload()
+                        })
                     })
                     .catch(err => {
                         // change content modal confirmation to error
@@ -277,6 +306,12 @@
                         })
                         console.error(err)
                     })
+                })
+
+                // removes click events for btn submit modal confirmation
+                $('#confirmation').find('#modal-confirm-cancel').on('click', function() {
+                    $('#confirmation').find('#modal-confirm-submit').off();
+                    $('#confirmation').find('#modal-confirm-submit').removeAttr('onclick')
                 })
             })
         })
@@ -408,6 +443,7 @@
             
             onDeleteLocation()
             e.target.value = ''
+            e.preventDefault();
         }
     });
 
@@ -418,6 +454,9 @@
         $('.btn-add-list').each(function() {
             $(this).on('click', function(el) {
                 el.stopPropagation();
+                // reset variable global customer
+                customers = []
+
                 customers.push(parseInt($(this).attr('customer-id')))
             })
         })
@@ -553,7 +592,7 @@
     
         const payload = new FormData()
         const age = []
-        const incomeLevel = []
+        const senioritys = []
 
         $.each($('#form-search').serializeArray(), function(i, field) {
             if (field.name.includes('age')) {
@@ -561,22 +600,23 @@
                 ages.forEach(val => {
                     age.push(parseInt(val))
                 })
-            } else if (field.name.includes('income_level')) {
-                incomeLevel.push(field.value)
-            } else if (field.value !== '' && field.name !== 'industry') {
+            } else if (field.value !== '' && (field.name !== 'industry' || field.name !== 'seniority')) {
                 payload.set(field.name, field.value)
             }
 
             if (field.name === 'industry') {
                 industryValue.push(field.value)
             }
+            if (field.name === 'seniority') {
+                senioritys.push(field.value)
+            }
         })
 
         if (locationsValue.length > 0) {
             payload.set('location', locationsValue)
         }
-        if (age.length > 0) {
-            payload.set('income_level', incomeLevel)
+        if (senioritys.length > 0) {
+            payload.set('seniority', senioritys)
         }
         if (age.length > 0) {
             payload.set('min_age', Math.min(...age))
@@ -585,6 +625,12 @@
         if (industryValue.length > 0) {
             payload.set('industry', industryValue)
         }
+
+        // const urlParams = new URLSearchParams(window.location.search);
+        // for (var pair of payload.entries()) {
+        //     urlParams.set(pair[0], pair[1]);
+        // }
+        // window.location.search = urlParams;
 
         fetch(`${baseUrl}api/lead-generation/search-customer?` + new URLSearchParams(payload), {
             headers: {
@@ -815,6 +861,7 @@
                                 <span class="text-dark fw-bolder" style="font-size: 18px;">Contact Information</span>
                                 <button
                                   class="btn-add-list"
+                                  data-bs-dismiss="modal"
                                   data-bs-toggle="modal"
                                   data-bs-target="#list"
                                   customer-id="${data.id}"

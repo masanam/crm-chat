@@ -36,6 +36,9 @@
                 el.style.cursor = 'pointer'
                 el.setAttribute('data-search-term', item.name)
                 el.setAttribute('data-id', item.id)
+                el.setAttribute('data-bs-toggle', 'modal')
+                el.setAttribute('data-bs-target', '#confirmation')
+                el.setAttribute('data-bs-dismiss', 'modal')
                 el.className = 'lead-list'
 
                 $('#lead-list-wrapper').append(el)
@@ -138,6 +141,57 @@
     }
 
     /**
+     * @description render modal confirmation with content
+     * @param {Enum} 'confirmation' | 'success' | 'error' 
+     * @param {String} subtitle
+     * @param {Boolean} isHideBtnSubmit
+     */
+    const renderModalConfirmation = ({ type = 'confirmation', subtitle, isHideBtnSubmit = false }) => {
+        const modalConfirmation = $('#confirmation')
+        const btnSubmit = modalConfirmation.find('#modal-confirm-submit')
+        const btnCancel = modalConfirmation.find('#modal-confirm-cancel')
+        const modalTitle = modalConfirmation.find('#modal-body-title')
+        const modalSubtitle = modalConfirmation.find('#modal-body-subtitle')
+
+        switch (type.toLowerCase()) {
+            case 'confirmation':
+                modalTitle.text('Confirmation')
+                modalSubtitle.text(subtitle)
+                modalConfirmation.find('#modal-body-icon').html(`<img class="text-dark" src="assets/svg/icons/info-dark.svg" alt="info" width="100">`)
+                btnCancel.addClass('btn')
+                btnCancel.text('Cancel')
+
+                if (isHideBtnSubmit) {
+                    btnSubmit.removeClass('btn')
+                    btnSubmit.hide()
+                } else {
+                    btnSubmit.text('Save')
+                    btnSubmit.addClass('btn')
+                    btnSubmit.show()
+                }
+                break;
+            case 'success':
+                modalTitle.text('Success!')
+                modalSubtitle.text(subtitle)
+                modalConfirmation.find('#modal-body-icon').html('<i class="ti ti-circle-check text-dark" style="font-size: 92px;"></i>')
+                btnSubmit.removeClass('btn')
+                btnSubmit.hide()
+                btnCancel.text('Back')
+                break;
+            case 'error':
+                modalTitle.text('Error!')
+                modalSubtitle.text(subtitle)
+                modalConfirmation.find('#modal-body-icon').html('<i class="ti ti-xbox-x text-dark" style="font-size: 92px;"></i>')
+                btnSubmit.removeClass('btn')
+                btnSubmit.hide()
+                btnCancel.text('Back')
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
      * @description fetch create assign customer to list
      */
     const onClickAssignCustomer = () => {
@@ -146,6 +200,9 @@
                 let customerNotJoin = []
                 const formData = new FormData()
                 const getListId = $(this).attr('data-id')
+                const modalConfirmation = $('#confirmation')
+                const btnSubmit = modalConfirmation.find('#modal-confirm-submit')
+                const btnCancel = modalConfirmation.find('#modal-confirm-cancel')
 
                 const getCustomerData = tempSearchCustomerResult.filter(cust => customers.includes(cust.id)).map(cust => ({
                     ...cust,
@@ -160,28 +217,67 @@
                 })
 
                 if (getCustomerAlreadyJoinTeam.length > 0) {
-                    alert(`${getCustomerAlreadyJoinTeam.length} out of ${getCustomerData.length} customers already joined`)
+                    if (getCustomerAlreadyJoinTeam.length === 1 && customerNotJoin.length === 0) {
+                        // check if single assign customer
+                        // and customer already join
+                        renderModalConfirmation({
+                            type: 'confirmation',
+                            subtitle: 'This customer already joined',
+                            isHideBtnSubmit: true
+                        })
+                    } else if (customerNotJoin.length === 0) {
+                        // check if bulk assign customer
+                        // and all customers already join 
+                        renderModalConfirmation({
+                            type: 'confirmation',
+                            subtitle: 'All customers already joined',
+                            isHideBtnSubmit: true
+                        })
+                    } else {
+                        renderModalConfirmation({
+                            type: 'confirmation',
+                            subtitle: `${getCustomerAlreadyJoinTeam.length} out of ${getCustomerData.length} customers already joined`
+                        })
+                    }
                 }
 
-                customerNotJoin.forEach((cust, custIndex) => {
-                    formData.append(`customers[${custIndex}]`, cust.id)
+                btnSubmit.on('click', function() {
+                    // set btn loader
+                    btnSubmit.html('<i class="ti ti-loader-2 loader"></i>')
+                    btnCancel.html('<i class="ti ti-loader-2 loader"></i>')
+
+                    customerNotJoin.forEach((cust, custIndex) => {
+                        formData.append(`customers[${custIndex}]`, cust.id)
+                    })
+                    formData.append('list_id', getListId)
+
+                    fetch(`${baseUrl}api/lead-generation/assign-customer`, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                          'X-CSRF-TOKEN': token
+                        }
+                    })
+                    .then(r => r.json())
+                    .then(res => {
+                        // change content modal confirmation to success
+                        renderModalConfirmation({
+                            type: 'success',
+                            subtitle: 'Assign customers successfully'
+                        })
+                        // reset customers
+                        customers = []
+                        customerNotJoin = []
+                    })
+                    .catch(err => {
+                        // change content modal confirmation to error
+                        renderModalConfirmation({
+                            type: 'error',
+                            subtitle: 'Internal server error'
+                        })
+                        console.error(err)
+                    })
                 })
-                formData.append('list_id', getListId)
-                fetch(`${baseUrl}api/lead-generation/assign-customer`, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                      'X-CSRF-TOKEN': token
-                    }
-                })
-                .then(r => r.json())
-                .then(res => {
-                    
-                    // reset customers
-                    customers = []
-                    customerNotJoin = []
-                })
-                .catch(err => console.error(err))
             })
         })
     }
@@ -448,6 +544,9 @@
      */
     $('#btn-filter-save').on('click', function(e) {
         e.preventDefault()
+        $('#card-empty-search').hide()
+        $('#search-loader').show()
+        $('#table-lead-search').hide()
 
         // reset tbody table
         $('#table-lead-search').find('tbody').empty()
@@ -494,6 +593,9 @@
         })
         .then(r => r.json())
         .then(res => {
+          $('#search-loader').hide()
+          $('#table-lead-search').show()
+
           tempSearchCustomerResult = res.result
           renderChildTable(res.result)
           $('#table-lead-search').find('#table-header-title').text(`${res.result.length} match your filters`)
@@ -525,7 +627,7 @@
                         return item
                       })
                       // takeout current customer in global variable customers
-                      customers = customers.filter(cust => cust !== $(this).attr('customer-id'))
+                      customers = customers.filter(cust => cust !== parseInt($(this).attr('customer-id')))
                   }
                   
                   // check if atleast one checkbox is checked
@@ -536,9 +638,6 @@
               })
           })
         })
-
-        $('#table-lead-search').css({ display: 'block' })
-        $('#card-empty-search').css({ display: 'none' })
 
         // handle change checkbox select all
         $('.dt-checkboxes-select-all').on('change', function(e) {
@@ -607,6 +706,9 @@
      */
     $('#btn-create-list').on('click', function(e) {
         e.preventDefault()
+
+        // btn loader
+        $(this).html('<i class="ti ti-loader-2 loader"></i>')
     
         const payload = new FormData()
         $.each($('#form-create-list').serializeArray(), function(i, field) {
@@ -622,10 +724,35 @@
         })
         .then(res => {
             if (res.status === 200) {
+                $(this).html('Save')
                 $('#lead-list-wrapper').empty()
                 $("#add-list").find(`[data-bs-target='#list']`).click()
                 fetchingLeadList()
+                renderModalConfirmation({
+                    type: 'success',
+                    subtitle: 'Created list successfully'
+                })
+
+                // set attribute btn cancel modal confirmation
+                // open modal list
+                const btnCancel = $('#confirmation').find('#modal-confirm-cancel')
+                btnCancel.attr('data-bs-target', '#list')
+                btnCancel.attr('data-bs-toggle', 'modal')
+
+                btnCancel.on('click', function() {
+                    // remove attribute btn cancel modal confirmation
+                    btnCancel.removeAttr('data-bs-target')
+                    btnCancel.removeAttr('data-bs-toggle')
+                })
             }
+        })
+        .catch(err => {
+            $(this).html('Save')
+            renderModalConfirmation({
+                type: 'error',
+                subtitle: 'Internal server error'
+            })
+            console.error(err)
         })
     })
 

@@ -275,6 +275,12 @@ $genders = [$default, $gender, $gender2, $gender3];
   >
   </x-table>
   </div>
+
+  <div id="search-loader" class="card" style="display: none; grid-column: span 2 / span 2;">
+    <div class="w-100 h-100 d-flex align-items-center justify-content-center">
+      <i class="ti ti-loader-2 loader text-primary" style="font-size: 42px;"></i>
+    </div>
+  </div>
 </section>
 
 {{-- modal add/select list --}}
@@ -319,7 +325,13 @@ $genders = [$default, $gender, $gender2, $gender3];
       </x-input-floating>
   </div>
   <div class="d-flex justify-content-end w-100 mt-2">
-      <button id="btn-create-list" type="submit" class="btn btn-primary">Save</button>
+      <button
+        id="btn-create-list"
+        type="submit"
+        class="btn btn-primary"
+      >
+        Save
+      </button>
   </div>
 </form>
 </x-modal>
@@ -346,5 +358,13 @@ $genders = [$default, $gender, $gender2, $gender3];
     </div>
   </div>
 </x-modal>
+
+<x-modal-confirmation
+  name="confirmation"
+  title="Confirmation"
+  modalClass=""
+  subtitle="Are you sure want to assign this customer?"
+>
+</x-modal-confirmation>
 
 @endsection

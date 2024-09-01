@@ -51,7 +51,7 @@ class LeadGenerationListController extends BaseController
 
         return response()->json(
             [
-              'message' => 'Lead generation created successfully',
+              'message' => 'Lead generation list created successfully',
               'result' => 'success'
             ],
             200

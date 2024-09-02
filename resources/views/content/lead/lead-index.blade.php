@@ -50,6 +50,10 @@
           name: 'Income Level'
         },
         {
+          data: 'seniority',
+          name: 'Seniority'
+        },
+        {
           data: 'job_title',
           name: 'Job Title'
         },
@@ -65,7 +69,6 @@
     const token = $("meta[name='csrf-token']").attr("content");
     const formAddNewRecord = document.getElementById('form-add-new-record');
     let currentId = ''
-    $('.select2-industry').select2()
 
     setTimeout(() => {
       const newRecord = document.querySelector('.create-new'),
@@ -81,6 +84,7 @@
         (offCanvasElement.querySelector('.dt-age').value = ''),
         (offCanvasElement.querySelector('.dt-gender').value = ''),
         (offCanvasElement.querySelector('.dt-income-level').value = ''),
+        (offCanvasElement.querySelector('.dt-seniority').value = ''),
         (offCanvasElement.querySelector('.dt-job-title').value = ''),
         (offCanvasElement.querySelector('.dt-industry').value = ''),
         (offCanvasElement.querySelector('.dt-email').value = ''),
@@ -113,13 +117,14 @@
         })
         .then(r => r.json())
         .then(res => {
-          const { age, customer_name, gender, income_level, job_title, phone, location, industry, email, linkedin, url } = res.data
+          const { age, customer_name, gender, income_level, seniority, job_title, phone, location, industry, email, linkedin, url } = res.data
           offCanvasElement2.querySelector('.dt-customer-name').value = res.data.customer_name
           offCanvasElement2.querySelector('.dt-phone').value = phone
           offCanvasElement2.querySelector('.dt-location').value = location
           offCanvasElement2.querySelector('.dt-age').value = age
           offCanvasElement2.querySelector('.dt-gender').value = gender
           offCanvasElement2.querySelector('.dt-income-level').value = income_level
+          offCanvasElement2.querySelector('.dt-seniority').value = seniority
           offCanvasElement2.querySelector('.dt-job-title').value = job_title
           offCanvasElement2.querySelector('.dt-industry').value = industry
           offCanvasElement2.querySelector('.dt-email').value = email
@@ -180,6 +185,7 @@
             <th>Age</th>
             <th>Gender</th>
             <th>Income Level</th>
+            <th>Seniority</th>
             <th>Job Title</th>
             <th>Action</th>
           </tr>

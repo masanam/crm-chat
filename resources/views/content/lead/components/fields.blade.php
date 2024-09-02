@@ -43,6 +43,15 @@
 </div>
 
 <div class="form-group col-sm-12 p-2">
+    <label for="seniority" class="form-label">Seniority:</label>
+    <select class="dt-seniority select2-seniority form-select" name="seniority" id="seniority">
+        @foreach ($list_seniority as $key => $value)
+            <option value="{{ $value }}">{{ $value }}</option>
+        @endforeach
+    </select>
+</div>
+
+<div class="form-group col-sm-12 p-2">
     <label for="job_title" class="form-label">Job Title:</label>
     <select class="dt-job-title select2 form-select" name="job_title" id="job_title">
         @foreach ($list_job as $key => $value)

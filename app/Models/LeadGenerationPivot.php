@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class LeadGenerationList extends Model
+class LeadGenerationPivot extends Model
 {
     use HasFactory;
 
-    public $table = 'lead_generation_list';
+    public $table = 'lead_generation';
     public $timestamps = false;
 
     /**
@@ -19,11 +18,7 @@ class LeadGenerationList extends Model
    * @var array<int, string>
    */
   protected $fillable = [
-    'name',
+    'lead_gen_customer_id',
+    'lead_gen_list_id'
   ];
-
-  public function customers()
-  {
-      return $this->belongsToMany(LeadGeneration::class)->withTimestamps();;
-  }
 }

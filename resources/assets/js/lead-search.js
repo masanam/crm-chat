@@ -10,9 +10,15 @@
     let locationsValue = [];
     let checkedLead = [];
     let industryValue = [];
+
+    // variable global
+    let customers = [];
+    let tempSearchCustomerResult;
+
     const token = $("meta[name='csrf-token']").attr("content")
 
     $(".select2-industry").select2();
+    $(".select2-seniority").select2();
 
     // fetch lead generation list
     const fetchingLeadList = () => {
@@ -28,11 +34,17 @@
                 const el = document.createElement('h6')
                 el.innerText = item.name
                 el.style.color = '#1F2124'
+                el.style.cursor = 'pointer'
                 el.setAttribute('data-search-term', item.name)
+                el.setAttribute('data-id', item.id)
+                el.setAttribute('data-bs-toggle', 'modal')
+                el.setAttribute('data-bs-target', '#confirmation')
+                el.setAttribute('data-bs-dismiss', 'modal')
                 el.className = 'lead-list'
 
                 $('#lead-list-wrapper').append(el)
             })
+            onClickAssignCustomer()
           } else {
             const el = document.createElement('span')
             el.innerText = 'No data list'
@@ -127,6 +139,182 @@
                 return str
             }
         }
+    }
+
+    /**
+     * @description render modal confirmation with content
+     * @param {Enum} 'confirmation' | 'success' | 'error' 
+     * @param {String} subtitle
+     * @param {Boolean} isHideBtnSubmit
+     */
+    const renderModalConfirmation = ({ type = 'confirmation', subtitle, isHideBtnSubmit = false }) => {
+        const modalConfirmation = $('#confirmation')
+        const btnSubmit = modalConfirmation.find('#modal-confirm-submit')
+        const btnCancel = modalConfirmation.find('#modal-confirm-cancel')
+        const modalTitle = modalConfirmation.find('#modal-body-title')
+        const modalSubtitle = modalConfirmation.find('#modal-body-subtitle')
+
+        switch (type.toLowerCase()) {
+            case 'confirmation':
+                modalTitle.text('Confirmation')
+                modalSubtitle.text(subtitle)
+                modalConfirmation.find('#modal-body-icon').html(`<img class="text-dark" src="assets/svg/icons/info-dark.svg" alt="info" width="100">`)
+                btnCancel.addClass('btn')
+                btnCancel.text('Cancel')
+
+                if (isHideBtnSubmit) {
+                    btnSubmit.removeClass('btn')
+                    btnSubmit.hide()
+                } else {
+                    btnSubmit.text('Save')
+                    btnSubmit.addClass('btn')
+                    btnSubmit.show()
+                }
+                break;
+            case 'success':
+                modalTitle.text('Success!')
+                modalSubtitle.text(subtitle)
+                modalConfirmation.find('#modal-body-icon').html('<i class="ti ti-circle-check text-dark" style="font-size: 92px;"></i>')
+                btnSubmit.removeClass('btn')
+                btnSubmit.hide()
+                btnCancel.text('Back')
+                break;
+            case 'error':
+                modalTitle.text('Error!')
+                modalSubtitle.text(subtitle)
+                modalConfirmation.find('#modal-body-icon').html('<i class="ti ti-xbox-x text-dark" style="font-size: 92px;"></i>')
+                btnSubmit.removeClass('btn')
+                btnSubmit.hide()
+                btnCancel.text('Back')
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * @description fetch create assign customer to list
+     */
+    const onClickAssignCustomer = () => {
+        $('.lead-list').each(function() {
+            $(this).on('click', function() {
+                const formData = new FormData()
+                const modalConfirmation = $('#confirmation')
+                const btnSubmit = modalConfirmation.find('#modal-confirm-submit')
+                const btnCancel = modalConfirmation.find('#modal-confirm-cancel')
+                let customerNotJoin = []
+                const getListId = $(this).attr('data-id')
+
+                const getCustomerData = tempSearchCustomerResult.filter(cust => customers.includes(cust.id)).map(cust => ({
+                    ...cust,
+                    lists: cust.lists?.map(list => list.id)
+                }))
+                const getCustomerAlreadyJoinTeam = getCustomerData.filter(cust => {
+                    if (cust.lists.length > 0 && cust.lists.includes(parseInt(getListId))) {
+                        return cust
+                    } else {
+                        customerNotJoin.push(cust)
+                    }
+                })
+
+                // logic for single assign customer
+                if (customers.length === 1) {
+                    if (getCustomerAlreadyJoinTeam.length === 1 && customerNotJoin.length === 0) {
+                        // check if single assign customer
+                        // and customer already join
+                        renderModalConfirmation({
+                            type: 'confirmation',
+                            subtitle: 'This customer already joined',
+                            isHideBtnSubmit: true
+                        })
+                    } else {
+                        // check if single assign customer
+                        // and customer not yet joined
+                        renderModalConfirmation({
+                            type: 'confirmation',
+                            subtitle: 'Are you sure want to assign this customer?'
+                        })
+                    }
+                }
+
+                // logic for bulk/multiple assign customer
+                if (customers.length > 1) {
+                    if (customerNotJoin.length === 0) {
+                        // check if bulk assign customer
+                        // and all customers already join 
+                        renderModalConfirmation({
+                            type: 'confirmation',
+                            subtitle: 'All customers already joined',
+                            isHideBtnSubmit: true
+                        })
+                    } else if (getCustomerAlreadyJoinTeam.length === 0 && customerNotJoin.length > 0) {
+                        // check if bulk assign customer
+                        // and all customers not yet joined
+                        renderModalConfirmation({
+                            type: 'confirmation',
+                            subtitle: 'Are you sure want to assign all customers?',
+                        })
+                    } else {
+                        renderModalConfirmation({
+                            type: 'confirmation',
+                            subtitle: `${getCustomerAlreadyJoinTeam.length} out of ${getCustomerData.length} customers already joined`
+                        })
+                    }
+                }
+
+                // handle submit assign customer
+                btnSubmit.on('click', function(e) {
+                    e.preventDefault()
+                    // set btn loader
+                    btnSubmit.html('<i class="ti ti-loader-2 loader"></i>')
+                    btnCancel.html('<i class="ti ti-loader-2 loader"></i>')
+
+                    customerNotJoin.forEach((cust, custIndex) => {
+                        formData.append(`customers[${custIndex}]`, cust.id)
+                    })
+                    formData.append('list_id', getListId)
+
+                    fetch(`${baseUrl}api/lead-generation/assign-customer`, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                          'X-CSRF-TOKEN': token
+                        }
+                    })
+                    .then(r => r.json())
+                    .then(res => {
+                        // change content modal confirmation to success
+                        renderModalConfirmation({
+                            type: 'success',
+                            subtitle: 'Assign customers successfully'
+                        })
+                        // reset customers
+                        customers = []
+                        customerNotJoin = []
+
+                        // handle event click modal confirmation cancel
+                        // reload page
+                        $('#confirmation').find('#modal-confirm-cancel').on('click', function() {
+                            window.location.reload()
+                        })
+                    })
+                    .catch(err => {
+                        // change content modal confirmation to error
+                        renderModalConfirmation({
+                            type: 'error',
+                            subtitle: 'Internal server error'
+                        })
+                        console.error(err)
+                    })
+                })
+
+                // removes click events for btn submit modal confirmation
+                $('#confirmation').find('#modal-confirm-cancel').on('click', function() {
+                    $('#confirmation').find('#modal-confirm-submit').off();
+                    $('#confirmation').find('#modal-confirm-submit').removeAttr('onclick')
+                })
+            })
+        })
     }
 
     /**
@@ -255,8 +443,24 @@
             
             onDeleteLocation()
             e.target.value = ''
+            e.preventDefault();
         }
     });
+
+    /**
+    * @description handle add button list
+    */
+    const onClickButtonListAdd = () => {
+        $('.btn-add-list').each(function() {
+            $(this).on('click', function(el) {
+                el.stopPropagation();
+                // reset variable global customer
+                customers = []
+
+                customers.push(parseInt($(this).attr('customer-id')))
+            })
+        })
+    }
 
     /**
      * @description handle delete/remove location badge
@@ -304,7 +508,9 @@
                     elementTr.innerHTML = `
                         <tr class="odd">
                     <td class="control" style="display: none;" tabindex="0"></td>
-                    <td class="dt-checkboxes-cell"><input type="checkbox" class="dt-checkboxes form-check-input"></td>
+                    <td class="dt-checkboxes-cell">
+                        <input type="checkbox" class="dt-checkboxes form-check-input" customer-id="${val.id}">
+                    </td>
                     <td data-bs-toggle="modal" data-bs-target="#detail-customer" data-id="${val.id}">
                       <div class="d-flex justify-content-start align-items-center user-name">
                         <div class="avatar-wrapper">
@@ -323,6 +529,7 @@
                         class="btn-add-list"
                         data-bs-toggle="modal"
                         data-bs-target="#list"
+                        customer-id="${val.id}"
                       >
                         <i class="ti ti-plus"></i>
                         Add to list
@@ -334,7 +541,9 @@
                     elementTr.innerHTML = `
                     <tr class="even">
                     <td class="control" style="display: none;" tabindex="0"></td>
-                    <td class="dt-checkboxes-cell"><input type="checkbox" class="dt-checkboxes form-check-input"></td>
+                    <td class="dt-checkboxes-cell">
+                        <input type="checkbox" class="dt-checkboxes form-check-input" customer-id="${val.id}">
+                    </td>
                     <td data-bs-toggle="modal" data-bs-target="#detail-customer" data-id="${val.id}">
                       <div class="d-flex justify-content-start align-items-center user-name">
                         <div class="avatar-wrapper">
@@ -353,6 +562,7 @@
                         class="btn-add-list"
                         data-bs-toggle="modal"
                         data-bs-target="#list"
+                        customer-id="${val.id}"
                       >
                         <i class="ti ti-plus"></i>
                         Add to list
@@ -364,6 +574,7 @@
 
                 tbody.append(elementTr)
             })
+            onClickButtonListAdd()
         }
     }
 
@@ -372,12 +583,16 @@
      */
     $('#btn-filter-save').on('click', function(e) {
         e.preventDefault()
+        $('#card-empty-search').hide()
+        $('#search-loader').show()
+        $('#table-lead-search').hide()
+
         // reset tbody table
         $('#table-lead-search').find('tbody').empty()
     
         const payload = new FormData()
         const age = []
-        const incomeLevel = []
+        const senioritys = []
 
         $.each($('#form-search').serializeArray(), function(i, field) {
             if (field.name.includes('age')) {
@@ -385,22 +600,23 @@
                 ages.forEach(val => {
                     age.push(parseInt(val))
                 })
-            } else if (field.name.includes('income_level')) {
-                incomeLevel.push(field.value)
-            } else if (field.value !== '' && field.name !== 'industry') {
+            } else if (field.value !== '' && (field.name !== 'industry' || field.name !== 'seniority')) {
                 payload.set(field.name, field.value)
             }
 
             if (field.name === 'industry') {
                 industryValue.push(field.value)
             }
+            if (field.name === 'seniority') {
+                senioritys.push(field.value)
+            }
         })
 
         if (locationsValue.length > 0) {
             payload.set('location', locationsValue)
         }
-        if (age.length > 0) {
-            payload.set('income_level', incomeLevel)
+        if (senioritys.length > 0) {
+            payload.set('seniority', senioritys)
         }
         if (age.length > 0) {
             payload.set('min_age', Math.min(...age))
@@ -410,6 +626,12 @@
             payload.set('industry', industryValue)
         }
 
+        // const urlParams = new URLSearchParams(window.location.search);
+        // for (var pair of payload.entries()) {
+        //     urlParams.set(pair[0], pair[1]);
+        // }
+        // window.location.search = urlParams;
+
         fetch(`${baseUrl}api/lead-generation/search-customer?` + new URLSearchParams(payload), {
             headers: {
               'X-CSRF-TOKEN': token
@@ -417,69 +639,73 @@
         })
         .then(r => r.json())
         .then(res => {
+          $('#search-loader').hide()
+          $('#table-lead-search').show()
+
+          tempSearchCustomerResult = res.result
           renderChildTable(res.result)
           $('#table-lead-search').find('#table-header-title').text(`${res.result.length} match your filters`)
           // fetching detail customer
           fetchingDetailCustomer()
-        })
 
-        $('#table-lead-search').css({ display: 'block' })
-        $('#card-empty-search').css({ display: 'none' })
+          // handle change value checkbox
+          $('.dt-checkboxes').each(function(index) {
+              checkedLead.push($(this).prop('checked'))
+  
+              $(this).on('change', function(e) {
+                  if (e.target.checked) {
+                      $(this).prop('checked', true)
+                      $('#btn-header').attr('disabled', false)
+                      checkedLead = checkedLead.map((item, itemIndex) => {
+                        if (itemIndex === index) {
+                            return true
+                        }
+                        return item
+                      })
+                      // adding current customer to global variable customers
+                      customers.push(parseInt($(this).attr('customer-id')))
+                  } else {
+                      $(this).prop('checked', false)
+                      checkedLead = checkedLead.map((item, itemIndex) => {
+                        if (itemIndex === index) {
+                            return false
+                        }
+                        return item
+                      })
+                      // takeout current customer in global variable customers
+                      customers = customers.filter(cust => cust !== parseInt($(this).attr('customer-id')))
+                  }
+                  
+                  // check if atleast one checkbox is checked
+                  const isChecked = checkedLead.some(item => item)
+                  if (!isChecked) {
+                      $('#btn-header').attr('disabled', true)
+                  }
+              })
+          })
+        })
 
         // handle change checkbox select all
         $('.dt-checkboxes-select-all').on('change', function(e) {
             if (e.target.checked) {
+                // reset global variable customers
+                customers = []
+
                 $('.dt-checkboxes').each(function() {
                     $(this).prop('checked', true)
                 })
                 $('#btn-header').attr('disabled', false)
+                // adding all customer to global variable customers
+                const customersId = tempSearchCustomerResult.map(cust => cust.id)
+                customers = customersId
             } else {
                 $('.dt-checkboxes').each(function() {
                     $(this).prop('checked', false)
                 })
                 $('#btn-header').attr('disabled', true)
+                // reset global variable customers
+                customers = []
             }
-        })
-
-        // handle change value checkbox
-        $('.dt-checkboxes').each(function(index) {
-            checkedLead.push($(this).prop('checked'))
-
-            $(this).on('change', function(e) {
-                if (e.target.checked) {
-                    $(this).prop('checked', true)
-                    $('#btn-header').attr('disabled', false)
-                    checkedLead = checkedLead.map((item, itemIndex) => {
-                        if (itemIndex === index) {
-                            return true
-                        }
-                        return item
-                    })
-                } else {
-                    $(this).prop('checked', false)
-                    checkedLead = checkedLead.map((item, itemIndex) => {
-                        if (itemIndex === index) {
-                            return false
-                        }
-                        return item
-                    })
-                }
-                
-                // check if atleast one checkbox is checked
-                const isChecked = checkedLead.some(item => item)
-                if (!isChecked) {
-                    $('#btn-header').attr('disabled', true)
-                }
-            })
-        })
-    })
-
-    /**
-     * @description handle add button list
-     */
-    $('.btn-add-list').each(function() {
-        $(this).on('click', function(el) {
-            el.stopPropagation();
         })
     })
 
@@ -526,6 +752,9 @@
      */
     $('#btn-create-list').on('click', function(e) {
         e.preventDefault()
+
+        // btn loader
+        $(this).html('<i class="ti ti-loader-2 loader"></i>')
     
         const payload = new FormData()
         $.each($('#form-create-list').serializeArray(), function(i, field) {
@@ -541,10 +770,35 @@
         })
         .then(res => {
             if (res.status === 200) {
+                $(this).html('Save')
                 $('#lead-list-wrapper').empty()
                 $("#add-list").find(`[data-bs-target='#list']`).click()
                 fetchingLeadList()
+                renderModalConfirmation({
+                    type: 'success',
+                    subtitle: 'Created list successfully'
+                })
+
+                // set attribute btn cancel modal confirmation
+                // open modal list
+                const btnCancel = $('#confirmation').find('#modal-confirm-cancel')
+                btnCancel.attr('data-bs-target', '#list')
+                btnCancel.attr('data-bs-toggle', 'modal')
+
+                btnCancel.on('click', function() {
+                    // remove attribute btn cancel modal confirmation
+                    btnCancel.removeAttr('data-bs-target')
+                    btnCancel.removeAttr('data-bs-toggle')
+                })
             }
+        })
+        .catch(err => {
+            $(this).html('Save')
+            renderModalConfirmation({
+                type: 'error',
+                subtitle: 'Internal server error'
+            })
+            console.error(err)
         })
     })
 
@@ -607,8 +861,10 @@
                                 <span class="text-dark fw-bolder" style="font-size: 18px;">Contact Information</span>
                                 <button
                                   class="btn-add-list"
+                                  data-bs-dismiss="modal"
                                   data-bs-toggle="modal"
                                   data-bs-target="#list"
+                                  customer-id="${data.id}"
                                 >
                                   <i class="ti ti-plus"></i>
                                   Add to list
@@ -656,6 +912,7 @@
                         </div>
                         `)
                     })
+                    onClickButtonListAdd()
                 }).catch(err => console.error(err))
             })
         })

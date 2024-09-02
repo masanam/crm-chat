@@ -197,27 +197,16 @@ $genders = [$default, $gender, $gender2, $gender3];
           <div id="filter-income" class="d-flex flex-row justify-content-between align-items-center cursor-pointer">
               <div class="d-flex flex-row align-items-center gap-1">
                   <img src="{{ asset('assets/svg/icons/icon-dolar-outline.svg') }}" alt="dolar">
-                  <span style="color: #1F2124; font-weight: 600;">Income level</span>
+                  <span style="color: #1F2124; font-weight: 600;">Seniority</span>
               </div>
               <i class="ti ti-chevron-right"></i>
           </div>
           <div id="content-filter-income" class="hide">
-              <div class="mt-4">
-                  <input type="checkbox" id="income_level1" name="income_level1" value="A">
-                  <label for="income_level1" style="margin-left: 12px;"> Type A *</label><br>
-              </div>
-              <div class="mt-2">
-                  <input type="checkbox" id="income_level2" name="income_level2" value="B">
-                  <label for="income_level2" style="margin-left: 12px;"> Type B *</label><br>
-              </div>
-              <div class="mt-2">
-                  <input type="checkbox" id="income_level3" name="income_level3" value="C">
-                  <label for="income_level3" style="margin-left: 12px;"> Type C *</label><br>
-              </div>
-              <div class="mt-2">
-                  <input type="checkbox" id="income_level4" name="income_level4" value="Uncategorized">
-                  <label for="income_level4" style="margin-left: 12px;"> Uncategorized *</label><br>
-              </div>
+            <select id="seniority" name="seniority" class="select2-seniority form-select" multiple>
+              @foreach ($list_seniority as $data => $value)
+                <option value="{{ $value->value }}">{{ $value->label }}</option>
+              @endforeach
+            </select>
           </div>
       </div>
       <div class="d-flex flex-column wrapper-filter">
@@ -275,6 +264,12 @@ $genders = [$default, $gender, $gender2, $gender3];
   >
   </x-table>
   </div>
+
+  <div id="search-loader" class="card" style="display: none; grid-column: span 2 / span 2;">
+    <div class="w-100 h-100 d-flex align-items-center justify-content-center">
+      <i class="ti ti-loader-2 loader text-primary" style="font-size: 42px;"></i>
+    </div>
+  </div>
 </section>
 
 {{-- modal add/select list --}}
@@ -319,7 +314,13 @@ $genders = [$default, $gender, $gender2, $gender3];
       </x-input-floating>
   </div>
   <div class="d-flex justify-content-end w-100 mt-2">
-      <button id="btn-create-list" type="submit" class="btn btn-primary">Save</button>
+      <button
+        id="btn-create-list"
+        type="submit"
+        class="btn btn-primary"
+      >
+        Save
+      </button>
   </div>
 </form>
 </x-modal>
@@ -346,5 +347,13 @@ $genders = [$default, $gender, $gender2, $gender3];
     </div>
   </div>
 </x-modal>
+
+<x-modal-confirmation
+  name="confirmation"
+  title="Confirmation"
+  modalClass=""
+  subtitle="Are you sure want to assign this customer?"
+>
+</x-modal-confirmation>
 
 @endsection

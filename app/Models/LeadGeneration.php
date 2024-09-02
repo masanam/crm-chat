@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LeadGeneration extends Model
 {
@@ -24,10 +25,17 @@ class LeadGeneration extends Model
     'age',
     'gender',
     'income_level',
+    'seniority',
     'job_title',
     'industry',
     'email',
     'linkedin',
     'url'
   ];
+
+  public function lists()
+  {
+      return $this->belongsToMany(LeadGenerationList::class)->withTimestamps();;
+  }
+
 }

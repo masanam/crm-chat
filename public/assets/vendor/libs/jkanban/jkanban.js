@@ -170,17 +170,13 @@ var dragula = require('dragula');
               el.dragfn(el, source)
           })
           .on('dragend', function (el) {
-
             self.options.dragendEl(el)
             if (el !== null && typeof el.dragendfn === 'function')
               el.dragendfn(el)
           })
           .on('drop', function (el, target, source, sibling) {
             self.enableAllBoards()
-            // kanbanTitle = document.querySelector('.kanban-title-board').innerHTML;
-            // parentBoard = target.offsetParent.getAttribute("data-id");
-            // console.log(parentBoard); 
-            // will return the string "123"
+
             var boardJSON = __findBoardJSON(source.parentNode.dataset.id)
             if (boardJSON.dragTo !== undefined) {
               if (
